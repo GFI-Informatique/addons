@@ -1,5 +1,5 @@
 Cadastre ADDON
-==============
+==============  
 
 This addon allows users to locate land parcels, either by reference (tab 1), or by owner name (tab 2).
 author: @fvanderbiest, with ideas from @spelhate.
