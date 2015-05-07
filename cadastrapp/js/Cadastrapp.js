@@ -32,15 +32,15 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
      */
     map: null,
 
-    /** api: config[drawControls]
+    /** api: config[cadastrappControls]
      *  ``Array(OpenLayers.Control.DrawFeature)``
      *  An array of DrawFeature controls automatically created from the layer.
      */
-    drawControls: null,
+    cadastrappControls: null,
 
     /** api: config[lastDrawControl]
      *  ``OpenLayers.Control.DrawFeature``
-     *  The last active draw control.
+     *  The last active cadastrapp control.
      */
     lastDrawControl: null,
 
@@ -173,7 +173,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
     constructor: function(config) {
         Ext.apply(this, config);
 
-        this.drawControls = [];
+        this.cadastrappControls = [];
         this.actions = [];
 
         this.initMap();
@@ -215,12 +215,11 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         });
 
         // 2nd, create new ones from the current active layer
-        this.initDrawControls(layer);
+        this.initCadastrappControls(layer);
         this.actions.push('-');
         this.initFeatureControl(layer);
-        this.initDeleteAllAction();
         this.actions.push('-');
-        this.initExportAsKmlAction();
+
 
         GEOR.Cadastrapp.superclass.constructor.apply(this, arguments);
     },
@@ -277,12 +276,12 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             toggleGroup: this.toggleGroup,
             allowDepress: false,
             pressed: false,
-            tooltip: OpenLayers.i18n("cadastrapp.modify"),
+            tooltip: OpenLayers.i18n("cadastrapp.demande"),
             // check item options
             group: this.toggleGroup,
-            iconCls: "gx-featureediting-editfeature",
+            iconCls: "gx-featureediting-cadastrapp-demande",
             iconAlign: 'top',
-            text: OpenLayers.i18n("cadastrapp.modify"),
+            text: OpenLayers.i18n("cadastrapp.demande"),
             checked: false
         };
 
@@ -291,20 +290,23 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         this.actions.push(action);
     },
 
-    /** private: method[initDrawControls]
+    /** private: method[initCadastrappControls]
      *  :param layer: ``OpenLayers.Layer.Vector``
      *  Create DrawFeature controls linked to the passed layer and
      *  depending on its geometryType property and add them to the map.
      *  GeoExt.Action are also created and pushed to the actions array.
      */
-    initDrawControls: function(layer) {
+    initCadastrappControls: function(layer) {
         var control, handler, geometryTypes, geometryType,
                 options, action, iconCls, actionOptions, tooltip;
 
-        geometryTypes = [
-            "Point", "Circle", "LineString", "Polygon", "Box", "Label"
+     /*   geometryTypes = [
+            "Zoom", "Point",  "Circle","LineString", "Polygon", "Cadastre", "Foncier", "Parcelle", "Box", "Label", "Demande"
         ];
-
+*/
+        geometryTypes = [
+            "Zoom","Point", "LineString", "Polygon", "Cadastre", "Foncier", "Parcelle","Demande"
+        ];
 
         for (var i = 0; i < geometryTypes.length; i++) {
             options = {
@@ -316,53 +318,48 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             geometryType = geometryTypes[i];
 
             switch (geometryType) {
-                case "LineString":
+                 case "Zoom":
                     handler = OpenLayers.Handler.Path;
-                    iconCls = "gx-featureediting-draw-line";
+                    iconCls = "gx-featureediting-zoom";
+                    tooltip = OpenLayers.i18n("cadastrapp.zoom");
+                    break;
+				case "LineString":
+                    handler = OpenLayers.Handler.Path;
+                    iconCls = "gx-featureediting-cadastrapp-line";
                     tooltip = OpenLayers.i18n("cadastrapp.create_line");
                     break;
-                case "Point":
+				case "Point":
                     handler = OpenLayers.Handler.Point;
-                    iconCls = "gx-featureediting-draw-point";
+                    iconCls = "gx-featureediting-cadastrapp-point";
                     tooltip = OpenLayers.i18n("cadastrapp.create_point");
-                    break;
-                case "Circle":
-                    handler = OpenLayers.Handler.RegularPolygon;
-                    options.handlerOptions.sides = 32;
-                    options.handlerOptions.irregular = false;
-                    iconCls = "gx-featureediting-draw-circle";
-                    tooltip = OpenLayers.i18n("cadastrapp.create_circle");
                     break;
                 case "Polygon":
                     handler = OpenLayers.Handler.Polygon;
-                    iconCls = "gx-featureediting-draw-polygon";
-                    tooltip = OpenLayers.i18n("cadastrapp.create_polygon");
+                    iconCls = "gx-featureediting-cadastrapp-polygon";
+                    tooltip = OpenLayers.i18n("cadastrapp.create_point");
                     break;
-                case "Box":
-                    handler = OpenLayers.Handler.RegularPolygon;
-                    options.handlerOptions.sides = 4;
-                    options.handlerOptions.irregular = true;
-                    iconCls = "gx-featureediting-draw-box";
-                    tooltip = OpenLayers.i18n("cadastrapp.create_box");
+                 case "Cadastre":
+                    handler = OpenLayers.Handler.Path;
+                    iconCls = "gx-featureediting-cadastrapp-polygon";
+                    tooltip = OpenLayers.i18n("cadastrapp.create_point");
                     break;
-                case "Label":
-                    handler = OpenLayers.Handler.Point;
-                    iconCls = "gx-featureediting-draw-label";
-                    tooltip = OpenLayers.i18n("cadastrapp.create_label");
+                 case "Foncier":
+                    handler = OpenLayers.Handler.Path;
+                    iconCls = "gx-featureediting-cadastrapp-polygon";
+                    tooltip = OpenLayers.i18n("cadastrapp.foncier");
                     break;
+                 case "Parcelle":
+                    handler = OpenLayers.Handler.Path;
+                    iconCls = "gx-featureediting-cadastrapp-polygon";
+                    tooltip = OpenLayers.i18n("cadastrapp.create_point");
+                    break;
+
             }
 
             control = new OpenLayers.Control.DrawFeature(
                     layer, handler, options);
 
-            this.drawControls.push(control);
-
-            if (geometryType == "Label") {
-                control.events.on({
-                    "featureadded": this.onLabelAdded,
-                    scope: this
-                });
-            }
+            this.cadastrappControls.push(control);
 
             if (geometryType == "Circle") {
                 control.events.on({
@@ -371,7 +368,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                 });
             }
 
-            if (geometryType == "Box") {
+            if (geometryType == "Parcelle") {
                 control.events.on({
                     "featureadded": this.onBoxAdded,
                     scope: this
@@ -406,74 +403,19 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
     },
 
     /** private: method[destroyDrawControls]
-     *  Destroy all drawControls and all their related objects.
+     *  Destroy all cadastrapp Controls and all their related objects.
      */
     destroyDrawControls: function() {
-        for (var i = 0; i < this.drawControls.length; i++) {
-            this.drawControls[i].destroy();
+        for (var i = 0; i < this.cadastrappControls.length; i++) {
+            this.cadastrappControls[i].destroy();
         }
-        this.drawControls = [];
+        this.cadastrappControls = [];
     },
 
-    /** private: method[initDeleteAllAction]
-     *  Create a Ext.Action object that is set as the deleteAllAction property
-     *  and pushed to te actions array.
-     */
-    initDeleteAllAction: function() {
-        var actionOptions = {
-            handler: this.deleteAllFeatures,
-            scope: this,
-            text: OpenLayers.i18n('cadastrapp.delete_all'),
-            iconCls: "gx-featureediting-delete",
-            iconAlign: 'top',
-            tooltip: OpenLayers.i18n('cadastrapp.delete_all_features')
-        };
-
-        var action = new Ext.Action(actionOptions);
-
-        this.actions.push(action);
-    },
-
-    /** private: method[deleteAllFeatures]
-     *  Called when the deleteAllAction is triggered (button pressed).
-     *  Destroy all features from all layers.
-     */
-    deleteAllFeatures: function() {
-        Ext.MessageBox.confirm(OpenLayers.i18n('cadastrapp.delete_all_features'), OpenLayers.i18n('cadastrapp.delete_features_confirm'), function(btn) {
-            if (btn == 'yes') {
-                if (this.popup) {
-                    this.popup.close();
-                    this.popup = null;
-                }
-
-                this.layer.destroyFeatures();
-            }
-        },
-        this);
-    },
-
-    /** private: method[initExportAsKmlAction]
-     *  Create a Ext.Action object that is set as the exportAsKml property
-     *  and pushed to the actions array.
-     */
-    initExportAsKmlAction: function() {
-        var actionOptions = {
-            handler: this.exportAsKml,
-            scope: this,
-            text: OpenLayers.i18n('cadastrapp.export_as_kml'),
-            iconCls: "gx-featureediting-export",
-            iconAlign: 'top',
-            tooltip: OpenLayers.i18n('cadastrapp.export_as_kml_tip')
-        };
-
-        var action = new Ext.Action(actionOptions);
-
-        this.actions.push(action);
-    },
 
     /** private: method[exportAsKml]
      *  Called when the exportAsKml is triggered (button pressed).
-     */
+     *//*
     exportAsKml: function() {
         GEOR.waiter.show();
         var urlObj = OpenLayers.Util.createUrlObject(window.location.href),
@@ -491,6 +433,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             }
         });
     },
+	*/
 
     /** private: method[getActiveDrawControl]
      *  :return: ``OpenLayers.Control.DrawFeature or false``
@@ -500,9 +443,9 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
     getActiveDrawControl: function() {
         var control = false;
 
-        for (var i = 0; i < this.drawControls.length; i++) {
-            if (this.drawControls[i].active) {
-                control = this.drawControls[i];
+        for (var i = 0; i < this.cadastrappControls.length; i++) {
+            if (this.cadastrappControls[i].active) {
+                control = this.cadastrappControls[i];
                 break;
             }
         }
@@ -515,33 +458,14 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
      *  Called when a new label feature is added to the layer.  Set a flag
      *  to let the controler know it's a label.
      */
-    onLabelAdded: function(event) {
+/*    onLabelAdded: function(event) {
         var feature = event.feature;
         feature.style.label = feature.attributes.label;
         feature.style.graphic = false;
         feature.style.labelSelect = true;
         feature.isLabel = true;
     },
-
-    /** private: method[onCircleAdded]
-     *  :param event: ``event``
-     *  Called when a new circle feature is added to the layer.  Set a flag
-     *  to let the controler know it's a circle.
-     */
-    onCircleAdded: function(event) {
-        var feature = event.feature;
-        feature.attributes.isCircle = true;
-    },
-
-    /** private: method[onBoxAdded]
-     *  :param event: ``event``
-     *  Called when a new box feature is added to the layer.  Set a flag
-     *  to let the controler know it's a box.
-     */
-    onBoxAdded: function(event) {
-        var feature = event.feature;
-        feature.attributes.isBox = true;
-    },
+*/
 
     /** private: method[onFeatureAdded]
      *  :param event: ``event``
@@ -549,15 +473,15 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
      *  of the feature to INSERT and select it.
      */
     onFeatureAdded: function(event) {
-        var feature, drawControl;
+        var feature, cadastrappControl;
 
         feature = event.feature;
         feature.state = OpenLayers.State.INSERT;
 
-        drawControl = this.getActiveDrawControl();
-        if (drawControl) {
-            drawControl.deactivate();
-            this.lastDrawControl = drawControl;
+        cadastrappControl = this.getActiveDrawControl();
+        if (cadastrappControl) {
+            cadastrappControl.deactivate();
+            this.lastDrawControl = cadastrappControl;
         }
 
         this.featureControl.activate();
@@ -585,10 +509,10 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
          */
 
         // if the user clicked on an other feature while adding a new one,
-        // deactivate the draw control.
-        var drawControl = this.getActiveDrawControl();
-        if (drawControl) {
-            drawControl.deactivate();
+        // deactivate the cadastrapp control.
+        var cadastrappControl = this.getActiveDrawControl();
+        if (cadastrappControl) {
+            cadastrappControl.deactivate();
             this.featureControl.activate();
         }
 
@@ -713,7 +637,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 
         // if it's the first feature that is selected
         if(feature.layer.selectedFeatures.length === 0) {
-            this.applyStyles('faded', {'redraw': true});
+            this.applyStyles('faded', {'recadastrapp': true});
         }
     },
 
@@ -723,11 +647,11 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
      */
     onFeatureUnselect: function(event) {
         var feature = (event.geometry) ? event : event.feature;
-        this.applyStyle(feature, 'faded', {'redraw': true});
+        this.applyStyle(feature, 'faded', {'recadastrapp': true});
 
         // if it's the last feature that is unselected
         if(feature.layer.selectedFeatures.length === 0) {
-            this.applyStyles('normal', {'redraw': true});
+            this.applyStyles('normal', {'recadastrapp': true});
         }
     },
 
@@ -737,14 +661,14 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
      */
     onFeatureSelect: function(event) {
         var feature = (event.geometry) ? event : event.feature;
-        this.applyStyle(feature, 'normal', {'redraw': true});
+        this.applyStyle(feature, 'normal', {'recadastrapp': true});
     },
 
     /** private: method[applyStyles]
      *  :param style: ``String`` Mandatory.  Can be "normal" or "faded".
      *  :param options: ``Object`` Object of options.
      *  Apply a specific style to all layers of this controler.  If
-     *  'redraw': true was specified in the options, the layer is redrawn after.
+     *  'recadastrapp': true was specified in the options, the layer is recadastrappn after.
      */
     applyStyles: function(style, options) {
         style = style || "normal";
@@ -759,8 +683,8 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             }
         }
 
-        if(options['redraw'] === true) {
-            layer.redraw();
+        if(options['recadastrapp'] === true) {
+            layer.recadastrapp();
         }
     },
 
@@ -768,8 +692,8 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
      *  :param feature: ``OpenLayers.Feature.Vector``
      *  :param style: ``String`` Mandatory.  Can be "normal" or "faded".
      *  :param options: ``Object`` Object of options.
-     *  Apply a specific style to a specific feature.  If 'redraw': true was
-     *  specified in the options, the layer is redrawn after.
+     *  Apply a specific style to a specific feature.  If 'recadastrapp': true was
+     *  specified in the options, the layer is recadastrappn after.
      */
     applyStyle: function(feature, style, options) {
         var fRatio;
@@ -790,8 +714,8 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             }
         }
 
-        if(options['redraw'] === true) {
-            feature.layer.drawFeature(feature);
+        if(options['recadastrapp'] === true) {
+            feature.layer.cadastrappFeature(feature);
         }
     },
 
