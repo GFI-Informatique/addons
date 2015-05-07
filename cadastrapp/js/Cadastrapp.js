@@ -307,7 +307,25 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         geometryTypes = [
             "Zoom","Point", "LineString", "Polygon", "Cadastre", "Foncier", "Parcelle","Demande"
         ];
+            actionOptions = {
+                control: control,
+                map: this.map,
+                // button options
+                toggleGroup: this.toggleGroup,
+                allowDepress: false,
+                pressed: false,
+                tooltip: tooltip,
+                iconCls: iconCls,
+                text: OpenLayers.i18n("cadastrapp." + geometryType.toLowerCase()),
+                iconAlign: 'top',
+                // check item options
+                group: this.toggleGroup,
+                checked: false
+            };
 
+            action = new GeoExt.Action(actionOptions);
+
+            this.actions.push(action);
         for (var i = 0; i < geometryTypes.length; i++) {
             options = {
                 handlerOptions: {
