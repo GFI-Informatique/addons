@@ -215,7 +215,11 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         });
 
         // 2nd, create new ones from the current active layer
-        this.initCadastrappControls(layer);
+        this.initZoomControls(layer);
+        this.actions.push('-');
+        this.initSelectionControls(layer);
+        this.actions.push('-');
+		this.initCadastrappControls(layer);
         this.actions.push('-');
         this.initFeatureControl(layer);
         this.actions.push('-');
@@ -289,24 +293,64 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 
         this.actions.push(action);
     },
-
-    /** private: method[initCadastrappControls]
+   /** private: method[initCadastrappControls]
      *  :param layer: ``OpenLayers.Layer.Vector``
      *  Create DrawFeature controls linked to the passed layer and
      *  depending on its geometryType property and add them to the map.
      *  GeoExt.Action are also created and pushed to the actions array.
      */
-    initCadastrappControls: function(layer) {
+    initZoomControls: function(layer) {
         var control, handler, geometryTypes, geometryType,
                 options, action, iconCls, actionOptions, tooltip;
 
-     /*   geometryTypes = [
-            "Zoom", "Point",  "Circle","LineString", "Polygon", "Cadastre", "Foncier", "Parcelle", "Box", "Label", "Demande"
-        ];
-*/
+
         geometryTypes = [
-            "Zoom","Point", "LineString", "Polygon", "Cadastre", "Foncier", "Parcelle","Demande"
+            "Zoom"
         ];
+
+        for (var i = 0; i < geometryTypes.length; i++) {
+            options = {
+                handlerOptions: {
+                    stopDown: true,
+                    stopUp: true
+                }
+            };
+            geometryType = geometryTypes[i];
+
+            switch (geometryType) {
+                 case "Zoom":
+                    handler = OpenLayers.Handler.Path;
+                    iconCls = "gx-featureediting-zoom";
+                    tooltip = OpenLayers.i18n("cadastrapp.zoom");
+                    break;
+
+
+            }
+
+            control = new OpenLayers.Control.DrawFeature(
+                    layer, handler, options);
+
+            this.cadastrappControls.push(control);
+
+            if (geometryType == "Circle") {
+                control.events.on({
+                    "featureadded": this.onCircleAdded,
+                    scope: this
+                });
+            }
+
+            if (geometryType == "Parcelle") {
+                control.events.on({
+                    "featureadded": this.onBoxAdded,
+                    scope: this
+                });
+            }
+
+            control.events.on({
+                "featureadded": this.onFeatureAdded,
+                scope: this
+            });
+
             actionOptions = {
                 control: control,
                 map: this.map,
@@ -326,6 +370,23 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             action = new GeoExt.Action(actionOptions);
 
             this.actions.push(action);
+        }
+    },
+   /** private: method[initSelectionControls]
+     *  :param layer: ``OpenLayers.Layer.Vector``
+     *  Create DrawFeature controls linked to the passed layer and
+     *  depending on its geometryType property and add them to the map.
+     *  GeoExt.Action are also created and pushed to the actions array.
+     */
+    initSelectionControls: function(layer) {
+        var control, handler, geometryTypes, geometryType,
+                options, action, iconCls, actionOptions, tooltip;
+
+
+        geometryTypes = [
+          "Point", "LineString", "Polygon"
+        ];
+
         for (var i = 0; i < geometryTypes.length; i++) {
             options = {
                 handlerOptions: {
@@ -336,11 +397,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             geometryType = geometryTypes[i];
 
             switch (geometryType) {
-                 case "Zoom":
-                    handler = OpenLayers.Handler.Path;
-                    iconCls = "gx-featureediting-zoom";
-                    tooltip = OpenLayers.i18n("cadastrapp.zoom");
-                    break;
 				case "LineString":
                     handler = OpenLayers.Handler.Path;
                     iconCls = "gx-featureediting-cadastrapp-line";
@@ -356,6 +412,79 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                     iconCls = "gx-featureediting-cadastrapp-polygon";
                     tooltip = OpenLayers.i18n("cadastrapp.create_point");
                     break;
+            }
+
+            control = new OpenLayers.Control.DrawFeature(
+                    layer, handler, options);
+
+            this.cadastrappControls.push(control);
+
+            if (geometryType == "Circle") {
+                control.events.on({
+                    "featureadded": this.onCircleAdded,
+                    scope: this
+                });
+            }
+
+            if (geometryType == "Parcelle") {
+                control.events.on({
+                    "featureadded": this.onBoxAdded,
+                    scope: this
+                });
+            }
+
+            control.events.on({
+                "featureadded": this.onFeatureAdded,
+                scope: this
+            });
+
+            actionOptions = {
+                control: control,
+                map: this.map,
+                // button options
+                toggleGroup: this.toggleGroup,
+                allowDepress: false,
+                pressed: false,
+                tooltip: tooltip,
+                iconCls: iconCls,
+                text: OpenLayers.i18n("cadastrapp." + geometryType.toLowerCase()),
+                iconAlign: 'top',
+                // check item options
+                group: this.toggleGroup,
+                checked: false
+            };
+
+            action = new GeoExt.Action(actionOptions);
+
+            this.actions.push(action);
+        }
+    },
+
+    /** private: method[initCadastrappControls]
+     *  :param layer: ``OpenLayers.Layer.Vector``
+     *  Create DrawFeature controls linked to the passed layer and
+     *  depending on its geometryType property and add them to the map.
+     *  GeoExt.Action are also created and pushed to the actions array.
+     */
+    initCadastrappControls: function(layer) {
+        var control, handler, geometryTypes, geometryType,
+                options, action, iconCls, actionOptions, tooltip;
+
+
+        geometryTypes = [
+          "Cadastre", "Foncier"
+        ];
+
+        for (var i = 0; i < geometryTypes.length; i++) {
+            options = {
+                handlerOptions: {
+                    stopDown: true,
+                    stopUp: true
+                }
+            };
+            geometryType = geometryTypes[i];
+
+            switch (geometryType) {
                  case "Cadastre":
                     handler = OpenLayers.Handler.Path;
                     iconCls = "gx-featureediting-cadastrapp-polygon";
@@ -366,12 +495,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                     iconCls = "gx-featureediting-cadastrapp-polygon";
                     tooltip = OpenLayers.i18n("cadastrapp.foncier");
                     break;
-                 case "Parcelle":
-                    handler = OpenLayers.Handler.Path;
-                    iconCls = "gx-featureediting-cadastrapp-polygon";
-                    tooltip = OpenLayers.i18n("cadastrapp.create_point");
-                    break;
-
             }
 
             control = new OpenLayers.Control.DrawFeature(
@@ -431,28 +554,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
     },
 
 
-    /** private: method[exportAsKml]
-     *  Called when the exportAsKml is triggered (button pressed).
-     *//*
-    exportAsKml: function() {
-        GEOR.waiter.show();
-        var urlObj = OpenLayers.Util.createUrlObject(window.location.href),
-            format = new OpenLayers.Format.KML({
-                'foldersName': urlObj.host, // TODO use instance name instead
-                'internalProjection': this.map.getProjectionObject(),
-                'externalProjection': new OpenLayers.Projection("EPSG:4326")
-            });
-        OpenLayers.Request.POST({
-            url: GEOR.config.PATHNAME + "/ws/kml/",
-            data: format.write(this.layer.features),
-            success: function(response) {
-                var o = Ext.decode(response.responseText);
-                window.location.href = GEOR.config.PATHNAME + "/" + o.filepath;
-            }
-        });
-    },
-	*/
-
     /** private: method[getActiveDrawControl]
      *  :return: ``OpenLayers.Control.DrawFeature or false``
      *  Get the current active DrawFeature control.  If none is active, false
@@ -476,14 +577,14 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
      *  Called when a new label feature is added to the layer.  Set a flag
      *  to let the controler know it's a label.
      */
-/*    onLabelAdded: function(event) {
+    onLabelAdded: function(event) {
         var feature = event.feature;
         feature.style.label = feature.attributes.label;
         feature.style.graphic = false;
         feature.style.labelSelect = true;
         feature.isLabel = true;
     },
-*/
+
 
     /** private: method[onFeatureAdded]
      *  :param event: ``event``
