@@ -202,7 +202,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         layer = new OpenLayers.Layer.Vector("__georchestra_cadastrapps", layerOptions);
         this.layer = layer;
         this.map.addLayer(layer);
-
+/*
         layer.events.on({
             "beforefeatureselected": this.onBeforeFeatureSelect,
             "featureunselected": this.onFeatureUnselect,
@@ -213,7 +213,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             "beforefeatureadded": this.onBeforeFeatureAdded,
             scope: this
         });
-
+*/
         // 2nd, create new ones from the current active layer
         this.initZoomControls(layer);
         this.actions.push('-');
@@ -224,8 +224,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 		this.initRechercheControls(layer);
         this.actions.push('-');
         this.initDemandeControl(layer);
-        this.actions.push('-');
-
 
         GEOR.Cadastrapp.superclass.constructor.apply(this, arguments);
     },
@@ -286,20 +284,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                     layer, handler, options);
 
             this.cadastrappControls.push(control);
-
-            if (geometryType == "Circle") {
-                control.events.on({
-                    "featureadded": this.onCircleAdded,
-                    scope: this
-                });
-            }
-
-            if (geometryType == "Parcelle") {
-                control.events.on({
-                    "featureadded": this.onBoxAdded,
-                    scope: this
-                });
-            }
 
             control.events.on({
                 "featureadded": this.onFeatureAdded,
@@ -524,7 +508,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             switch (geometryType) {
                  case "Parcelle":
                     handler = OpenLayers.Handler.Path;
-                    iconCls = "gx-featureediting-cadastrapp-polygon";
+                    iconCls = "gx-featureediting-cadastrapp-parcelle";
                     tooltip = OpenLayers.i18n("cadastrapp.parcelle");
                     break;
                  case "Recherches":

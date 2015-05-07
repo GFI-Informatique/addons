@@ -17,6 +17,9 @@
 .gx-featureediting-cadastrapp-polygon {
   background-image: url("../images/geosilk/shape_square_red_add.png") !important;
 }
+.gx-featureediting-cadastrapp-parcelle {
+  background-image: url("../images/geosilk/parcelle.png") !important;
+}
 
 .gx-featureediting-cadastrapp-demande {
   background-image: url("../images/geosilk/shape_square_red_add.png") !important;
