@@ -220,8 +220,10 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         this.initSelectionControls(layer);
         this.actions.push('-');
 		this.initCadastrappControls(layer);
+        this.actions.push('-');	
+		this.initRechercheControls(layer);
         this.actions.push('-');
-        this.initFeatureControl(layer);
+        this.initDemandeControl(layer);
         this.actions.push('-');
 
 
@@ -246,53 +248,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         }
     },
 
-    /** private: method[initFeatureControl]
-     *  :param layer: ``OpenLayers.Layer.Vector``
-     *  Create a ModifyFeature control linked to the passed layer and
-     *  add it to the map.  An GeoExt.Action is also created and pushed to the
-     *  actions array.
-     */
-    initFeatureControl: function(layer) {
-        var control, actionOptions;
-
-        var options = {
-            selectFeature: function(feature) {
-                var MF = OpenLayers.Control.ModifyFeature;
-                this.mode = MF.RESHAPE | MF.DRAG;
-                if (feature.attributes.isCircle){
-                    this.mode = MF.RESIZE | MF.DRAG;
-                }
-                if (feature.attributes.isBox){
-                    this.mode = MF.RESHAPE | MF.RESIZE & ~MF.RESHAPE | MF.DRAG;
-                }
-                MF.prototype.selectFeature.apply(this, arguments);
-            },
-            vertexRenderIntent: 'vertices'
-        };
-        control = new OpenLayers.Control.ModifyFeature(layer, options);
-
-        this.featureControl = control;
-
-        actionOptions = {
-            control: control,
-            map: this.map,
-            // button options
-            toggleGroup: this.toggleGroup,
-            allowDepress: false,
-            pressed: false,
-            tooltip: OpenLayers.i18n("cadastrapp.demande"),
-            // check item options
-            group: this.toggleGroup,
-            iconCls: "gx-featureediting-cadastrapp-demande",
-            iconAlign: 'top',
-            text: OpenLayers.i18n("cadastrapp.demande"),
-            checked: false
-        };
-
-        var action = new GeoExt.Action(actionOptions);
-
-        this.actions.push(action);
-    },
    /** private: method[initCadastrappControls]
      *  :param layer: ``OpenLayers.Layer.Vector``
      *  Create DrawFeature controls linked to the passed layer and
@@ -410,7 +365,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                 case "Polygon":
                     handler = OpenLayers.Handler.Polygon;
                     iconCls = "gx-featureediting-cadastrapp-polygon";
-                    tooltip = OpenLayers.i18n("cadastrapp.create_point");
+                    tooltip = OpenLayers.i18n("cadastrapp.create_polygon");
                     break;
             }
 
@@ -419,7 +374,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 
             this.cadastrappControls.push(control);
 
-            if (geometryType == "Circle") {
+ /*           if (geometryType == "Circle") {
                 control.events.on({
                     "featureadded": this.onCircleAdded,
                     scope: this
@@ -432,7 +387,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                     scope: this
                 });
             }
-
+*/
             control.events.on({
                 "featureadded": this.onFeatureAdded,
                 scope: this
@@ -488,7 +443,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                  case "Cadastre":
                     handler = OpenLayers.Handler.Path;
                     iconCls = "gx-featureediting-cadastrapp-polygon";
-                    tooltip = OpenLayers.i18n("cadastrapp.create_point");
+                    tooltip = OpenLayers.i18n("cadastrapp.cadastre");
                     break;
                  case "Foncier":
                     handler = OpenLayers.Handler.Path;
@@ -542,7 +497,136 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             this.actions.push(action);
         }
     },
+   /** private: method[initRechercheControls]
+     *  :param layer: ``OpenLayers.Layer.Vector``
+     *  Create DrawFeature controls linked to the passed layer and
+     *  depending on its geometryType property and add them to the map.
+     *  GeoExt.Action are also created and pushed to the actions array.
+     */
+    initRechercheControls: function(layer) {
+        var control, handler, geometryTypes, geometryType,
+                options, action, iconCls, actionOptions, tooltip;
 
+
+        geometryTypes = [
+          "Parcelle", "Recherches"
+        ];
+
+        for (var i = 0; i < geometryTypes.length; i++) {
+            options = {
+                handlerOptions: {
+                    stopDown: true,
+                    stopUp: true
+                }
+            };
+            geometryType = geometryTypes[i];
+
+            switch (geometryType) {
+                 case "Parcelle":
+                    handler = OpenLayers.Handler.Path;
+                    iconCls = "gx-featureediting-cadastrapp-polygon";
+                    tooltip = OpenLayers.i18n("cadastrapp.parcelle");
+                    break;
+                 case "Recherches":
+                    handler = OpenLayers.Handler.Path;
+                    iconCls = "gx-featureediting-cadastrapp-line";
+                    tooltip = OpenLayers.i18n("cadastrapp.recherches");
+                    break;
+            }
+
+            control = new OpenLayers.Control.DrawFeature(
+                    layer, handler, options);
+
+            this.cadastrappControls.push(control);
+
+            if (geometryType == "Recherches avancées") {
+                control.events.on({
+                    "featureadded": this.onCircleAdded,
+                    scope: this
+                });
+            }
+
+            if (geometryType == "Parcelle") {
+                control.events.on({
+                    "featureadded": this.onBoxAdded,
+                    scope: this
+                });
+            }
+
+            control.events.on({
+                "featureadded": this.onFeatureAdded,
+                scope: this
+            });
+
+            actionOptions = {
+                control: control,
+                map: this.map,
+                // button options
+                toggleGroup: this.toggleGroup,
+                allowDepress: false,
+                pressed: false,
+                tooltip: tooltip,
+                iconCls: iconCls,
+                text: OpenLayers.i18n("cadastrapp." + geometryType.toLowerCase()),
+                iconAlign: 'top',
+                // check item options
+                group: this.toggleGroup,
+                checked: false
+            };
+
+            action = new GeoExt.Action(actionOptions);
+
+            this.actions.push(action);
+        }
+    },
+
+    /** private: method[initDemandeControl]
+     *  :param layer: ``OpenLayers.Layer.Vector``
+     *  Create a ModifyFeature control linked to the passed layer and
+     *  add it to the map.  An GeoExt.Action is also created and pushed to the
+     *  actions array.
+     */
+    initDemandeControl: function(layer) {
+        var control, actionOptions;
+
+        var options = {
+            selectFeature: function(feature) {
+                var MF = OpenLayers.Control.ModifyFeature;
+                this.mode = MF.RESHAPE | MF.DRAG;
+                if (feature.attributes.isCircle){
+                    this.mode = MF.RESIZE | MF.DRAG;
+                }
+                if (feature.attributes.isBox){
+                    this.mode = MF.RESHAPE | MF.RESIZE & ~MF.RESHAPE | MF.DRAG;
+                }
+                MF.prototype.selectFeature.apply(this, arguments);
+            },
+            vertexRenderIntent: 'vertices'
+        };
+        control = new OpenLayers.Control.ModifyFeature(layer, options);
+
+        this.featureControl = control;
+
+        actionOptions = {
+            control: control,
+            map: this.map,
+            // button options
+            toggleGroup: this.toggleGroup,
+            allowDepress: false,
+            pressed: false,
+            tooltip: OpenLayers.i18n("cadastrapp.demande"),
+            // check item options
+            group: this.toggleGroup,
+            iconCls: "gx-featureediting-cadastrapp-demande",
+            iconAlign: 'top',
+            text: OpenLayers.i18n("cadastrapp.demande"),
+            checked: false
+        };
+
+        var action = new GeoExt.Action(actionOptions);
+
+        this.actions.push(action);
+    },
     /** private: method[destroyDrawControls]
      *  Destroy all cadastrapp Controls and all their related objects.
      */

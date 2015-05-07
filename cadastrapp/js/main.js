@@ -19,7 +19,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         });
         this.window = new Ext.Window({
             title: OpenLayers.i18n('cadastrapp.cadastre_tools'),
-            width: 440,
+            width: 540,
             closable: true,
             closeAction: "hide",
             resizable: false,
