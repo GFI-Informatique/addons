@@ -202,7 +202,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         layer = new OpenLayers.Layer.Vector("__georchestra_cadastrapps", layerOptions);
         this.layer = layer;
         this.map.addLayer(layer);
-/*
+
         layer.events.on({
             "beforefeatureselected": this.onBeforeFeatureSelect,
             "featureunselected": this.onFeatureUnselect,
@@ -213,7 +213,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             "beforefeatureadded": this.onBeforeFeatureAdded,
             scope: this
         });
-*/
+
         // 2nd, create new ones from the current active layer
         this.initZoomControls(layer);
         this.actions.push('-');
@@ -399,6 +399,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         }
     },
 
+	
     /** private: method[initCadastrappControls]
      *  :param layer: ``OpenLayers.Layer.Vector``
      *  Create DrawFeature controls linked to the passed layer and
@@ -427,7 +428,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                  case "Cadastre":
                     handler = OpenLayers.Handler.Path;
                     iconCls = "gx-featureediting-cadastrapp-polygon";
-                    tooltip = OpenLayers.i18n("cadastrapp.cadastre");
+                  //  tooltip = OpenLayers.i18n("cadastrapp.cadastre");
                     break;
                  case "Foncier":
                     handler = OpenLayers.Handler.Path;
@@ -448,7 +449,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                 });
             }
 
-            if (geometryType == "Parcelle") {
+          if (geometryType == "Parcelle") {
                 control.events.on({
                     "featureadded": this.onBoxAdded,
                     scope: this
@@ -563,7 +564,20 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             this.actions.push(action);
         }
     },
-
+    /**
+     * Method: onCheckchange
+     * Callback on checkbox state changed
+     *//*
+    onCheckchange: function(item, checked) {
+        if (checked) {
+            var control = new OpenLayers.Control.Magnifier(this.options);
+            this.map.addControl(control);
+            control.update();
+            this.control = control;
+        } else {
+            this.control && this.control.destroy();
+        }
+    },*/
     /** private: method[initDemandeControl]
      *  :param layer: ``OpenLayers.Layer.Vector``
      *  Create a ModifyFeature control linked to the passed layer and
@@ -611,16 +625,53 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 
         this.actions.push(action);
     },
-    /** private: method[destroyDrawControls]
-     *  Destroy all cadastrapp Controls and all their related objects.
+	
+	  /** private: method[destroyDrawControls]
+     *  Destroy all drawControls and all their related objects.
      */
     destroyDrawControls: function() {
-        for (var i = 0; i < this.cadastrappControls.length; i++) {
-            this.cadastrappControls[i].destroy();
+        for (var i = 0; i < this.drawControls.length; i++) {
+            this.drawControls[i].destroy();
         }
-        this.cadastrappControls = [];
+        this.drawControls = [];
     },
 
+    /** private: method[initDeleteAllAction]
+     *  Create a Ext.Action object that is set as the deleteAllAction property
+     *  and pushed to te actions array.
+     */
+    initDeleteAllAction: function() {
+        var actionOptions = {
+            handler: this.deleteAllFeatures,
+            scope: this,
+            text: OpenLayers.i18n('cadastrapp.delete_all'),
+            iconCls: "gx-featureediting-delete",
+            iconAlign: 'top',
+            tooltip: OpenLayers.i18n('cadastrapp.delete_all_features')
+        };
+
+        var action = new Ext.Action(actionOptions);
+
+        this.actions.push(action);
+    },
+
+    /** private: method[deleteAllFeatures]
+     *  Called when the deleteAllAction is triggered (button pressed).
+     *  Destroy all features from all layers.
+     */
+    deleteAllFeatures: function() {
+        Ext.MessageBox.confirm(OpenLayers.i18n('cadastrapp.delete_all_features'), OpenLayers.i18n('cadastrapp.delete_features_confirm'), function(btn) {
+            if (btn == 'yes') {
+                if (this.popup) {
+                    this.popup.close();
+                    this.popup = null;
+                }
+
+                this.layer.destroyFeatures();
+            }
+        },
+        this);
+    },
 
     /** private: method[getActiveDrawControl]
      *  :return: ``OpenLayers.Control.DrawFeature or false``
