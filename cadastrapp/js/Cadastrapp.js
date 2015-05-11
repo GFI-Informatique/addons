@@ -274,7 +274,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                  case "Zoom":
                     handler = OpenLayers.Handler.Path;
                     iconCls = "gx-featureediting-zoom";
-                    tooltip = OpenLayers.i18n("cadastrapp.zoom");
+                    tooltip = OpenLayers.i18n("Zoom to results extent");
                     break;
 
 
@@ -358,20 +358,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 
             this.cadastrappControls.push(control);
 
- /*           if (geometryType == "Circle") {
-                control.events.on({
-                    "featureadded": this.onCircleAdded,
-                    scope: this
-                });
-            }
-
-            if (geometryType == "Parcelle") {
-                control.events.on({
-                    "featureadded": this.onBoxAdded,
-                    scope: this
-                });
-            }
-*/
             control.events.on({
                 "featureadded": this.onFeatureAdded,
                 scope: this
@@ -427,12 +413,12 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             switch (geometryType) {
                  case "Cadastre":
                     handler = OpenLayers.Handler.Path;
-                    iconCls = "gx-featureediting-cadastrapp-polygon";
-                  //  tooltip = OpenLayers.i18n("cadastrapp.cadastre");
+					isCheckbox: true,
+                    tooltip = OpenLayers.i18n("cadastrapp.cadastre");
                     break;
                  case "Foncier":
                     handler = OpenLayers.Handler.Path;
-                    iconCls = "gx-featureediting-cadastrapp-polygon";
+					isCheckbox: true,
                     tooltip = OpenLayers.i18n("cadastrapp.foncier");
                     break;
             }
