@@ -42,7 +42,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         if (this.target) {
             // create a button to be inserted in toolbar:
             this.components = this.target.insertButton(this.position, {
-                xtype: 'checkbox',
+                xtype: 'button',
                 tooltip: this.getTooltip(record),
                 iconCls: "addon-cadastrapp",
                 handler: this._onCheckchange,
