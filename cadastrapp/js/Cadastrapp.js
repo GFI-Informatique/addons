@@ -4,7 +4,6 @@
  *  base_link = `Ext.util.Observable <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
  */
 Ext.namespace("GEOR");
-//Ext.namespace("demandeinformations");
 
 /**
  * @include OpenLayers/Control/DrawFeature.js
@@ -512,23 +511,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             this.actions.push(action);
         }
     },
-	 /** private: method[onClickDemand]
-     *  :param layer: 
-     *  Create ...TODO
-     */
-	/* 
-	onClickDemand: function() {
-		var demandWindow;
-			demandWindow = new Ext.Window({
-            title: 'Demande Informations Foncieres',
-            width: 540,
-			minimizable: true,
-            closable: true,
-            resizable: true,
-        });
-		demandWindow.show();
-		console.log("onClick")
-	},*/
 	
     /** private: method[initDemandeControl]
      *  :param layer: ``OpenLayers.Layer.Vector``

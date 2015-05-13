@@ -10,8 +10,6 @@ Ext.namespace("GEOR")
      *  :param layer: 
      *  Create ...TODO
      */
-
-	
     onClickDemand = function(){
 		var demandWindow;
 			demandWindow = new Ext.Window({
