@@ -4,6 +4,7 @@
  *  base_link = `Ext.util.Observable <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
  */
 Ext.namespace("GEOR");
+//Ext.namespace("demandeinformations");
 
 /**
  * @include OpenLayers/Control/DrawFeature.js
@@ -515,31 +516,20 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
      *  :param layer: 
      *  Create ...TODO
      */
+	/* 
 	onClickDemand: function() {
-		this.window = new Ext.Window({
-            title: OpenLayers.i18n(''),
+		var demandWindow;
+			demandWindow = new Ext.Window({
+            title: 'Demande Informations Foncieres',
             width: 540,
+			minimizable: true,
             closable: true,
-            closeAction: "hide",
-            resizable: false,
-            border: false,
-            cls: 'cadastrapp',
-            items: [{
-                xtype: 'window',
-                border: false,
-                items: [this.demandeinformations]
-            }],
-            listeners: {
-                "hide": function() {
-                    this.item && this.item.setChecked(false);
-                    this.components && this.components.toggle(false);
-                },
-                scope: this
-            }
+            resizable: true,
         });
-		this.window.show();
-
-	},
+		demandWindow.show();
+		console.log("onClick")
+	},*/
+	
     /** private: method[initDemandeControl]
      *  :param layer: ``OpenLayers.Layer.Vector``
      *  Create ...TODO
@@ -560,13 +550,12 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             iconCls: "gx-featureediting-cadastrapp-demande",
             iconAlign: 'top',
             text: OpenLayers.i18n("cadastrapp.demande"),
-			listeners: {click: this.onClickDemand}
+			handler: onClickDemand()
         };
 
         button = new Ext.Button(config);
 		
-        this.actions.push(button);
-		
+        this.actions.push(button);		
     },
 
 	  /** private: method[destroyDrawControls]
