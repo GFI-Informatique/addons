@@ -22,49 +22,39 @@ Ext.namespace("GEOR")
             closable: true,
             resizable: true,
 			draggable : true,
-			items: {
-			    layout: 'form', // explicitly set layout manager: override the default (layout:'auto')
-
+			items: [{
+			    layout: 'form', 
 				title: 'Informations sur le demandeur',
 				items: [{
-					fieldLabel: 'Nom',
-					name: 'nom',
-					allowBlank: false,
-
-					},{
-					fieldLabel: 'Prénom',
-					name: 'prenom'
-					},
-					{
-					fieldLabel: 'Ville, Commune',
-					name: 'commune',
-					allowBlank: false,
-
-					},{
-					fieldLabel: 'N° de voirie et rue',
-					name: 'numero'
-					}],
-				layout: 'form', // explicitly set layout manager: override the default (layout:'auto')
+							fieldLabel: 'Nom',
+							name: 'nom',
+							allowBlank: true
+							},{
+							fieldLabel: 'Prénom',
+							name: 'prenom'
+							},{
+							fieldLabel: 'Ville, Commune',
+							name: 'commune',
+							allowBlank: false
+							}],
+				layout: 'form', 
 				title: 'Biens à consulter',
 				items: [{
-					fieldLabel: 'Ville, Commune',
-					name: 'commune',
-					allowBlank: false,
-
-					},{
-					fieldLabel: 'Prénom',
-					name: 'prenom'
-					},
-					{
-					fieldLabel: 'Adresses cadastrale',
-					name: 'commune',
-					allowBlank: false,
-
-					},{
-					fieldLabel: 'N° de voirie et rue',
-					name: 'numero'
-					}]
-				},
+							fieldLabel: 'Ville, Commune',
+							name: 'commune',
+							allowBlank: false
+							},{
+							fieldLabel: 'Prénom',
+							name: 'prenom'
+							},{
+							fieldLabel: 'Adresses cadastrale',
+							name: 'commune',
+							allowBlank: false
+							},{
+							fieldLabel: 'N° de voirie et rue',
+							name: 'numero'
+							}]
+			}],
 			buttonAlign : 'center',
 			xtype: 'button',
 			text: 'Annuler la Demande',
