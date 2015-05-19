@@ -12,6 +12,7 @@ Ext.namespace("GEOR")
      *  Create ...TODO
      */
     onClickDemand = function(){
+
 		var demandWindow;
 		var informationDemandeurForm, biensConsulterForm;
 			demandWindow = new Ext.Window({
@@ -22,50 +23,62 @@ Ext.namespace("GEOR")
             closable: true,
             resizable: true,
 			draggable : true,
+			bodyBorder : true,
 			items: [{
 			    layout: 'form', 
 				title: 'Informations sur le demandeur',
+				bodyStyle:'padding:5px 5px 0',
+				border : true,
+				width: 600,
 				items: [{
+					        xtype:'textfield',
 							fieldLabel: 'Nom',
 							name: 'nom',
 							allowBlank: true
 							},{
-							fieldLabel: 'Prénom',
+						    xtype:'textfield',
+							fieldLabel: 'PrÃ©nom',
 							name: 'prenom'
 							},{
-							fieldLabel: 'Ville, Commune',
-							name: 'commune',
+						    xtype:'textfield',
+							fieldLabel: 'NÂ° de voirie et rue',
+							name: 'numÃ©ro',
 							allowBlank: false
 							}],
-				layout: 'form', 
-				title: 'Biens à consulter',
+				layout: 'form',
+				title: 'Biens Ã  consulter',
+				bodyStyle:'padding:5px 5px 0',
+				border : true,
+				width: 600,
 				items: [{
+	                        xtype:'textfield',
 							fieldLabel: 'Ville, Commune',
 							name: 'commune',
 							allowBlank: false
 							},{
-							fieldLabel: 'Prénom',
-							name: 'prenom'
+						    xtype:'textfield',
+							fieldLabel: 'Section',
+							name: 'section'
 							},{
+						    xtype:'textfield',
+							fieldLabel: 'Parcelle',
+							name: 'parcelle'
+							},{
+						    xtype:'textfield',
+							autoScroll: true,
 							fieldLabel: 'Adresses cadastrale',
 							name: 'commune',
 							allowBlank: false
-							},{
-							fieldLabel: 'N° de voirie et rue',
-							name: 'numero'
 							}]
 			}],
-			buttonAlign : 'center',
-			xtype: 'button',
-			text: 'Annuler la Demande',
-			handler: function(){
-			Ext.Msg.alert('Annuler la demande');
-			},
-			xtype: 'button',
-			text: 'Imprimer la Demande',
-			handler: function(){
-			Ext.Msg.alert('Imprimer la Demande');
-			}
+			buttons: [{
+							labelAlign: 'left',
+							text: 'Annuler la demande'
+						},{
+							labelAlign: 'right',
+							text: 'Imprimer la demande'
+							}]
+			
         });
 		demandWindow.show();
 		console.log("onClick")

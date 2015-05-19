@@ -471,7 +471,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 
             this.cadastrappControls.push(control);
 
-            if (geometryType == "Recherches avancées") {
+            if (geometryType == "Recherches avancÃ©es") {
                 control.events.on({
                     "featureadded": this.onCircleAdded,
                     scope: this
@@ -533,9 +533,10 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             iconAlign: 'top',
             text: OpenLayers.i18n("cadastrapp.demande"),
 			handler: onClickDemand()
-        };
-
-        button = new Ext.Button(config);
+			
+		   };
+		   
+        action = new Ext.Button(config);
 		
         this.actions.push(button);		
     },
