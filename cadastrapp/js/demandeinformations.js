@@ -12,6 +12,7 @@ Ext.namespace("GEOR")
      *  Create ...TODO
      */
     onClickDemand = function(){
+
 		var demandWindow;
 			demandWindow = new Ext.Window({
             title: 'Demande Informations Foncieres',
@@ -48,16 +49,17 @@ Ext.namespace("GEOR")
 			defaultType: 'textfield',
 			items: [				
 				{ fieldLabel: 'Ville, Commune', name: 'commune'},
-				{ fieldLabel: 'Ville, Commune', name: 'commune'},
-				{ fieldLabel: 'Ville, Commune', name: 'commune'},
+				{ fieldLabel: 'Parcelle(s)', name: 'parcelle'},
+				{ fieldLabel: 'Adresse(s) cadastrale(s)'}
 				]
-		}],
+			}],
         buttons: [{
             text: 'Annuler la demande'
 			},{
             text: 'Imprimer la demande'
 			}]
         });
+		
 		demandWindow.show();
 		console.log("onClick")
 	};

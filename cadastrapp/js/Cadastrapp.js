@@ -533,10 +533,8 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             iconAlign: 'top',
             text: OpenLayers.i18n("cadastrapp.demande"),
 			handler: onClickDemand()
-			
-		   };
-		   
-        action = new Ext.Button(config);
+        };
+        button = new Ext.Button(config);
 		
         this.actions.push(button);		
     },
