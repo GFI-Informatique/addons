@@ -1,10 +1,10 @@
-/** api: (define)
- *  module = GEOR
- *  class = Cadastrapp
- *  base_link = `Ext.util.Observable <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
- */
-Ext.namespace("GEOR")
 
+	/** api: (define)
+	*  module = GEOR
+	*  class = Cadastrapp
+	*  base_link = `Ext.util.Observable <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
+	*/
+Ext.namespace("GEOR")
 
 
   	 /** public: method[onClickDemand]
@@ -12,73 +12,51 @@ Ext.namespace("GEOR")
      *  Create ...TODO
      */
     onClickDemand = function(){
-
 		var demandWindow;
-		var informationDemandeurForm, biensConsulterForm;
 			demandWindow = new Ext.Window({
             title: 'Demande Informations Foncieres',
-            width: 540,
-			height: 800,
+			frame: true,
+			bodyPadding: 10,
+			autoScroll:true,
+			width: 355,
 			minimizable: true,
             closable: true,
             resizable: true,
 			draggable : true,
-			bodyBorder : true,
-			items: [{
-			    layout: 'form', 
-				title: 'Informations sur le demandeur',
-				bodyStyle:'padding:5px 5px 0',
-				border : true,
-				width: 600,
-				items: [{
-					        xtype:'textfield',
-							fieldLabel: 'Nom',
-							name: 'nom',
-							allowBlank: true
-							},{
-						    xtype:'textfield',
-							fieldLabel: 'Prénom',
-							name: 'prenom'
-							},{
-						    xtype:'textfield',
-							fieldLabel: 'N° de voirie et rue',
-							name: 'numéro',
-							allowBlank: false
-							}],
-				layout: 'form',
-				title: 'Biens à consulter',
-				bodyStyle:'padding:5px 5px 0',
-				border : true,
-				width: 600,
-				items: [{
-	                        xtype:'textfield',
-							fieldLabel: 'Ville, Commune',
-							name: 'commune',
-							allowBlank: false
-							},{
-						    xtype:'textfield',
-							fieldLabel: 'Section',
-							name: 'section'
-							},{
-						    xtype:'textfield',
-							fieldLabel: 'Parcelle',
-							name: 'parcelle'
-							},{
-						    xtype:'textfield',
-							autoScroll: true,
-							fieldLabel: 'Adresses cadastrale',
-							name: 'commune',
-							allowBlank: false
-							}]
-			}],
-			buttons: [{
-							labelAlign: 'left',
-							text: 'Annuler la demande'
-						},{
-							labelAlign: 'right',
-							text: 'Imprimer la demande'
-							}]
-			
+			fieldDefaults: {
+				labelAlign: 'right',
+				labelWidth: 115,
+				msgTarget: 'side'
+		},
+	    items: [{
+			xtype: 'fieldset',
+			title: 'Informations sur le demandeur',
+			defaultType: 'textfield',
+			items: [
+				{ fieldLabel: 'Nom', name: 'nom'},
+				{ fieldLabel: 'Prénom', name: 'prenom'},
+				{ fieldLabel: 'Ville, Commune', name: 'commune'},
+				{ fieldLabel: 'N° de voirie et rue', name: 'numero'},
+				{ fieldLabel: 'Rue', name: 'rue'},
+				{ fieldLabel: 'Lieu-Dit', name: 'lieudit'},
+				{ fieldLabel: 'CNI', name: 'cni'}
+				]
+			},
+			{
+			xtype: 'fieldset',
+			title: 'Biens à consulter',
+			defaultType: 'textfield',
+			items: [				
+				{ fieldLabel: 'Ville, Commune', name: 'commune'},
+				{ fieldLabel: 'Ville, Commune', name: 'commune'},
+				{ fieldLabel: 'Ville, Commune', name: 'commune'},
+				]
+		}],
+        buttons: [{
+            text: 'Annuler la demande'
+			},{
+            text: 'Imprimer la demande'
+			}]
         });
 		demandWindow.show();
 		console.log("onClick")
