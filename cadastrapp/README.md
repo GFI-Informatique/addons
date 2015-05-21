@@ -1,9 +1,8 @@
 Cadastrapp ADDON
 ==============  
-pour activer l'add-on 
-dans GEOR_custom, 
-sous ADDONS: [ 
-ajouter:
+
+pour activer l'add-on cadastrapp, il faut modifier le fichier javascript GEOR_custom.js et rajouter dans la partie ADDONS: [
+
 {
         "id": "cadastrapp",
         "name": "Cadastrapp",
@@ -18,7 +17,7 @@ ajouter:
             "es": "Una serie de herramientas para aprovechar al máximo los datos catastrales DGFiP"
         },
         "options": {
-        "target": "tbar_12",
+        "target": "tbar_12"
         }
     
     },
