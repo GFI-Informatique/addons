@@ -6,14 +6,24 @@
 	*/
 Ext.namespace("GEOR")
 
+	var proprietaireWindow;
 
-  	 /** public: method[onClickRechercheProprietaire]
+  	/** public: method[onClickRechercheProprietaire]
      *  :param layer: 
      *  Create ...TODO
      */
-    onClickRechercheProprietaire = function(){		
+    onClickRechercheProprietaire = function() {
+		if (proprietaireWindow == null) {
+			initRechercheProprietaire();
+		}
+		proprietaireWindow.show();
+	}
+	
+    initRechercheProprietaire = function(){
+		var cityStore, proprietaireStore, colModel, proprietaireGrid;
+		
 		//liste des villes : TODO : récupérer la liste entière
-		var cityStore = new Ext.data.JsonStore({
+		cityStore = new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : 'Caen',   value: 'caen'},
@@ -23,7 +33,7 @@ Ext.namespace("GEOR")
 		});
 	
 		//listes des "proprietaires"
-		var ds = new Ext.data.JsonStore({
+		proprietaireStore = new Ext.data.JsonStore({
 			fields : ['proprietaire'],
 			data   : [{proprietaire : ''}],
 			listeners: {
@@ -31,59 +41,35 @@ Ext.namespace("GEOR")
 					var lastIndex = this.getCount()-1;
 					var lastData = this.getAt(this.getCount()-1).data;
 					
-					if (lastData.section!='' && lastData.parcelle!='') {
-						var p = new this.recordType({section:'', parcelle:''}); // create new record
-						referenceGrid.stopEditing();
+					if (lastData.proprietaire!='') {
+						var p = new this.recordType({proprietaire:''}); // create new record
+						proprietaireGrid.stopEditing();
 						this.add(p); // insert a new record into the store (also see add)
-						referenceGrid.startEditing(lastIndex+1, 0);	//
+						proprietaireGrid.startEditing(lastIndex+1, 0);	//
 					}
 				}
 			}
 		});
 
 		//modele la la grille des "proprietaires"
-		var colModel = new Ext.grid.ColumnModel([
+		colModel = new Ext.grid.ColumnModel([
 			{
-				id:'section',
-				dataIndex: 'section',
-				header: "Section",
+				id:'proprietaire',
+				dataIndex: 'proprietaire',
+				header: "Propri&eacute;taire",
 				width: 100,
 				sortable: false,
-				editor: new Ext.form.ComboBox({
-					mode: 'local',
-					value: '',
-					forceSelection: true,
-					editable:       true,
-					displayField:   'proprietaire',
-					valueField:     'proprietaire',
-					store: sectionStore
-				})
-			},
-			{
-				id: "parcelle",
-				dataIndex: 'parcelle',
-				header: "Parcelle",
-				width: 100,
-				sortable: false,
-				editor: new Ext.form.ComboBox({
-					mode: 'local',
-					value: '',
-					forceSelection: true,
-					editable:       true,
-					displayField:   'proprietaire',
-					valueField:     'proprietaire',
-					store: parcelleStore
-				})
+				editor: new Ext.form.TextField({})
 			}
 		]);			
 		
 		//grille "proprietaires"
-		var proprietaireGrid = new Ext.grid.EditorGridPanel({
+		proprietaireGrid = new Ext.grid.EditorGridPanel({
 			fieldLabel: 'Propri&eacute;taire(s)',
 			name: 'proprietaires',							
 			xtype: 'editorgrid',
 			clicksToEdit: 1,
-			ds: ds,
+			ds: proprietaireStore,
 			cm: colModel,
 			autoExpandColumn: 'proprietaire',
 			height: 100,
@@ -93,7 +79,7 @@ Ext.namespace("GEOR")
 		
 				
 		//fenêtre principale
-		var referenceWindow = new Ext.Window({
+		proprietaireWindow = new Ext.Window({
 			title: 'Recherche de propriétaires',
 			frame: true,
 			autoScroll:true,
@@ -106,6 +92,12 @@ Ext.namespace("GEOR")
 			labelWidth: 100,
 			width: 450,
 			defaults: {autoHeight:true, bodyStyle:'padding:10px', flex: 1},
+			
+			listeners: {
+				close(window) {
+					referenceWindow = null;
+				}
+			},
 			
 			items: {
 				xtype:'tabpanel',
@@ -203,7 +195,4 @@ Ext.namespace("GEOR")
 				text: 'Fermer'
 			}]
 		});
-		
-		referenceWindow.show();
-		console.log("onClick")
 	};
