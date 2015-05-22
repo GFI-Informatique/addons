@@ -75,7 +75,7 @@ Ext.namespace("GEOR")
 			}
 		});
 
-		//modele la la grille des "références"
+		//modele la la grille des "parcelles"
 		var colModel = new Ext.grid.ColumnModel([
 			{
 				id:'section',
@@ -97,7 +97,7 @@ Ext.namespace("GEOR")
 				id: "parcelle",
 				dataIndex: 'parcelle',
 				header: "Parcelle",
-				width: 100,
+				width: 180,
 				sortable: false,
 				editor: new Ext.form.ComboBox({
 					mode: 'local',
@@ -111,7 +111,7 @@ Ext.namespace("GEOR")
 			}
 		]);			
 		
-		//grille "références"
+		//grille "parcellle"
 		var parcelleGrid = new Ext.grid.EditorGridPanel({
 			fieldLabel: 'Parcelle(s)',
 			name: 'parcelles',							
@@ -124,7 +124,41 @@ Ext.namespace("GEOR")
 			width: 300,
 			border: true
 		});
+		
+				//modele la la grille des "adresses"
+		var coladresseModel = new Ext.grid.ColumnModel([
+			{
+				id:'adresse',
+				dataIndex: 'adresse',
+				header: "Adresse",
+				width: 100,
+				sortable: false,
+				editor: new Ext.form.ComboBox({
+					mode: 'local',
+					value: '',
+					forceSelection: true,
+					editable:       true,
+					displayField:   'name',
+					valueField:     'value',
+					store: sectionStore
+				})
+			}
+			]);	
 
+		//grille "adresse"
+		var adresseGrid = new Ext.grid.EditorGridPanel({
+			fieldLabel: 'adresse',
+			name: 'adresse',							
+			xtype: 'editorgrid',
+			clicksToEdit: 1,
+			ds: ds,
+			cm: coladresseModel,
+			autoExpandColumn: 'adresse',
+			height: 100,
+			width: 200,
+			border: true
+		});
+		
 		var demandWindow;
 			demandWindow = new Ext.Window({
             title: 'Demande Informations Foncieres',
@@ -188,93 +222,29 @@ Ext.namespace("GEOR")
 				items:[{
 				
 					//ONGLET 1
-					title:'R&eacute;f&eacute;rence',
-					layout:'form',
+					title:'Parcelle(s)',
+//					layout:'form',
 					defaultType: 'displayfield',
 					id: 'firstForm',
 					fileUpload: true,
 					
 					items: [
-					parcelleGrid,	//grille "références"
+					parcelleGrid,	//grille "parcelle"
 					{
 						value: 'ou',
 						fieldClass: 'displayfieldCenter'
 					}]
 											
-				},{
-				
-					//ONGLET 2
-					title:'Adresse castrale',
-					layout:'form',
-					defaultType: 'displayfield',
-					id: 'secondForm',
-
-					items: [{
-						xtype: 'combo',
-						fieldLabel: 'Ville, Commune',
-						name: 'city',
-						width: 300,
-						mode: 'local',
-						value: '',
-						forceSelection: true,
-						editable:       true,
-						displayField:   'name',
-						valueField:     'value',
-						store: cityStore
-					},
-					{
-						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
-						fieldClass: 'displayfieldGray'
-					},
-					{
-						xtype: 'compositefield',
-						fieldLabel: 'N de voirie et rue',
-						defaults: {flex: 1},
-						items: [
-							{
-								name : 'streetNumber',
-								xtype: 'textfield',
-								width: 50,
-							},
-							{
-								name : 'streetBis',
-								xtype: 'combo',
-								width: 50,
-								mode: 'local',
-								value: '--',
-								triggerAction:  'all',
-								forceSelection: true,
-								editable:       false,
-								displayField:   'name',
-								valueField:     'value',
-								store: bisStore
-							},
-							{
-								name : 'streetName',
-								xtype: 'textfield',
-								width: 190
-							}
-						]
-					},
-					{
-						value: 'ex. 4 avenue Henri Fr&eacute;ville',
-						fieldClass: 'displayfieldGray'
-					},
-					{
-						xtype: 'textfield',
-						fieldLabel: 'Lieu-dit',
-						name: 'town',
-						width: 300
-					},
-					{
-						value: 'ex. Mont-Romain, La morinaie',
-						fieldClass: 'displayfieldGray'
-					}
-					]
 				}]
 				},
 
-				{ fieldLabel: 'Adresse(s) cadastrale(s)', name: 'adresse', width: 280}
+				{ fieldLabel: 'Adresse(s) cadastrale(s)', 
+					items: [
+					adresseGrid,	//grille "adresse"
+					{
+//						value: 'ou',
+//						fieldClass: 'displayfieldCenter'
+					}]}
 				]
 			}],
 			buttons: [{

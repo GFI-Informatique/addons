@@ -511,12 +511,37 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             this.actions.push(action);
         }
     },
-	
-    /** private: method[initDemandeControl]
+    /** private: method[initFonctionsAvancees]
      *  :param layer: ``OpenLayers.Layer.Vector``
      *  Create ...TODO
      */
 	 
+    initFonctionsAvancees: function(layer) {
+        var control, button, config;
+
+		   config = {
+/*
+            // button options
+            toggleGroup: this.toggleGroup,
+            allowDepress: false,
+            pressed: false,
+            tooltip: OpenLayers.i18n("cadastrapp.demande"),
+            // check item options
+            group: this.toggleGroup,
+            iconCls: "gx-featureediting-cadastrapp-demande",
+            iconAlign: 'top',
+            text: OpenLayers.i18n("cadastrapp.demande"),
+			handler: onClickRechercheParcelle*/
+        };
+        button = new Ext.Button(config);
+		
+        this.actions.push(button);		
+    },	
+    /** private: method[initDemandeControl]
+     *  :param layer: ``OpenLayers.Layer.Vector``
+     *  Create ...TODO
+     */
+	
     initDemandeControl: function(layer) {
         var control, button, config;
 

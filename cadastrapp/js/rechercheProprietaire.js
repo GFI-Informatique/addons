@@ -159,7 +159,7 @@ Ext.namespace("GEOR")
 				},{
 				
 					//ONGLET 2
-					title:'Adresse castrale',
+					title:'Adresse cadastrale',
 					layout:'form',
 					defaultType: 'displayfield',
 					id: 'secondForm',
