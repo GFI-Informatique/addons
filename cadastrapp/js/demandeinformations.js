@@ -77,8 +77,8 @@ Ext.namespace("GEOR")
 				{ fieldLabel: 'Nom', name: 'nom', width: 280},
 				{ fieldLabel: 'Prénom', name: 'prenom', width: 280},
 				{ fieldLabel: 'Ville, Commune', name: 'commune', width: 280},
-//				{ labelWidth: 60, fieldLabel: '', name: ''},
-				                    {
+
+				            {
                         xtype: 'compositefield',
                         fieldLabel: 'N° de voirie et rue',
                         items: [
