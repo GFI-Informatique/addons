@@ -36,3 +36,11 @@
 .gx-featureediting-export {
   background-image: url("../images/silk/kml_export.png") !important;
 }
+
+
+.displayfieldCenter {
+	text-align: center
+}
+.displayfieldGray {
+	color: gray
+}

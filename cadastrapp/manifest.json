@@ -1,14 +1,18 @@
 {
     "js": [
+		"js/rechercheProprietaire.js",
+		"js/rechercheParcelle.js",
 		"js/demandeinformations.js",
         "js/Cadastrapp.js",
         "js/FeaturePanel.js",
         "js/main.js",
         "../../../lib/externals/ext/examples/ux/Spinner.js",
-        "../../../lib/externals/ext/examples/ux/SpinnerField.js"
+        "../../../lib/externals/ext/examples/ux/SpinnerField.js",
+		"../../../lib/externals/ext/examples/ux/fileuploadfield/FileUploadField.js"
     ],
     "css": [
-        "resources/css/cadastrapp.css"
+        "resources/css/cadastrapp.css",
+		"../../../lib/externals/ext/examples/ux/fileuploadfield/css/fileuploadfield.css"
     ],
     "default_options": {},
     "i18n": {
