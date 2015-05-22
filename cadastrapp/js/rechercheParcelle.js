@@ -6,14 +6,24 @@
 	*/
 Ext.namespace("GEOR")
 
+	var referenceWindow;
 
-  	 /** public: method[onClickRechercheParcelle]
+  	/** public: method[onClickRechercheParcelle]
      *  :param layer: 
      *  Create ...TODO
      */
-    onClickRechercheParcelle = function(){
+    onClickRechercheParcelle = function() {
+		if (referenceWindow == null) {
+			initRechercheParcelle();
+		}
+		referenceWindow.show();
+	}		
+		
+	initRechercheParcelle = function(){
+		var bisStore, sectionStore, parcelleStore, cityStore, referenceStore, colModel, referenceGrid;
+		
 		//liste des compléments de numéro de rue : BIS, TER (à compléter ?)
-		var bisStore = new Ext.data.JsonStore({
+		bisStore = new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : '--',   value: '--'},
@@ -23,7 +33,7 @@ Ext.namespace("GEOR")
 		});	
 		
 		//liste des sections : TODO : charger dynamiquement selon la ville choisie
-		var sectionStore = new Ext.data.JsonStore({
+		sectionStore = new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : 'sect1',   value: 'sect1'},
@@ -33,7 +43,7 @@ Ext.namespace("GEOR")
 		});
 		
 		//liste des parcelles : TODO : charger dynamiquement selon la ville choisie et la section choisie
-		var parcelleStore = new Ext.data.JsonStore({
+		parcelleStore = new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : 'parc1',   value: 'parc1'},
@@ -43,7 +53,7 @@ Ext.namespace("GEOR")
 		});
 		
 		//liste des villes : TODO : récupérer la liste entière
-		var cityStore = new Ext.data.JsonStore({
+		cityStore = new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : 'Caen',   value: 'caen'},
@@ -56,7 +66,7 @@ Ext.namespace("GEOR")
 		//initialement vide
 		//ajoute automatique une ligne vide quand la dernière ligne est complètement remplie
 		//actuellement, on ne peut pas supprimer une ligne
-		var ds = new Ext.data.JsonStore({
+		referenceStore = new Ext.data.JsonStore({
 			fields : ['section', 'parcelle'],
 			data   : [{section : '',   parcelle: ''}],
 			listeners: {
@@ -75,7 +85,7 @@ Ext.namespace("GEOR")
 		});
 
 		//modele la la grille des "références"
-		var colModel = new Ext.grid.ColumnModel([
+		colModel = new Ext.grid.ColumnModel([
 			{
 				id:'section',
 				dataIndex: 'section',
@@ -111,12 +121,12 @@ Ext.namespace("GEOR")
 		]);			
 		
 		//grille "références"
-		var referenceGrid = new Ext.grid.EditorGridPanel({
+		referenceGrid = new Ext.grid.EditorGridPanel({
 			fieldLabel: 'R&eacute;f&eacute;rence(s)',
 			name: 'references',							
 			xtype: 'editorgrid',
 			clicksToEdit: 1,
-			ds: ds,
+			ds: referenceStore,
 			cm: colModel,
 			autoExpandColumn: 'parcelle',
 			height: 100,
@@ -126,7 +136,7 @@ Ext.namespace("GEOR")
 		
 				
 		//fenêtre principale
-		var referenceWindow = new Ext.Window({
+		referenceWindow = new Ext.Window({
 			title: 'Recherche des parcelles',
 			frame: true,
 			autoScroll:true,
@@ -139,6 +149,12 @@ Ext.namespace("GEOR")
 			labelWidth: 100,
 			width: 450,
 			defaults: {autoHeight:true, bodyStyle:'padding:10px', flex: 1},
+			
+			listeners: {
+				close(window) {
+					referenceWindow = null;
+				}
+			},
 			
 			items: {
 				xtype:'tabpanel',
@@ -262,7 +278,4 @@ Ext.namespace("GEOR")
 				text: 'Fermer'
 			}]
 		});
-		
-		referenceWindow.show();
-		console.log("onClick")
 	};

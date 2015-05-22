@@ -436,80 +436,39 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
      *  Create ...TODO
      */
     initRechercheControls: function(layer) {
-        var control, handler, geometryTypes, geometryType,
-                options, action, iconCls, actionOptions, tooltip;
+		var button, config;
 
-
-        geometryTypes = [
-          "Parcelle", "Recherches"
-        ];
-
-        for (var i = 0; i < geometryTypes.length; i++) {
-            options = {
-                handlerOptions: {
-                    stopDown: true,
-                    stopUp: true
-                }
-            };
-            geometryType = geometryTypes[i];
-
-            switch (geometryType) {
-                 case "Parcelle":
-                    handler = OpenLayers.Handler.Path;
-                    iconCls = "gx-featureediting-cadastrapp-parcelle";
-                    tooltip = OpenLayers.i18n("cadastrapp.parcelle");
-                    break;
-                 case "Recherches":
-                    handler = OpenLayers.Handler.Path;
-                    iconCls = "gx-featureediting-cadastrapp-line";
-                    tooltip = OpenLayers.i18n("cadastrapp.recherches");
-                    break;
-            }
-
-            control = new OpenLayers.Control.DrawFeature(
-                    layer, handler, options);
-
-            this.cadastrappControls.push(control);
-
-            if (geometryType == "Recherches avancées") {
-                control.events.on({
-                    "featureadded": this.onCircleAdded,
-                    scope: this
-                });
-            }
-
-            if (geometryType == "Parcelle") {
-                control.events.on({
-                    "featureadded": this.onBoxAdded,
-                    scope: this
-                });
-            }
-
-            control.events.on({
-                "featureadded": this.onFeatureAdded,
-                scope: this
-            });
-
-            actionOptions = {
-                control: control,
-                map: this.map,
-                // button options
-                toggleGroup: this.toggleGroup,
-                allowDepress: false,
-                pressed: false,
-                tooltip: tooltip,
-                iconCls: iconCls,
-                text: OpenLayers.i18n("cadastrapp." + geometryType.toLowerCase()),
-                iconAlign: 'top',
-                // check item options
-                group: this.toggleGroup,
-                checked: false
-            };
-
-            action = new GeoExt.Action(actionOptions);
-
-            this.actions.push(action);
-        }
+		config = {
+            // button options
+            toggleGroup: this.toggleGroup,
+            allowDepress: false,
+            pressed: false,
+            tooltip: OpenLayers.i18n("cadastrapp.parcelle"),
+            // check item options
+            group: this.toggleGroup,
+            iconCls: "gx-featureediting-cadastrapp-parcelle",
+            iconAlign: 'top',
+            text: OpenLayers.i18n("cadastrapp.parcelle"),
+			handler: onClickRechercheParcelle
+        };
+        button = new Ext.Button(config);		
+        this.actions.push(button);
+		
+		config = {
+            // button options
+            toggleGroup: this.toggleGroup,
+            allowDepress: false,
+            pressed: false,
+            tooltip: OpenLayers.i18n("cadastrapp.recherches"),
+            // check item options
+            group: this.toggleGroup,
+            iconCls: "gx-featureediting-cadastrapp-line",
+            iconAlign: 'top',
+            text: OpenLayers.i18n("cadastrapp.recherches"),
+			handler: onClickRechercheProprietaire
+        };
+        button = new Ext.Button(config);		
+        this.actions.push(button);
     },
 	
     /** private: method[initDemandeControl]
@@ -518,10 +477,9 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
      */
 	 
     initDemandeControl: function(layer) {
-        var control, button, config;
+        var button, config;
 
-		   config = {
-
+		 config = {
             // button options
             toggleGroup: this.toggleGroup,
             allowDepress: false,
@@ -536,7 +494,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         };
         button = new Ext.Button(config);
 		
-        this.actions.push(button);		
+        this.actions.push(button);
     },
 
 	  /** private: method[destroyDrawControls]
