@@ -20,105 +20,32 @@ Ext.namespace("GEOR")
 	}		
 		
 	initRechercheParcelle = function(){
-		var bisStore, sectionStore, parcelleStore, cityStore, referenceStore, colModel, referenceGrid;
+		var bisStore, sectionStore, parcelleStore, cityStore, referenceStore, cityCombo, colModel, referenceGrid;
 		
-		//liste des compléments de numéro de rue : BIS, TER (à compléter ?)
-		bisStore = new Ext.data.JsonStore({
-			fields : ['name', 'value'],
-			data   : [
-				{name : '--',   value: '--'},
-				{name : 'bis',  value: 'bis'},
-				{name : 'ter', value: 'ter'}
-			]
-		});	
+		bisStore = getBisStore();
 		
-		//liste des sections : TODO : charger dynamiquement selon la ville choisie
-		sectionStore = new Ext.data.JsonStore({
-			fields : ['name', 'value'],
-			data   : [
-				{name : 'sect1',   value: 'sect1'},
-				{name : 'sect2',  value: 'sect2'},
-				{name : 'sect3', value: 'sect3'}
-			]
-		});
-		
-		//liste des parcelles : TODO : charger dynamiquement selon la ville choisie et la section choisie
-		parcelleStore = new Ext.data.JsonStore({
-			fields : ['name', 'value'],
-			data   : [
-				{name : 'parc1',   value: 'parc1'},
-				{name : 'parc2',  value: 'parc2'},
-				{name : 'parc3', value: 'parc3'}
-			]
-		});
-		
-		//liste des villes : TODO : récupérer la liste entière
-		cityStore = new Ext.data.JsonStore({
-			fields : ['name', 'value'],
-			data   : [
-				{name : 'Caen',   value: 'caen'},
-				{name : 'Rennes',  value: 'rennes'},
-				{name : 'Lannion', value: 'lannion'}
-			]
-		});
-	
-		//listes des section / parcelles saisies : "références"
-		//initialement vide
-		//ajoute automatique une ligne vide quand la dernière ligne est complètement remplie
-		//actuellement, on ne peut pas supprimer une ligne
-		referenceStore = new Ext.data.JsonStore({
-			fields : ['section', 'parcelle'],
-			data   : [{section : '',   parcelle: ''}],
+		cityStore = getCityStore();
+
+		//combobox "villes"
+		cityCombo = new Ext.form.ComboBox({
+			fieldLabel: 'Ville, Commune',
+			name: 'city',
+			width: 300,
+			mode: 'local',
+			value: '',
+			forceSelection: true,
+			editable: true,
+			tpl: '<tpl for="."><div class="x-combo-list-item" >{name} ({code})</div></tpl>',
+			displayField: 'name',
+			valueField: 'code',
+			store: cityStore,
 			listeners: {
-				update(store, record, operation) {
-					var lastIndex = this.getCount()-1;
-					var lastData = this.getAt(this.getCount()-1).data;
-					
-					if (lastData.section!='' && lastData.parcelle!='') {
-						var p = new this.recordType({section:'', parcelle:''}); // create new record
-						referenceGrid.stopEditing();
-						this.add(p); // insert a new record into the store (also see add)
-						referenceGrid.startEditing(lastIndex+1, 0);	//
-					}
+				change(combo, newValue, oldValue) {
+					//refaire le section store pour cette ville						
+					referenceGrid.reconfigure(getVoidReferenceStore(), getReferenceColModel(newValue));
 				}
 			}
-		});
-
-		//modele la la grille des "références"
-		colModel = new Ext.grid.ColumnModel([
-			{
-				id:'section',
-				dataIndex: 'section',
-				header: "Section",
-				width: 100,
-				sortable: false,
-				editor: new Ext.form.ComboBox({
-					mode: 'local',
-					value: '',
-					forceSelection: true,
-					editable:       true,
-					displayField:   'name',
-					valueField:     'value',
-					store: sectionStore
-				})
-			},
-			{
-				id: "parcelle",
-				dataIndex: 'parcelle',
-				header: "Parcelle",
-				width: 100,
-				sortable: false,
-				editor: new Ext.form.ComboBox({
-					mode: 'local',
-					value: '',
-					forceSelection: true,
-					editable:       true,
-					displayField:   'name',
-					valueField:     'value',
-					store: parcelleStore
-				})
-			}
-		]);			
+		});		
 		
 		//grille "références"
 		referenceGrid = new Ext.grid.EditorGridPanel({
@@ -126,12 +53,37 @@ Ext.namespace("GEOR")
 			name: 'references',							
 			xtype: 'editorgrid',
 			clicksToEdit: 1,
-			ds: referenceStore,
-			cm: colModel,
+			ds: getVoidReferenceStore(),
+			cm: getReferenceColModel(''),
 			autoExpandColumn: 'parcelle',
 			height: 100,
 			width: 300,
-			border: true
+			border: true,
+			listeners: {
+				beforeedit(e) {
+					if (e.column == 0) {
+						//pas d'edition de section si aucune ville selectionnée
+						if (cityCombo.value == '') return false;
+					}
+					if (e.column == 1) {
+						//pas d'edition de parcelle si aucune section selectionnée
+						if (e.record.data.section == '') return false;
+						//on remplace le contenu du store des parcelles selon la section selectionnée
+						e.grid.getColumnModel().getColumnById(e.field).editor.getStore().loadData(getParcelleStore(cityCombo.value, e.record.data.section).reader.jsonData);
+					}
+				},
+				afteredit(e) {
+					var lastIndex = e.grid.store.getCount()-1;
+					var lastData = e.grid.store.getAt(e.grid.store.getCount()-1).data;
+					
+					if (lastData.section!='') {
+						var p = new e.grid.store.recordType({section:'', parcelle:''}); // create new record
+						e.grid.stopEditing();
+						e.grid.store.add(p); // insert a new record into the store (also see add)
+						this.startEditing(e.row, 1);
+					}
+				}
+			}
 		});
 		
 				
@@ -148,7 +100,7 @@ Ext.namespace("GEOR")
 			border:false,
 			labelWidth: 100,
 			width: 450,
-			defaults: {autoHeight:true, bodyStyle:'padding:10px', flex: 1},
+			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
 			
 			listeners: {
 				close(window) {
@@ -159,6 +111,7 @@ Ext.namespace("GEOR")
 			items: {
 				xtype:'tabpanel',
 				activeTab: 0,
+			
 				items:[{
 				
 					//ONGLET 1
@@ -167,20 +120,10 @@ Ext.namespace("GEOR")
 					defaultType: 'displayfield',
 					id: 'firstForm',
 					fileUpload: true,
+					height: 200,
 					
-					items: [{
-						xtype: 'combo',
-						fieldLabel: 'Ville, Commune',
-						name: 'city',
-						width: 300,
-						mode: 'local',
-						value: '',
-						forceSelection: true,
-						editable:       true,
-						displayField:   'name',
-						valueField:     'value',
-						store: cityStore
-					},					
+					items: [
+					cityCombo,		//combobox "villes"				
 					{
 						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
 						fieldClass: 'displayfieldGray'
@@ -196,6 +139,7 @@ Ext.namespace("GEOR")
 						xtype: 'fileuploadfield',
 						emptyText: 'Charger un fichier au format .csv',
 						buttonText: 'Ouvrir fichier',
+						height: 25,
 						width: 300
 					}]
 											
@@ -206,6 +150,7 @@ Ext.namespace("GEOR")
 					layout:'form',
 					defaultType: 'displayfield',
 					id: 'secondForm',
+					height: 200,
 
 					items: [{
 						xtype: 'combo',
@@ -273,9 +218,19 @@ Ext.namespace("GEOR")
 			},
 			
 			buttons: [{
-				text: 'Rechercher'
+				text: 'Rechercher',
+				listeners: {
+					click(b,e) {
+						alert('TODO');
+					}
+				}
 			},{
-				text: 'Fermer'
+				text: 'Fermer',
+				listeners: {
+					click(b,e) {
+						referenceWindow.close();
+					}
+				}
 			}]
 		});
 	};

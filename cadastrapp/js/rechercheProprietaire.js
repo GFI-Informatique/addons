@@ -91,11 +91,11 @@ Ext.namespace("GEOR")
 			border:false,
 			labelWidth: 100,
 			width: 450,
-			defaults: {autoHeight:true, bodyStyle:'padding:10px', flex: 1},
+			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
 			
 			listeners: {
 				close(window) {
-					referenceWindow = null;
+					proprietaireWindow = null;
 				}
 			},
 			
@@ -110,6 +110,7 @@ Ext.namespace("GEOR")
 					defaultType: 'displayfield',
 					id: 'firstForm',
 					fileUpload: true,
+					height: 200,
 					
 					items: [{
 						xtype: 'combo',
@@ -155,6 +156,7 @@ Ext.namespace("GEOR")
 					layout:'form',
 					defaultType: 'displayfield',
 					id: 'secondForm',
+					height: 200,
 
 					items: [{
 						xtype: 'combo',
@@ -184,6 +186,7 @@ Ext.namespace("GEOR")
 						xtype: 'fileuploadfield',
 						emptyText: 'Charger un fichier au format .csv',
 						buttonText: 'Ouvrir fichier',
+						height: 25,
 						width: 300
 					}]
 				}]
