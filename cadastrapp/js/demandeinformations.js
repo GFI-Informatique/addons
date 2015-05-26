@@ -153,7 +153,7 @@ Ext.namespace("GEOR")
 			ds: ds,
 			cm: coladresseModel,
 			autoExpandColumn: 'adresse',
-			height: 100,
+			height: 140,
 			width: 400,
 			border: true
 		});
