@@ -67,20 +67,7 @@ Ext.namespace("GEOR")
 	getVoidReferenceStore = function() {
 		return new Ext.data.JsonStore({
 			fields : ['section', 'parcelle'],
-			data   : [{section : '',   parcelle: ''}],
-			//listeners: {
-			//	update(store, record, operation) {
-			//		var lastIndex = this.getCount()-1;
-			//		var lastData = this.getAt(this.getCount()-1).data;
-			//		
-			//		if (lastData.section!='' && lastData.parcelle!='') {
-			//			var p = new this.recordType({section:'', parcelle:''}); // create new record
-			//			referenceGrid.stopEditing();
-			//			this.add(p); // insert a new record into the store (also see add)
-			//			referenceGrid.startEditing(lastIndex+1, 0);	//
-			//		}
-			//	}
-			//}
+			data   : [{section : '',   parcelle: ''}]
 		});		
 	}
 	
