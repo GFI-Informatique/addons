@@ -38,6 +38,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                 scope: this
             }
         });
+		//addon activé par défaut - PROVISOIRE
 		this.target === true;
 		
         if (this.target) {
