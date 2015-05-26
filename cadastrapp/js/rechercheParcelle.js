@@ -1,4 +1,4 @@
-﻿
+
 	/** api: (define)
 	*  module = GEOR
 	*  class = Cadastrapp
@@ -12,11 +12,19 @@ Ext.namespace("GEOR")
      *  :param layer: 
      *  Create ...TODO
      */
-    onClickRechercheParcelle = function() {
+    onClickRechercheParcelle1 = function() {
 		if (referenceWindow == null) {
 			initRechercheParcelle();
 		}
 		referenceWindow.show();
+		//referenceWindow.items[0].setActiveTab(0);
+	}
+    onClickRechercheParcelle2 = function() {
+		if (referenceWindow == null) {
+			initRechercheParcelle();
+		}
+		referenceWindow.show();
+		//referenceWindow.items[0].setActiveTab(1);
 	}		
 		
 	initRechercheParcelle = function(){
@@ -110,6 +118,7 @@ Ext.namespace("GEOR")
 			
 			items: {
 				xtype:'tabpanel',
+				id: 'onglets',
 				activeTab: 0,
 			
 				items:[{

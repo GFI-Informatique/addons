@@ -1,4 +1,4 @@
-﻿Ext.namespace("GEOR.Addons");
+Ext.namespace("GEOR.Addons");
 
 GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
 

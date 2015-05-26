@@ -1,4 +1,4 @@
-﻿/** api: (define)
+/** api: (define)
  *  module = GEOR
  *  class = Cadastrapp
  *  base_link = `Ext.util.Observable <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
@@ -448,12 +448,12 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             iconCls: "gx-featureediting-cadastrapp-parcelle",
             iconAlign: 'top',
             text: OpenLayers.i18n("cadastrapp.parcelle"),
-			handler: onClickRechercheParcelle
+			handler: onClickRechercheParcelle1
         };	
         this.actions.push(new Ext.Button(configRechercheParcelle));
 		
 		
-		//menu : recherche avancée		
+		//menu : recherche avancée
 		var scrollMenu = new Ext.menu.Menu();		
 		var configRechercheAvancee = {
             group: this.toggleGroup,
@@ -466,33 +466,49 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         };
         this.actions.push(new Ext.Button(configRechercheAvancee));
 		
-		//sous-menu : recherche parcelle
-		 var buttonRechercheParcelle = scrollMenu.add({
-			tooltip: OpenLayers.i18n("cadastrapp.parcelle"),
-            text: OpenLayers.i18n("cadastrapp.parcelle")
-		});
-		buttonRechercheParcelle.on('click', onClickRechercheParcelle);
-		
-		//sous-menu : recherche proprietaire
-		var buttonRechercheProprietaire = scrollMenu.add({
-			tooltip: OpenLayers.i18n("cadastrapp.proprietaire"),
-            text: OpenLayers.i18n("cadastrapp.proprietaire")
-		});
-		buttonRechercheProprietaire.on('click', onClickRechercheProprietaire);
-		
-		//sous-menu : recherche copropriété
-		var buttonRechercheCopropriete = scrollMenu.add({
-			tooltip: OpenLayers.i18n("cadastrapp.copropriete"),
-            text: OpenLayers.i18n("cadastrapp.copropriete")
-		});
-		//buttonRechercheCopropriete.on('click', onClickRechercheCopropriete);
-		
-		//sous-menu : traitement sélection
-		var buttonTraitementSelection = scrollMenu.add({
-			tooltip: OpenLayers.i18n("cadastrapp.selection"),
-            text: OpenLayers.i18n("cadastrapp.selection")
-		});
-		//buttonTraitementSelection.on('click', onClickTraitementSelection);
+			//sous-menu : recherche parcelle
+			var scrollMenuRechercheParcelle = new Ext.menu.Menu();
+			var buttonRechercheParcelle = scrollMenu.add({
+				tooltip: OpenLayers.i18n("cadastrapp.parcelle"),
+				text: OpenLayers.i18n("cadastrapp.parcelle"),
+				menu: scrollMenuRechercheParcelle
+			});
+			//buttonRechercheParcelle.on('click', onClickRechercheParcelle);
+			
+				//sous-sous-menu : recherche parcelle - par identifiant
+				var buttonRechercheParcelleIdentifiant = scrollMenuRechercheParcelle.add({
+					tooltip: OpenLayers.i18n("cadastrapp.parcelle.identifiant"),
+					text: OpenLayers.i18n("cadastrapp.parcelle.identifiant")
+				});
+				buttonRechercheParcelleIdentifiant.on('click', onClickRechercheParcelle1);
+			
+				//sous-sous-menu : recherche parcelle - par adresse
+				var buttonRechercheParcelleAdresse = scrollMenuRechercheParcelle.add({
+					tooltip: OpenLayers.i18n("cadastrapp.parcelle.adresse"),
+					text: OpenLayers.i18n("cadastrapp.parcelle.adresse")
+				});
+				buttonRechercheParcelleAdresse.on('click', onClickRechercheParcelle2);				
+			
+			//sous-menu : recherche proprietaire
+			var buttonRechercheProprietaire = scrollMenu.add({
+				tooltip: OpenLayers.i18n("cadastrapp.proprietaire"),
+				text: OpenLayers.i18n("cadastrapp.proprietaire")
+			});
+			buttonRechercheProprietaire.on('click', onClickRechercheProprietaire);
+			
+			//sous-menu : recherche copropriété
+			var buttonRechercheCopropriete = scrollMenu.add({
+				tooltip: OpenLayers.i18n("cadastrapp.copropriete"),
+				text: OpenLayers.i18n("cadastrapp.copropriete")
+			});
+			//buttonRechercheCopropriete.on('click', onClickRechercheCopropriete);
+			
+			//sous-menu : traitement sélection
+			var buttonTraitementSelection = scrollMenu.add({
+				tooltip: OpenLayers.i18n("cadastrapp.selection"),
+				text: OpenLayers.i18n("cadastrapp.selection")
+			});
+			//buttonTraitementSelection.on('click', onClickTraitementSelection);
     },
 
     /** private: method[initDemandeControl]
