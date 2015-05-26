@@ -20,7 +20,7 @@ Ext.namespace("GEOR")
 	}		
 		
 	initRechercheParcelle = function(){
-		var bisStore, sectionStore, parcelleStore, cityStore, referenceStore, cityCombo, colModel, referenceGrid;
+		var bisStore, cityStore, cityCombo, referenceGrid;
 		
 		bisStore = getBisStore();
 		

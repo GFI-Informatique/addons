@@ -20,48 +20,46 @@ Ext.namespace("GEOR")
 	}
 	
     initRechercheProprietaire = function(){
-		var cityStore, proprietaireStore, colModel, proprietaireGrid;
+		var bisStore, cityStore, cityCombo1, cityCombo2, proprietaireGrid;
 		
-		//liste des villes : TODO : récupérer la liste entière
-		cityStore = new Ext.data.JsonStore({
-			fields : ['name', 'value'],
-			data   : [
-				{name : 'Caen',   value: 'caen'},
-				{name : 'Rennes',  value: 'rennes'},
-				{name : 'Lannion', value: 'lannion'}
-			]
-		});
-	
-		//listes des "proprietaires"
-		proprietaireStore = new Ext.data.JsonStore({
-			fields : ['proprietaire'],
-			data   : [{proprietaire : ''}],
+		bisStore = getBisStore();
+		
+		cityStore = getCityStore();
+
+		//comboboxes "villes"
+		cityCombo1 = new Ext.form.ComboBox({
+			fieldLabel: 'Ville, Commune',
+			name: 'city',
+			width: 300,
+			mode: 'local',
+			value: '',
+			forceSelection: true,
+			editable: true,
+			tpl: '<tpl for="."><div class="x-combo-list-item" >{name} ({code})</div></tpl>',
+			displayField: 'name',
+			valueField: 'code',
+			store: cityStore
+		});	
+		
+		cityCombo2 = new Ext.form.ComboBox({
+			fieldLabel: 'Ville, Commune',
+			name: 'city',
+			width: 300,
+			mode: 'local',
+			value: '',
+			forceSelection: true,
+			editable: true,
+			tpl: '<tpl for="."><div class="x-combo-list-item" >{name} ({code})</div></tpl>',
+			displayField: 'name',
+			valueField: 'code',
+			store: cityStore,
 			listeners: {
-				update(store, record, operation) {
-					var lastIndex = this.getCount()-1;
-					var lastData = this.getAt(this.getCount()-1).data;
-					
-					if (lastData.proprietaire!='') {
-						var p = new this.recordType({proprietaire:''}); // create new record
-						proprietaireGrid.stopEditing();
-						this.add(p); // insert a new record into the store (also see add)
-						proprietaireGrid.startEditing(lastIndex+1, 0);	//
-					}
+				change(combo, newValue, oldValue) {
+					//refaire le section store pour cette ville						
+					proprietaireGrid.reconfigure(getVoidProprietaireStore(), getProprietaireColModel(newValue));
 				}
 			}
-		});
-
-		//modele la la grille des "proprietaires"
-		colModel = new Ext.grid.ColumnModel([
-			{
-				id:'proprietaire',
-				dataIndex: 'proprietaire',
-				header: "Propri&eacute;taire",
-				width: 100,
-				sortable: false,
-				editor: new Ext.form.TextField({})
-			}
-		]);			
+		});			
 		
 		//grille "proprietaires"
 		proprietaireGrid = new Ext.grid.EditorGridPanel({
@@ -69,12 +67,31 @@ Ext.namespace("GEOR")
 			name: 'proprietaires',							
 			xtype: 'editorgrid',
 			clicksToEdit: 1,
-			ds: proprietaireStore,
-			cm: colModel,
+			ds: getVoidProprietaireStore(),
+			cm: getProprietaireColModel(''),
 			autoExpandColumn: 'proprietaire',
 			height: 100,
 			width: 300,
-			border: true
+			border: true,
+			listeners: {
+				beforeedit(e) {
+					if (e.column == 0) {
+						//pas d'edition de section si aucune ville selectionnée
+						if (cityCombo2.value == '') return false;
+					}
+				},
+				afteredit(e) {
+					var lastIndex = e.grid.store.getCount()-1;
+					var lastData = e.grid.store.getAt(e.grid.store.getCount()-1).data;
+					
+					if (lastData.proprietaire!='') {
+						var p = new e.grid.store.recordType({proprietaire:''}); // create new record
+						e.grid.stopEditing();
+						e.grid.store.add(p); // insert a new record into the store (also see add)
+						this.startEditing(e.row, 1);
+					}
+				}
+			}
 		});
 		
 				
@@ -112,19 +129,8 @@ Ext.namespace("GEOR")
 					fileUpload: true,
 					height: 200,
 					
-					items: [{
-						xtype: 'combo',
-						fieldLabel: 'Ville, Commune',
-						name: 'city',
-						width: 300,
-						mode: 'local',
-						value: '',
-						forceSelection: true,
-						editable:       true,
-						displayField:   'name',
-						valueField:     'value',
-						store: cityStore
-					},
+					items: [
+					cityCombo1,
 					{
 						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
 						fieldClass: 'displayfieldGray'
@@ -158,19 +164,8 @@ Ext.namespace("GEOR")
 					id: 'secondForm',
 					height: 200,
 
-					items: [{
-						xtype: 'combo',
-						fieldLabel: 'Ville, Commune',
-						name: 'city',
-						width: 300,
-						mode: 'local',
-						value: '',
-						forceSelection: true,
-						editable:       true,
-						displayField:   'name',
-						valueField:     'value',
-						store: cityStore
-					},
+					items: [
+					cityCombo2,
 					{
 						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
 						fieldClass: 'displayfieldGray'
@@ -193,9 +188,19 @@ Ext.namespace("GEOR")
 			},
 			
 			buttons: [{
-				text: 'Rechercher'
+				text: 'Rechercher',
+				listeners: {
+					click(b,e) {
+						alert('TODO');
+					}
+				}
 			},{
-				text: 'Fermer'
+				text: 'Fermer',
+				listeners: {
+					click(b,e) {
+						proprietaireWindow.close();
+					}
+				}
 			}]
 		});
 	};

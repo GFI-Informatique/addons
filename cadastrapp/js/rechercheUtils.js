@@ -38,7 +38,7 @@ Ext.namespace("GEOR")
 	//TODO : charger dynamiquement selon la ville choisie
 	getSectionStore = function(cityId) {
 		return new Ext.data.JsonStore({
-			fields : ['name', 'value'],
+			fields : ['name'],
 			data   : [
 				{name : 'sect1-'+cityId},
 				{name : 'sect2-'+cityId},
@@ -51,11 +51,24 @@ Ext.namespace("GEOR")
 	//TODO : charger dynamiquement selon la ville choisie et la section choisie
 	getParcelleStore = function(cityId, sectionId) {
 		return new Ext.data.JsonStore({
-			fields : ['name', 'value'],
+			fields : ['name'],
 			data   : [
 				{name : 'parc1-'+cityId+'-'+sectionId},
 				{name : 'parc2-'+cityId+'-'+sectionId},
 				{name : 'parc3-'+cityId+'-'+sectionId}
+			]
+		});	
+	}	
+		
+	//liste des propriétaires d'une ville
+	//TODO : charger dynamiquement selon la ville choisie
+	getProprietaireStore = function(cityId) {
+		return new Ext.data.JsonStore({
+			fields : ['name'],
+			data   : [
+				{name : 'prop1-'+cityId},
+				{name : 'prop2-'+cityId},
+				{name : 'prop3-'+cityId}
 			]
 		});	
 	}
@@ -67,23 +80,20 @@ Ext.namespace("GEOR")
 	getVoidReferenceStore = function() {
 		return new Ext.data.JsonStore({
 			fields : ['section', 'parcelle'],
-			data   : [{section : '',   parcelle: ''}],
-			//listeners: {
-			//	update(store, record, operation) {
-			//		var lastIndex = this.getCount()-1;
-			//		var lastData = this.getAt(this.getCount()-1).data;
-			//		
-			//		if (lastData.section!='' && lastData.parcelle!='') {
-			//			var p = new this.recordType({section:'', parcelle:''}); // create new record
-			//			referenceGrid.stopEditing();
-			//			this.add(p); // insert a new record into the store (also see add)
-			//			referenceGrid.startEditing(lastIndex+1, 0);	//
-			//		}
-			//	}
-			//}
+			data   : [{section : '',   parcelle: ''}]
 		});		
 	}
 	
+	//listes des "propriétaires" saisis
+	//initialement vide
+	getVoidProprietaireStore = function() {
+		return new Ext.data.JsonStore({
+			fields : ['proprietaire'],
+			data   : [{proprietaire : ''}]
+		});		
+	}
+	
+	//design et editor des colonnes de la grille "référence"
 	getReferenceColModel = function(cityId) {
 		return new Ext.grid.ColumnModel([
 			{
@@ -116,6 +126,29 @@ Ext.namespace("GEOR")
 					displayField:   'name',
 					valueField:     'name',
 					store: getParcelleStore(cityId, '')
+				})
+			}
+		]);		
+	}
+	
+	
+	//design et editor des colonnes de la grille "propriétaires"
+	getProprietaireColModel = function(cityId) {
+		return new Ext.grid.ColumnModel([
+			{
+				id:'proprietaire',
+				dataIndex: 'proprietaire',
+				header: "Propri&eacute;taire",
+				width: 100,
+				sortable: false,
+				editor: new Ext.form.ComboBox({
+					mode: 'local',
+					value: '',
+					forceSelection: true,
+					editable:       true,
+					displayField:   'name',
+					valueField:     'name',
+					store: getProprietaireStore(cityId)
 				})
 			}
 		]);		
