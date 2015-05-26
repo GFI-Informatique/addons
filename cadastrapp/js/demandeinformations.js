@@ -81,7 +81,7 @@ Ext.namespace("GEOR")
 				id:'section',
 				dataIndex: 'section',
 				header: "Section",
-				width: 100,
+				width: 250,
 				sortable: false,
 				editor: new Ext.form.ComboBox({
 					mode: 'local',
@@ -97,7 +97,7 @@ Ext.namespace("GEOR")
 				id: "parcelle",
 				dataIndex: 'parcelle',
 				header: "Parcelle",
-				width: 180,
+				width: 350,
 				sortable: false,
 				editor: new Ext.form.ComboBox({
 					mode: 'local',
@@ -121,7 +121,7 @@ Ext.namespace("GEOR")
 			cm: colModel,
 			autoExpandColumn: 'parcelle',
 			height: 100,
-			width: 300,
+			width: 400,
 			border: true
 		});
 		
@@ -130,14 +130,13 @@ Ext.namespace("GEOR")
 			{
 				id:'adresse',
 				dataIndex: 'adresse',
-				header: "Adresse",
-				width: 100,
+				header: "Adresse cadastrale",
+				width: 400,
 				sortable: false,
 				editor: new Ext.form.ComboBox({
 					mode: 'local',
 					value: '',
-					forceSelection: true,
-					editable:       true,
+//					editable:       true,
 					displayField:   'name',
 					valueField:     'value',
 					store: sectionStore
@@ -147,15 +146,15 @@ Ext.namespace("GEOR")
 
 		//grille "adresse"
 		var adresseGrid = new Ext.grid.EditorGridPanel({
-			fieldLabel: 'adresse',
-			name: 'adresse',							
+			fieldLabel: 'adresse(s)',
+			name: 'adresse cadastrales',							
 			xtype: 'editorgrid',
-			clicksToEdit: 1,
+			clicksToEdit: 3,
 			ds: ds,
 			cm: coladresseModel,
 			autoExpandColumn: 'adresse',
 			height: 100,
-			width: 200,
+			width: 400,
 			border: true
 		});
 		
@@ -217,7 +216,8 @@ Ext.namespace("GEOR")
 			labelWidth: 120,
 			items: [				
 				{ fieldLabel: 'Ville, Commune', name: 'commune', width: 280},
-				{ xtype:'tabpanel',
+				{ xtype:'tabpanel',	height: 160,
+
 				activeTab: 0,
 				items:[{
 				
@@ -225,6 +225,7 @@ Ext.namespace("GEOR")
 					title:'Parcelle(s)',
 //					layout:'form',
 					defaultType: 'displayfield',
+					height: 200,
 					id: 'firstForm',
 					fileUpload: true,
 					
@@ -237,14 +238,25 @@ Ext.namespace("GEOR")
 											
 				}]
 				},
-
-				{ fieldLabel: 'Adresse(s) cadastrale(s)', 
+				{ xtype:'tabpanel',
+				activeTab: 0,
+				items:[{	
+				
+					//ONGLET 1
+					title:'Adresse(s) cadastrale(s)',
+					defaultType: 'displayfield',
+					id: 'firstForm',
+					fileUpload: true,
+					
 					items: [
-					adresseGrid,	//grille "adresse"
-					{
-//						value: 'ou',
-//						fieldClass: 'displayfieldCenter'
-					}]}
+							adresseGrid,	//grille "adresse"
+							{
+							value: 'ou',
+							fieldClass: 'displayfieldCenter'
+							}]
+											
+					}]
+				}				
 				]
 			}],
 			buttons: [{
