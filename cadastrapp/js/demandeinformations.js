@@ -1,4 +1,4 @@
-
+﻿
 	/** api: (define)
 	*  module = GEOR
 	*  class = Cadastrapp

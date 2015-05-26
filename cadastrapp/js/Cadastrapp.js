@@ -1,4 +1,4 @@
-/** api: (define)
+﻿/** api: (define)
  *  module = GEOR
  *  class = Cadastrapp
  *  base_link = `Ext.util.Observable <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_

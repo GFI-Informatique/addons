@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (c) 2008-2009 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.

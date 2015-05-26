@@ -1,4 +1,4 @@
-
+ï»¿
 	/** api: (define)
 	*  module = GEOR
 	*  class = Cadastrapp
@@ -76,7 +76,7 @@ Ext.namespace("GEOR")
 			listeners: {
 				beforeedit(e) {
 					if (e.column == 0) {
-						//pas d'edition de section si aucune ville selectionnée
+						//pas d'edition de section si aucune ville selectionnÃ©e
 						if (cityCombo2.value == '') return false;
 					}
 				},
@@ -95,9 +95,9 @@ Ext.namespace("GEOR")
 		});
 		
 				
-		//fenêtre principale
+		//fenÃªtre principale
 		proprietaireWindow = new Ext.Window({
-			title: 'Recherche de propriétaires',
+			title: 'Recherche de propriÃ©taires',
 			frame: true,
 			autoScroll:true,
 			minimizable: true,

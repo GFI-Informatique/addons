@@ -6,7 +6,7 @@
 	*/
 Ext.namespace("GEOR")
 
-	//liste des compléments de numéro de rue : BIS, TER (à compléter ?)
+	//liste des complÃ©ments de numÃ©ro de rue : BIS, TER (Ã  complÃ©ter ?)
 	//statique
 	getBisStore = function() {
 		return new Ext.data.JsonStore({
@@ -20,8 +20,8 @@ Ext.namespace("GEOR")
 	}
 		
 	//liste des villes
-	//chargé une fois, au lancement
-	//TODO : récupérer la liste entière	
+	//chargÃ© une fois, au lancement
+	//TODO : rÃ©cupÃ©rer la liste entiÃ¨re	
 	getCityStore = function() {
 		return new Ext.data.JsonStore({
 			fields : ['name', 'code'],
@@ -60,7 +60,7 @@ Ext.namespace("GEOR")
 		});	
 	}	
 		
-	//liste des propriétaires d'une ville
+	//liste des propriÃ©taires d'une ville
 	//TODO : charger dynamiquement selon la ville choisie
 	getProprietaireStore = function(cityId) {
 		return new Ext.data.JsonStore({
@@ -73,9 +73,9 @@ Ext.namespace("GEOR")
 		});	
 	}
 		
-	//listes des section / parcelles saisies : "références"
+	//listes des section / parcelles saisies : "rÃ©fÃ©rences"
 	//initialement vide
-	//ajoute automatique une ligne vide quand la dernière ligne est complètement remplie
+	//ajoute automatique une ligne vide quand la derniÃ¨re ligne est complÃ¨tement remplie
 	//actuellement, on ne peut pas supprimer une ligne
 	getVoidReferenceStore = function() {
 		return new Ext.data.JsonStore({
@@ -84,7 +84,7 @@ Ext.namespace("GEOR")
 		});		
 	}
 	
-	//listes des "propriétaires" saisis
+	//listes des "propriÃ©taires" saisis
 	//initialement vide
 	getVoidProprietaireStore = function() {
 		return new Ext.data.JsonStore({
@@ -93,7 +93,7 @@ Ext.namespace("GEOR")
 		});		
 	}
 	
-	//design et editor des colonnes de la grille "référence"
+	//design et editor des colonnes de la grille "rÃ©fÃ©rence"
 	getReferenceColModel = function(cityId) {
 		return new Ext.grid.ColumnModel([
 			{
@@ -132,7 +132,7 @@ Ext.namespace("GEOR")
 	}
 	
 	
-	//design et editor des colonnes de la grille "propriétaires"
+	//design et editor des colonnes de la grille "propriÃ©taires"
 	getProprietaireColModel = function(cityId) {
 		return new Ext.grid.ColumnModel([
 			{
