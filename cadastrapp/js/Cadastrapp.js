@@ -166,7 +166,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
      *  The styler type to use in the FeaturePanel widget.
      */
     styler: null,
-
+	
     /** private: method[constructor]
      *  Private constructor override.
      */

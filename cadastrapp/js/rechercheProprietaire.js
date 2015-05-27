@@ -104,6 +104,7 @@ Ext.namespace("GEOR")
 			closable: true,
 			resizable: false,
 			draggable : true,
+			constrainHeader: true,
 			
 			border:false,
 			labelWidth: 100,
@@ -116,7 +117,8 @@ Ext.namespace("GEOR")
 				}
 			},
 			
-			items: {
+			items: [
+			{
 				xtype:'tabpanel',
 				activeTab: 0,
 				items:[{
@@ -185,13 +187,13 @@ Ext.namespace("GEOR")
 						width: 300
 					}]
 				}]
-			},
+			}],
 			
 			buttons: [{
 				text: 'Rechercher',
 				listeners: {
 					click(b,e) {
-						alert('TODO');
+						addNewResultProprietaire();
 					}
 				}
 			},{

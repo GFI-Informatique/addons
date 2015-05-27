@@ -17,14 +17,14 @@ Ext.namespace("GEOR")
 			initRechercheParcelle();
 		}
 		referenceWindow.show();
-		//referenceWindow.items[0].setActiveTab(0);
+		referenceWindow.items.items[0].setActiveTab(0);
 	}
     onClickRechercheParcelle2 = function() {
 		if (referenceWindow == null) {
 			initRechercheParcelle();
 		}
 		referenceWindow.show();
-		//referenceWindow.items[0].setActiveTab(1);
+		referenceWindow.items.items[0].setActiveTab(1);
 	}		
 		
 	initRechercheParcelle = function(){
@@ -104,6 +104,7 @@ Ext.namespace("GEOR")
 			closable: true,
 			resizable: false,
 			draggable : true,
+			constrainHeader: true,
 			
 			border:false,
 			labelWidth: 100,
@@ -116,7 +117,8 @@ Ext.namespace("GEOR")
 				}
 			},
 			
-			items: {
+			items: [
+			{
 				xtype:'tabpanel',
 				id: 'onglets',
 				activeTab: 0,
@@ -224,7 +226,7 @@ Ext.namespace("GEOR")
 					}
 					]
 				}]
-			},
+			}],
 			
 			buttons: [{
 				text: 'Rechercher',
