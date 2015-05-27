@@ -6,7 +6,7 @@
 	*/
 Ext.namespace("GEOR")
 
-	//liste des complÈments de numÈro de rue : BIS, TER (‡ complÈter ?)
+	//liste des compl√©ments de num√©ro de rue : BIS, TER (√† compl√©ter ?)
 	//statique
 	getBisStore = function() {
 		return new Ext.data.JsonStore({
@@ -20,8 +20,8 @@ Ext.namespace("GEOR")
 	}
 		
 	//liste des villes
-	//chargÈ une fois, au lancement
-	//TODO : rÈcupÈrer la liste entiËre	
+	//charg√© une fois, au lancement
+	//TODO : r√©cup√©rer la liste enti√®re	
 	getCityStore = function() {
 		return new Ext.data.JsonStore({
 			fields : ['name', 'code'],
@@ -38,7 +38,7 @@ Ext.namespace("GEOR")
 	//TODO : charger dynamiquement selon la ville choisie
 	getSectionStore = function(cityId) {
 		return new Ext.data.JsonStore({
-			fields : ['name', 'value'],
+			fields : ['name'],
 			data   : [
 				{name : 'sect1-'+cityId},
 				{name : 'sect2-'+cityId},
@@ -51,18 +51,31 @@ Ext.namespace("GEOR")
 	//TODO : charger dynamiquement selon la ville choisie et la section choisie
 	getParcelleStore = function(cityId, sectionId) {
 		return new Ext.data.JsonStore({
-			fields : ['name', 'value'],
+			fields : ['name'],
 			data   : [
 				{name : 'parc1-'+cityId+'-'+sectionId},
 				{name : 'parc2-'+cityId+'-'+sectionId},
 				{name : 'parc3-'+cityId+'-'+sectionId}
 			]
 		});	
+	}	
+		
+	//liste des propri√©taires d'une ville
+	//TODO : charger dynamiquement selon la ville choisie
+	getProprietaireStore = function(cityId) {
+		return new Ext.data.JsonStore({
+			fields : ['name'],
+			data   : [
+				{name : 'prop1-'+cityId},
+				{name : 'prop2-'+cityId},
+				{name : 'prop3-'+cityId}
+			]
+		});	
 	}
 		
-	//listes des section / parcelles saisies : "rÈfÈrences"
+	//listes des section / parcelles saisies : "r√©f√©rences"
 	//initialement vide
-	//ajoute automatique une ligne vide quand la derniËre ligne est complËtement remplie
+	//ajoute automatique une ligne vide quand la derni√®re ligne est compl√®tement remplie
 	//actuellement, on ne peut pas supprimer une ligne
 	getVoidReferenceStore = function() {
 		return new Ext.data.JsonStore({
@@ -71,6 +84,16 @@ Ext.namespace("GEOR")
 		});		
 	}
 	
+	//listes des "propri√©taires" saisis
+	//initialement vide
+	getVoidProprietaireStore = function() {
+		return new Ext.data.JsonStore({
+			fields : ['proprietaire'],
+			data   : [{proprietaire : ''}]
+		});		
+	}
+	
+	//design et editor des colonnes de la grille "r√©f√©rence"
 	getReferenceColModel = function(cityId) {
 		return new Ext.grid.ColumnModel([
 			{
@@ -103,6 +126,29 @@ Ext.namespace("GEOR")
 					displayField:   'name',
 					valueField:     'name',
 					store: getParcelleStore(cityId, '')
+				})
+			}
+		]);		
+	}
+	
+	
+	//design et editor des colonnes de la grille "propri√©taires"
+	getProprietaireColModel = function(cityId) {
+		return new Ext.grid.ColumnModel([
+			{
+				id:'proprietaire',
+				dataIndex: 'proprietaire',
+				header: "Propri&eacute;taire",
+				width: 100,
+				sortable: false,
+				editor: new Ext.form.ComboBox({
+					mode: 'local',
+					value: '',
+					forceSelection: true,
+					editable:       true,
+					displayField:   'name',
+					valueField:     'name',
+					store: getProprietaireStore(cityId)
 				})
 			}
 		]);		
