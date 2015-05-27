@@ -169,6 +169,8 @@ Ext.namespace("GEOR")
             closable: true,
             resizable: true,
 			draggable : true,
+			constrainHeader: true,
+			
 			fieldDefaults: {
 				labelAlign: 'right',
 
