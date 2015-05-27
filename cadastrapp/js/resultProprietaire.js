@@ -19,10 +19,26 @@ Ext.namespace("GEOR")
 		resultProprietaireWindow.show();
 		
 		var tabs = resultProprietaireWindow.items.items[0];
-		var newGrid = new Ext.grid.EditorGridPanel({
-			//TODO
+		var newGrid = new Ext.grid.GridPanel({
+			title: 'TEST '+ tabs.items.length,
+			height: 400,
+			border: true,
+			colModel: new Ext.grid.ColumnModel([
+				{
+					id:'prenom',
+					dataIndex: 'prenom',
+					header: 'Prenom',
+					sortable: true
+				},{
+					id:'nom',
+					dataIndex: 'nom',
+					header: 'Nom',
+					sortable: true
+				}]),
+			store: result
 		});
 		tabs.insert(0, newGrid);
+		tabs.setActiveTab(0);
 	}
 		
     initResultProprietaire = function() {						
@@ -39,7 +55,7 @@ Ext.namespace("GEOR")
 			
 			border:false,
 			width: 600,
-			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
+			defaults: {autoHeight:true},
 			
 			listeners: {
 				close(window) {
@@ -49,15 +65,7 @@ Ext.namespace("GEOR")
 			
 			items: [
 			{
-				xtype:'tabpanel',
-				activeTab: 0,
-				items:[
-				{				
-					//ONGLET 1
-					title:'TODO',
-					layout:'form',
-					items: []											
-				}]
+				xtype:'tabpanel'
 			}],
 			
 			buttons: [

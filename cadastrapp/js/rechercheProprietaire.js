@@ -133,13 +133,12 @@ Ext.namespace("GEOR")
 				items:[{
 				
 					//ONGLET 1
-					title:'Nom Usage ou Naissance',
-					layout:'form',
-					defaultType: 'displayfield',
 					id: 'firstForm',
-					fileUpload: true,
+					xtype: 'form',
+					title: 'Nom Usage ou Naissance',
+					defaultType: 'displayfield',
 					height: 200,
-					
+								
 					items: [
 					cityCombo1,
 					{
@@ -165,14 +164,15 @@ Ext.namespace("GEOR")
 					{
 						value: 'ex. Albert, Jean-Marie',
 						fieldClass: 'displayfieldGray'
-					}]											
+					}]
 				},{
 				
 					//ONGLET 2
-					title:'Adresse cadastrale',
-					layout:'form',
-					defaultType: 'displayfield',
 					id: 'secondForm',
+					title: 'Adresse cadastrale',
+					layout: 'form',
+					defaultType: 'displayfield',
+					fileUpload: true,
 					height: 200,
 
 					items: [
@@ -202,7 +202,47 @@ Ext.namespace("GEOR")
 				text: 'Rechercher',
 				listeners: {
 					click(b,e) {
-						addNewResultProprietaire();
+						var currentForm = proprietaireWindow.items.items[0].getActiveTab();
+						if (currentForm.id == 'firstForm') {
+							
+							//appel de méthode webapp
+							Ext.Ajax.request({
+								method: 'GET',
+								url:'./getCommune/all',
+								success: function(form, action) {
+									alert('Success : ' + action.result.msg);
+								},
+								failure: function(form, action) {
+									alert('Failed : ' + action.result.msg);
+								}
+							});
+
+							//soumission des données d'une form
+							currentForm.getForm().submit({
+								method: 'GET',
+								url:'./getCommune/all',
+								success: function(form, action) {
+									alert('Success : ' + action.result.msg);
+								},
+								failure: function(form, action) {
+									alert('Failed : ' + action.result.msg);
+								}
+							});				
+							
+							/*
+							var result = new Ext.data.JsonStore({
+								fields : ['prenom', 'nom'],
+								data   : [
+									{prenom : 'nicolas', nom: 'tasia'},
+									{prenom : 'pierre', nom: 'jego'},
+									{prenom : 'laurent', nom: 'cornic'}
+								]
+							});
+							addNewResultProprietaire(result);
+							*/
+						} else {
+							alert('TODO');
+						}
 					}
 				}
 			},{
