@@ -466,6 +466,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         };
         this.actions.push(new Ext.Button(configRechercheAvancee));
 		
+		
 			//sous-menu : recherche parcelle
 			var scrollMenuRechercheParcelle = new Ext.menu.Menu();
 			var buttonRechercheParcelle = scrollMenu.add({
@@ -473,8 +474,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 				text: OpenLayers.i18n("cadastrapp.parcelle"),
 				menu: scrollMenuRechercheParcelle
 			});
-			//buttonRechercheParcelle.on('click', onClickRechercheParcelle);
-			
 				//sous-sous-menu : recherche parcelle - par identifiant
 				var buttonRechercheParcelleIdentifiant = scrollMenuRechercheParcelle.add({
 					tooltip: OpenLayers.i18n("cadastrapp.parcelle.identifiant"),
@@ -489,26 +488,96 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 				});
 				buttonRechercheParcelleAdresse.on('click', onClickRechercheParcelle2);				
 			
+			
 			//sous-menu : recherche proprietaire
+			var scrollMenuRechercheProprietaire = new Ext.menu.Menu();
 			var buttonRechercheProprietaire = scrollMenu.add({
 				tooltip: OpenLayers.i18n("cadastrapp.proprietaire"),
-				text: OpenLayers.i18n("cadastrapp.proprietaire")
+				text: OpenLayers.i18n("cadastrapp.proprietaire"),
+				menu: scrollMenuRechercheProprietaire
 			});
-			buttonRechercheProprietaire.on('click', onClickRechercheProprietaire);
+				//sous-sous-menu : recherche proprietaire - par nom
+				var buttonRechercheProprietaireNom = scrollMenuRechercheProprietaire.add({
+					tooltip: OpenLayers.i18n("cadastrapp.proprietaire.nom"),
+					text: OpenLayers.i18n("cadastrapp.proprietaire.nom")
+				});
+				buttonRechercheProprietaireNom.on('click', onClickRechercheProprietaire1);
+				//sous-sous-menu : recherche proprietaire - par compte
+				var buttonRechercheProprietaireCompte = scrollMenuRechercheProprietaire.add({
+					tooltip: OpenLayers.i18n("cadastrapp.proprietaire.compte"),
+					text: OpenLayers.i18n("cadastrapp.proprietaire.compte")
+				});
+				buttonRechercheProprietaireCompte.on('click', onClickRechercheProprietaire2);			
+			
 			
 			//sous-menu : recherche copropriété
 			var buttonRechercheCopropriete = scrollMenu.add({
 				tooltip: OpenLayers.i18n("cadastrapp.copropriete"),
 				text: OpenLayers.i18n("cadastrapp.copropriete")
 			});
-			//buttonRechercheCopropriete.on('click', onClickRechercheCopropriete);
+			//buttonRechercheCopropriete.on('click', maFonction);
+			
 			
 			//sous-menu : traitement sélection
+			var scrollMenuTraitementSelection = new Ext.menu.Menu();
 			var buttonTraitementSelection = scrollMenu.add({
 				tooltip: OpenLayers.i18n("cadastrapp.selection"),
-				text: OpenLayers.i18n("cadastrapp.selection")
+				text: OpenLayers.i18n("cadastrapp.selection"),
+				menu: scrollMenuTraitementSelection
 			});
-			//buttonTraitementSelection.on('click', onClickTraitementSelection);
+				//sous-sous-menu : traitement sélection - parcelles
+				var scrollMenuTraitementSelectionParcelles = new Ext.menu.Menu();
+				var buttonTraitementSelectionParcelles = scrollMenuTraitementSelection.add({
+					tooltip: OpenLayers.i18n("cadastrapp.selection.parcelles"),
+					text: OpenLayers.i18n("cadastrapp.selection.parcelles"),
+					menu: scrollMenuTraitementSelectionParcelles
+				});
+					//sous-sous-sous-menu : traitement sélection - parcelles - export
+					var buttonTraitementSelectionParcellesExport = scrollMenuTraitementSelectionParcelles.add({
+						tooltip: OpenLayers.i18n("cadastrapp.selection.parcelles.export"),
+						text: OpenLayers.i18n("cadastrapp.selection.parcelles.export")
+					});
+					//buttonTraitementSelectionParcellesExport.on('click', maFonction);
+					//sous-sous-sous-menu : traitement sélection - parcelles - bordereau
+					var buttonTraitementSelectionParcellesBordereau = scrollMenuTraitementSelectionParcelles.add({
+						tooltip: OpenLayers.i18n("cadastrapp.selection.parcelles.bordereau"),
+						text: OpenLayers.i18n("cadastrapp.selection.parcelles.bordereau")
+					});
+					//buttonTraitementSelectionParcellesBordereau.on('click', maFonction);
+					//sous-sous-sous-menu : traitement sélection - parcelles - plan
+					var buttonTraitementSelectionParcellesPlan = scrollMenuTraitementSelectionParcelles.add({
+						tooltip: OpenLayers.i18n("cadastrapp.selection.parcelles.plan"),
+						text: OpenLayers.i18n("cadastrapp.selection.parcelles.plan")
+					});
+					//buttonTraitementSelectionParcellesPlan.on('click', maFonction);
+									
+				//sous-sous-menu : traitement sélection - proprietaires
+				var scrollMenuTraitementSelectionProprietaires = new Ext.menu.Menu();
+				var buttonTraitementSelectionProprietaires = scrollMenuTraitementSelection.add({
+					tooltip: OpenLayers.i18n("cadastrapp.selection.proprietaires"),
+					text: OpenLayers.i18n("cadastrapp.selection.proprietaires"),
+					menu: scrollMenuTraitementSelectionProprietaires
+				});
+					//sous-sous-sous-menu : traitement sélection - parcelles - export
+					var scrollMenuTraitementSelectionProprietairesExport = scrollMenuTraitementSelectionProprietaires.add({
+						tooltip: OpenLayers.i18n("cadastrapp.selection.proprietaires.export"),
+						text: OpenLayers.i18n("cadastrapp.selection.proprietaires.export")
+					});
+					//scrollMenuTraitementSelectionProprietairesExport.on('click', maFonction);
+					//sous-sous-sous-menu : traitement sélection - parcelles - edition
+					var scrollMenuTraitementSelectionProprietairesEdition = scrollMenuTraitementSelectionProprietaires.add({
+						tooltip: OpenLayers.i18n("cadastrapp.selection.proprietaires.edition"),
+						text: OpenLayers.i18n("cadastrapp.selection.proprietaires.edition")
+					});
+					//scrollMenuTraitementSelectionProprietairesEdition.on('click', maFonction);			
+			
+			
+				//sous-sous-menu : traitement sélection - import
+				var buttonTraitementSelectionImport = scrollMenuTraitementSelection.add({
+					tooltip: OpenLayers.i18n("cadastrapp.selection.import"),
+					text: OpenLayers.i18n("cadastrapp.selection.import")
+				});
+				//buttonTraitementSelectionImport.on('click', maFonction);
     },
 
     /** private: method[initDemandeControl]

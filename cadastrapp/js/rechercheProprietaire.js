@@ -12,11 +12,20 @@ Ext.namespace("GEOR")
      *  :param layer: 
      *  Create ...TODO
      */
-    onClickRechercheProprietaire = function() {
+    onClickRechercheProprietaire1 = function() {
 		if (proprietaireWindow == null) {
 			initRechercheProprietaire();
 		}
 		proprietaireWindow.show();
+		proprietaireWindow.items.items[0].setActiveTab(0);
+	}
+	
+    onClickRechercheProprietaire2 = function() {
+		if (proprietaireWindow == null) {
+			initRechercheProprietaire();
+		}
+		proprietaireWindow.show();
+		proprietaireWindow.items.items[0].setActiveTab(1);
 	}
 	
     initRechercheProprietaire = function(){
