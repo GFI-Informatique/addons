@@ -262,14 +262,18 @@ Ext.namespace("GEOR")
 				]
 			}],
 			buttons: [{
-				labelAlign: 'left',				
-				text: 'Annuler la demande'
-				},{
-				labelAlign: 'right',
-				text: 'Imprimer la demande'
-				}]
+						labelAlign: 'left',				
+						text: 'Annuler la demande',
+						listeners:{
+							click(b,e) {
+											demandWindow.close();
+											}
+									 }
+						},{
+						labelAlign: 'right',
+						text: 'Imprimer la demande'
+						}]
         });
-		
 		demandWindow.show();
 		console.log("onClick")
 	};
