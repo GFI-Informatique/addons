@@ -25,14 +25,14 @@ Ext.namespace("GEOR")
 			border: true,
 			colModel: new Ext.grid.ColumnModel([
 				{
-					id:'prenom',
-					dataIndex: 'prenom',
-					header: 'Prenom',
+					id:'ccoinsee',
+					dataIndex: 'ccoinsee',
+					header: 'Code INSEE',
 					sortable: true
 				},{
-					id:'nom',
-					dataIndex: 'nom',
-					header: 'Nom',
+					id:'libcom_min',
+					dataIndex: 'libcom_min',
+					header: 'Nom Commune',
 					sortable: true
 				}]),
 			store: result

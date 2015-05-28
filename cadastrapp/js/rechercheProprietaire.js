@@ -44,9 +44,9 @@ Ext.namespace("GEOR")
 			value: '',
 			forceSelection: true,
 			editable: true,
-			tpl: '<tpl for="."><div class="x-combo-list-item" >{name} ({code})</div></tpl>',
-			displayField: 'name',
-			valueField: 'code',
+			//tpl: '<tpl for="."><div class="x-combo-list-item" >{libcom_min} ({ccoinsee})</div></tpl>',
+			displayField: 'displayname',
+			valueField: 'ccoinsee',
 			store: cityStore
 		});	
 		
@@ -58,9 +58,9 @@ Ext.namespace("GEOR")
 			value: '',
 			forceSelection: true,
 			editable: true,
-			tpl: '<tpl for="."><div class="x-combo-list-item" >{name} ({code})</div></tpl>',
-			displayField: 'name',
-			valueField: 'code',
+			//tpl: '<tpl for="."><div class="x-combo-list-item" >{libcom_min} ({ccoinsee})</div></tpl>',
+			displayField: 'displayname',
+			valueField: 'ccoinsee',
 			store: cityStore,
 			listeners: {
 				change: function(combo, newValue, oldValue) {
@@ -97,7 +97,7 @@ Ext.namespace("GEOR")
 						var p = new e.grid.store.recordType({proprietaire:''}); // create new record
 						e.grid.stopEditing();
 						e.grid.store.add(p); // insert a new record into the store (also see add)
-						this.startEditing(e.row, 1);
+						this.startEditing(e.row + 1, 0);
 					}
 				}
 			}
@@ -170,7 +170,7 @@ Ext.namespace("GEOR")
 					//ONGLET 2
 					id: 'secondForm',
 					title: 'Adresse cadastrale',
-					layout: 'form',
+					xtype: 'form',
 					defaultType: 'displayfield',
 					fileUpload: true,
 					height: 200,
@@ -185,7 +185,7 @@ Ext.namespace("GEOR")
 					{
 						value: 'ou',
 						fieldClass: 'displayfieldCenter'
-					},					
+					},
 					{
 						fieldLabel: 'Path',
 						name: 'filePath',
@@ -204,44 +204,78 @@ Ext.namespace("GEOR")
 					click: function(b,e) {
 						var currentForm = proprietaireWindow.items.items[0].getActiveTab();
 						if (currentForm.id == 'firstForm') {
-							
-							//appel de méthode webapp
-							Ext.Ajax.request({
-								method: 'GET',
-								url:'./getCommune/all',
-								success: function(form, action) {
-									alert('Success : ' + action.result.msg);
-								},
-								failure: function(form, action) {
-									alert('Failed : ' + action.result.msg);
-								}
-							});
 
-							//soumission des données d'une form
-							currentForm.getForm().submit({
-								method: 'GET',
-								url:'./getCommune/all',
-								success: function(form, action) {
-									alert('Success : ' + action.result.msg);
-								},
-								failure: function(form, action) {
-									alert('Failed : ' + action.result.msg);
-								}
-							});				
-							
 							/*
+							//store
 							var result = new Ext.data.JsonStore({
-								fields : ['prenom', 'nom'],
-								data   : [
-									{prenom : 'nicolas', nom: 'tasia'},
-									{prenom : 'pierre', nom: 'jego'},
-									{prenom : 'laurent', nom: 'cornic'}
-								]
+								fields: ['ccoinsee', 'libcom', 'libcom_min'],
+								url: '../cadastrapp/getCommune/all',
+								autoLoad: true
 							});
 							addNewResultProprietaire(result);
 							*/
+							
+							//appel de méthode webapp							
+							Ext.Ajax.request({
+								method: 'GET',
+								url:'../cadastrapp/getCommune/all',
+								success: function(form, action) {
+									var store = new Ext.data.JsonStore({
+										fields: ['ccoinsee', 'libcom', 'libcom_min'],
+										data: Ext.util.JSON.decode(form.responseText)
+									});	
+									addNewResultProprietaire(store);
+								},
+								failure: function(form, action) {
+									alert('Failed');
+								}
+							});
+							
+
+							//soumission des données d'une form
+							/*
+							currentForm.getForm().submit({
+								method: 'GET',
+								url:'../cadastrapp/getCommune/all',
+								success: function(form, action) {
+									var store = new Ext.data.JsonStore({
+										fields: ['ccoinsee', 'libcom', 'libcom_min'],
+										data: Ext.util.JSON.decode(form.responseText)
+									});	
+									addNewResultProprietaire(store);
+								},
+								failure: function(form, action) {
+									alert('Failed');
+								}
+							});
+							*/							
 						} else {
-							alert('TODO');
+							//soumet la form (pour envoyer le fichier)
+							//TODO : tester si fichier
+							/*
+							currentForm.getForm().submit({
+								url:'../cadastrapp/getCommune/all',
+								success: function(form, action) {
+									alert('Success');
+								},
+								failure: function(form, action) {
+									alert('Failed');
+								}
+							});*/
+							
+							//envoyer le contenu du store
+							Ext.Ajax.request({
+								url:'../cadastrapp/getCommune/all',
+								params: {
+									jsonData: Ext.util.JSON.encode(Ext.pluck(proprietaireGrid.getStore().getRange(), 'data'))
+								},								
+								success: function(form, action) {
+									alert('Success');
+								},
+								failure: function(form, action) {
+									alert('Failed');
+								}
+							});
 						}
 					}
 				}
