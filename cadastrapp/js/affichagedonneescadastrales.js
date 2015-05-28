@@ -19,8 +19,20 @@ Ext.namespace("GEOR")
 		//variable userauthent: niveau de droits de l'utilisateur
 		var userauthent;
 		
-		// méthode relative aux données de parcelles
-		getParcelle = function(){
+		// Set up a model to use in our Store
+		Ext.regModel('Parcelle', {
+		fields: [
+			{name: 'commune', type: 'string'},
+			{name: 'section',  type: 'string'},
+			{name: 'voie',  type: 'string'},
+			{name: 'adresse',  type: 'string'},
+			{name: 'contenance',  type: 'string'},
+			{name: 'surface',  type: 'string'},
+			{name: 'parcellebatie',  type: 'string'},
+			{name: 'appartientsecteururbain',  type: 'string'}
+			]
+		});
+
 		//Information parcelle : TODO : charger dynamiquement selon la parcelle
 		var parcelleStore = new Ext.data.JsonStore({
 			fields : ['name', 'value'],
@@ -28,20 +40,24 @@ Ext.namespace("GEOR")
 				{name : 'parc1',   value: 'parc1'},
 
 		}); 
-/*		
+		//Information parcelle : TODO : charger dynamiquement selon la parcelle		
+
+		//The Store contains the AjaxProxy as an inline configuration
 		var donneescadastralesStore = new Ext.data.Store({
-			storeId: 'donneescadastrales',
-			proxy: {
-			type: 'ajax',
-			url: 'blues.json',
-			reader: {
-				type: 'json',
-				idProperty: 'id'
-						}
-					},
-			fields:['duration', 'genre', 'created_at', 'kind', 'title', 'id']
-  }		);*/
-  
+		model: 'Parcelle',
+		proxy: {
+					type: 'ajax',
+					//TODO
+					//url : 'parcelle.json'
+					}
+		});
+
+		store.load();
+		
+		
+		// méthode relative aux données de parcelles
+		getParcelle = function(){
+	
 			
 		};
 		
@@ -71,7 +87,7 @@ Ext.namespace("GEOR")
 			labelWidth: 100,
 			width: 450,
 			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
-			/*
+			
 			listeners: {
 				close(window) {
 					affichagedonneescadastrales = null;
@@ -204,7 +220,7 @@ Ext.namespace("GEOR")
 						}]
 					}				
 					]
-				}]*/
+				}]
         });
 		
 		affichagedonneescadastrales.show();
