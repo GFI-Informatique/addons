@@ -48,7 +48,7 @@ Ext.namespace("GEOR")
 			valueField: 'code',
 			store: cityStore,
 			listeners: {
-				change(combo, newValue, oldValue) {
+				change: function(combo, newValue, oldValue) {
 					//refaire le section store pour cette ville						
 					referenceGrid.reconfigure(getVoidReferenceStore(), getReferenceColModel(newValue));
 				}
@@ -68,7 +68,7 @@ Ext.namespace("GEOR")
 			width: 300,
 			border: true,
 			listeners: {
-				beforeedit(e) {
+				beforeedit: function(e) {
 					if (e.column == 0) {
 						//pas d'edition de section si aucune ville selectionnée
 						if (cityCombo.value == '') return false;
@@ -80,7 +80,7 @@ Ext.namespace("GEOR")
 						e.grid.getColumnModel().getColumnById(e.field).editor.getStore().loadData(getParcelleStore(cityCombo.value, e.record.data.section).reader.jsonData);
 					}
 				},
-				afteredit(e) {
+				afteredit: function(e) {
 					var lastIndex = e.grid.store.getCount()-1;
 					var lastData = e.grid.store.getAt(e.grid.store.getCount()-1).data;
 					
@@ -112,7 +112,7 @@ Ext.namespace("GEOR")
 			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
 			
 			listeners: {
-				close(window) {
+				close: function(window) {
 					referenceWindow = null;
 				}
 			},
@@ -231,14 +231,14 @@ Ext.namespace("GEOR")
 			buttons: [{
 				text: 'Rechercher',
 				listeners: {
-					click(b,e) {
+					click: function(b,e) {
 						alert('TODO');
 					}
 				}
 			},{
 				text: 'Fermer',
 				listeners: {
-					click(b,e) {
+					click: function(b,e) {
 						referenceWindow.close();
 					}
 				}

@@ -61,7 +61,7 @@ Ext.namespace("GEOR")
 			fields : ['section', 'parcelle'],
 			data   : [{section : '',   parcelle: ''}],
 			listeners: {
-				update(store, record, operation) {
+				update: function(store, record, operation) {
 					var lastIndex = this.getCount()-1;
 					var lastData = this.getAt(this.getCount()-1).data;
 					
@@ -265,7 +265,7 @@ Ext.namespace("GEOR")
 						labelAlign: 'left',				
 						text: 'Annuler la demande',
 						listeners:{
-							click(b,e) {
+							click: function(b,e) {
 											demandWindow.close();
 											}
 									 }

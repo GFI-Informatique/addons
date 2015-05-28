@@ -248,7 +248,7 @@ Ext.namespace("GEOR")
 			},{
 				text: 'Fermer',
 				listeners: {
-					click(b,e) {
+					click: function(b,e) {
 						proprietaireWindow.close();
 					}
 				}
