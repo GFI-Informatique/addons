@@ -58,7 +58,7 @@ Ext.namespace("GEOR")
 			defaults: {autoHeight:true},
 			
 			listeners: {
-				close(window) {
+				close: function(window) {
 					resultProprietaireWindow = null;
 				}
 			},
@@ -72,7 +72,7 @@ Ext.namespace("GEOR")
 			{
 				text: 'Fermer',
 				listeners: {
-					click(b,e) {
+					click: function(b,e) {
 						resultProprietaireWindow.close();
 					}
 				}

@@ -63,7 +63,7 @@ Ext.namespace("GEOR")
 			valueField: 'code',
 			store: cityStore,
 			listeners: {
-				change(combo, newValue, oldValue) {
+				change: function(combo, newValue, oldValue) {
 					//refaire le section store pour cette ville						
 					proprietaireGrid.reconfigure(getVoidProprietaireStore(), getProprietaireColModel(newValue));
 				}
@@ -83,13 +83,13 @@ Ext.namespace("GEOR")
 			width: 300,
 			border: true,
 			listeners: {
-				beforeedit(e) {
+				beforeedit: function(e) {
 					if (e.column == 0) {
 						//pas d'edition de section si aucune ville selectionnée
 						if (cityCombo2.value == '') return false;
 					}
 				},
-				afteredit(e) {
+				afteredit: function(e) {
 					var lastIndex = e.grid.store.getCount()-1;
 					var lastData = e.grid.store.getAt(e.grid.store.getCount()-1).data;
 					
@@ -121,7 +121,7 @@ Ext.namespace("GEOR")
 			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
 			
 			listeners: {
-				close(window) {
+				close: function(window) {
 					proprietaireWindow = null;
 				}
 			},
@@ -201,7 +201,7 @@ Ext.namespace("GEOR")
 			buttons: [{
 				text: 'Rechercher',
 				listeners: {
-					click(b,e) {
+					click: function(b,e) {
 						var currentForm = proprietaireWindow.items.items[0].getActiveTab();
 						if (currentForm.id == 'firstForm') {
 							
@@ -248,7 +248,7 @@ Ext.namespace("GEOR")
 			},{
 				text: 'Fermer',
 				listeners: {
-					click(b,e) {
+					click: function(b,e) {
 						proprietaireWindow.close();
 					}
 				}
