@@ -43,9 +43,9 @@ Ext.namespace("GEOR")
 			value: '',
 			forceSelection: true,
 			editable: true,
-			tpl: '<tpl for="."><div class="x-combo-list-item" >{name} ({code})</div></tpl>',
-			displayField: 'name',
-			valueField: 'code',
+			//tpl: '<tpl for="."><div class="x-combo-list-item" >{libcom_min} ({ccoinsee})</div></tpl>',
+			displayField: 'displayname',
+			valueField: 'ccoinsee',
 			store: cityStore,
 			listeners: {
 				change: function(combo, newValue, oldValue) {

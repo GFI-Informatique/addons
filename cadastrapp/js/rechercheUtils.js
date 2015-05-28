@@ -24,14 +24,13 @@ Ext.namespace("GEOR")
 	//TODO : récupérer la liste entière	
 	getCityStore = function() {
 		return new Ext.data.JsonStore({
-			fields : ['name', 'code'],
-			//url: 'cities.json'
-			data   : [
-				{name : 'Caen', code: '14000'},
-				{name : 'Rennes',  code: '35000'},
-				{name : 'Lannion', code: '22300'}
-			]
-		});	
+			url: '../cadastrapp/getCommune/all',
+			autoLoad: true,
+			fields: ['ccoinsee', 'libcom', 'libcom_min', { 
+		       name: 'displayname', 
+		       convert: function(v, rec) { return rec.libcom_min.trim() + ' (' + rec.ccoinsee.trim() + ')'}
+		    }]
+		});
 	}	
 		
 	//liste des sections
