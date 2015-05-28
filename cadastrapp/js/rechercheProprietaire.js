@@ -204,6 +204,23 @@ Ext.namespace("GEOR")
 					click: function(b,e) {
 						var currentForm = proprietaireWindow.items.items[0].getActiveTab();
 						if (currentForm.id == 'firstForm') {
+							//envoi des données d'une form
+							//Ext.Ajax.request({
+							currentForm.getForm().submit({
+								method: 'GET',
+								url:'../cadastrapp/getCommune/all',
+								success: function(form, action) {
+									//creation d'un store en retour
+									var store = new Ext.data.JsonStore({
+										fields: ['ccoinsee', 'libcom', 'libcom_min'],
+										data: Ext.util.JSON.decode(form.responseText)
+									});	
+									addNewResultProprietaire(store);
+								},
+								failure: function(form, action) {
+									alert('Failed');
+								}
+							});	
 
 							/*
 							//store
@@ -215,62 +232,22 @@ Ext.namespace("GEOR")
 							addNewResultProprietaire(result);
 							*/
 							
-							//appel de méthode webapp							
-							Ext.Ajax.request({
-								method: 'GET',
-								url:'../cadastrapp/getCommune/all',
-								success: function(form, action) {
-									var store = new Ext.data.JsonStore({
-										fields: ['ccoinsee', 'libcom', 'libcom_min'],
-										data: Ext.util.JSON.decode(form.responseText)
-									});	
-									addNewResultProprietaire(store);
-								},
-								failure: function(form, action) {
-									alert('Failed');
-								}
-							});
-							
-
-							//soumission des données d'une form
-							/*
-							currentForm.getForm().submit({
-								method: 'GET',
-								url:'../cadastrapp/getCommune/all',
-								success: function(form, action) {
-									var store = new Ext.data.JsonStore({
-										fields: ['ccoinsee', 'libcom', 'libcom_min'],
-										data: Ext.util.JSON.decode(form.responseText)
-									});	
-									addNewResultProprietaire(store);
-								},
-								failure: function(form, action) {
-									alert('Failed');
-								}
-							});
-							*/							
 						} else {
 							//soumet la form (pour envoyer le fichier)
-							//TODO : tester si fichier
-							/*
 							currentForm.getForm().submit({
-								url:'../cadastrapp/getCommune/all',
-								success: function(form, action) {
-									alert('Success');
-								},
-								failure: function(form, action) {
-									alert('Failed');
-								}
-							});*/
-							
-							//envoyer le contenu du store
-							Ext.Ajax.request({
+								//method: 'GET',
 								url:'../cadastrapp/getCommune/all',
 								params: {
+									//envoi du contenu du store des proprietaires
 									jsonData: Ext.util.JSON.encode(Ext.pluck(proprietaireGrid.getStore().getRange(), 'data'))
-								},								
+								},
 								success: function(form, action) {
-									alert('Success');
+									//creation d'un store en retour
+									var store = new Ext.data.JsonStore({
+										fields: ['ccoinsee', 'libcom', 'libcom_min'],
+										data: Ext.util.JSON.decode(form.responseText)
+									});	
+									addNewResultProprietaire(store);
 								},
 								failure: function(form, action) {
 									alert('Failed');

@@ -6,36 +6,36 @@
 	*/
 Ext.namespace("GEOR")
 
-	var referenceWindow;
+	var parcelleWindow;
 
   	/** public: method[onClickRechercheParcelle]
      *  :param layer: 
      *  Create ...TODO
      */
     onClickRechercheParcelle1 = function() {
-		if (referenceWindow == null) {
+		if (parcelleWindow == null) {
 			initRechercheParcelle();
 		}
-		referenceWindow.show();
-		referenceWindow.items.items[0].setActiveTab(0);
+		parcelleWindow.show();
+		parcelleWindow.items.items[0].setActiveTab(0);
 	}
     onClickRechercheParcelle2 = function() {
-		if (referenceWindow == null) {
+		if (parcelleWindow == null) {
 			initRechercheParcelle();
 		}
-		referenceWindow.show();
-		referenceWindow.items.items[0].setActiveTab(1);
+		parcelleWindow.show();
+		parcelleWindow.items.items[0].setActiveTab(1);
 	}		
 		
 	initRechercheParcelle = function(){
-		var bisStore, cityStore, cityCombo, referenceGrid;
+		var bisStore, cityStore, cityCombo1, cityCombo2, parcelleGrid;
 		
 		bisStore = getBisStore();
 		
 		cityStore = getCityStore();
 
 		//combobox "villes"
-		cityCombo = new Ext.form.ComboBox({
+		cityCombo1 = new Ext.form.ComboBox({
 			fieldLabel: 'Ville, Commune',
 			name: 'city',
 			width: 300,
@@ -43,26 +43,38 @@ Ext.namespace("GEOR")
 			value: '',
 			forceSelection: true,
 			editable: true,
-			//tpl: '<tpl for="."><div class="x-combo-list-item" >{libcom_min} ({ccoinsee})</div></tpl>',
 			displayField: 'displayname',
 			valueField: 'ccoinsee',
 			store: cityStore,
 			listeners: {
 				change: function(combo, newValue, oldValue) {
 					//refaire le section store pour cette ville						
-					referenceGrid.reconfigure(getVoidReferenceStore(), getReferenceColModel(newValue));
+					parcelleGrid.reconfigure(getVoidParcelleStore(), getParcelleColModel(newValue));
 				}
 			}
+		});
+		
+		cityCombo2 = new Ext.form.ComboBox({
+			fieldLabel: 'Ville, Commune',
+			name: 'city',
+			width: 300,
+			mode: 'local',
+			value: '',
+			forceSelection: true,
+			editable: true,
+			displayField: 'displayname',
+			valueField: 'ccoinsee',
+			store: cityStore
 		});		
 		
 		//grille "références"
-		referenceGrid = new Ext.grid.EditorGridPanel({
+		parcelleGrid = new Ext.grid.EditorGridPanel({
 			fieldLabel: 'R&eacute;f&eacute;rence(s)',
-			name: 'references',							
+			name: 'parcelles',							
 			xtype: 'editorgrid',
 			clicksToEdit: 1,
-			ds: getVoidReferenceStore(),
-			cm: getReferenceColModel(''),
+			ds: getVoidParcelleStore(),
+			cm: getParcelleColModel(''),
 			autoExpandColumn: 'parcelle',
 			height: 100,
 			width: 300,
@@ -71,13 +83,13 @@ Ext.namespace("GEOR")
 				beforeedit: function(e) {
 					if (e.column == 0) {
 						//pas d'edition de section si aucune ville selectionnée
-						if (cityCombo.value == '') return false;
+						if (cityCombo1.value == '') return false;
 					}
 					if (e.column == 1) {
 						//pas d'edition de parcelle si aucune section selectionnée
 						if (e.record.data.section == '') return false;
 						//on remplace le contenu du store des parcelles selon la section selectionnée
-						e.grid.getColumnModel().getColumnById(e.field).editor.getStore().loadData(getParcelleStore(cityCombo.value, e.record.data.section).reader.jsonData);
+						e.grid.getColumnModel().getColumnById(e.field).editor.getStore().loadData(getParcelleStore(cityCombo1.value, e.record.data.section).reader.jsonData);
 					}
 				},
 				afteredit: function(e) {
@@ -96,7 +108,7 @@ Ext.namespace("GEOR")
 		
 				
 		//fenêtre principale
-		referenceWindow = new Ext.Window({
+		parcelleWindow = new Ext.Window({
 			title: 'Recherche des parcelles',
 			frame: true,
 			autoScroll:true,
@@ -113,7 +125,7 @@ Ext.namespace("GEOR")
 			
 			listeners: {
 				close: function(window) {
-					referenceWindow = null;
+					parcelleWindow = null;
 				}
 			},
 			
@@ -127,19 +139,19 @@ Ext.namespace("GEOR")
 				
 					//ONGLET 1
 					title:'R&eacute;f&eacute;rence',
-					layout:'form',
+					xtype:'form',
 					defaultType: 'displayfield',
 					id: 'firstForm',
 					fileUpload: true,
 					height: 200,
 					
 					items: [
-					cityCombo,		//combobox "villes"				
+					cityCombo1,		//combobox "villes"				
 					{
 						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
 						fieldClass: 'displayfieldGray'
 					},
-					referenceGrid,	//grille "références"
+					parcelleGrid,	//grille "références"
 					{
 						value: 'ou',
 						fieldClass: 'displayfieldCenter'
@@ -158,24 +170,13 @@ Ext.namespace("GEOR")
 				
 					//ONGLET 2
 					title:'Adresse cadastrale',
-					layout:'form',
+					xtype:'form',
 					defaultType: 'displayfield',
 					id: 'secondForm',
 					height: 200,
 
-					items: [{
-						xtype: 'combo',
-						fieldLabel: 'Ville, Commune',
-						name: 'city',
-						width: 300,
-						mode: 'local',
-						value: '',
-						forceSelection: true,
-						editable:       true,
-						displayField:   'name',
-						valueField:     'value',
-						store: cityStore
-					},
+					items: [
+					cityCombo2,		//combobox "villes"
 					{
 						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
 						fieldClass: 'displayfieldGray'
@@ -232,14 +233,55 @@ Ext.namespace("GEOR")
 				text: 'Rechercher',
 				listeners: {
 					click: function(b,e) {
-						alert('TODO');
+						var currentForm = parcelleWindow.items.items[0].getActiveTab();
+						if (currentForm.id == 'firstForm') {
+							//soumet la form (pour envoyer le fichier)
+							currentForm.getForm().submit({
+								//method: 'GET',
+								url:'../cadastrapp/getCommune/all',
+								params: {
+									//envoi du contenu du store des proprietaires
+									jsonData: Ext.util.JSON.encode(Ext.pluck(parcelleGrid.getStore().getRange(), 'data'))
+								},
+								success: function(form, action) {
+									//creation d'un store en retour
+									var store = new Ext.data.JsonStore({
+										fields: ['ccoinsee', 'libcom', 'libcom_min'],
+										data: Ext.util.JSON.decode(form.responseText)
+									});	
+									addNewResultParcelle(store);
+								},
+								failure: function(form, action) {
+									alert('Failed');
+								}
+							});
+							
+						} else {
+							//envoi des données d'une form
+							//Ext.Ajax.request({
+							currentForm.getForm().submit({
+								method: 'GET',
+								url:'../cadastrapp/getCommune/all',
+								success: function(form, action) {
+									//creation d'un store en retour
+									var store = new Ext.data.JsonStore({
+										fields: ['ccoinsee', 'libcom', 'libcom_min'],
+										data: Ext.util.JSON.decode(form.responseText)
+									});	
+									addNewResultParcelle(store);
+								},
+								failure: function(form, action) {
+									alert('Failed');
+								}
+							});
+						}
 					}
 				}
 			},{
 				text: 'Fermer',
 				listeners: {
 					click: function(b,e) {
-						referenceWindow.close();
+						parcelleWindow.close();
 					}
 				}
 			}]

@@ -35,7 +35,12 @@ Ext.namespace("GEOR")
 					header: 'Nom Commune',
 					sortable: true
 				}]),
-			store: result
+			store: result,
+			listeners: {
+				click: function(grid, rowIndex, columnIndex, e) {
+					
+				}				
+			}
 		});
 		tabs.insert(0, newGrid);
 		tabs.setActiveTab(0);
