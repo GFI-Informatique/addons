@@ -12,7 +12,7 @@ Ext.namespace("GEOR")
      *  :param layer: 
      *  Create ...TODO
      */
-    addNewResultProprietaire = function(result) {
+    addNewResultProprietaire = function(title, result) {
 		if (resultProprietaireWindow == null) {
 			initResultProprietaire();
 		}
@@ -20,9 +20,11 @@ Ext.namespace("GEOR")
 		
 		var tabs = resultProprietaireWindow.items.items[0];
 		var newGrid = new Ext.grid.GridPanel({
-			title: 'TEST '+ tabs.items.length,
+			title: title,
 			height: 400,
 			border: true,
+            closable: true,
+            
 			colModel: new Ext.grid.ColumnModel([
 				{
 					id:'ccoinsee',
@@ -35,10 +37,44 @@ Ext.namespace("GEOR")
 					header: 'Nom Commune',
 					sortable: true
 				}]),
-			store: result,
+				
+			//store: (result!=null) ? result : new Ext.data.Store(),
+			store: (result!=null) ? result : new Ext.data.JsonStore({
+				fields : ['ccoinsee', 'libcom_min'],
+				data   : [
+					{ccoinsee: '63001',  libcom_min: 'Ville Test 1'},
+					{ccoinsee: '63002', libcom_min: 'Ville Test 2'}
+				]
+			}),
+		
+			viewConfig: {
+				deferEmptyText: false,
+				emptyText: 'Aucune données',
+			},
+			
 			listeners: {
-				click: function(grid, rowIndex, columnIndex, e) {
+				rowclick: function(grid, rowIndex, columnIndex, e) {
+					//on fait une requete pour obtenir la listes des parcelles du proprietaire
+					var record = grid.getStore().getAt(rowIndex);
+					var proprietaireName = record.data.libcom_min;		//TODO : changer
+					var proprietaireId = record.data.ccoinsee;			//TODO : changer
 					
+					//envoi des données d'une form
+					Ext.Ajax.request({
+						method: 'GET',
+						url:'../cadastrapp/getCommune/ccoinsee_partiel/' + proprietaireId,		//TODO : changer
+						success: function(form, action) {
+							//creation d'un store en retour
+							var store = new Ext.data.JsonStore({
+								fields: ['ccoinsee', 'libcom', 'libcom_min'],
+								data: Ext.util.JSON.decode(form.responseText)
+							});							
+							addNewResultParcelle(proprietaireName, store);
+						},
+						failure: function(form, action) {
+							addNewResultParcelle(proprietaireName, null);
+						}
+					});
 				}				
 			}
 		});

@@ -1,5 +1,7 @@
 {
     "js": [
+    	"js/detailParcelle.js",
+		"js/resultParcelle.js",
 		"js/resultProprietaire.js",
 		"js/rechercheUtils.js",
 		"js/rechercheProprietaire.js",
@@ -216,4 +218,3 @@
         }
     }
 }
-

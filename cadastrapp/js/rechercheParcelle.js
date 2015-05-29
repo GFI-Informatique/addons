@@ -38,6 +38,7 @@ Ext.namespace("GEOR")
 		cityCombo1 = new Ext.form.ComboBox({
 			fieldLabel: 'Ville, Commune',
 			name: 'city',
+            allowBlank:false,
 			width: 300,
 			mode: 'local',
 			value: '',
@@ -47,6 +48,13 @@ Ext.namespace("GEOR")
 			valueField: 'ccoinsee',
 			store: cityStore,
 			listeners: {
+			    beforequery: function(q){  
+			    	if (q.query) {
+		                var length = q.query.length;
+		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+		                q.query.length = length;
+		            }
+			    },
 				change: function(combo, newValue, oldValue) {
 					//refaire le section store pour cette ville						
 					parcelleGrid.reconfigure(getVoidParcelleStore(), getParcelleColModel(newValue));
@@ -57,6 +65,7 @@ Ext.namespace("GEOR")
 		cityCombo2 = new Ext.form.ComboBox({
 			fieldLabel: 'Ville, Commune',
 			name: 'city',
+            allowBlank:false,
 			width: 300,
 			mode: 'local',
 			value: '',
@@ -64,7 +73,16 @@ Ext.namespace("GEOR")
 			editable: true,
 			displayField: 'displayname',
 			valueField: 'ccoinsee',
-			store: cityStore
+			store: cityStore,
+			listeners: {
+			    beforequery: function(q){  
+			    	if (q.query) {
+		                var length = q.query.length;
+		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+		                q.query.length = length;
+		            }
+			    }
+			}
 		});		
 		
 		//grille "références"
@@ -235,45 +253,53 @@ Ext.namespace("GEOR")
 					click: function(b,e) {
 						var currentForm = parcelleWindow.items.items[0].getActiveTab();
 						if (currentForm.id == 'firstForm') {
-							//soumet la form (pour envoyer le fichier)
-							currentForm.getForm().submit({
-								//method: 'GET',
-								url:'../cadastrapp/getCommune/all',
-								params: {
-									//envoi du contenu du store des proprietaires
-									jsonData: Ext.util.JSON.encode(Ext.pluck(parcelleGrid.getStore().getRange(), 'data'))
-								},
-								success: function(form, action) {
-									//creation d'un store en retour
-									var store = new Ext.data.JsonStore({
-										fields: ['ccoinsee', 'libcom', 'libcom_min'],
-										data: Ext.util.JSON.decode(form.responseText)
-									});	
-									addNewResultParcelle(store);
-								},
-								failure: function(form, action) {
-									alert('Failed');
-								}
-							});
+							if (currentForm.getForm().isValid()) {
+								var cityName = currentForm.getForm().findField('city').lastSelectionText;
+								//soumet la form (pour envoyer le fichier)
+								currentForm.getForm().submit({
+									//method: 'GET',
+									url:'../cadastrapp/getCommune/all',
+									params: {
+										//envoi du contenu du store des proprietaires
+										jsonData: Ext.util.JSON.encode(Ext.pluck(parcelleGrid.getStore().getRange(), 'data'))
+									},
+									success: function(form, action) {
+										//creation d'un store en retour
+										var store = new Ext.data.JsonStore({
+											fields: ['ccoinsee', 'libcom', 'libcom_min'],
+											data: Ext.util.JSON.decode(form.responseText)
+										});
+										
+										addNewResultParcelle(cityName, store);
+									},
+									failure: function(form, action) {
+										addNewResultParcelle(cityName, null);
+									}
+								});
+							}
 							
 						} else {
-							//envoi des données d'une form
-							//Ext.Ajax.request({
-							currentForm.getForm().submit({
-								method: 'GET',
-								url:'../cadastrapp/getCommune/all',
-								success: function(form, action) {
-									//creation d'un store en retour
-									var store = new Ext.data.JsonStore({
-										fields: ['ccoinsee', 'libcom', 'libcom_min'],
-										data: Ext.util.JSON.decode(form.responseText)
-									});	
-									addNewResultParcelle(store);
-								},
-								failure: function(form, action) {
-									alert('Failed');
-								}
-							});
+							if (currentForm.getForm().isValid()) {
+								var cityName = currentForm.getForm().findField('city').lastSelectionText;
+								//envoi des données d'une form
+								//Ext.Ajax.request({
+								currentForm.getForm().submit({
+									method: 'GET',
+									url:'../cadastrapp/getCommune/all',
+									success: function(form, action) {
+										//creation d'un store en retour
+										var store = new Ext.data.JsonStore({
+											fields: ['ccoinsee', 'libcom', 'libcom_min'],
+											data: Ext.util.JSON.decode(form.responseText)
+										});
+										
+										addNewResultParcelle(cityName, store);
+									},
+									failure: function(form, action) {
+										addNewResultParcelle(cityName, null);
+									}
+								});
+							}
 						}
 					}
 				}

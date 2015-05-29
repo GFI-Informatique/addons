@@ -108,7 +108,16 @@ Ext.namespace("GEOR")
 					editable:       true,
 					displayField:   'name',
 					valueField:     'name',
-					store: getSectionStore(cityId)
+					store: getSectionStore(cityId),
+					listeners: {
+					    beforequery: function(q){  
+					    	if (q.query) {
+				                var length = q.query.length;
+				                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+				                q.query.length = length;
+				            }
+					    }
+					}					
 				})
 			},
 			{
@@ -124,7 +133,16 @@ Ext.namespace("GEOR")
 					editable:       true,
 					displayField:   'name',
 					valueField:     'name',
-					store: getParcelleStore(cityId, '')
+					store: getParcelleStore(cityId, ''),
+					listeners: {
+					    beforequery: function(q){  
+					    	if (q.query) {
+				                var length = q.query.length;
+				                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+				                q.query.length = length;
+				            }
+					    }
+					}
 				})
 			}
 		]);		
@@ -147,7 +165,16 @@ Ext.namespace("GEOR")
 					editable:       true,
 					displayField:   'name',
 					valueField:     'name',
-					store: getProprietaireStore(cityId)
+					store: getProprietaireStore(cityId),
+					listeners: {
+					    beforequery: function(q){  
+					    	if (q.query) {
+				                var length = q.query.length;
+				                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+				                q.query.length = length;
+				            }
+					    }
+					}
 				})
 			}
 		]);		
