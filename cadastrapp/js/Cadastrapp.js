@@ -375,11 +375,13 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 
             switch (geometryType) {
                  case "Cadastre":
+					//xtype: 'checkbox',
                     handler = OpenLayers.Handler.Path;
 					isChecked: true,
                     tooltip = OpenLayers.i18n("cadastrapp.cadastre");
                     break;
                  case "Foncier":
+				 	//xtype: 'checkbox',
                     handler = OpenLayers.Handler.Path;
 					isCheckbox: true,
                     tooltip = OpenLayers.i18n("cadastrapp.foncier");

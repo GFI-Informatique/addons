@@ -271,7 +271,12 @@ Ext.namespace("GEOR")
 									 }
 						},{
 						labelAlign: 'right',
-						text: 'Imprimer la demande'
+						text: 'Imprimer la demande',
+						listeners:{
+							click: function(b,e) {
+											demandWindow.close();
+											}
+									 }							
 						}]
         });
 		demandWindow.show();
