@@ -76,7 +76,7 @@ Ext.namespace("GEOR")
 	//initialement vide
 	//ajoute automatique une ligne vide quand la dernière ligne est complètement remplie
 	//actuellement, on ne peut pas supprimer une ligne
-	getVoidReferenceStore = function() {
+	getVoidParcelleStore = function() {
 		return new Ext.data.JsonStore({
 			fields : ['section', 'parcelle'],
 			data   : [{section : '',   parcelle: ''}]
@@ -93,7 +93,7 @@ Ext.namespace("GEOR")
 	}
 	
 	//design et editor des colonnes de la grille "référence"
-	getReferenceColModel = function(cityId) {
+	getParcelleColModel = function(cityId) {
 		return new Ext.grid.ColumnModel([
 			{
 				id:'section',
