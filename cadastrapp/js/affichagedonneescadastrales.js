@@ -35,9 +35,25 @@ Ext.namespace("GEOR")
 
 		//Information parcelle : TODO : charger dynamiquement selon la parcelle
 		var parcelleStore = new Ext.data.JsonStore({
-			fields : ['name', 'value'],
-			data   : [
-				{name : 'parc1',   value: 'parc1'},
+ {
+							//envoi des données d'une form
+							//Ext.Ajax.request({
+							currentForm.getForm().submit({
+								method: 'GET',
+								url:'../cadastrapp/getCommune/all',
+								success: function(form, action) {
+									//creation d'un store en retour
+									var store = new Ext.data.JsonStore({
+										fields: ['ccoinsee', 'libcom', 'libcom_min'],
+										data: Ext.util.JSON.decode(form.responseText)
+									});	
+									addNewResultParcelle(store);
+								},
+								failure: function(form, action) {
+									alert('Failed');
+								}
+							});
+						}
 
 		}); 
 		//Information parcelle : TODO : charger dynamiquement selon la parcelle		
@@ -70,7 +86,11 @@ Ext.namespace("GEOR")
 		getHabitationDetails = function(){
 			
 		};
-				
+		// méthode relative a la fiche d'information cadastrale
+		getFic = function(){
+			
+		};
+					
 
   		//fenêtre principale
 		var affichagedonneescadastrales;
@@ -93,8 +113,21 @@ Ext.namespace("GEOR")
 					affichagedonneescadastrales = null;
 				}
 			},
-			//construction de la vue 
+			
+			if 
+			//construction de la vue fiche d'information cadastrale
+			//Onglet parcelle
 			items: [{
+						buttons: [{
+						/* TODO
+						labelAlign: 'left',				
+						text: 'Annuler la demande',
+						listeners:{
+							click: function(b,e) {
+											demandWindow.close();
+											}
+									 }	*/				
+						}],
 				xtype: 'fieldset',
 				items: [				
 					{ xtype:'tabpanel',	height: 160,
