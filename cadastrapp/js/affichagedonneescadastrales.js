@@ -33,6 +33,86 @@ Ext.namespace("GEOR")
 			]
 		});
 
+		
+		// Modele du  Store parcelle
+		Ext.regModel('Fic', {
+		fields: [
+				//Parcelle
+				{name: 'département', type: 'String'},
+				{name: 'direction', type: 'String'},
+				{name: 'commune', type: 'String'},
+				{name: 'libellecommune', type: 'String'},
+				{name: 'prefixesection', type: 'String'},
+				{name: 'Section', type: 'String'},
+				{name: 'numplanparcelle', type: 'String'},
+				{name: 'numerovoirie', type: 'String'},
+				{name: 'indicerepetition', type: 'String'},
+				{name: 'naturevoie', type: 'String'},
+				{name: 'libellevoie', type: 'String'},
+				{name: 'contenancedgfip', type: 'int'},
+				{name: 'surface', type: 'float'},
+				{name: 'parcellebatie', type: 'String'},
+				{name: 'secteururbain', type: 'String'},
+				]
+
+		
+				//	Proprietaires
+				{name: 'comptepropriétaire', type: 'String'},
+				{name: 'nomdusage', type: 'String'},
+				{name: 'prenomsdusage', type: 'String'},
+				{name: 'mentionducomplement', type: 'String'},
+				{name: 'nomcomplement', type: 'String'},
+				{name: 'prenomscomplement', type: 'String'},
+
+				
+
+		
+				// Adressehabitation			
+		dlign3	Ligne d’adresse	String[30]
+		dlign4	Ligne d’adresse	String[36]
+		dlign5	Ligne d’adresse	String[30]
+		dlign6	Ligne d’adresse	String[32]
+		dldnss	Lieu de naissance	String[58]
+		jdatnss	Date de naissance	date
+		ccodro	Code du droit réel	String[1]
+		ccodro_lib	Libellé – Code du droit réel	String[150]
+	
+				// Batiments		
+		dnubat	Lettre de bâtiment	
+		locaux			
+		annee	année	String[4]
+		invar	numéro invariant	String[10]
+		descr	Numéro d’entrée	String[2]
+		dniv	Niveau d’étage	String[2]
+		dpor	Numéro de local (porte)	String[5]
+		cconlc_lib	Libellé - Nature du local 	String[150]
+		dvltrt	Valeur locative totale retenue – Revenu fiscal ?	Int4
+		jdatat	Date d’acte de mutation du local	date
+		jannat	Année de construction	String[4]
+		proprietaires		
+		dnupro	Compte propriétaire	String[6]
+		dnomlp	Nom d’usage	String[30]
+		dprnlp	Prénoms d’usage	String[15]
+		expnee	Mention du complément	String[3]
+		dnomcp	Nom complément	String[30]
+		dprncp	Prénoms complément	String[15]
+			
+			// Subdivisions		
+		ccosub	Lettre indicative de subdivisions fiscales	String[2]
+		dcntsf	Contenance de la subdivision en m2	Int4
+		cgrnum_lib	Libellé - Groupe de nature de culture	String[150]
+		drcsub	Revenu cadastral revalorisé du 01-01 de l’année en euros	numeric
+		
+			// Filiation		
+		jdatat	Date de l’acte	date
+		ccocomm	Code INSEE de la commune de la parcelle mère	String[3]
+		ccoprem	Code du préfixe de section de la parcelle mère	String[3]
+		ccosecm	Code section de la parcelle mère	String[2]
+		dnuplam	Numéro de plan de la parcelle	String[4]
+		type_filiation	Type de filiation (D, R, T ou blanc)	String[1]
+
+		
+		
 		//Information parcelle : TODO : charger dynamiquement selon la parcelle
 		var parcelleStore = new Ext.data.JsonStore({
  {
