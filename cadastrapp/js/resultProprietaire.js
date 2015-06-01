@@ -88,7 +88,7 @@ Ext.namespace("GEOR")
 			title: OpenLayers.i18n('cadastrapp.proprietaire.result.title'),
 			frame: true,
 			autoScroll:true,
-			minimizable: true,
+			minimizable: false,
 			closable: true,
 			resizable: false,
 			draggable : true,

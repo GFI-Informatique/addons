@@ -30,7 +30,7 @@ Ext.namespace("GEOR")
 			title: title,
 			height: 400,
 			border: true,
-	        closable: true,
+            closable: true,
 			
 			//store: (result!=null) ? result : new Ext.data.Store(),
 			store: (result!=null) ? result : new Ext.data.JsonStore({
@@ -93,7 +93,7 @@ Ext.namespace("GEOR")
 			title: OpenLayers.i18n('cadastrapp.parcelle.result.title'),
 			frame: true,
 			autoScroll:true,
-			minimizable: true,
+			minimizable: false,
 			closable: true,
 			resizable: false,
 			draggable : true,

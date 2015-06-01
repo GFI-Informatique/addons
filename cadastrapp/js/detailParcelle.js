@@ -16,7 +16,7 @@ Ext.namespace("GEOR")
 			title: 'Parcelle '+parcelleId,
 			frame: true,
 			autoScroll:true,
-			minimizable: true,
+			minimizable: false,
 			closable: true,
 			resizable: false,
 			draggable : true,

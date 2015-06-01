@@ -28,14 +28,14 @@ Ext.namespace("GEOR")
 	}		
 		
 	initRechercheParcelle = function(){
-		var bisStore, cityStore, cityCombo1, cityCombo2, parcelleGrid;
+		var parcBisStore, parcCityStore, parcCityCombo1, parcCityCombo2, parcelleGrid;
 		
-		bisStore = getBisStore();
+		parcBisStore = getBisStore();
 		
-		cityStore = getCityStore();
+		parcCityStore = getCityStore();
 
 		//combobox "villes"
-		cityCombo1 = new Ext.form.ComboBox({
+		parcCityCombo1 = new Ext.form.ComboBox({
 			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
 			name: 'city',
             allowBlank:false,
@@ -46,7 +46,7 @@ Ext.namespace("GEOR")
 			editable: true,
 			displayField: 'displayname',
 			valueField: 'ccoinsee',
-			store: cityStore,
+			store: parcCityStore,
 			listeners: {
 			    beforequery: function(q){  
 			    	if (q.query) {
@@ -58,11 +58,12 @@ Ext.namespace("GEOR")
 				change: function(combo, newValue, oldValue) {
 					//refaire le section store pour cette ville						
 					parcelleGrid.reconfigure(getVoidParcelleStore(), getParcelleColModel(newValue));
+					parcelleWindow.buttons[0].enable();
 				}
 			}
 		});
 		
-		cityCombo2 = new Ext.form.ComboBox({
+		parcCityCombo2 = new Ext.form.ComboBox({
 			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
 			name: 'city',
             allowBlank:false,
@@ -73,7 +74,7 @@ Ext.namespace("GEOR")
 			editable: true,
 			displayField: 'displayname',
 			valueField: 'ccoinsee',
-			store: cityStore,
+			store: parcCityStore,
 			listeners: {
 			    beforequery: function(q){  
 			    	if (q.query) {
@@ -101,13 +102,13 @@ Ext.namespace("GEOR")
 				beforeedit: function(e) {
 					if (e.column == 0) {
 						//pas d'edition de section si aucune ville selectionnée
-						if (cityCombo1.value == '') return false;
+						if (parcCityCombo1.value == '') return false;
 					}
 					if (e.column == 1) {
 						//pas d'edition de parcelle si aucune section selectionnée
 						if (e.record.data.section == '') return false;
 						//on remplace le contenu du store des parcelles selon la section selectionnée
-						e.grid.getColumnModel().getColumnById(e.field).editor.getStore().loadData(getParcelleStore(cityCombo1.value, e.record.data.section).reader.jsonData);
+						e.grid.getColumnModel().getColumnById(e.field).editor.getStore().loadData(getParcelleStore(parcCityCombo1.value, e.record.data.section).reader.jsonData);
 					}
 				},
 				afteredit: function(e) {
@@ -130,7 +131,7 @@ Ext.namespace("GEOR")
 			title: OpenLayers.i18n('cadastrapp.parcelle.title'),
 			frame: true,
 			autoScroll:true,
-			minimizable: true,
+			minimizable: false,
 			closable: true,
 			resizable: false,
 			draggable : true,
@@ -150,7 +151,6 @@ Ext.namespace("GEOR")
 			items: [
 			{
 				xtype:'tabpanel',
-				id: 'onglets',
 				activeTab: 0,
 			
 				items:[{
@@ -159,12 +159,12 @@ Ext.namespace("GEOR")
 					title: OpenLayers.i18n('cadastrapp.parcelle.title.tab1'),
 					xtype:'form',
 					defaultType: 'displayfield',
-					id: 'firstForm',
+					id: 'parcFirstForm',
 					fileUpload: true,
 					height: 200,
 					
 					items: [
-					cityCombo1,		//combobox "villes"				
+					parcCityCombo1,		//combobox "villes"				
 					{
 						value: OpenLayers.i18n('cadastrapp.parcelle.city.exemple'),
 						fieldClass: 'displayfieldGray'
@@ -190,11 +190,11 @@ Ext.namespace("GEOR")
 					title: OpenLayers.i18n('cadastrapp.parcelle.title.tab2'),
 					xtype:'form',
 					defaultType: 'displayfield',
-					id: 'secondForm',
+					id: 'parcSecondForm',
 					height: 200,
 
 					items: [
-					cityCombo2,		//combobox "villes"
+					parcCityCombo2,		//combobox "villes"
 					{
 						value: OpenLayers.i18n('cadastrapp.parcelle.city.exemple'),
 						fieldClass: 'displayfieldGray'
@@ -220,7 +220,7 @@ Ext.namespace("GEOR")
 								editable:       false,
 								displayField:   'name',
 								valueField:     'value',
-								store: bisStore
+								store: parcBisStore
 							},
 							{
 								name : 'streetName',
@@ -249,10 +249,11 @@ Ext.namespace("GEOR")
 			
 			buttons: [{
 				text: OpenLayers.i18n('cadastrapp.search'),
+				disabled: true,
 				listeners: {
 					click: function(b,e) {
 						var currentForm = parcelleWindow.items.items[0].getActiveTab();
-						if (currentForm.id == 'firstForm') {
+						if (currentForm.id == 'parcFirstForm') {
 							if (currentForm.getForm().isValid()) {
 								var cityName = currentForm.getForm().findField('city').lastSelectionText;
 								//soumet la form (pour envoyer le fichier)

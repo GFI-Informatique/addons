@@ -29,14 +29,12 @@ Ext.namespace("GEOR")
 	}
 	
     initRechercheProprietaire = function(){
-		var bisStore, cityStore, cityCombo1, cityCombo2, proprietaireGrid;
-		
-		bisStore = getBisStore();
-		
-		cityStore = getCityStore();
+		var propCityStore, propCityCombo1, propCityCombo2, proprietaireGrid;
+				
+		propCityStore = getCityStore();
 
 		//comboboxes "villes"
-		cityCombo1 = new Ext.form.ComboBox({
+		propCityCombo1 = new Ext.form.ComboBox({
 			fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.city'),
 			name: 'city',
             allowBlank:false,
@@ -47,7 +45,7 @@ Ext.namespace("GEOR")
 			editable: true,
 			displayField: 'displayname',
 			valueField: 'ccoinsee',
-			store: cityStore,
+			store: propCityStore,
 			listeners: {
 			    beforequery: function(q){  
 			    	if (q.query) {
@@ -59,7 +57,7 @@ Ext.namespace("GEOR")
 			}
 		});	
 		
-		cityCombo2 = new Ext.form.ComboBox({
+		propCityCombo2 = new Ext.form.ComboBox({
 			fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.city'),
 			name: 'city',
             allowBlank:false,
@@ -70,7 +68,7 @@ Ext.namespace("GEOR")
 			editable: true,
 			displayField: 'displayname',
 			valueField: 'ccoinsee',
-			store: cityStore,
+			store: propCityStore,
 			listeners: {
 			    beforequery: function(q){  
 			    	if (q.query) {
@@ -82,6 +80,7 @@ Ext.namespace("GEOR")
 				change: function(combo, newValue, oldValue) {
 					//refaire le section store pour cette ville						
 					proprietaireGrid.reconfigure(getVoidProprietaireStore(), getProprietaireColModel(newValue));
+					proprietaireWindow.buttons[0].enable();
 				}
 			}
 		});			
@@ -102,7 +101,7 @@ Ext.namespace("GEOR")
 				beforeedit: function(e) {
 					if (e.column == 0) {
 						//pas d'edition de section si aucune ville selectionnée
-						if (cityCombo2.value == '') return false;
+						if (propCityCombo2.value == '') return false;
 					}
 				},
 				afteredit: function(e) {
@@ -125,7 +124,7 @@ Ext.namespace("GEOR")
 			title: OpenLayers.i18n('cadastrapp.proprietaire.title'),
 			frame: true,
 			autoScroll:true,
-			minimizable: true,
+			minimizable: false,
 			closable: true,
 			resizable: false,
 			draggable : true,
@@ -146,17 +145,18 @@ Ext.namespace("GEOR")
 			{
 				xtype:'tabpanel',
 				activeTab: 0,
+				
 				items:[{
 				
 					//ONGLET 1
-					id: 'firstForm',
+					id: 'propFirstForm',
 					xtype: 'form',
 					title: OpenLayers.i18n('cadastrapp.proprietaire.title.tab1'),
 					defaultType: 'displayfield',
 					height: 200,
 								
 					items: [
-					cityCombo1,
+					propCityCombo1,
 					{
 						value: OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
 						fieldClass: 'displayfieldGray'
@@ -185,15 +185,15 @@ Ext.namespace("GEOR")
 				},{
 				
 					//ONGLET 2
-					id: 'secondForm',
-					title: OpenLayers.i18n('cadastrapp.proprietaire.title.tab2'),
+					id: 'propSecondForm',
 					xtype: 'form',
+					title: OpenLayers.i18n('cadastrapp.proprietaire.title.tab2'),
 					defaultType: 'displayfield',
 					fileUpload: true,
 					height: 200,
 
 					items: [
-					cityCombo2,
+					propCityCombo2,
 					{
 						value: OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
 						fieldClass: 'displayfieldGray'
@@ -217,10 +217,11 @@ Ext.namespace("GEOR")
 			
 			buttons: [{
 				text: OpenLayers.i18n('cadastrapp.search'),
+				disabled: true,
 				listeners: {
 					click: function(b,e) {
 						var currentForm = proprietaireWindow.items.items[0].getActiveTab();
-						if (currentForm.id == 'firstForm') {
+						if (currentForm.id == 'propFirstForm') {
 							if (currentForm.getForm().isValid()) {
 								var cityName = currentForm.getForm().findField('city').lastSelectionText;
 								//envoi des données d'une form
