@@ -36,7 +36,7 @@ Ext.namespace("GEOR")
 
 		//combobox "villes"
 		cityCombo1 = new Ext.form.ComboBox({
-			fieldLabel: 'Ville, Commune',
+			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
 			name: 'city',
             allowBlank:false,
 			width: 300,
@@ -63,7 +63,7 @@ Ext.namespace("GEOR")
 		});
 		
 		cityCombo2 = new Ext.form.ComboBox({
-			fieldLabel: 'Ville, Commune',
+			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
 			name: 'city',
             allowBlank:false,
 			width: 300,
@@ -87,7 +87,7 @@ Ext.namespace("GEOR")
 		
 		//grille "références"
 		parcelleGrid = new Ext.grid.EditorGridPanel({
-			fieldLabel: 'R&eacute;f&eacute;rence(s)',
+			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.references'),
 			name: 'parcelles',							
 			xtype: 'editorgrid',
 			clicksToEdit: 1,
@@ -127,7 +127,7 @@ Ext.namespace("GEOR")
 				
 		//fenêtre principale
 		parcelleWindow = new Ext.Window({
-			title: 'Recherche des parcelles',
+			title: OpenLayers.i18n('cadastrapp.parcelle.title'),
 			frame: true,
 			autoScroll:true,
 			minimizable: true,
@@ -156,7 +156,7 @@ Ext.namespace("GEOR")
 				items:[{
 				
 					//ONGLET 1
-					title:'R&eacute;f&eacute;rence',
+					title: OpenLayers.i18n('cadastrapp.parcelle.title.tab1'),
 					xtype:'form',
 					defaultType: 'displayfield',
 					id: 'firstForm',
@@ -166,20 +166,20 @@ Ext.namespace("GEOR")
 					items: [
 					cityCombo1,		//combobox "villes"				
 					{
-						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
+						value: OpenLayers.i18n('cadastrapp.parcelle.city.exemple'),
 						fieldClass: 'displayfieldGray'
 					},
 					parcelleGrid,	//grille "références"
 					{
-						value: 'ou',
+						value: OpenLayers.i18n('cadastrapp.parcelle.or'),
 						fieldClass: 'displayfieldCenter'
 					},
 					{
-						fieldLabel: 'Path',
+						fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.file.path'),
 						name: 'filePath',
 						xtype: 'fileuploadfield',
-						emptyText: 'Charger un fichier au format .csv',
-						buttonText: 'Ouvrir fichier',
+						emptyText: OpenLayers.i18n('cadastrapp.parcelle.file.exemple'),
+						buttonText: OpenLayers.i18n('cadastrapp.parcelle.file.open'),
 						height: 25,
 						width: 300
 					}]
@@ -187,7 +187,7 @@ Ext.namespace("GEOR")
 				},{
 				
 					//ONGLET 2
-					title:'Adresse cadastrale',
+					title: OpenLayers.i18n('cadastrapp.parcelle.title.tab2'),
 					xtype:'form',
 					defaultType: 'displayfield',
 					id: 'secondForm',
@@ -196,12 +196,12 @@ Ext.namespace("GEOR")
 					items: [
 					cityCombo2,		//combobox "villes"
 					{
-						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
+						value: OpenLayers.i18n('cadastrapp.parcelle.city.exemple'),
 						fieldClass: 'displayfieldGray'
 					},
 					{
 						xtype: 'compositefield',
-						fieldLabel: 'N de voirie et rue',
+						fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.street'),
 						defaults: {flex: 1},
 						items: [
 							{
@@ -230,17 +230,17 @@ Ext.namespace("GEOR")
 						]
 					},
 					{
-						value: 'ex. 4 avenue Henri Fr&eacute;ville',
+						value: OpenLayers.i18n('cadastrapp.parcelle.street.exemple'),
 						fieldClass: 'displayfieldGray'
 					},
 					{
 						xtype: 'textfield',
-						fieldLabel: 'Lieu-dit',
+						fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.town'),
 						name: 'town',
 						width: 300
 					},
 					{
-						value: 'ex. Mont-Romain, La morinaie',
+						value: OpenLayers.i18n('cadastrapp.parcelle.town.exemple'),
 						fieldClass: 'displayfieldGray'
 					}
 					]
@@ -248,7 +248,7 @@ Ext.namespace("GEOR")
 			}],
 			
 			buttons: [{
-				text: 'Rechercher',
+				text: OpenLayers.i18n('cadastrapp.search'),
 				listeners: {
 					click: function(b,e) {
 						var currentForm = parcelleWindow.items.items[0].getActiveTab();
@@ -304,7 +304,7 @@ Ext.namespace("GEOR")
 					}
 				}
 			},{
-				text: 'Fermer',
+				text: OpenLayers.i18n('cadastrapp.close'),
 				listeners: {
 					click: function(b,e) {
 						parcelleWindow.close();

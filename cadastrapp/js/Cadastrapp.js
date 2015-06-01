@@ -22,11 +22,16 @@ Ext.namespace("GEOR");
 
 
 //VARIABLES GLOBALES
+
+//checkboxes : cadatre et foncier
 var _isCadastre = true;
 var _isFoncier = false;
-
 isCadastre = function() { return _isCadastre; }
 isFoncier = function() { return _isFoncier; }
+
+//roles
+isCNIL1 = function() { return (GEOR.config.ROLES.indexOf('CNIL1') != -1); }
+isCNIL2 = function() { return (GEOR.config.ROLES.indexOf('CNIL2') != -1); }
 
 
 

@@ -37,7 +37,7 @@ Ext.namespace("GEOR")
 
 		//comboboxes "villes"
 		cityCombo1 = new Ext.form.ComboBox({
-			fieldLabel: 'Ville, Commune',
+			fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.city'),
 			name: 'city',
             allowBlank:false,
 			width: 300,
@@ -45,7 +45,6 @@ Ext.namespace("GEOR")
 			value: '',
 			forceSelection: true,
 			editable: true,
-			//tpl: '<tpl for="."><div class="x-combo-list-item" >{libcom_min} ({ccoinsee})</div></tpl>',
 			displayField: 'displayname',
 			valueField: 'ccoinsee',
 			store: cityStore,
@@ -61,7 +60,7 @@ Ext.namespace("GEOR")
 		});	
 		
 		cityCombo2 = new Ext.form.ComboBox({
-			fieldLabel: 'Ville, Commune',
+			fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.city'),
 			name: 'city',
             allowBlank:false,
 			width: 300,
@@ -69,7 +68,6 @@ Ext.namespace("GEOR")
 			value: '',
 			forceSelection: true,
 			editable: true,
-			//tpl: '<tpl for="."><div class="x-combo-list-item" >{libcom_min} ({ccoinsee})</div></tpl>',
 			displayField: 'displayname',
 			valueField: 'ccoinsee',
 			store: cityStore,
@@ -90,7 +88,7 @@ Ext.namespace("GEOR")
 		
 		//grille "proprietaires"
 		proprietaireGrid = new Ext.grid.EditorGridPanel({
-			fieldLabel: 'Propri&eacute;taire(s)',
+			fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.proprietaires'),
 			name: 'proprietaires',							
 			xtype: 'editorgrid',
 			clicksToEdit: 1,
@@ -124,7 +122,7 @@ Ext.namespace("GEOR")
 				
 		//fenêtre principale
 		proprietaireWindow = new Ext.Window({
-			title: 'Recherche de propriétaires',
+			title: OpenLayers.i18n('cadastrapp.proprietaire.title'),
 			frame: true,
 			autoScroll:true,
 			minimizable: true,
@@ -153,42 +151,42 @@ Ext.namespace("GEOR")
 					//ONGLET 1
 					id: 'firstForm',
 					xtype: 'form',
-					title: 'Nom Usage ou Naissance',
+					title: OpenLayers.i18n('cadastrapp.proprietaire.title.tab1'),
 					defaultType: 'displayfield',
 					height: 200,
 								
 					items: [
 					cityCombo1,
 					{
-						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
+						value: OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
 						fieldClass: 'displayfieldGray'
 					},
 					{
 						xtype: 'textfield',
-						fieldLabel: 'Nom',
+						fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.lastname'),
 						name: 'lastname',
 			            allowBlank:false,
 						width: 300
 					},
 					{
-						value: 'ex. Dupond, Dupont',
+						value: OpenLayers.i18n('cadastrapp.proprietaire.lastname.exemple'),
 						fieldClass: 'displayfieldGray'
 					},
 					{
 						xtype: 'textfield',
-						fieldLabel: 'Pr&eacute;nom(s)',
+						fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.firstname'),
 						name: 'firstname',
 						width: 300
 					},
 					{
-						value: 'ex. Albert, Jean-Marie',
+						value: OpenLayers.i18n('cadastrapp.proprietaire.firstname.exemple'),
 						fieldClass: 'displayfieldGray'
 					}]
 				},{
 				
 					//ONGLET 2
 					id: 'secondForm',
-					title: 'Adresse cadastrale',
+					title: OpenLayers.i18n('cadastrapp.proprietaire.title.tab2'),
 					xtype: 'form',
 					defaultType: 'displayfield',
 					fileUpload: true,
@@ -197,20 +195,20 @@ Ext.namespace("GEOR")
 					items: [
 					cityCombo2,
 					{
-						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
+						value: OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
 						fieldClass: 'displayfieldGray'
 					},
 					proprietaireGrid,	//grille "proprietaires"
 					{
-						value: 'ou',
+						value: OpenLayers.i18n('cadastrapp.proprietaire.or'),
 						fieldClass: 'displayfieldCenter'
 					},
 					{
-						fieldLabel: 'Path',
+						fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.file.path'),
 						name: 'filePath',
 						xtype: 'fileuploadfield',
-						emptyText: 'Charger un fichier au format .csv',
-						buttonText: 'Ouvrir fichier',
+						emptyText: OpenLayers.i18n('cadastrapp.proprietaire.file.exemple'),
+						buttonText: OpenLayers.i18n('cadastrapp.proprietaire.file.open'),
 						height: 25,
 						width: 300
 					}]
@@ -218,7 +216,7 @@ Ext.namespace("GEOR")
 			}],
 			
 			buttons: [{
-				text: 'Rechercher',
+				text: OpenLayers.i18n('cadastrapp.search'),
 				listeners: {
 					click: function(b,e) {
 						var currentForm = proprietaireWindow.items.items[0].getActiveTab();
@@ -274,7 +272,7 @@ Ext.namespace("GEOR")
 					}
 				}
 			},{
-				text: 'Fermer',
+				text: OpenLayers.i18n('cadastrapp.close'),
 				listeners: {
 					click: function(b,e) {
 						proprietaireWindow.close();
