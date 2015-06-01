@@ -30,7 +30,7 @@ Ext.namespace("GEOR")
 			{
 				xtype:'displayfield',
 				fieldLabel: 'Parcelle',
-				value: parcelleId
+				value: parcelleId + " : Cadastre ("+isCadastre()+") - Foncier ("+isFoncier()+")"
 			}]
 		});
     	detailParcelleWindow.show();

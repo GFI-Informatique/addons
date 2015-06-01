@@ -20,6 +20,16 @@ Ext.namespace("GEOR");
  * @include GeoExt/widgets/Popup.js
  */
 
+
+//VARIABLES GLOBALES
+var _isCadastre = true;
+var _isFoncier = false;
+
+isCadastre = function() { return _isCadastre; }
+isFoncier = function() { return _isFoncier; }
+
+
+
 /** api: constructor
  *  .. class:: Cadastrappj(config)
  *
@@ -356,83 +366,57 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
      *  Create ...TODO
      */
     initCadastrappControls: function(layer) {
-        var control, handler, geometryTypes, geometryType,
-                options, action, iconCls, actionOptions, tooltip;
-
-
-        geometryTypes = [
-          "Cadastre", "Foncier"
-        ];
-
-        for (var i = 0; i < geometryTypes.length; i++) {
-            options = {
-                handlerOptions: {
-                    stopDown: true,
-                    stopUp: true
-                }
-            };
-            geometryType = geometryTypes[i];
-
-            switch (geometryType) {
-                 case "Cadastre":
-					//xtype: 'checkbox',
-                    handler = OpenLayers.Handler.Path;
-					isChecked: true,
-                    tooltip = OpenLayers.i18n("cadastrapp.cadastre");
-                    break;
-                 case "Foncier":
-				 	//xtype: 'checkbox',
-                    handler = OpenLayers.Handler.Path;
-					isCheckbox: true,
-                    tooltip = OpenLayers.i18n("cadastrapp.foncier");
-                    break;
-            }
-
-            control = new OpenLayers.Control.DrawFeature(
-                    layer, handler, options);
-
-            this.cadastrappControls.push(control);
-
-            if (geometryType == "Circle") {
-                control.events.on({
-                    "featureadded": this.onCircleAdded,
-                    scope: this
-                });
-            }
-
-          if (geometryType == "Parcelle") {
-                control.events.on({
-                    "featureadded": this.onBoxAdded,
-                    scope: this
-                });
-            }
-
-            control.events.on({
-                "featureadded": this.onFeatureAdded,
-                scope: this
-            });
-
-            actionOptions = {
-                control: control,
-                map: this.map,
-                // button options
-                toggleGroup: this.toggleGroup,
-                allowDepress: false,
-                pressed: false,
-                tooltip: tooltip,
-                iconCls: iconCls,
-                text: OpenLayers.i18n("cadastrapp." + geometryType.toLowerCase()),
-                iconAlign: 'top',
-                // check item options
-                group: this.toggleGroup,
-                checked: false
-            };
-
-            action = new GeoExt.Action(actionOptions);
-
-            this.actions.push(action);
-        }
+    	//menu : checkbox cadastre
+    	var cadastrePanel = new Ext.Panel({
+    		frame : false,
+		    border: false,
+		    bodyStyle: 'background:transparent;',
+		    style: 'margin-left:5px;margin-right:5px',
+    		items: [
+				{
+					xtype: 'checkbox',
+					checked: _isCadastre,
+					style: 'margin-top:2px;margin-left:15px',
+		            listeners: {
+		            	check: function(cb, checked) {
+		            		_isCadastre = checked;
+		            	}
+		            }
+		        },
+		        {
+		        	xtype: 'displayfield',
+		        	value: OpenLayers.i18n("cadastrapp.cadastre")
+		        }
+		    ]
+    	});
+		this.actions.push(cadastrePanel);
+		
+    	//menu : checkbox foncier
+		var foncierPanel = new Ext.Panel({
+    		frame : false,
+		    border: false,
+		    bodyStyle: 'background:transparent;',
+		    style: 'margin-left:5px;margin-right:5px',
+    		items: [
+				{
+					xtype: 'checkbox',
+					checked: _isFoncier,
+					style: 'margin-top:2px;margin-left:10px',
+		            listeners: {
+		            	check: function(cb, checked) {
+		            		_isFoncier = checked;
+		            	}
+		            }
+		        },
+		        {
+		        	xtype: 'displayfield',
+		        	value: OpenLayers.i18n("cadastrapp.foncier")
+		        }
+		    ]
+    	});
+		this.actions.push(foncierPanel);
     },
+    
    /** private: method[initRechercheControls]
      *  :param layer: ``OpenLayers.Layer.Vector``
      *  Create ...TODO
