@@ -24,19 +24,6 @@ Ext.namespace("GEOR")
 			height: 400,
 			border: true,
             closable: true,
-            
-			colModel: new Ext.grid.ColumnModel([
-				{
-					id:'ccoinsee',
-					dataIndex: 'ccoinsee',
-					header: 'Code INSEE',
-					sortable: true
-				},{
-					id:'libcom_min',
-					dataIndex: 'libcom_min',
-					header: 'Nom Commune',
-					sortable: true
-				}]),
 				
 			//store: (result!=null) ? result : new Ext.data.Store(),
 			store: (result!=null) ? result : new Ext.data.JsonStore({
@@ -46,10 +33,23 @@ Ext.namespace("GEOR")
 					{ccoinsee: '63002', libcom_min: 'Ville Test 2'}
 				]
 			}),
+            
+			colModel: new Ext.grid.ColumnModel([
+				{
+					id:'ccoinsee',
+					dataIndex: 'ccoinsee',
+					header: OpenLayers.i18n('cadastrapp.proprietaire.result.col1'),
+					sortable: true
+				},{
+					id:'libcom_min',
+					dataIndex: 'libcom_min',
+					header: OpenLayers.i18n('cadastrapp.proprietaire.result.col2'),
+					sortable: true
+				}]),
 		
 			viewConfig: {
 				deferEmptyText: false,
-				emptyText: 'Aucune données',
+				emptyText: OpenLayers.i18n('cadastrapp.proprietaire.result.nodata'),
 			},
 			
 			listeners: {
@@ -85,10 +85,10 @@ Ext.namespace("GEOR")
     initResultProprietaire = function() {						
 		//fenêtre principale
 		resultProprietaireWindow = new Ext.Window({
-			title: 'Séléction de propriétaires',
+			title: OpenLayers.i18n('cadastrapp.proprietaire.result.title'),
 			frame: true,
 			autoScroll:true,
-			minimizable: true,
+			minimizable: false,
 			closable: true,
 			resizable: false,
 			draggable : true,
@@ -111,7 +111,7 @@ Ext.namespace("GEOR")
 			
 			buttons: [
 			{
-				text: 'Fermer',
+				text: OpenLayers.i18n('cadastrapp.close'),
 				listeners: {
 					click: function(b,e) {
 						resultProprietaireWindow.close();

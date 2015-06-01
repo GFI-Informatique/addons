@@ -98,7 +98,7 @@ Ext.namespace("GEOR")
 			{
 				id:'section',
 				dataIndex: 'section',
-				header: "Section",
+				header: OpenLayers.i18n('cadastrapp.parcelle.references.col1'),
 				width: 100,
 				sortable: false,
 				editor: new Ext.form.ComboBox({
@@ -123,7 +123,7 @@ Ext.namespace("GEOR")
 			{
 				id: "parcelle",
 				dataIndex: 'parcelle',
-				header: "Parcelle",
+				header: OpenLayers.i18n('cadastrapp.parcelle.references.col2'),
 				width: 100,
 				sortable: false,
 				editor: new Ext.form.ComboBox({
@@ -155,7 +155,7 @@ Ext.namespace("GEOR")
 			{
 				id:'proprietaire',
 				dataIndex: 'proprietaire',
-				header: "Propri&eacute;taire",
+				header: OpenLayers.i18n('cadastrapp.proprietaire.proprietaires.col1'),
 				width: 100,
 				sortable: false,
 				editor: new Ext.form.ComboBox({

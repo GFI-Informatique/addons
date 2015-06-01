@@ -22,11 +22,16 @@ Ext.namespace("GEOR");
 
 
 //VARIABLES GLOBALES
+
+//checkboxes : cadatre et foncier
 var _isCadastre = true;
 var _isFoncier = false;
-
 isCadastre = function() { return _isCadastre; }
 isFoncier = function() { return _isFoncier; }
+
+//roles
+isCNIL1 = function() { return (GEOR.config.ROLES.indexOf('CNIL1') != -1); }
+isCNIL2 = function() { return (GEOR.config.ROLES.indexOf('CNIL2') != -1); }
 
 
 
@@ -424,13 +429,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
     initRechercheControls: function(layer) {
 		//menu : recherche parcelle
 		var configRechercheParcelle = {
-            // button options
-            toggleGroup: this.toggleGroup,
-            allowDepress: false,
-            pressed: false,
             tooltip: OpenLayers.i18n("cadastrapp.parcelle"),
-            // check item options
-            group: this.toggleGroup,
             iconCls: "gx-featureediting-cadastrapp-parcelle",
             iconAlign: 'top',
             text: OpenLayers.i18n("cadastrapp.parcelle"),
@@ -442,8 +441,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 		//menu : recherche avancée
 		var scrollMenu = new Ext.menu.Menu();		
 		var configRechercheAvancee = {
-            group: this.toggleGroup,
-            toggleGroup: this.toggleGroup,
             tooltip: OpenLayers.i18n("cadastrapp.recherches"),
             iconCls: "gx-featureediting-cadastrapp-line",
             iconAlign: 'top',
@@ -735,8 +732,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             feature: feature,
             items: [this.featurePanel]
         };
-        popupOptions = OpenLayers.Util.applyDefaults(popupOptions,
-                                                     this.popupOptions);
+        popupOptions = OpenLayers.Util.applyDefaults(popupOptions, this.popupOptions);
         popupOptions = OpenLayers.Util.applyDefaults(popupOptions, {
             layout: 'fit',
             border: false,

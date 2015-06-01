@@ -30,7 +30,7 @@ Ext.namespace("GEOR")
 			title: title,
 			height: 400,
 			border: true,
-	        closable: true,
+            closable: true,
 			
 			//store: (result!=null) ? result : new Ext.data.Store(),
 			store: (result!=null) ? result : new Ext.data.JsonStore({
@@ -45,18 +45,18 @@ Ext.namespace("GEOR")
 				{
 					id:'ccoinsee',
 					dataIndex: 'ccoinsee',
-					header: 'Code INSEE',
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.col1'),
 					sortable: true
 				},{
 					id:'libcom_min',
 					dataIndex: 'libcom_min',
-					header: 'Nom Commune',
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.col1'),
 					sortable: true
 				}]),
 				
 			viewConfig: {
 				deferEmptyText: false,
-				emptyText: 'Aucune données',
+				emptyText: OpenLayers.i18n('cadastrapp.parcelle.result.nodata')
 			},
 			
 			listeners: {
@@ -90,10 +90,10 @@ Ext.namespace("GEOR")
     initResultParcelle = function() {						
 		//fenêtre principale
     	resultParcelleWindow = new Ext.Window({
-			title: 'Séléction de parcelles',
+			title: OpenLayers.i18n('cadastrapp.parcelle.result.title'),
 			frame: true,
 			autoScroll:true,
-			minimizable: true,
+			minimizable: false,
 			closable: true,
 			resizable: false,
 			draggable : true,
@@ -116,7 +116,7 @@ Ext.namespace("GEOR")
 			
 			buttons: [
 			{
-				text: 'Fermer',
+				text: OpenLayers.i18n('cadastrapp.close'),
 				listeners: {
 					click: function(b,e) {
 						resultParcelleWindow.close();
