@@ -177,7 +177,7 @@ Ext.namespace("GEOR")
 		};
 					
 
-  		//fenêtre principale
+  		//Construction de la fenêtre principale
 		var affichagedonneescadastrales;
 			affichagedonneescadastrales = new Ext.Window({
             title: 'TODO',
@@ -199,7 +199,9 @@ Ext.namespace("GEOR")
 				}
 			},
 			
-			if 
+			// Afficher l'onglet parcelle et selon les habilitations (sec-role), les autres onglets
+			//TODO
+			if cnilrole 
 			//construction de la vue fiche d'information cadastrale
 			//Onglet parcelle
 			items: [{
@@ -238,7 +240,7 @@ Ext.namespace("GEOR")
 					}]
 					},
 					{ xtype:'tabpanel',
-					activeTab: 0,
+					activeTab: 1,
 					items:[{	
 					
 						//ONGLET 2
@@ -258,7 +260,7 @@ Ext.namespace("GEOR")
 						}]
 					},
 					{ xtype:'tabpanel',
-					activeTab: 0,
+					activeTab: 2,
 					items:[{	
 					
 						//ONGLET 3
@@ -278,7 +280,7 @@ Ext.namespace("GEOR")
 						}]
 					},
 					{ xtype:'tabpanel',
-					activeTab: 0,
+					activeTab: 3,
 					items:[{	
 					
 						//ONGLET 4
@@ -298,7 +300,7 @@ Ext.namespace("GEOR")
 						}]
 					},
 					{ xtype:'tabpanel',
-					activeTab: 0,
+					activeTab: 4,
 					items:[{	
 					
 						//ONGLET 5
@@ -316,28 +318,7 @@ Ext.namespace("GEOR")
 								}]
 												
 						}]
-					},
-					{ xtype:'tabpanel',
-					activeTab: 0,
-					items:[{	
-					
-						//ONGLET 5
-						title:'Adresse(s) cadastrale(s)',
-						defaultType: 'displayfield',
-						id: 'Form5',
-						xtype: 'form',
-						fileUpload: true,
-						
-						items: [
-								adresseGrid,	//grille "adresse"
-								{
-								value: 'ou',
-								fieldClass: 'displayfieldCenter'
-								}]
-												
-						}]
-					}				
-					]
+					}]
 				}]
         });
 		
