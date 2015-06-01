@@ -165,7 +165,7 @@ Ext.namespace("GEOR")
 			bodyPadding: 10,
 			autoScroll:true,
 			width: 450,
-			minimizable: true,
+			minimizable: false,
             closable: true,
             resizable: true,
 			draggable : true,
