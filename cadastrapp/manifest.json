@@ -112,7 +112,7 @@
             "cadastrapp.no_title": "no title", 
             "cadastrapp.uniteFonciere": "Property unit",
             "cadastrapp.surface" : "Surface",
-            "cadastrapp.CoProprietaire" : "co-owner", 
+            "cadastrapp.CoProprietaire" : "co-owner"
         },
         "es": {
             "cadastrapp.cadastre_tools": "Outils Cadastre",
@@ -205,7 +205,7 @@
             "cadastrapp.no_title": "Sin título",
             "cadastrapp.uniteFonciere": "Property unit",
             "cadastrapp.surface" : "Surface",
-            "cadastrapp.CoProprietaire" : "co-owner", 
+            "cadastrapp.CoProprietaire" : "co-owner"
         },
         "fr": {
             "cadastrapp.cadastre_tools": "Outils Cadastre",
@@ -298,7 +298,7 @@
             "cadastrapp.no_title": "Sans titre",
             "cadastrapp.uniteFonciere": "unite foncière",
             "cadastrapp.surface" : "Surface",
-            "cadastrapp.CoProprietaire" : "Co-propriétaire", 
+            "cadastrapp.CoProprietaire" : "Co-propriétaire"
         },
         "de": {
             "cadastrapp.cadastre_tools": "Outils Cadastre",
@@ -391,7 +391,7 @@
             "cadastrapp.no_title": "Ohne Titel",
             "cadastrapp.uniteFonciere": "unite foncière",
             "cadastrapp.surface" : "Oberfläche",
-            "cadastrapp.CoProprietaire" : "Miteigner", 
+            "cadastrapp.CoProprietaire" : "Miteigner"
         }
     }
 }
