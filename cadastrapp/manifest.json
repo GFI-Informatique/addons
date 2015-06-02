@@ -1,11 +1,11 @@
 {
     "js": [
-    	"js/detailParcelle.js",
-		"js/resultParcelle.js",
-		"js/resultProprietaire.js",
-		"js/rechercheUtils.js",
-		"js/rechercheProprietaire.js",
-		"js/rechercheParcelle.js",
+    	"js/detailPlot.js",
+		"js/resultPlot.js",
+		"js/resultOwner.js",
+		"js/searchUtils.js",
+		"js/searchOwner.js",
+		"js/searchPlot.js",
 		"js/demandeinformations.js",
         "js/Cadastrapp.js",
         "js/FeaturePanel.js",
