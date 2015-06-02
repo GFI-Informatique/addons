@@ -57,7 +57,8 @@ Ext.namespace("GEOR")
 				{name: 'surface', type: 'float'},
 				{name: 'parcellebatie', type: 'String'},
 				{name: 'secteururbain', type: 'String'},
-				]
+				],
+				[
 		
 				//	Proprietaires
 				{name: 'comptepropriétaire', type: 'String'},
@@ -66,7 +67,8 @@ Ext.namespace("GEOR")
 				{name: 'mentionducomplement', type: 'String'},
 				{name: 'nomcomplement', type: 'String'},
 				{name: 'prenomscomplement', type: 'String'},
-		
+				],
+				[
 				// Adressehabitation	
 				{name: 'dlign3', type: 'String'},
 				{name: 'dlign4', type: 'String'},
@@ -76,7 +78,8 @@ Ext.namespace("GEOR")
 				{name: 'jdatnss', type: 'Date'},
 				{name: 'ccodro', type: 'String'},				
 				{name: 'ccodro_lib', type: 'String'}				
-				
+				],
+				[
 				// Batiments
 				{name: 'dnubat', type: 'String'},
 				{name: 'annee', type: 'String'},
@@ -92,23 +95,26 @@ Ext.namespace("GEOR")
 				{name: 'jannat', type: 'String'},
 				{name: 'ccodro', type: 'String'},				
 				{name: 'ccodro_lib', type: 'String'}		
-							
-		// proprietaires
+				],
+				[				
+				// proprietaires
 				{name: 'dnupro', type: 'String'},
 				{name: 'dnomlp', type: 'String'},
 				{name: 'dprnlp', type: 'String'},
 				{name: 'expnee', type: 'String'},
 				{name: 'dnomcp', type: 'String'},
 				{name: 'dprncp', type: 'String'},
-						
-			// Subdivisions
+				],
+				[
+				// Subdivisions
 				{name: 'ccosub', type: 'String'},
 				{name: 'dcntsf', type: 'Int4'},
 				{name: 'cgrnum_lib', type: 'String'},
 				{name: 'drcsub', type: 'numeric'},
 				{name: 'pdl', type: 'String'},
 				{name: 'dnubat', type: 'String'},	
-						
+				],
+				[
 			// Filiation
 				{name: 'jdatat', type: 'String'},
 				{name: 'ccocomm', type: 'String'},
@@ -116,7 +122,8 @@ Ext.namespace("GEOR")
 				{name: 'ccosecm', type: 'String'},
 				{name: 'dnuplam', type: 'String'},
 				{name: 'type_filiation', type: 'String'},	
-								
+				]
+		}
 		//Information parcelle : TODO : charger dynamiquement selon la parcelle
 		var parcelleStore = new Ext.data.JsonStore({
  {
@@ -201,7 +208,9 @@ Ext.namespace("GEOR")
 			
 			// Afficher l'onglet parcelle et selon les habilitations (sec-role), les autres onglets
 			//TODO
-			if cnilrole 
+			if (cnilrole === 'CNIL0')
+			
+			
 			//construction de la vue fiche d'information cadastrale
 			//Onglet parcelle
 			items: [{
