@@ -190,16 +190,14 @@ Ext.namespace("GEOR")
             title: 'TODO',
 			frame: true,
 			autoScroll:true,
-			minimizable: true,
+			minimizable: false,
 			closable: true,
 			resizable: false,
 			draggable : true,
 			constrainHeader: true,
 			border:false,
-			labelWidth: 100,
-			width: 450,
-			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
-			
+			width: 400,
+
 			listeners: {
 				close(window) {
 					affichagedonneescadastrales = null;
@@ -208,8 +206,8 @@ Ext.namespace("GEOR")
 			
 			// Afficher l'onglet parcelle et selon les habilitations (sec-role), les autres onglets
 			//TODO
-			if (cnilrole === 'CNIL0')
-			
+			//if (isCNIL1 !=-1)
+			//if (isCNIL2 !=-1)			
 			
 			//construction de la vue fiche d'information cadastrale
 			//Onglet parcelle
@@ -336,194 +334,3 @@ Ext.namespace("GEOR")
 	};
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	
-			//fenêtre principale
-		proprietaireWindow = new Ext.Window({
-			title: 'Recherche de propriétaires',
-			frame: true,
-			autoScroll:true,
-			minimizable: true,
-			closable: true,
-			resizable: false,
-			draggable : true,
-			constrainHeader: true,
-			
-			border:false,
-			labelWidth: 100,
-			width: 450,
-			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
-			
-			listeners: {
-				close: function(window) {
-					proprietaireWindow = null;
-				}
-			},
-			
-			items: [
-			{
-				xtype:'tabpanel',
-				activeTab: 0,
-				items:[{
-				
-					//ONGLET 1
-					id: 'firstForm',
-					xtype: 'form',
-					title: 'Nom Usage ou Naissance',
-					defaultType: 'displayfield',
-					height: 200,
-								
-					items: [
-					cityCombo1,
-					{
-						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
-						fieldClass: 'displayfieldGray'
-					},
-					{
-						xtype: 'textfield',
-						fieldLabel: 'Nom',
-						name: 'lastname',
-						width: 300
-					},
-					{
-						value: 'ex. Dupond, Dupont',
-						fieldClass: 'displayfieldGray'
-					},
-					{
-						xtype: 'textfield',
-						fieldLabel: 'Pr&eacute;nom(s)',
-						name: 'firstname',
-						width: 300
-					},
-					{
-						value: 'ex. Albert, Jean-Marie',
-						fieldClass: 'displayfieldGray'
-					}]
-				},{
-				
-					//ONGLET 2
-					id: 'secondForm',
-					title: 'Adresse cadastrale',
-					layout: 'form',
-					defaultType: 'displayfield',
-					fileUpload: true,
-					height: 200,
-
-					items: [
-					cityCombo2,
-					{
-						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
-						fieldClass: 'displayfieldGray'
-					},
-					proprietaireGrid,	//grille "proprietaires"
-					{
-						value: 'ou',
-						fieldClass: 'displayfieldCenter'
-					},					
-					{
-						fieldLabel: 'Path',
-						name: 'filePath',
-						xtype: 'fileuploadfield',
-						emptyText: 'Charger un fichier au format .csv',
-						buttonText: 'Ouvrir fichier',
-						height: 25,
-						width: 300
-					}]
-				}]
-			}],
-			
-			buttons: [{
-				text: 'Rechercher',
-				listeners: {
-					click: function(b,e) {
-						var currentForm = proprietaireWindow.items.items[0].getActiveTab();
-						if (currentForm.id == 'firstForm') {
-							
-							//appel de méthode webapp
-							Ext.Ajax.request({
-								method: 'GET',
-								url:'./getCommune/all',
-								success: function(form, action) {
-									alert('Success : ' + action.result.msg);
-								},
-								failure: function(form, action) {
-									alert('Failed : ' + action.result.msg);
-								}
-							});
-
-							//soumission des données d'une form
-							currentForm.getForm().submit({
-								method: 'GET',
-								url:'./getCommune/all',
-								success: function(form, action) {
-									alert('Success : ' + action.result.msg);
-								},
-								failure: function(form, action) {
-									alert('Failed : ' + action.result.msg);
-								}
-							});				
-							
-							
-							var result = new Ext.data.JsonStore({
-								fields : ['prenom', 'nom'],
-								data   : [
-									{prenom : 'nicolas', nom: 'tasia'},
-									{prenom : 'pierre', nom: 'jego'},
-									{prenom : 'laurent', nom: 'cornic'}
-								]
-							});
-							addNewResultProprietaire(result);
-							
-						} else {
-							alert('TODO');
-						}
-					}
-				}
-			},{
-				text: 'Fermer',
-				listeners: {
-					click: function(b,e) {
-						proprietaireWindow.close();
-					}
-				}
-			}]
-		});
-	};
-*/

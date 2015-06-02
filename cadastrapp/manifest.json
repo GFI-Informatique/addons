@@ -343,7 +343,28 @@
              "cadastrapp.filiation.ccoprem": "Code du préfixe de section de la parcelle mère",
              "cadastrapp.filiation.ccosecm": "Code section de la parcelle mère",
              "cadastrapp.filiation.dnuplam": "Numéro de plan de la parcelle",
-             "cadastrapp.filiation.type_filiation": "Type de filiation (D, R, T ou blanc)"
+             "cadastrapp.filiation.type_filiation": "Type de filiation (D, R, T ou blanc)",
+			 
+             "cadastrapp.demandeinformation.titre": "Demande Informations Foncieres",
+             "cadastrapp.demandeinformation.titre1": "Informations sur le demandeur",
+             "cadastrapp.demandeinformation.nom": "Nom",
+             "cadastrapp.demandeinformation.prenom": "Prénom",
+             "cadastrapp.demandeinformation.commune": "Ville, Commune",
+             "cadastrapp.demandeinformation.num_rue": "N° de voirie et rue",
+             "cadastrapp.demandeinformation.lieudit": "Lieu-Dit",
+             "cadastrapp.demandeinformation.cni": "CNI",
+
+
+			 
+             "cadastrapp.demandeinformation.titre2": "Biens à consulter",
+             "cadastrapp.demandeinformation.parcelles": "Parcelle(s)",
+             "cadastrapp.demandeinformation.section": "Section",
+             "cadastrapp.demandeinformation.parcelle": "Parcelle",
+             "cadastrapp.demandeinformation.adressescadastrales": "Adresse(s) cadastrale(s)",
+             "cadastrapp.demandeinformation.annuler": "Annuler la demande",
+             "cadastrapp.demandeinformation.imprimer": "Imprimer la demande"
+
+			 
         },
         "de": {
             "cadastrapp.cadastre_tools": "Outils Cadastre",

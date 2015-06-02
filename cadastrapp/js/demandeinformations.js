@@ -164,8 +164,8 @@ Ext.namespace("GEOR")
 			frame: true,
 			bodyPadding: 10,
 			autoScroll:true,
+			resizable: false,
 			width: 450,
-			minimizable: false,
             closable: true,
             resizable: true,
 			draggable : true,
@@ -182,13 +182,13 @@ Ext.namespace("GEOR")
 			labelWidth: 120,
 			defaultType: 'textfield',
 			items: [
-				{ fieldLabel: 'Nom', name: 'nom', width: 280},
-				{ fieldLabel: 'Prénom', name: 'prenom', width: 280},
-				{ fieldLabel: 'Ville, Commune', name: 'commune', width: 280},
+				{ fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.nom'), name: 'nom', width: 280},
+				{ fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.prenom'), name: 'prenom', width: 280},
+				{ fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.commune'), name: 'commune', width: 280},
 
 				            {
                         xtype: 'compositefield',
-                        fieldLabel: 'N° de voirie et rue',
+                        fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.num_rue'),
                         items: [
                            {
                                xtype: 'numberfield',
@@ -207,24 +207,24 @@ Ext.namespace("GEOR")
                            }
                         ]
                     },
-				{ fieldLabel: 'Lieu-Dit', name: 'lieudit', width: 280},
-				{ fieldLabel: 'CNI', name: 'cni', width: 280}
+				{ fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.lieudit'), name: 'lieudit', width: 280},
+				{ fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.cni'), name: 'cni', width: 280}
 				]
 			},
 			{
 			xtype: 'fieldset',
-			title: 'Biens à consulter',
+			title: OpenLayers.i18n('cadastrapp.demandeinformation.titre2'),
 			defaultType: 'textfield',
 			labelWidth: 120,
 			items: [				
-				{ fieldLabel: 'Ville, Commune', name: 'commune', width: 280},
+				{ fieldLabel:OpenLayers.i18n('cadastrapp.demandeinformation.commune'), name: 'commune', width: 280},
 				{ xtype:'tabpanel',	height: 160,
 
 				activeTab: 0,
 				items:[{
 				
 					//ONGLET 1
-					title:'Parcelle(s)',
+					title:OpenLayers.i18n('cadastrapp.demandeinformation.parcelles'),
 //					layout:'form',
 					defaultType: 'displayfield',
 					height: 200,
@@ -245,7 +245,7 @@ Ext.namespace("GEOR")
 				items:[{	
 				
 					//ONGLET 1
-					title:'Adresse(s) cadastrale(s)',
+					title:OpenLayers.i18n('cadastrapp.demandeinformation.adressescadastrales'),
 					defaultType: 'displayfield',
 					id: 'firstForm',
 					fileUpload: true,
@@ -263,7 +263,7 @@ Ext.namespace("GEOR")
 			}],
 			buttons: [{
 						labelAlign: 'left',				
-						text: 'Annuler la demande',
+						text: OpenLayers.i18n('cadastrapp.demandeinformation.annuler'),
 						listeners:{
 							click: function(b,e) {
 											demandWindow.close();
@@ -271,7 +271,7 @@ Ext.namespace("GEOR")
 									 }
 						},{
 						labelAlign: 'right',
-						text: 'Imprimer la demande',
+						text: OpenLayers.i18n('cadastrapp.demandeinformation.imprimer'),
 						listeners:{
 							click: function(b,e) {
 											demandWindow.close();
