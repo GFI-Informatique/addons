@@ -12,46 +12,149 @@ Ext.namespace("GEOR")
      *  Create ...TODO
      */
     onClickDemand = function(){
+		
+		var parcBisStore, parcCityStore, parcCityCombo1, parcCityCombo2, parcelleGrid;
+		
+		parcBisStore = getBisStore();
+		
+		parcCityStore = getCityStore();
+
+		//combobox "villes"
+		parcCityCombo1 = new Ext.form.ComboBox({
+			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
+			name: 'city',
+            allowBlank:false,
+			width: 300,
+			mode: 'local',
+			value: '',
+			forceSelection: true,
+			editable: true,
+			displayField: 'displayname',
+			valueField: 'ccoinsee',
+			store: parcCityStore,
+			listeners: {
+			    beforequery: function(q){  
+			    	if (q.query) {
+		                var length = q.query.length;
+		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+		                q.query.length = length;
+		            }
+			    },
+				change: function(combo, newValue, oldValue) {
+					//refaire le section store pour cette ville						
+					parcelleGrid.reconfigure(getVoidParcelleStore(), getParcelleColModel(newValue));
+					parcelleWindow.buttons[0].enable();
+				}
+			}
+		});
+		
+		parcCityCombo2 = new Ext.form.ComboBox({
+			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
+			name: 'city',
+            allowBlank:false,
+			width: 300,
+			mode: 'local',
+			value: '',
+			forceSelection: true,
+			editable: true,
+			displayField: 'displayname',
+			valueField: 'ccoinsee',
+			store: parcCityStore,
+			listeners: {
+			    beforequery: function(q){  
+			    	if (q.query) {
+		                var length = q.query.length;
+		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+		                q.query.length = length;
+		            }
+			    }
+			}
+		});		
+		
+		//grille "références"
+		parcelleGrid = new Ext.grid.EditorGridPanel({
+			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.references'),
+			name: 'parcelles',							
+			xtype: 'editorgrid',
+			clicksToEdit: 1,
+			ds: getVoidParcelleStore(),
+			cm: getParcelleColModel(''),
+			autoExpandColumn: 'parcelle',
+			height: 100,
+			width: 300,
+			border: true,
+			listeners: {
+				beforeedit: function(e) {
+					if (e.column == 0) {
+						//pas d'edition de section si aucune ville selectionnée
+						if (parcCityCombo1.value == '') return false;
+					}
+					if (e.column == 1) {
+						//pas d'edition de parcelle si aucune section selectionnée
+						if (e.record.data.section == '') return false;
+						//on remplace le contenu du store des parcelles selon la section selectionnée
+						e.grid.getColumnModel().getColumnById(e.field).editor.getStore().loadData(getParcelleStore(parcCityCombo1.value, e.record.data.section).reader.jsonData);
+					}
+				},
+				afteredit: function(e) {
+					var lastIndex = e.grid.store.getCount()-1;
+					var lastData = e.grid.store.getAt(e.grid.store.getCount()-1).data;
+					
+					if (lastData.section!='') {
+						var p = new e.grid.store.recordType({section:'', parcelle:''}); // create new record
+						e.grid.stopEditing();
+						e.grid.store.add(p); // insert a new record into the store (also see add)
+						this.startEditing(e.row, 1);
+					}
+				}
+			}
+		});
+			
+		
     // formulaire Parcelles
 		//liste des compléments de numéro de rue : BIS, TER (à compléter ?)
-		var bisStore = new Ext.data.JsonStore({
+		var bisStore = getBisStore(); 
+		/*new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : '--',   value: '--'},
 				{name : 'bis',  value: 'bis'},
 				{name : 'ter', value: 'ter'}
 			]
-		});	
+		});*/	
 		
 		//liste des sections : TODO : charger dynamiquement selon la ville choisie
-		var sectionStore = new Ext.data.JsonStore({
+		var sectionStore = getSectionStore();
+		/*new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : 'sect1',   value: 'sect1'},
 				{name : 'sect2',  value: 'sect2'},
 				{name : 'sect3', value: 'sect3'}
 			]
-		});
+		});*/
 		
 		//liste des parcelles : TODO : charger dynamiquement selon la ville choisie et la section choisie
-		var parcelleStore = new Ext.data.JsonStore({
+		var parcelleStore = getParcelleStore();
+		/*new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : 'parc1',   value: 'parc1'},
 				{name : 'parc2',  value: 'parc2'},
 				{name : 'parc3', value: 'parc3'}
 			]
-		});
+		});*/
 		
 		//liste des villes : TODO : récupérer la liste entière
-		var cityStore = new Ext.data.JsonStore({
+		var cityStore = getCityStore();
+		/*new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : 'Caen',   value: 'caen'},
 				{name : 'Rennes',  value: 'rennes'},
 				{name : 'Lannion', value: 'lannion'}
 			]
-		});
+		});*/
 	
 		//listes des section / parcelles saisies : "références"
 		//initialement vide
@@ -106,7 +209,7 @@ Ext.namespace("GEOR")
 					editable:       true,
 					displayField:   'name',
 					valueField:     'value',
-					store: parcelleStore
+					store: parcCityStore
 				})
 			}
 		]);			
@@ -164,8 +267,8 @@ Ext.namespace("GEOR")
 			frame: true,
 			bodyPadding: 10,
 			autoScroll:true,
+			resizable: false,
 			width: 450,
-			minimizable: true,
             closable: true,
             resizable: true,
 			draggable : true,
@@ -182,13 +285,13 @@ Ext.namespace("GEOR")
 			labelWidth: 120,
 			defaultType: 'textfield',
 			items: [
-				{ fieldLabel: 'Nom', name: 'nom', width: 280},
-				{ fieldLabel: 'Prénom', name: 'prenom', width: 280},
-				{ fieldLabel: 'Ville, Commune', name: 'commune', width: 280},
+				{ fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.nom'), name: 'nom', width: 280},
+				{ fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.prenom'), name: 'prenom', width: 280},
+				{ fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.commune'), name: 'commune', width: 280},
 
 				            {
                         xtype: 'compositefield',
-                        fieldLabel: 'N° de voirie et rue',
+                        fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.num_rue'),
                         items: [
                            {
                                xtype: 'numberfield',
@@ -207,24 +310,24 @@ Ext.namespace("GEOR")
                            }
                         ]
                     },
-				{ fieldLabel: 'Lieu-Dit', name: 'lieudit', width: 280},
-				{ fieldLabel: 'CNI', name: 'cni', width: 280}
+				{ fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.lieudit'), name: 'lieudit', width: 280},
+				{ fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.cni'), name: 'cni', width: 280}
 				]
 			},
 			{
 			xtype: 'fieldset',
-			title: 'Biens à consulter',
+			title: OpenLayers.i18n('cadastrapp.demandeinformation.titre2'),
 			defaultType: 'textfield',
 			labelWidth: 120,
 			items: [				
-				{ fieldLabel: 'Ville, Commune', name: 'commune', width: 280},
+				{ fieldLabel:OpenLayers.i18n('cadastrapp.demandeinformation.commune'), name: 'commune', width: 280},
 				{ xtype:'tabpanel',	height: 160,
 
 				activeTab: 0,
 				items:[{
 				
 					//ONGLET 1
-					title:'Parcelle(s)',
+					title:OpenLayers.i18n('cadastrapp.demandeinformation.parcelles'),
 //					layout:'form',
 					defaultType: 'displayfield',
 					height: 200,
@@ -245,7 +348,7 @@ Ext.namespace("GEOR")
 				items:[{	
 				
 					//ONGLET 1
-					title:'Adresse(s) cadastrale(s)',
+					title:OpenLayers.i18n('cadastrapp.demandeinformation.adressescadastrales'),
 					defaultType: 'displayfield',
 					id: 'firstForm',
 					fileUpload: true,
@@ -263,7 +366,7 @@ Ext.namespace("GEOR")
 			}],
 			buttons: [{
 						labelAlign: 'left',				
-						text: 'Annuler la demande',
+						text: OpenLayers.i18n('cadastrapp.demandeinformation.annuler'),
 						listeners:{
 							click: function(b,e) {
 											demandWindow.close();
@@ -271,7 +374,7 @@ Ext.namespace("GEOR")
 									 }
 						},{
 						labelAlign: 'right',
-						text: 'Imprimer la demande',
+						text: OpenLayers.i18n('cadastrapp.demandeinformation.imprimer'),
 						listeners:{
 							click: function(b,e) {
 											demandWindow.close();

@@ -40,6 +40,10 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                 scope: this
             }
         });
+		
+		// Lecture du role utilisateur déterminant ses droits d'accès aux informations
+		//TODO
+		var cnilrole = this.options.roles;
 				
         if (this.target) {
             // create a button to be inserted in toolbar:

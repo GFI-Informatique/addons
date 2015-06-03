@@ -16,8 +16,12 @@ Ext.namespace("GEOR")
 		var ccodep, ccodir, ccocom, gcopre, ccosec, dnupla, dnupro, dnomlp, dprnlp, expnee, dnomcp, dprncp, adressehabitation , jdatnss , dldnss, ccodro_lib, dnvoiri, dindic, natvoiriv_lib, dvoilib, dcntpa, supf, gparbat, gurbpa;
 		var dniv, dpor, cconlc_lib, dvlrt, jdatat, dnupro, dnomlp, dprnlp, expnee, dnomcp, dprncp
 		
-		//variable userauthent: niveau de droits de l'utilisateur
-		var userauthent;
+		//variable userrole: niveau de droits de l'utilisateur
+		var userrole;
+		
+		
+		
+		
 		
 		// Set up a model to use in our Store
 		Ext.regModel('Parcelle', {
@@ -53,8 +57,8 @@ Ext.namespace("GEOR")
 				{name: 'surface', type: 'float'},
 				{name: 'parcellebatie', type: 'String'},
 				{name: 'secteururbain', type: 'String'},
-				]
-
+				],
+				[
 		
 				//	Proprietaires
 				{name: 'comptepropriétaire', type: 'String'},
@@ -63,56 +67,63 @@ Ext.namespace("GEOR")
 				{name: 'mentionducomplement', type: 'String'},
 				{name: 'nomcomplement', type: 'String'},
 				{name: 'prenomscomplement', type: 'String'},
-
-				
-
-		
-				// Adressehabitation			
-		dlign3	Ligne d’adresse	String[30]
-		dlign4	Ligne d’adresse	String[36]
-		dlign5	Ligne d’adresse	String[30]
-		dlign6	Ligne d’adresse	String[32]
-		dldnss	Lieu de naissance	String[58]
-		jdatnss	Date de naissance	date
-		ccodro	Code du droit réel	String[1]
-		ccodro_lib	Libellé – Code du droit réel	String[150]
-	
-				// Batiments		
-		dnubat	Lettre de bâtiment	
-		locaux			
-		annee	année	String[4]
-		invar	numéro invariant	String[10]
-		descr	Numéro d’entrée	String[2]
-		dniv	Niveau d’étage	String[2]
-		dpor	Numéro de local (porte)	String[5]
-		cconlc_lib	Libellé - Nature du local 	String[150]
-		dvltrt	Valeur locative totale retenue – Revenu fiscal ?	Int4
-		jdatat	Date d’acte de mutation du local	date
-		jannat	Année de construction	String[4]
-		proprietaires		
-		dnupro	Compte propriétaire	String[6]
-		dnomlp	Nom d’usage	String[30]
-		dprnlp	Prénoms d’usage	String[15]
-		expnee	Mention du complément	String[3]
-		dnomcp	Nom complément	String[30]
-		dprncp	Prénoms complément	String[15]
-			
-			// Subdivisions		
-		ccosub	Lettre indicative de subdivisions fiscales	String[2]
-		dcntsf	Contenance de la subdivision en m2	Int4
-		cgrnum_lib	Libellé - Groupe de nature de culture	String[150]
-		drcsub	Revenu cadastral revalorisé du 01-01 de l’année en euros	numeric
-		
-			// Filiation		
-		jdatat	Date de l’acte	date
-		ccocomm	Code INSEE de la commune de la parcelle mère	String[3]
-		ccoprem	Code du préfixe de section de la parcelle mère	String[3]
-		ccosecm	Code section de la parcelle mère	String[2]
-		dnuplam	Numéro de plan de la parcelle	String[4]
-		type_filiation	Type de filiation (D, R, T ou blanc)	String[1]
-
-		
-		
+				],
+				[
+				// Adressehabitation	
+				{name: 'dlign3', type: 'String'},
+				{name: 'dlign4', type: 'String'},
+				{name: 'dlign5', type: 'String'},
+				{name: 'dlign6', type: 'String'},
+				{name: 'dldnss', type: 'String'},
+				{name: 'jdatnss', type: 'Date'},
+				{name: 'ccodro', type: 'String'},				
+				{name: 'ccodro_lib', type: 'String'}				
+				],
+				[
+				// Batiments
+				{name: 'dnubat', type: 'String'},
+				{name: 'annee', type: 'String'},
+				{name: 'invar', type: 'String'},
+				{name: 'descr', type: 'String'},
+				{name: 'dniv', type: 'String'},
+				{name: 'dpor', type: 'Date'},
+				{name: 'cconlc_lib', type: 'String'},
+				{name: 'dvltrt', type: 'String'},
+				{name: 'dlign6', type: 'String'},
+				{name: 'jdatat', type: 'String'},
+				{name: 'jdatnss', type: 'Date'},
+				{name: 'jannat', type: 'String'},
+				{name: 'ccodro', type: 'String'},				
+				{name: 'ccodro_lib', type: 'String'}		
+				],
+				[				
+				// proprietaires
+				{name: 'dnupro', type: 'String'},
+				{name: 'dnomlp', type: 'String'},
+				{name: 'dprnlp', type: 'String'},
+				{name: 'expnee', type: 'String'},
+				{name: 'dnomcp', type: 'String'},
+				{name: 'dprncp', type: 'String'},
+				],
+				[
+				// Subdivisions
+				{name: 'ccosub', type: 'String'},
+				{name: 'dcntsf', type: 'Int4'},
+				{name: 'cgrnum_lib', type: 'String'},
+				{name: 'drcsub', type: 'numeric'},
+				{name: 'pdl', type: 'String'},
+				{name: 'dnubat', type: 'String'},	
+				],
+				[
+			// Filiation
+				{name: 'jdatat', type: 'String'},
+				{name: 'ccocomm', type: 'String'},
+				{name: 'ccoprem', type: 'String'},
+				{name: 'ccosecm', type: 'String'},
+				{name: 'dnuplam', type: 'String'},
+				{name: 'type_filiation', type: 'String'},	
+				]
+		}
 		//Information parcelle : TODO : charger dynamiquement selon la parcelle
 		var parcelleStore = new Ext.data.JsonStore({
  {
@@ -120,7 +131,8 @@ Ext.namespace("GEOR")
 							//Ext.Ajax.request({
 							currentForm.getForm().submit({
 								method: 'GET',
-								url:'../cadastrapp/getCommune/all',
+								//TODO
+								//url:'../cadastrapp/getCommune/all',
 								success: function(form, action) {
 									//creation d'un store en retour
 									var store = new Ext.data.JsonStore({
@@ -172,29 +184,31 @@ Ext.namespace("GEOR")
 		};
 					
 
-  		//fenêtre principale
+  		//Construction de la fenêtre principale
 		var affichagedonneescadastrales;
 			affichagedonneescadastrales = new Ext.Window({
             title: 'TODO',
 			frame: true,
 			autoScroll:true,
-			minimizable: true,
+			minimizable: false,
 			closable: true,
 			resizable: false,
 			draggable : true,
 			constrainHeader: true,
 			border:false,
-			labelWidth: 100,
-			width: 450,
-			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
-			
+			width: 400,
+
 			listeners: {
 				close(window) {
 					affichagedonneescadastrales = null;
 				}
 			},
 			
-			if 
+			// Afficher l'onglet parcelle et selon les habilitations (sec-role), les autres onglets
+			//TODO
+			//if (isCNIL1 !=-1)
+			//if (isCNIL2 !=-1)			
+			
 			//construction de la vue fiche d'information cadastrale
 			//Onglet parcelle
 			items: [{
@@ -233,7 +247,7 @@ Ext.namespace("GEOR")
 					}]
 					},
 					{ xtype:'tabpanel',
-					activeTab: 0,
+					activeTab: 1,
 					items:[{	
 					
 						//ONGLET 2
@@ -253,7 +267,7 @@ Ext.namespace("GEOR")
 						}]
 					},
 					{ xtype:'tabpanel',
-					activeTab: 0,
+					activeTab: 2,
 					items:[{	
 					
 						//ONGLET 3
@@ -273,7 +287,7 @@ Ext.namespace("GEOR")
 						}]
 					},
 					{ xtype:'tabpanel',
-					activeTab: 0,
+					activeTab: 3,
 					items:[{	
 					
 						//ONGLET 4
@@ -293,7 +307,7 @@ Ext.namespace("GEOR")
 						}]
 					},
 					{ xtype:'tabpanel',
-					activeTab: 0,
+					activeTab: 4,
 					items:[{	
 					
 						//ONGLET 5
@@ -311,28 +325,7 @@ Ext.namespace("GEOR")
 								}]
 												
 						}]
-					},
-					{ xtype:'tabpanel',
-					activeTab: 0,
-					items:[{	
-					
-						//ONGLET 5
-						title:'Adresse(s) cadastrale(s)',
-						defaultType: 'displayfield',
-						id: 'Form5',
-						xtype: 'form',
-						fileUpload: true,
-						
-						items: [
-								adresseGrid,	//grille "adresse"
-								{
-								value: 'ou',
-								fieldClass: 'displayfieldCenter'
-								}]
-												
-						}]
-					}				
-					]
+					}]
 				}]
         });
 		
@@ -341,194 +334,3 @@ Ext.namespace("GEOR")
 	};
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	
-			//fenêtre principale
-		proprietaireWindow = new Ext.Window({
-			title: 'Recherche de propriétaires',
-			frame: true,
-			autoScroll:true,
-			minimizable: true,
-			closable: true,
-			resizable: false,
-			draggable : true,
-			constrainHeader: true,
-			
-			border:false,
-			labelWidth: 100,
-			width: 450,
-			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
-			
-			listeners: {
-				close: function(window) {
-					proprietaireWindow = null;
-				}
-			},
-			
-			items: [
-			{
-				xtype:'tabpanel',
-				activeTab: 0,
-				items:[{
-				
-					//ONGLET 1
-					id: 'firstForm',
-					xtype: 'form',
-					title: 'Nom Usage ou Naissance',
-					defaultType: 'displayfield',
-					height: 200,
-								
-					items: [
-					cityCombo1,
-					{
-						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
-						fieldClass: 'displayfieldGray'
-					},
-					{
-						xtype: 'textfield',
-						fieldLabel: 'Nom',
-						name: 'lastname',
-						width: 300
-					},
-					{
-						value: 'ex. Dupond, Dupont',
-						fieldClass: 'displayfieldGray'
-					},
-					{
-						xtype: 'textfield',
-						fieldLabel: 'Pr&eacute;nom(s)',
-						name: 'firstname',
-						width: 300
-					},
-					{
-						value: 'ex. Albert, Jean-Marie',
-						fieldClass: 'displayfieldGray'
-					}]
-				},{
-				
-					//ONGLET 2
-					id: 'secondForm',
-					title: 'Adresse cadastrale',
-					layout: 'form',
-					defaultType: 'displayfield',
-					fileUpload: true,
-					height: 200,
-
-					items: [
-					cityCombo2,
-					{
-						value: 'ex. Rennes, Cesson-S&eacute;vign&eacute;',
-						fieldClass: 'displayfieldGray'
-					},
-					proprietaireGrid,	//grille "proprietaires"
-					{
-						value: 'ou',
-						fieldClass: 'displayfieldCenter'
-					},					
-					{
-						fieldLabel: 'Path',
-						name: 'filePath',
-						xtype: 'fileuploadfield',
-						emptyText: 'Charger un fichier au format .csv',
-						buttonText: 'Ouvrir fichier',
-						height: 25,
-						width: 300
-					}]
-				}]
-			}],
-			
-			buttons: [{
-				text: 'Rechercher',
-				listeners: {
-					click: function(b,e) {
-						var currentForm = proprietaireWindow.items.items[0].getActiveTab();
-						if (currentForm.id == 'firstForm') {
-							
-							//appel de méthode webapp
-							Ext.Ajax.request({
-								method: 'GET',
-								url:'./getCommune/all',
-								success: function(form, action) {
-									alert('Success : ' + action.result.msg);
-								},
-								failure: function(form, action) {
-									alert('Failed : ' + action.result.msg);
-								}
-							});
-
-							//soumission des données d'une form
-							currentForm.getForm().submit({
-								method: 'GET',
-								url:'./getCommune/all',
-								success: function(form, action) {
-									alert('Success : ' + action.result.msg);
-								},
-								failure: function(form, action) {
-									alert('Failed : ' + action.result.msg);
-								}
-							});				
-							
-							
-							var result = new Ext.data.JsonStore({
-								fields : ['prenom', 'nom'],
-								data   : [
-									{prenom : 'nicolas', nom: 'tasia'},
-									{prenom : 'pierre', nom: 'jego'},
-									{prenom : 'laurent', nom: 'cornic'}
-								]
-							});
-							addNewResultProprietaire(result);
-							
-						} else {
-							alert('TODO');
-						}
-					}
-				}
-			},{
-				text: 'Fermer',
-				listeners: {
-					click: function(b,e) {
-						proprietaireWindow.close();
-					}
-				}
-			}]
-		});
-	};
-*/
