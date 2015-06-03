@@ -59,7 +59,7 @@ Ext.namespace("GEOR")
 		                		q.combo.getStore().load({params: {ccoinsee_partiel: q.query}});
 		                	}		                	
 		                } else if (length < 3) {
-		                	//q.combo.getStore().loadData(getVoidCityStore().reader.jsonData);
+		                	q.combo.getStore().loadData([],false);
 		                }
 		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
 		                q.query.length = length;

@@ -44,15 +44,7 @@ Ext.namespace("GEOR")
 		    }]
 		});
 	}
-	getVoidCityStore = function() {
-		return new Ext.data.JsonStore({
-			fields: ['ccoinsee', 'libcom', 'libcom_min', { 
-		       name: 'displayname', 
-		       convert: function(v, rec) { return rec.libcom_min.trim() + ' (' + rec.ccoinsee.trim() + ')'}
-		    }],
-		    data: []
-		});
-	}
+	
 		
 	//liste des sections
 	//TODO : charger dynamiquement selon la ville choisie
