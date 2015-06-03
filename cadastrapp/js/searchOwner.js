@@ -45,11 +45,22 @@ Ext.namespace("GEOR")
 			editable: true,
 			displayField: 'displayname',
 			valueField: 'ccoinsee',
-			store: propCityStore,
+			store: getPartialCityStore(),
 			listeners: {
-			    beforequery: function(q){  
+				beforequery: function(q){  
 			    	if (q.query) {
 		                var length = q.query.length;
+		                if (length==3) {
+		                	if (isNaN(q.query)) {
+		                		//recherche par nom de ville
+		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
+		                	} else {
+		                		//recherche par code insee
+		                		q.combo.getStore().load({params: {ccoinsee_partiel: q.query}});
+		                	}		                	
+		                } else if (length < 3) {
+		                	//q.combo.getStore().loadData(getVoidCityStore().reader.jsonData);
+		                }
 		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
 		                q.query.length = length;
 		            }
@@ -217,18 +228,19 @@ Ext.namespace("GEOR")
 			
 			buttons: [{
 				text: OpenLayers.i18n('cadastrapp.search'),
-				disabled: true,
+				//disabled: true,
 				listeners: {
 					click: function(b,e) {
 						var currentForm = proprietaireWindow.items.items[0].getActiveTab();
 						if (currentForm.id == 'propFirstForm') {
-							if (currentForm.getForm().isValid()) {
+							//TODO : remettre la validation
+							//if (currentForm.getForm().isValid()) {
 								var cityName = currentForm.getForm().findField('city').lastSelectionText;
 								//envoi des données d'une form
 								//Ext.Ajax.request({
 								currentForm.getForm().submit({
 									method: 'GET',
-									url:'../cadastrapp/getCommune/all',
+									url:'http://localhost:8080/cadastrapp/getCommune/all',
 									success: function(form, action) {
 										//creation d'un store en retour
 										var store = new Ext.data.JsonStore({
@@ -242,33 +254,40 @@ Ext.namespace("GEOR")
 										addNewResultProprietaire(cityName, null);
 									}
 								});
-							}
+							//}
 							
 						} else {
-							if (currentForm.getForm().isValid()) {
-								var cityName = currentForm.getForm().findField('city').lastSelectionText;						
+							//TODO : remettre la validation
+							//if (currentForm.getForm().isValid()) {
+							
+								var cityName = currentForm.getForm().findField('city').lastSelectionText;
+								
 								//soumet la form (pour envoyer le fichier)
-								currentForm.getForm().submit({
-									//method: 'GET',
-									url:'../cadastrapp/getCommune/all',
+								currentForm.getForm().submit({								
+									method: 'POST',
+									url:'http://localhost:8080/cadastrapp/getProprietaire/fromFile',
 									params: {
 										//envoi du contenu du store des proprietaires
 										jsonData: Ext.util.JSON.encode(Ext.pluck(proprietaireGrid.getStore().getRange(), 'data'))
 									},
 									success: function(form, action) {
 										//creation d'un store en retour
-										var store = new Ext.data.JsonStore({
-											fields: ['ccoinsee', 'libcom', 'libcom_min'],
-											data: Ext.util.JSON.decode(form.responseText)
-										});	
-										
+										var store = (action.response==undefined) ? null : new Ext.data.JsonStore({
+												fields: ['ccoinsee', 'libcom', 'libcom_min'],
+												data: Ext.util.JSON.decode(action.response.responseText)
+											});										
 										addNewResultProprietaire(cityName, store);
 									},
 									failure: function(form, action) {
-										addNewResultProprietaire(cityName, null);
+										//creation d'un store en retour
+										var store = (action.response==undefined) ? null : new Ext.data.JsonStore({
+												fields: ['ccoinsee', 'libcom', 'libcom_min'],
+												data: Ext.util.JSON.decode(action.response.responseText)
+											});										
+										addNewResultProprietaire(cityName, store);
 									}
 								});
-							}
+							//}
 						}
 					}
 				}

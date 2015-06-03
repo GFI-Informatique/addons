@@ -25,20 +25,18 @@ Ext.namespace("GEOR")
 			border: true,
             closable: true,
 				
-			//store: (result!=null) ? result : new Ext.data.Store(),
-			store: (result!=null) ? result : new Ext.data.JsonStore({
-				fields : ['ccoinsee', 'libcom_min'],
-				data   : [
-					{ccoinsee: '63001',  libcom_min: 'Ville Test 1'},
-					{ccoinsee: '63002', libcom_min: 'Ville Test 2'}
-				]
-			}),
+			store: (result!=null) ? result : new Ext.data.Store(),
             
 			colModel: new Ext.grid.ColumnModel([
 				{
 					id:'ccoinsee',
 					dataIndex: 'ccoinsee',
 					header: OpenLayers.i18n('cadastrapp.proprietaire.result.col1'),
+					sortable: true
+				},{
+					id:'libcom',
+					dataIndex: 'libcom',
+					header: OpenLayers.i18n('cadastrapp.proprietaire.result.col2'),
 					sortable: true
 				},{
 					id:'libcom_min',

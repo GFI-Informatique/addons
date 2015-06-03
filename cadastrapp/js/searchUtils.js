@@ -21,7 +21,6 @@ Ext.namespace("GEOR")
 		
 	//liste des villes
 	//chargé une fois, au lancement
-	//TODO : récupérer la liste entière	
 	getCityStore = function() {
 		return new Ext.data.JsonStore({
 			url: '../cadastrapp/getCommune/all',
@@ -31,7 +30,29 @@ Ext.namespace("GEOR")
 		       convert: function(v, rec) { return rec.libcom_min.trim() + ' (' + rec.ccoinsee.trim() + ')'}
 		    }]
 		});
-	}	
+	}
+	getPartialCityStore = function() {
+		return new Ext.data.JsonStore({
+			proxy: new Ext.data.HttpProxy({
+                url: '../cadastrapp/getCommune',
+                method: 'GET'
+             }),
+			//autoLoad: true,
+			fields: ['ccoinsee', 'libcom', 'libcom_min', { 
+		       name: 'displayname', 
+		       convert: function(v, rec) { return rec.libcom_min.trim() + ' (' + rec.ccoinsee.trim() + ')'}
+		    }]
+		});
+	}
+	getVoidCityStore = function() {
+		return new Ext.data.JsonStore({
+			fields: ['ccoinsee', 'libcom', 'libcom_min', { 
+		       name: 'displayname', 
+		       convert: function(v, rec) { return rec.libcom_min.trim() + ' (' + rec.ccoinsee.trim() + ')'}
+		    }],
+		    data: []
+		});
+	}
 		
 	//liste des sections
 	//TODO : charger dynamiquement selon la ville choisie
