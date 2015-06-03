@@ -35,7 +35,7 @@ Ext.namespace("GEOR")
 		//combobox "villes"
 		parcCityCombo1 = new Ext.form.ComboBox({
 			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
-			name: 'city',
+			hiddenName: 'ccoinsee',
             allowBlank:false,
 			width: 300,
 			mode: 'local',
@@ -74,7 +74,7 @@ Ext.namespace("GEOR")
 		
 		parcCityCombo2 = new Ext.form.ComboBox({
 			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
-			name: 'city',
+			hiddenName: 'ccoinsee',
             allowBlank:false,
 			width: 300,
 			mode: 'local',
@@ -102,18 +102,20 @@ Ext.namespace("GEOR")
 		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
 		                q.query.length = length;
 		            }
-			    }
+			    },
+				change: function(combo, newValue, oldValue) {
+					parcelleWindow.buttons[0].enable();
+				}
 			}
 		});		
 		
 		//grille "références"
 		parcelleGrid = new Ext.grid.EditorGridPanel({
 			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.references'),
-			name: 'parcelles',							
 			xtype: 'editorgrid',
 			clicksToEdit: 1,
 			ds: getVoidParcelleStore(),
-			cm: getParcelleColModel(''),
+			cm: getParcelleColModel(null),
 			autoExpandColumn: 'parcelle',
 			height: 100,
 			width: 300,
@@ -128,7 +130,8 @@ Ext.namespace("GEOR")
 						//pas d'edition de parcelle si aucune section selectionnée
 						if (e.record.data.section == '') return false;
 						//on remplace le contenu du store des parcelles selon la section selectionnée
-						e.grid.getColumnModel().getColumnById(e.field).editor.getStore().loadData(getParcelleStore(parcCityCombo1.value, e.record.data.section).reader.jsonData);
+						reloadParcelleStore(e.grid.getColumnModel().getColumnById(e.field).editor.getStore(), parcCityCombo1.value, e.record.data.section);
+						//e.grid.getColumnModel().getColumnById(e.field).editor.getStore().loadData(getParcelleStore(parcCityCombo1.value, e.record.data.section).reader.jsonData);
 					}
 				},
 				afteredit: function(e) {
@@ -225,16 +228,16 @@ Ext.namespace("GEOR")
 						defaults: {flex: 1},
 						items: [
 							{
-								name : 'streetNumber',
+								name : 'dnvoiri',
 								xtype: 'textfield',
 								width: 50,
 							},
 							{
-								name : 'streetBis',
+								hiddenName : 'dindic',
 								xtype: 'combo',
 								width: 50,
 								mode: 'local',
-								value: '--',
+								value: '',
 								triggerAction:  'all',
 								forceSelection: true,
 								editable:       false,
@@ -243,7 +246,7 @@ Ext.namespace("GEOR")
 								store: parcBisStore
 							},
 							{
-								name : 'streetName',
+								name : 'dvoilib',
 								xtype: 'textfield',
 								width: 190
 							}
@@ -275,49 +278,94 @@ Ext.namespace("GEOR")
 						var currentForm = parcelleWindow.items.items[0].getActiveTab();
 						if (currentForm.id == 'parcFirstForm') {
 							if (currentForm.getForm().isValid()) {
-								var cityName = currentForm.getForm().findField('city').lastSelectionText;
-								//soumet la form (pour envoyer le fichier)
-								currentForm.getForm().submit({
-									//method: 'GET',
-									url:'../cadastrapp/getCommune/all',
-									params: {
-										//envoi du contenu du store des proprietaires
-										jsonData: Ext.util.JSON.encode(Ext.pluck(parcelleGrid.getStore().getRange(), 'data'))
-									},
-									success: function(form, action) {
-										//creation d'un store en retour
-										var store = new Ext.data.JsonStore({
-											fields: ['ccoinsee', 'libcom', 'libcom_min'],
-											data: Ext.util.JSON.decode(form.responseText)
-										});
-										
-										addNewResultParcelle(cityName, store);
-									},
-									failure: function(form, action) {
-										addNewResultParcelle(cityName, null);
-									}
-								});
+								//TITRE de l'onglet resultat
+								var resultTitle = currentForm.getForm().findField('ccoinsee').lastSelectionText;
+								
+								if (currentForm.getForm().findField('filePath').value != undefined) {
+									//PAR FICHIER
+									
+									//soumet la form (pour envoyer le fichier)
+									currentForm.getForm().submit({
+										url: getWebappURL() + 'getParcelle',
+										success: function(form, action) {
+											//creation d'un store en retour
+											var store = new Ext.data.JsonStore({
+												fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib'],
+												data: Ext.util.JSON.decode(action.response.responseText)
+											});										
+											addNewResultParcelle(cityName, store);
+										},
+										failure: function(form, action) {
+											alert('ERROR : ' + action.response.responseText);
+										}
+									});
+									
+								} else {
+									//PAR LISTE
+									
+									//PARAMS
+									var params = currentForm.getForm().getValues();
+									params.details = 1;
+									var cityCode = currentForm.getForm().findField('ccoinsee').value;
+									params.ccodep = cityCode.substring(0,2);
+									params.ccodir = cityCode.substring(2,3);
+									params.ccocom = cityCode.substring(3,6);
+									
+									//liste des parcelles
+									//parcelle: Ext.util.JSON.encode(Ext.pluck(parcelleGrid.getStore().getRange(), 'data'))
+									params.parcelle = new Array();
+									parcelleGrid.getStore().each(function(record) {  
+										params.parcelle.push(record.data.parcelle); 
+									});								
+									
+									//envoi la liste de resultat
+									Ext.Ajax.request({
+										method: 'GET',
+										url: getWebappURL() + 'getParcelle',
+										params: params,
+										success: function(result) {
+											//creation d'un store en retour
+											var store = new Ext.data.JsonStore({
+												fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib'],
+												data: Ext.util.JSON.decode(result.responseText)
+											});										
+											addNewResultParcelle(resultTitle, store);
+										},
+										failure: function(result) {
+											alert('ERROR');
+										}
+									});
+								}
 							}
 							
 						} else {
 							if (currentForm.getForm().isValid()) {
-								var cityName = currentForm.getForm().findField('city').lastSelectionText;
+								//TITRE de l'onglet resultat
+								var resultTitle = currentForm.getForm().findField('ccoinsee').lastSelectionText;
+								
+								//PARAMS
+								var params = currentForm.getForm().getValues();
+								params.details = 1;
+								var cityCode = currentForm.getForm().findField('ccoinsee').value;
+								params.ccodep = cityCode.substring(0,2);
+								params.ccodir = cityCode.substring(2,3);
+								params.ccocom = cityCode.substring(3,6);								
+								
 								//envoi des données d'une form
-								//Ext.Ajax.request({
-								currentForm.getForm().submit({
+								Ext.Ajax.request({
 									method: 'GET',
-									url:'../cadastrapp/getCommune/all',
-									success: function(form, action) {
+									url: getWebappURL() + 'getParcelle',
+									params: params,
+									success: function(result) {
 										//creation d'un store en retour
 										var store = new Ext.data.JsonStore({
-											fields: ['ccoinsee', 'libcom', 'libcom_min'],
-											data: Ext.util.JSON.decode(form.responseText)
-										});
-										
-										addNewResultParcelle(cityName, store);
+											fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib'],
+											data: Ext.util.JSON.decode(result.responseText)
+										});										
+										addNewResultParcelle(resultTitle, store);
 									},
-									failure: function(form, action) {
-										addNewResultParcelle(cityName, null);
+									failure: function(result) {
+										alert('ERROR');
 									}
 								});
 							}

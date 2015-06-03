@@ -132,7 +132,7 @@ Ext.namespace("GEOR")
 							currentForm.getForm().submit({
 								method: 'GET',
 								//TODO
-								//url:'../cadastrapp/getCommune/all',
+								//url: getWebappURL() + 'getCommune/all',
 								success: function(form, action) {
 									//creation d'un store en retour
 									var store = new Ext.data.JsonStore({

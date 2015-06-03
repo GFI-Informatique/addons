@@ -12,9 +12,18 @@ Ext.namespace("GEOR")
 		return new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
-				{name : '--',   value: '--'},
-				{name : 'bis',  value: 'bis'},
-				{name : 'ter', value: 'ter'}
+				{name : '--', value: ''},
+				{name : 'bis', value: 'B'},
+				{name : 'ter', value: 'T'},
+				{name : 'quater', value: 'Q'},
+				{name : 'A', value: 'A'},
+				{name : 'B', value: 'B'},
+				{name : 'C', value: 'C'},
+				{name : 'D', value: 'D'},
+				{name : 'E', value: 'E'},
+				{name : 'F', value: 'F'},
+				{name : 'G', value: 'G'},
+				{name : 'H', value: 'H'}
 			]
 		});		
 	}
@@ -23,10 +32,9 @@ Ext.namespace("GEOR")
 	getPartialCityStore = function() {
 		return new Ext.data.JsonStore({
 			proxy: new Ext.data.HttpProxy({
-                url: '../cadastrapp/getCommune',
+                url: getWebappURL() + 'getCommune',
                 method: 'GET'
              }),
-			//autoLoad: true,
 			fields: ['ccoinsee', 'libcom', 'libcom_min', { 
 		       name: 'displayname', 
 		       convert: function(v, rec) { return rec.libcom_min.trim() + ' (' + rec.ccoinsee.trim() + ')'}
@@ -35,43 +43,71 @@ Ext.namespace("GEOR")
 	}
 	
 		
-	//liste des sections
-	//TODO : charger dynamiquement selon la ville choisie
+	//liste des sections	
 	getSectionStore = function(cityId) {
-		return new Ext.data.JsonStore({
-			fields : ['name'],
-			data   : [
-				{name : 'sect1-'+cityId},
-				{name : 'sect2-'+cityId},
-				{name : 'sect3-'+cityId}
-			]
-		});	
+		if (cityId!=null) {
+			return new Ext.data.JsonStore({
+				url: getWebappURL() + 'getSection?ccoinsee=' + cityId,
+				autoLoad: true,
+				fields: ['ccoinsee', 'ccopre', 'ccosec', 'geo_section',
+					{ 
+				       name: 'fullccosec', 
+				       convert: function(v, rec) { return (rec.ccopre.trim().length>0) ? (rec.ccopre.trim() + '-' + rec.ccosec.trim()) : rec.ccosec.trim(); }
+				    }]
+			});
+		} else {
+			return new Ext.data.JsonStore({
+				data: [],
+				fields: ['ccoinsee', 'ccopre', 'ccosec', 'geo_section', 'fullccosec']
+			});
+		}
 	}
 	
 	//liste des parcelles
-	//TODO : charger dynamiquement selon la ville choisie et la section choisie
-	getParcelleStore = function(cityId, sectionId) {
+	getInitParcelleStore = function() {
 		return new Ext.data.JsonStore({
-			fields : ['name'],
-			data   : [
-				{name : 'parc1-'+cityId+'-'+sectionId},
-				{name : 'parc2-'+cityId+'-'+sectionId},
-				{name : 'parc3-'+cityId+'-'+sectionId}
-			]
-		});	
-	}	
+			proxy: new Ext.data.HttpProxy({
+                url: getWebappURL() + 'getParcelle',
+                method: 'GET'
+             }),
+			fields : ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib']
+		});
+	}
+	reloadParcelleStore = function(parcelleStore, cityId, sectionId) {
+		if (parcelleStore!=null && cityId!=null && sectionId!=null) {			
+			parcelleStore.load({params: {
+				details: 1,
+				ccodep: cityId.substring(0,2),
+				ccodir: cityId.substring(2,3),
+				ccocom: cityId.substring(3,6),
+				ccopre: (sectionId.indexOf('-')>0) ? sectionId.split('-')[0] : '',
+				ccosec: (sectionId.indexOf('-')>0) ? sectionId.split('-')[1] : sectionId,
+			}});
+		}
+	}
+	
+	
+	
 		
 	//liste des propriétaires d'une ville
 	//TODO : charger dynamiquement selon la ville choisie
-	getProprietaireStore = function(cityId) {
-		return new Ext.data.JsonStore({
-			fields : ['name'],
-			data   : [
-				{name : 'prop1-'+cityId},
-				{name : 'prop2-'+cityId},
-				{name : 'prop3-'+cityId}
-			]
-		});	
+	getProprietaireStore = function(cityId) {		
+		if (cityId!=null) {
+			return new Ext.data.JsonStore({
+				url: getWebappURL() + 'getProprietaire?ccoinsee=' + cityId,
+				autoLoad: true,
+				fields: ['ccoinsee', 'ccopre', 'ccosec', 'geo_section',
+					{ 
+				       name: 'fullccosec', 
+				       convert: function(v, rec) { return (rec.ccopre.trim().length>0) ? (rec.ccopre.trim() + '-' + rec.ccosec.trim()) : rec.ccosec.trim(); }
+				    }]
+			});
+		} else {
+			return new Ext.data.JsonStore({
+				data: [],
+				fields: ['ccoinsee', 'ccopre', 'ccosec', 'geo_section', 'fullccosec']
+			});
+		}
 	}
 		
 	//listes des section / parcelles saisies : "références"
@@ -108,8 +144,8 @@ Ext.namespace("GEOR")
 					value: '',
 					forceSelection: true,
 					editable:       true,
-					displayField:   'name',
-					valueField:     'name',
+					displayField:   'fullccosec',
+					valueField:     'fullccosec',
 					store: getSectionStore(cityId),
 					listeners: {
 					    beforequery: function(q){  
@@ -133,9 +169,9 @@ Ext.namespace("GEOR")
 					value: '',
 					forceSelection: true,
 					editable:       true,
-					displayField:   'name',
-					valueField:     'name',
-					store: getParcelleStore(cityId, ''),
+					displayField:   'parcelle',
+					valueField:     'parcelle',
+					store: getInitParcelleStore(),
 					listeners: {
 					    beforequery: function(q){  
 					    	if (q.query) {
