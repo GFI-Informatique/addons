@@ -189,7 +189,22 @@
              "cadastrapp.demandeinformation.imprimer": "Imprimer la demande",
  
             "cadastrapp.surface" : "Surface",
-            "cadastrapp.CoProprietaire" : "co-owner"
+            "cadastrapp.CoProprietaire" : "co-owner",
+			
+            "cadastrapp.designation" : "Designation",
+            "cadastrapp.valeur" : "Valeur",
+			"cadastrapp.bordereau.parcellaire" : "Bordereau Parcellaire",
+			"cadastrapp.releve.depropriete" : "Relevé de propriété",
+			"cadastrapp.batiments" : "Batiment(s)",
+			"cadastrapp.habitation.descriptif" : "Habitation et élément(s) incorporé(s)",
+			"cadastrapp.caracteristiques.generales" : "Caractéristiques générales",
+            "cadastrapp.repartition.pieces" : "Répartitions des pièces",
+            "cadastrapp.elements.confort" : "Eléments de confort",
+            "cadastrapp.elements.incorpores" : "Eléments incorporés",
+            "cadastrapp.partie.professionnelle" : "Partie professionnelle",
+            "cadastrapp.dependances" : "Dépendances"
+
+
         },
         "es": {
             "cadastrapp.cadastre_tools": "Outils Cadastre",
@@ -357,7 +372,23 @@
              "cadastrapp.demandeinformation.imprimer": "Imprimer la demande",
  
             "cadastrapp.surface" : "Surface",
-            "cadastrapp.CoProprietaire" : "co-owner"
+            "cadastrapp.CoProprietaire" : "co-owner",
+
+			
+            "cadastrapp.designation" : "Designation",
+            "cadastrapp.valeur" : "Valeur",
+			"cadastrapp.bordereau.parcellaire" : "Bordereau Parcellaire",
+			"cadastrapp.releve.depropriete" : "Relevé de propriété",
+			"cadastrapp.batiments" : "Batiment(s)",
+			"cadastrapp.habitation.descriptif" : "Habitation et élément(s) incorporé(s)",
+			"cadastrapp.caracteristiques.generales" : "Caractéristiques générales",
+            "cadastrapp.repartition.pieces" : "Répartitions des pièces",
+            "cadastrapp.elements.confort" : "Eléments de confort",
+            "cadastrapp.elements.incorpores" : "Eléments incorporés",
+            "cadastrapp.partie.professionnelle" : "Partie professionnelle",
+            "cadastrapp.dependances" : "Dépendances"
+
+			
         },
         "fr": {
             "cadastrapp.cadastre_tools": "Outils Cadastre",
@@ -532,8 +563,14 @@
             "cadastrapp.valeur" : "Valeur",
 			"cadastrapp.bordereau.parcellaire" : "Bordereau Parcellaire",
 			"cadastrapp.releve.depropriete" : "Relevé de propriété",
-
-
+			"cadastrapp.batiments" : "Batiment(s)",
+			"cadastrapp.habitation.descriptif" : "Habitation et élément(s) incorporé(s)",
+			"cadastrapp.caracteristiques.generales" : "Caractéristiques générales",
+            "cadastrapp.repartition.pieces" : "Répartitions des pièces",
+            "cadastrapp.elements.confort" : "Eléments de confort",
+            "cadastrapp.elements.incorpores" : "Eléments incorporés",
+            "cadastrapp.partie.professionnelle" : "Partie professionnelle",
+            "cadastrapp.dependances" : "Dépendances"
 
 			
         },
@@ -703,7 +740,23 @@
              "cadastrapp.demandeinformation.imprimer": "Imprimer la demande",
  
             "cadastrapp.surface" : "Oberfläche",
-            "cadastrapp.CoProprietaire" : "Miteigner"
+            "cadastrapp.CoProprietaire" : "Miteigner",
+
+			
+            "cadastrapp.designation" : "Designation",
+            "cadastrapp.valeur" : "Valeur",
+			"cadastrapp.bordereau.parcellaire" : "Bordereau Parcellaire",
+			"cadastrapp.releve.depropriete" : "Relevé de propriété",
+			"cadastrapp.batiments" : "Batiment(s)",
+			"cadastrapp.habitation.descriptif" : "Habitation et élément(s) incorporé(s)",
+			"cadastrapp.caracteristiques.generales" : "Caractéristiques générales",
+            "cadastrapp.repartition.pieces" : "Répartitions des pièces",
+            "cadastrapp.elements.confort" : "Eléments de confort",
+            "cadastrapp.elements.incorpores" : "Eléments incorporés",
+            "cadastrapp.partie.professionnelle" : "Partie professionnelle",
+            "cadastrapp.dependances" : "Dépendances"
+
+			
         }
     }
 }

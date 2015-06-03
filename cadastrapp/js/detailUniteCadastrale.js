@@ -19,15 +19,27 @@ Ext.namespace("GEOR")
 		//variable userrole: niveau de droits de l'utilisateur
 		var userrole;
 		
-    var FiufProprietaireData = [ 
-                                 [ 'Proprietaire 1' ], 
+
+    var FiucParcelleData = [ 
+								[ 'Parcelle 1' ], 
+                                [ 'Parcelle 2' ]
+                               ];
+    var FiucProrietaireData = [ 
+  								 [ 'Proprietaire 1' ], 
                                  [ 'Proprietaire 2' ]
                                ];
-    var FiucParcelleData = [ ];
-    var FiucProrietaireData = [ ];
-    var FiucBatimentsData = [ ];
-    var FiucSubdivfiscData = [ ];
-    var FiucHistomutData = [ ];
+    var FiucBatimentsData = [ 
+   								[ 'Batiment 1' ], 
+                                [ 'Batiment 2' ]
+                               ];
+    var FiucSubdivfiscData = [ 
+ 								 [ 'Subdivision fiscale 1' ], 
+                                 [ 'Subdivision fiscale 2' ]
+                               ];
+    var FiucHistomutData = [ 
+								 [ 'Histo 1' ], 
+                                 [ 'Histo 2' ]
+                               ];
 
 
     var FiucParcelleStore = new Ext.data.ArrayStore({
@@ -77,10 +89,10 @@ Ext.namespace("GEOR")
                 sortable : false,
             },
             columns : [ {
-            	header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
+            	header: OpenLayers.i18n('cadastrapp.bordereau.parcellaire'),
                 width : 150,
                 dataIndex : 'parcelle'
-            }, ],
+            }],
         }),
         height : 100,
         width : 150,
@@ -185,8 +197,11 @@ Ext.namespace("GEOR")
 			resizable: false,
 			draggable : true,
 			constrainHeader: true,
+			
 			border:false,
-			width: 400,
+			labelWidth: 100,
+			width: 450,
+			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
 
 			listeners: {
 				close(window) {
@@ -196,108 +211,50 @@ Ext.namespace("GEOR")
 			
 			items: [{
 
-				xtype: 'fieldset',
-				items: [				
-					{ xtype:'tabpanel',	height: 160,
+				xtype: 'tabpanel', width:600, height: 600,	
+				activeTab: 0,				
+					items: [{
+					//ONGLET 1
+					title: OpenLayers.i18n('cadastrapp.parcelle.title.tab1'),
+					xtype:'form',
+					items: [
+						FiucParcelleGrid
+							]
+						},{
+					//ONGLET 2
+					title: OpenLayers.i18n('cadastrapp.parcelle.title.tab1'),
+					xtype:'form',
+					items: [
+						FiucProprietairesGrid
+							]
+						},{
+					//ONGLET 3
+					title: OpenLayers.i18n('cadastrapp.parcelle.title.tab1'),
+					xtype:'form',
+					items: [
+						FiucBatimentsGrid
+							]
+						},{
+					//ONGLET 4
+					title: OpenLayers.i18n('cadastrapp.parcelle.title.tab1'),
+					xtype:'form',
+					items: [
+						FiucSubdivfiscGrid
+							]
 
-					activeTab: 0,
-					items:[{
-					
-						//ONGLET 1
-						title:'Parcelle',
-						id: 'Form1',
-						xtype: 'form',
-						height: 200,
-						id: 'Form1',
-						fileUpload: true,
-						
-						items: [
-						FiucParcelleGrid,	//grille "parcelle"
+						},
 						{
-
-						}]
-												
-					}]
-					},
-					{ xtype:'tabpanel',
-					activeTab: 1,
-					items:[{	
-					
-						//ONGLET 2
-						title:'Propriétaires',
-						id: 'Form2',
-						xtype: 'form',
-						defaultType: 'displayfield',
-						fileUpload: true,
-						
-						items: [
-								FiucProprietairesGrid,	//grille "proprietaires"
-								{
-
-								}]
-												
-						}]
-					},
-					{ xtype:'tabpanel',
-					activeTab: 2,
-					items:[{	
-					
-						//ONGLET 3
-						title:'Bâtiments',
-						id: 'Form3',
-						xtype: 'form',
-						defaultType: 'displayfield',
-						fileUpload: true,
-						
-						items: [
-								FiucBatimentsGrid,	//grille "batiments"
-								{
-
-								}]
-												
-						}]
-					},
-					{ xtype:'tabpanel',
-					activeTab: 3,
-					items:[{	
-					
-						//ONGLET 4
-						title:'Subdivisions fiscales',
-						defaultType: 'displayfield',
-						id: 'Form4',
-						xtype: 'form',
-						fileUpload: true,
-						
-						items: [
-								FiucSubdivfiscGrid,	//grille "subdivisions fiscales"
-								{
-
-								}]
-												
-						}]
-					},
-					{ xtype:'tabpanel',
-					activeTab: 4,
-					items:[{	
-					
 						//ONGLET 5
 						title:'Historique de mutation',
-						defaultType: 'displayfield',
 						id: 'Form5',
-						xtype: 'form',
-						fileUpload: true,
-						
+						xtype: 'form',						
 						items: [
 								FiucHistomutGrid,	//grille "historique de mutation"
-								{
-
-								}]
-												
+								]
 						}]
 					}]
-				}]
-        });
-		
+			
+			});
 		windowFIUC.show();
     console.log("displayFIUC onClick")
 	};
