@@ -1,0 +1,259 @@
+
+	/** api: (define)
+	*  module = GEOR
+	*  class = Cadastrapp
+	*  base_link = `Ext.util.Observable <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
+	*/
+Ext.namespace("GEOR")
+
+
+  	 /** public: method[onClickDemand]
+     *  :param layer: 
+     *  Create ...TODO
+     */
+    onClickDisplayFIUC = function(){
+		//déclaration des variables relatives aux données cadastrales
+		var ccodep, ccodir, ccocom, gcopre, ccosec, dnupla, dnupro, dnomlp, dprnlp, expnee, dnomcp, dprncp, adressehabitation , jdatnss , dldnss, ccodro_lib, dnvoiri, dindic, natvoiriv_lib, dvoilib, dcntpa, supf, gparbat, gurbpa;
+		var dniv, dpor, cconlc_lib, dvlrt, jdatat, dnupro, dnomlp, dprnlp, expnee, dnomcp, dprncp
+		
+		//variable userrole: niveau de droits de l'utilisateur
+		var userrole;
+		
+		
+    FiucParcelleGrid = new Ext.grid.GridPanel({
+        store : FiufProprietaireStore,
+        stateful : true,
+        name : 'Fiuc_Parcelle',
+        xtype : 'editorgrid',
+        colModel : new Ext.grid.ColumnModel({
+            defaults : {
+                width : 100,
+                sortable : false,
+            },
+            columns : [ {
+            	header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
+                width : 150,
+                dataIndex : 'parcelle'
+            }, ],
+        }),
+        height : 100,
+        width : 150,
+        border : true,
+    });
+	
+    FiucProprietairesGrid = new Ext.grid.GridPanel({
+        store : FiufProprietaireStore,
+        stateful : true,
+        name : 'Fiuc_Proprietaire',
+        xtype : 'editorgrid',
+        colModel : new Ext.grid.ColumnModel({
+            defaults : {
+                width : 100,
+                sortable : false,
+            },
+            columns : [ {
+            	header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
+                width : 150,
+                dataIndex : 'proprietaire'
+            }, ],
+        }),
+        height : 100,
+        width : 150,
+        border : true,
+    });
+	
+    FiucBatimentsGrid = new Ext.grid.GridPanel({
+        store : FiufProprietaireStore,
+        stateful : true,
+        name : 'Fiuc_Batiments',
+        xtype : 'editorgrid',
+        colModel : new Ext.grid.ColumnModel({
+            defaults : {
+                width : 100,
+                sortable : false,
+            },
+            columns : [ {
+            	header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
+                width : 150,
+                dataIndex : 'batiments'
+            }, ],
+        }),
+        height : 100,
+        width : 150,
+        border : true,
+    });
+	
+    FiucSubdivfiscGrid = new Ext.grid.GridPanel({
+        store : FiufProprietaireStore,
+        stateful : true,
+        name : 'Fiuc_Subdivisions_fiscales',
+        xtype : 'editorgrid',
+        colModel : new Ext.grid.ColumnModel({
+            defaults : {
+                width : 100,
+                sortable : false,
+            },
+            columns : [ {
+            	header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
+                width : 150,
+                dataIndex : 'subdivisions_fiscales'
+            }, ],
+        }),
+        height : 100,
+        width : 150,
+        border : true,
+    });
+
+	
+    FiucHistomutGrid = new Ext.grid.GridPanel({
+        store : FiufProprietaireStore,
+        stateful : true,
+        name : 'Fiuc_Historique_Mutation',
+        xtype : 'editorgrid',
+        colModel : new Ext.grid.ColumnModel({
+            defaults : {
+                width : 100,
+                sortable : false,
+            },
+            columns : [ {
+            	header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
+                width : 150,
+                dataIndex : 'historique_mutation'
+            }, ],
+        }),
+        height : 100,
+        width : 150,
+        border : true,
+    });
+
+					
+
+  		//Construction de la fenêtre principale
+		var windowFIUC;
+			windowFIUC = new Ext.Window({
+            title: 'TODO',
+			frame: true,
+			autoScroll:true,
+			minimizable: false,
+			closable: true,
+			resizable: false,
+			draggable : true,
+			constrainHeader: true,
+			border:false,
+			width: 400,
+
+			listeners: {
+				close(window) {
+					windowFIUC = null;
+				}
+			},
+			
+			items: [{
+
+				xtype: 'fieldset',
+				items: [				
+					{ xtype:'tabpanel',	height: 160,
+
+					activeTab: 0,
+					items:[{
+					
+						//ONGLET 1
+						title:'Parcelle',
+						id: 'Form1',
+						xtype: 'form',
+						height: 200,
+						id: 'Form1',
+						fileUpload: true,
+						
+						items: [
+						FiucParcelleGrid,	//grille "parcelle"
+						{
+
+						}]
+												
+					}]
+					},
+					{ xtype:'tabpanel',
+					activeTab: 1,
+					items:[{	
+					
+						//ONGLET 2
+						title:'Propriétaires',
+						id: 'Form2',
+						xtype: 'form',
+						defaultType: 'displayfield',
+						fileUpload: true,
+						
+						items: [
+								FiucProprietairesGrid,	//grille "proprietaires"
+								{
+
+								}]
+												
+						}]
+					},
+					{ xtype:'tabpanel',
+					activeTab: 2,
+					items:[{	
+					
+						//ONGLET 3
+						title:'Bâtiments',
+						id: 'Form3',
+						xtype: 'form',
+						defaultType: 'displayfield',
+						fileUpload: true,
+						
+						items: [
+								FiucBatimentsGrid,	//grille "batiments"
+								{
+
+								}]
+												
+						}]
+					},
+					{ xtype:'tabpanel',
+					activeTab: 3,
+					items:[{	
+					
+						//ONGLET 4
+						title:'Subdivisions fiscales',
+						defaultType: 'displayfield',
+						id: 'Form4',
+						xtype: 'form',
+						fileUpload: true,
+						
+						items: [
+								FiucSubdivfiscGrid,	//grille "subdivisions fiscales"
+								{
+
+								}]
+												
+						}]
+					},
+					{ xtype:'tabpanel',
+					activeTab: 4,
+					items:[{	
+					
+						//ONGLET 5
+						title:'Historique de mutation',
+						defaultType: 'displayfield',
+						id: 'Form5',
+						xtype: 'form',
+						fileUpload: true,
+						
+						items: [
+								FiucHistomutGrid,	//grille "historique de mutation"
+								{
+
+								}]
+												
+						}]
+					}]
+				}]
+        });
+		
+		windowFIUC.show();
+    console.log("displayFIUC onClick")
+	};
+	
+	

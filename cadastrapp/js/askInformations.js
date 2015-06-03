@@ -7,11 +7,11 @@
 Ext.namespace("GEOR")
 
 
-  	 /** public: method[onClickDemand]
+  	 /** public: method[onClickAskInformations]
      *  :param layer: 
      *  Create ...TODO
      */
-    onClickDemand = function(){
+    onClickAskInformations = function(){
 		
 		var parcBisStore, parcCityStore, parcCityCombo1, parcCityCombo2, parcelleGrid;
 		
@@ -261,8 +261,8 @@ Ext.namespace("GEOR")
 			border: true
 		});
 		
-		var demandWindow;
-			demandWindow = new Ext.Window({
+		var askInformationsWindow;
+			askInformationsWindow = new Ext.Window({
             title: 'Demande Informations Foncieres',
 			frame: true,
 			bodyPadding: 10,
@@ -369,7 +369,7 @@ Ext.namespace("GEOR")
 						text: OpenLayers.i18n('cadastrapp.demandeinformation.annuler'),
 						listeners:{
 							click: function(b,e) {
-											demandWindow.close();
+											askInformationsWindow.close();
 											}
 									 }
 						},{
@@ -377,11 +377,11 @@ Ext.namespace("GEOR")
 						text: OpenLayers.i18n('cadastrapp.demandeinformation.imprimer'),
 						listeners:{
 							click: function(b,e) {
-											demandWindow.close();
+											askInformationsWindow.close();
 											}
 									 }							
 						}]
         });
-		demandWindow.show();
+		askInformationsWindow.show();
 		console.log("onClick")
 	};

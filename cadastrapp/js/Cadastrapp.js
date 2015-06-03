@@ -588,7 +588,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             iconCls: "gx-featureediting-cadastrapp-demande",
             iconAlign: 'top',
             text: OpenLayers.i18n("cadastrapp.demande"),
-			handler: onClickDemand
+			handler: onClickAskInformations
         };
         button = new Ext.Button(config);
 		
