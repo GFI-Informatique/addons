@@ -34,7 +34,7 @@ Ext.namespace("GEOR")
 		//comboboxes "villes"
 		propCityCombo1 = new Ext.form.ComboBox({
 			fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.city'),
-			name: 'city',
+			hiddenName: 'ccoinsee',
             allowBlank:false,
 			width: 300,
 			mode: 'local',
@@ -62,13 +62,16 @@ Ext.namespace("GEOR")
 		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
 		                q.query.length = length;
 		            }
-			    }
+			    },
+				change: function(combo, newValue, oldValue) {
+					proprietaireWindow.buttons[0].enable();
+				}
 			}
 		});	
 		
 		propCityCombo2 = new Ext.form.ComboBox({
 			fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.city'),
-			name: 'city',
+			hiddenName: 'ccoinsee',
             allowBlank:false,
 			width: 300,
 			mode: 'local',
@@ -184,7 +187,7 @@ Ext.namespace("GEOR")
 					{
 						xtype: 'textfield',
 						fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.lastname'),
-						name: 'lastname',
+						name: 'dnomlp',
 			            allowBlank:false,
 						width: 300
 					},
@@ -195,7 +198,7 @@ Ext.namespace("GEOR")
 					{
 						xtype: 'textfield',
 						fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.firstname'),
-						name: 'firstname',
+						name: 'dprnlp',
 						width: 300
 					},
 					{
@@ -242,59 +245,92 @@ Ext.namespace("GEOR")
 					click: function(b,e) {
 						var currentForm = proprietaireWindow.items.items[0].getActiveTab();
 						if (currentForm.id == 'propFirstForm') {
-							//TODO : remettre la validation
-							//if (currentForm.getForm().isValid()) {
-								var cityName = currentForm.getForm().findField('city').lastSelectionText;
+							if (currentForm.getForm().isValid()) {								
+								//TITRE de l'onglet resultat
+								var resultTitle = currentForm.getForm().findField('ccoinsee').lastSelectionText;
+								
+								//PARAMS
+								var params = currentForm.getForm().getValues();
+
 								//envoi des données d'une form
-								//Ext.Ajax.request({
-								currentForm.getForm().submit({
+								Ext.Ajax.request({
 									method: 'GET',
-									url:'http://localhost:8080/cadastrapp/getProprietaire/toFile',
-									success: function(form, action) {
+									url: getWebappURL() + 'getProprietaire',
+									params: params,
+									success: function(result) {
 										//creation d'un store en retour
 										var store = new Ext.data.JsonStore({
-											fields: ['ccoinsee', 'libcom', 'libcom_min'],
-											data: Ext.util.JSON.decode(action.response.responseText)
+											fields: ['dnomlp', 'dprnlp'],
+											data: Ext.util.JSON.decode(result.responseText)
 										});										
-										addNewResultProprietaire(cityName, store);
+										addNewResultProprietaire(resultTitle, store);
 									},
-									failure: function(form, action) {
-										if (action.response.message) {
-						                    Ext.Msg.alert('Infomation', action.response.message);
-						                }
+									failure: function(result) {
+										alert('ERROR');
 									}
 								});
-							//}
+							}
 							
 						} else {
-							//TODO : remettre la validation
-							//if (currentForm.getForm().isValid()) {
-							
-								var cityName = currentForm.getForm().findField('city').lastSelectionText;
+							if (currentForm.getForm().isValid()) {
+								//TITRE de l'onglet resultat
+								var resultTitle = currentForm.getForm().findField('ccoinsee').lastSelectionText;
 								
-								//soumet la form (pour envoyer le fichier)
-								currentForm.getForm().submit({								
-									method: 'POST',
-									url:'http://localhost:8080/cadastrapp/getProprietaire/fromFile',
-									params: {
-										//envoi du contenu du store des proprietaires
-										jsonData: Ext.util.JSON.encode(Ext.pluck(proprietaireGrid.getStore().getRange(), 'data'))
-									},
-									success: function(form, action) {
-										//creation d'un store en retour
-										var store = (action.response==undefined) ? null : new Ext.data.JsonStore({
-												fields: ['ccoinsee', 'libcom', 'libcom_min'],
-												data: Ext.util.JSON.decode(action.response.responseText)
+								if (currentForm.getForm().findField('filePath').value != undefined) {
+									//PAR FICHIER									
+
+									//soumet la form (pour envoyer le fichier)
+									currentForm.getForm().submit({								
+										method: 'POST',
+										url: getWebappURL() + 'getProprietaire/fromFile',
+										params: {
+											//envoi du contenu du store des proprietaires
+											jsonData: Ext.util.JSON.encode(Ext.pluck(proprietaireGrid.getStore().getRange(), 'data'))
+										},
+										success: function(form, action) {
+											//creation d'un store en retour
+											var store = new Ext.data.JsonStore({
+												fields: ['dnomlp', 'dprnlp'],
+													data: Ext.util.JSON.decode(action.response.responseText)
+												});										
+											addNewResultProprietaire(resultTitle, store);
+										},
+										failure: function(form, action) {
+											alert('ERROR');
+										}
+									});
+									
+								} else {
+									//PAR LISTE
+									
+									//PARAMS
+									var params = currentForm.getForm().getValues();
+									
+									//liste des proprietaires
+									params.proprietaires = new Array();
+									proprietaireGrid.getStore().each(function(record) {  
+										params.proprietaires.push(record.data.proprietaire); 
+									});
+									
+									//envoi des données d'une form
+									Ext.Ajax.request({
+										method: 'GET',
+										url: getWebappURL() + 'getProprietaire',
+										params: params,
+										success: function(result) {
+											//creation d'un store en retour
+											var store = new Ext.data.JsonStore({
+												fields: ['dnomlp', 'dprnlp'],
+												data: Ext.util.JSON.decode(result.responseText)
 											});										
-										addNewResultProprietaire(cityName, store);
-									},
-									failure: function(form, action) {
-										if (action.response.message) {
-						                    Ext.Msg.alert('Infomation', action.response.message);
-						                }
-									}
-								});
-							//}
+											addNewResultProprietaire(resultTitle, store);
+										},
+										failure: function(result) {
+											alert('ERROR');
+										}
+									});
+								}
+							}
 						}
 					}
 				}
