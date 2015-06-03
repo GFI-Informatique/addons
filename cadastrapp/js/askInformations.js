@@ -17,7 +17,7 @@ Ext.namespace("GEOR")
 		
 		parcBisStore = getBisStore();
 		
-		parcCityStore = getCityStore();
+		parcCityStore = "";
 
 		//combobox "villes"
 		parcCityCombo1 = new Ext.form.ComboBox({
@@ -145,16 +145,7 @@ Ext.namespace("GEOR")
 			]
 		});*/
 		
-		//liste des villes : TODO : récupérer la liste entière
-		var cityStore = getCityStore();
-		/*new Ext.data.JsonStore({
-			fields : ['name', 'value'],
-			data   : [
-				{name : 'Caen',   value: 'caen'},
-				{name : 'Rennes',  value: 'rennes'},
-				{name : 'Lannion', value: 'lannion'}
-			]
-		});*/
+
 	
 		//listes des section / parcelles saisies : "références"
 		//initialement vide
@@ -322,7 +313,7 @@ Ext.namespace("GEOR")
 			items: [				
 				{ fieldLabel:OpenLayers.i18n('cadastrapp.demandeinformation.commune'), name: 'commune', width: 280},
 				{ xtype:'tabpanel',	height: 160,
-
+				width: 405,
 				activeTab: 0,
 				items:[{
 				
@@ -344,6 +335,7 @@ Ext.namespace("GEOR")
 				}]
 				},
 				{ xtype:'tabpanel',
+				width: 405,
 				activeTab: 0,
 				items:[{	
 				
@@ -369,6 +361,7 @@ Ext.namespace("GEOR")
 						text: OpenLayers.i18n('cadastrapp.demandeinformation.annuler'),
 						listeners:{
 							click: function(b,e) {
+											onClickDisplayFIUC();
 											askInformationsWindow.close();
 											}
 									 }

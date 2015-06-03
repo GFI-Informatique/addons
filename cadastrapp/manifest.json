@@ -526,7 +526,16 @@
              
             "cadastrapp.uniteFonciere": "unite foncière",
             "cadastrapp.surface" : "Surface",
-            "cadastrapp.CoProprietaire" : "Co-propriétaire"
+            "cadastrapp.CoProprietaire" : "Co-propriétaire",
+			
+            "cadastrapp.designation" : "Designation",
+            "cadastrapp.valeur" : "Valeur",
+			"cadastrapp.bordereau.parcellaire" : "Bordereau Parcellaire",
+			"cadastrapp.releve.depropriete" : "Relevé de propriété",
+
+
+
+			
         },
         "de": {
             "cadastrapp.cadastre_tools": "Outils Cadastre",

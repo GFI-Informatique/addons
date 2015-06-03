@@ -19,9 +19,55 @@ Ext.namespace("GEOR")
 		//variable userrole: niveau de droits de l'utilisateur
 		var userrole;
 		
-		
+    var FiufProprietaireData = [ 
+                                 [ 'Proprietaire 1' ], 
+                                 [ 'Proprietaire 2' ]
+                               ];
+    var FiucParcelleData = [ ];
+    var FiucProrietaireData = [ ];
+    var FiucBatimentsData = [ ];
+    var FiucSubdivfiscData = [ ];
+    var FiucHistomutData = [ ];
+
+
+    var FiucParcelleStore = new Ext.data.ArrayStore({
+        fields : [ {
+            name : 'parcelle'
+        }],
+        data : FiucParcelleData
+    });
+
+
+    var FiucProprietaireStore = new Ext.data.ArrayStore({
+        fields : [ {
+            name : 'proprietaire'
+        }],
+        data : FiucProrietaireData
+    });
+  	
+    var FiucBatimentsStore = new Ext.data.ArrayStore({
+        fields : [ {
+            name : 'batiments'
+        }],
+        data : FiucBatimentsData
+    });
+  	
+    var FiucSubdivfiscStore = new Ext.data.ArrayStore({
+        fields : [ {
+            name : 'subdivfisc'
+        }],
+        data : FiucSubdivfiscData
+    });
+  	
+    var FiucHistomutStore = new Ext.data.ArrayStore({
+        fields : [ {
+            name : 'histomutations'
+        }],
+        data : FiucHistomutData
+    });
+  		
     FiucParcelleGrid = new Ext.grid.GridPanel({
-        store : FiufProprietaireStore,
+        store : FiucParcelleStore,
         stateful : true,
         name : 'Fiuc_Parcelle',
         xtype : 'editorgrid',
@@ -42,7 +88,7 @@ Ext.namespace("GEOR")
     });
 	
     FiucProprietairesGrid = new Ext.grid.GridPanel({
-        store : FiufProprietaireStore,
+        store : FiucProprietaireStore,
         stateful : true,
         name : 'Fiuc_Proprietaire',
         xtype : 'editorgrid',
@@ -63,7 +109,7 @@ Ext.namespace("GEOR")
     });
 	
     FiucBatimentsGrid = new Ext.grid.GridPanel({
-        store : FiufProprietaireStore,
+        store : FiucBatimentsStore,
         stateful : true,
         name : 'Fiuc_Batiments',
         xtype : 'editorgrid',
@@ -84,7 +130,7 @@ Ext.namespace("GEOR")
     });
 	
     FiucSubdivfiscGrid = new Ext.grid.GridPanel({
-        store : FiufProprietaireStore,
+        store : FiucSubdivfiscStore,
         stateful : true,
         name : 'Fiuc_Subdivisions_fiscales',
         xtype : 'editorgrid',
@@ -106,7 +152,7 @@ Ext.namespace("GEOR")
 
 	
     FiucHistomutGrid = new Ext.grid.GridPanel({
-        store : FiufProprietaireStore,
+        store : FiucHistomutStore,
         stateful : true,
         name : 'Fiuc_Historique_Mutation',
         xtype : 'editorgrid',
