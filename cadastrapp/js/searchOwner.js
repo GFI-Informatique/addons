@@ -29,10 +29,8 @@ Ext.namespace("GEOR")
 	}
 	
     initRechercheProprietaire = function(){
-		var propCityStore, propCityCombo1, propCityCombo2, proprietaireGrid;
+		var propCityCombo1, propCityCombo2, proprietaireGrid;
 				
-		propCityStore = getCityStore();
-
 		//comboboxes "villes"
 		propCityCombo1 = new Ext.form.ComboBox({
 			fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.city'),
@@ -79,11 +77,22 @@ Ext.namespace("GEOR")
 			editable: true,
 			displayField: 'displayname',
 			valueField: 'ccoinsee',
-			store: propCityStore,
+			store: getPartialCityStore(),
 			listeners: {
 			    beforequery: function(q){  
 			    	if (q.query) {
 		                var length = q.query.length;
+		                if (length==3) {
+		                	if (isNaN(q.query)) {
+		                		//recherche par nom de ville
+		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
+		                	} else {
+		                		//recherche par code insee
+		                		q.combo.getStore().load({params: {ccoinsee_partiel: q.query}});
+		                	}		                	
+		                } else if (length < 3) {
+		                	q.combo.getStore().loadData([],false);
+		                }
 		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
 		                q.query.length = length;
 		            }
@@ -240,18 +249,19 @@ Ext.namespace("GEOR")
 								//Ext.Ajax.request({
 								currentForm.getForm().submit({
 									method: 'GET',
-									url:'http://localhost:8080/cadastrapp/getCommune/all',
+									url:'http://localhost:8080/cadastrapp/getProprietaire/toFile',
 									success: function(form, action) {
 										//creation d'un store en retour
 										var store = new Ext.data.JsonStore({
 											fields: ['ccoinsee', 'libcom', 'libcom_min'],
-											data: Ext.util.JSON.decode(form.responseText)
-										});
-										
+											data: Ext.util.JSON.decode(action.response.responseText)
+										});										
 										addNewResultProprietaire(cityName, store);
 									},
 									failure: function(form, action) {
-										addNewResultProprietaire(cityName, null);
+										if (action.response.message) {
+						                    Ext.Msg.alert('Infomation', action.response.message);
+						                }
 									}
 								});
 							//}
@@ -279,12 +289,9 @@ Ext.namespace("GEOR")
 										addNewResultProprietaire(cityName, store);
 									},
 									failure: function(form, action) {
-										//creation d'un store en retour
-										var store = (action.response==undefined) ? null : new Ext.data.JsonStore({
-												fields: ['ccoinsee', 'libcom', 'libcom_min'],
-												data: Ext.util.JSON.decode(action.response.responseText)
-											});										
-										addNewResultProprietaire(cityName, store);
+										if (action.response.message) {
+						                    Ext.Msg.alert('Infomation', action.response.message);
+						                }
 									}
 								});
 							//}
