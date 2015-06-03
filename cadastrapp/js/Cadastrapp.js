@@ -36,7 +36,6 @@ isCNIL1 = function() {
 isCNIL2 = function() {
 	return (GEOR.config.ROLES.indexOf('CNIL2') != -1);
 }
-
 console.log('Droits : CNIL1 (' + isCNIL1() + ') ; CNIL2 (' + isCNIL2() + ')');
 
 

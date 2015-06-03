@@ -240,18 +240,19 @@ Ext.namespace("GEOR")
 								//Ext.Ajax.request({
 								currentForm.getForm().submit({
 									method: 'GET',
-									url:'http://localhost:8080/cadastrapp/getCommune/all',
+									url:'http://localhost:8080/cadastrapp/getProprietaire/toFile',
 									success: function(form, action) {
 										//creation d'un store en retour
 										var store = new Ext.data.JsonStore({
 											fields: ['ccoinsee', 'libcom', 'libcom_min'],
-											data: Ext.util.JSON.decode(form.responseText)
-										});
-										
+											data: Ext.util.JSON.decode(action.response.responseText)
+										});										
 										addNewResultProprietaire(cityName, store);
 									},
 									failure: function(form, action) {
-										addNewResultProprietaire(cityName, null);
+										if (action.response.message) {
+						                    Ext.Msg.alert('Infomation', action.response.message);
+						                }
 									}
 								});
 							//}
@@ -279,12 +280,9 @@ Ext.namespace("GEOR")
 										addNewResultProprietaire(cityName, store);
 									},
 									failure: function(form, action) {
-										//creation d'un store en retour
-										var store = (action.response==undefined) ? null : new Ext.data.JsonStore({
-												fields: ['ccoinsee', 'libcom', 'libcom_min'],
-												data: Ext.util.JSON.decode(action.response.responseText)
-											});										
-										addNewResultProprietaire(cityName, store);
+										if (action.response.message) {
+						                    Ext.Msg.alert('Infomation', action.response.message);
+						                }
 									}
 								});
 							//}
