@@ -20,17 +20,6 @@ Ext.namespace("GEOR")
 	}
 		
 	//liste des villes
-	//chargé une fois, au lancement
-	getCityStore = function() {
-		return new Ext.data.JsonStore({
-			url: '../cadastrapp/getCommune/all',
-			autoLoad: true,
-			fields: ['ccoinsee', 'libcom', 'libcom_min', { 
-		       name: 'displayname', 
-		       convert: function(v, rec) { return rec.libcom_min.trim() + ' (' + rec.ccoinsee.trim() + ')'}
-		    }]
-		});
-	}
 	getPartialCityStore = function() {
 		return new Ext.data.JsonStore({
 			proxy: new Ext.data.HttpProxy({

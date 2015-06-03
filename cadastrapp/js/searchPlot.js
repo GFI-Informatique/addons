@@ -28,11 +28,9 @@ Ext.namespace("GEOR")
 	}		
 		
 	initRechercheParcelle = function(){
-		var parcBisStore, parcCityStore, parcCityCombo1, parcCityCombo2, parcelleGrid;
+		var parcBisStore, parcCityCombo1, parcCityCombo2, parcelleGrid;
 		
 		parcBisStore = getBisStore();
-		
-		parcCityStore = getCityStore();
 
 		//combobox "villes"
 		parcCityCombo1 = new Ext.form.ComboBox({
@@ -46,11 +44,22 @@ Ext.namespace("GEOR")
 			editable: true,
 			displayField: 'displayname',
 			valueField: 'ccoinsee',
-			store: parcCityStore,
+			store: getPartialCityStore(),
 			listeners: {
 			    beforequery: function(q){  
 			    	if (q.query) {
 		                var length = q.query.length;
+		                if (length==3) {
+		                	if (isNaN(q.query)) {
+		                		//recherche par nom de ville
+		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
+		                	} else {
+		                		//recherche par code insee
+		                		q.combo.getStore().load({params: {ccoinsee_partiel: q.query}});
+		                	}		                	
+		                } else if (length < 3) {
+		                	q.combo.getStore().loadData([],false);
+		                }
 		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
 		                q.query.length = length;
 		            }
@@ -74,11 +83,22 @@ Ext.namespace("GEOR")
 			editable: true,
 			displayField: 'displayname',
 			valueField: 'ccoinsee',
-			store: parcCityStore,
+			store: getPartialCityStore(),
 			listeners: {
 			    beforequery: function(q){  
 			    	if (q.query) {
 		                var length = q.query.length;
+		                if (length==3) {
+		                	if (isNaN(q.query)) {
+		                		//recherche par nom de ville
+		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
+		                	} else {
+		                		//recherche par code insee
+		                		q.combo.getStore().load({params: {ccoinsee_partiel: q.query}});
+		                	}		                	
+		                } else if (length < 3) {
+		                	q.combo.getStore().loadData([],false);
+		                }
 		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
 		                q.query.length = length;
 		            }
