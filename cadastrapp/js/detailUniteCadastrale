@@ -7,7 +7,7 @@
 Ext.namespace("GEOR")
 
 
-  	 /** public: method[onClickDemand]
+  	 /** public: method[onClickDisplayFIUC]
      *  :param layer: 
      *  Create ...TODO
      */
