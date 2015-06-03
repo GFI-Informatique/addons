@@ -15,6 +15,7 @@
         "../../../lib/externals/ext/examples/ux/SpinnerField.js",
 		"../../../lib/externals/ext/examples/ux/fileuploadfield/FileUploadField.js"
     ],
+	
     "css": [
         "resources/css/cadastrapp.css",
 		"../../../lib/externals/ext/examples/ux/fileuploadfield/css/fileuploadfield.css"
