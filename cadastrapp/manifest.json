@@ -209,6 +209,19 @@
 			"cadastrapp.duc.batiments" : "Batiment(s)",
 			"cadastrapp.duc.parcelle" : "Parcelle",
 			"cadastrapp.duc.propietaire" : "Propriétaire",
+			
+			"cadastrapp.duc.compte" : "Compte",
+			"cadastrapp.duc.nom" : "Nom",
+			"cadastrapp.duc.prenom" : "Prénom",
+
+			"cadastrapp.duc.mentioncpl" : "Mention du complément",
+			"cadastrapp.duc.nomcpl" : "Nom complément",
+			"cadastrapp.duc.prenomcpl" : "Prénom complément",
+			"cadastrapp.duc.adresse" : "Adresse'",
+			"cadastrapp.duc.datenaissance" : "Date de naissance",
+			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
+			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
+			
 			"cadastrapp.duc.batiment" : "Bâtiment",
 			"cadastrapp.duc.subdiv" : "Subdivisions fiscales",
 			"cadastrapp.duc.histomut" : "Historique de mutation",
@@ -401,7 +414,18 @@
             "cadastrapp.surface" : "Surface",
             "cadastrapp.CoProprietaire" : "co-owner",
 
-		
+			
+			"cadastrapp.duc.compte" : "Compte",
+			"cadastrapp.duc.nom" : "Nom",
+			"cadastrapp.duc.prenom" : "Prénom",
+			"cadastrapp.duc.mentioncpl" : "Mention du complément",
+			"cadastrapp.duc.nomcpl" : "Nom complément",
+			"cadastrapp.duc.prenomcpl" : "Prénom complément",
+			"cadastrapp.duc.adresse" : "Adresse'",
+			"cadastrapp.duc.datenaissance" : "Date de naissance",
+			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
+			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
+				
             "cadastrapp.duc.designation" : "Designation",
             "cadastrapp.duc.valeur" : "Valeur",
 			"cadastrapp.duc.bordereau.parcellaire" : "Bordereau Parcellaire",
@@ -602,6 +626,18 @@
             "cadastrapp.surface" : "Surface",
             "cadastrapp.CoProprietaire" : "Co-propriétaire",
 			
+			"cadastrapp.duc.compte" : "Compte",
+			"cadastrapp.duc.nom" : "Nom",
+			"cadastrapp.duc.prenom" : "Prénom",
+
+			"cadastrapp.duc.mentioncpl" : "Mention du complément",
+			"cadastrapp.duc.nomcpl" : "Nom complément",
+			"cadastrapp.duc.prenomcpl" : "Prénom complément",
+			"cadastrapp.duc.adresse" : "Adresse'",
+			"cadastrapp.duc.datenaissance" : "Date de naissance",
+			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
+			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
+					
             "cadastrapp.duc.designation" : "Designation",
             "cadastrapp.duc.valeur" : "Valeur",
 			"cadastrapp.duc.bordereau.parcellaire" : "Bordereau Parcellaire",
@@ -801,7 +837,19 @@
             "cadastrapp.surface" : "Oberfläche",
             "cadastrapp.CoProprietaire" : "Miteigner",
 
-		
+			
+			"cadastrapp.duc.compte" : "Compte",
+			"cadastrapp.duc.nom" : "Nom",
+			"cadastrapp.duc.prenom" : "Prénom",
+
+			"cadastrapp.duc.mentioncpl" : "Mention du complément",
+			"cadastrapp.duc.nomcpl" : "Nom complément",
+			"cadastrapp.duc.prenomcpl" : "Prénom complément",
+			"cadastrapp.duc.adresse" : "Adresse'",
+			"cadastrapp.duc.datenaissance" : "Date de naissance",
+			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
+			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
+				
             "cadastrapp.duc.designation" : "Designation",
             "cadastrapp.duc.valeur" : "Valeur",
 			"cadastrapp.duc.bordereau.parcellaire" : "Bordereau Parcellaire",

@@ -21,13 +21,12 @@ Ext.namespace("GEOR")
 		
 
     var FiucParcelleData = [ 
-								[ 'Parcelle 1' ], 
-                                [ 'Parcelle 2' ]
-                               ];
-    var FiucProrietaireData = [ 
-  								 [ 'Proprietaire 1' ], 
-                                 [ 'Proprietaire 2' ]
-                               ];
+								[ 'Commune','350250' ], 
+								[ 'Section','067AP' ] 
+							];
+    var FiucProrietaireData =  [ 
+								[ 'col1','P' , '067AP' ,'067AP' ,'067AP' ,'067AP' ,'067AP' ,'067AP' ,'067AP','067AP','067AP' ]
+							];
     var FiucBatimentsData = [ 
    								[ 'Batiment 1' ], 
                                 [ 'Batiment 2' ]
@@ -43,17 +42,39 @@ Ext.namespace("GEOR")
 
 
     var FiucParcelleStore = new Ext.data.ArrayStore({
-        fields : [ {
-            name : 'parcelle'
-        }],
+		fields : [ {
+            name : 'designation'
+        }, {
+            name : 'valeur'
+        }, ],
         data : FiucParcelleData
     });
 
 
     var FiucProprietaireStore = new Ext.data.ArrayStore({
         fields : [ {
-            name : 'proprietaire'
-        }],
+            name : 'col1'
+        }, {
+            name : 'compte'
+        }, {
+            name : 'nom'
+        }, {
+            name : 'prenom'
+        }, {
+            name : 'mentioncpl'
+        }, {
+            name : 'nomcpl'
+        }, {
+            name : 'prenomcpl'
+        }, {
+            name : 'adresse'
+        }, {
+            name : 'datenaissance'
+        }, {
+            name : 'lieunaissance'
+        }, {
+            name : 'cco_lib'
+        } ],
         data : FiucProrietaireData
     });
   	
@@ -80,110 +101,144 @@ Ext.namespace("GEOR")
   		
     FiucParcelleGrid = new Ext.grid.GridPanel({
         store : FiucParcelleStore,
-        stateful : true,
+        stateful : true,  
+		height : 500,
+		title: 'Bordereau parcellaire',
         name : 'Fiuc_Parcelle',
         xtype : 'editorgrid',
         colModel : new Ext.grid.ColumnModel({
             defaults : {
-                width : 100,
+				border : true,
                 sortable : false,
             },
             columns : [ {
-            	header: OpenLayers.i18n('cadastrapp.bordereau.parcellaire'),
-                width : 150,
-                dataIndex : 'parcelle'
-            }],
+            	header: OpenLayers.i18n('cadastrapp.duc.designation'),
+                dataIndex : 'designation'
+				}, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.valeur'),
+                dataIndex : 'valeur'
+            }]
         }),
-        height : 100,
-        width : 150,
-        border : true,
+
     });
 	
     FiucProprietairesGrid = new Ext.grid.GridPanel({
         store : FiucProprietaireStore,
         stateful : true,
+		height : 500,
+		title: 'Relevé de propriété',
         name : 'Fiuc_Proprietaire',
         xtype : 'editorgrid',
         colModel : new Ext.grid.ColumnModel({
             defaults : {
-                width : 100,
+				border : true,
                 sortable : false,
             },
-            columns : [ {
-            	header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
-                width : 150,
-                dataIndex : 'proprietaire'
-            }, ],
+            columns : [ 
+				{
+            	header: '',
+				width: 100,
+                dataIndex : 'col1'
+            }, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.compte'),
+                dataIndex : 'compte'
+            }, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.nom'),
+                dataIndex : 'nom'
+            }, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.prenom'),
+                dataIndex : 'prenom'
+            }, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.mentioncpl'),
+                dataIndex : 'mentioncpl'
+            }, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.nomcpl'),
+                dataIndex : 'nomcpl'
+            }, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.prenomcpl'),
+                dataIndex : 'prenomcpl'
+            }, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.adresse'),
+                dataIndex : 'adresse'
+            }, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.datenaissance'),
+                dataIndex : 'datenaissance'
+            }, {
+            	header: OpenLayers.i18n('cadastrapp.duc.lieunaissance'),
+                dataIndex : 'lieunaissance'
+            },
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.cco_lib'),
+                dataIndex : 'cco_lib'
+            }]
         }),
-        height : 100,
-        width : 150,
-        border : true,
+
     });
 	
     FiucBatimentsGrid = new Ext.grid.GridPanel({
         store : FiucBatimentsStore,
         stateful : true,
+		height : 500,
+		title: 'batiment(s)',
         name : 'Fiuc_Batiments',
         xtype : 'editorgrid',
         colModel : new Ext.grid.ColumnModel({
             defaults : {
-                width : 100,
                 sortable : false,
             },
             columns : [ {
             	header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
-                width : 150,
                 dataIndex : 'batiments'
-            }, ],
+            }]
         }),
-        height : 100,
-        width : 150,
-        border : true,
+
     });
 	
     FiucSubdivfiscGrid = new Ext.grid.GridPanel({
         store : FiucSubdivfiscStore,
         stateful : true,
+		height : 500,
         name : 'Fiuc_Subdivisions_fiscales',
         xtype : 'editorgrid',
         colModel : new Ext.grid.ColumnModel({
             defaults : {
-                width : 100,
                 sortable : false,
             },
             columns : [ {
             	header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
-                width : 150,
                 dataIndex : 'subdivisions_fiscales'
-            }, ],
+            }]
         }),
-        height : 100,
-        width : 150,
-        border : true,
+
     });
 
 	
     FiucHistomutGrid = new Ext.grid.GridPanel({
         store : FiucHistomutStore,
         stateful : true,
+		height : 500,
         name : 'Fiuc_Historique_Mutation',
         xtype : 'editorgrid',
         colModel : new Ext.grid.ColumnModel({
             defaults : {
-                width : 100,
                 sortable : false,
             },
             columns : [ {
             	header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
-                width : 150,
                 dataIndex : 'historique_mutation'
-            }, ],
+            }]
         }),
-        height : 100,
-        width : 150,
-        border : true,
-    });
 
+    });
 					
 
   		//Construction de la fenêtre principale
@@ -199,8 +254,8 @@ Ext.namespace("GEOR")
 			constrainHeader: true,
 			
 			border:false,
-			labelWidth: 100,
-			width: 450,
+			labelWidth: 400,
+			width: 850,		
 			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
 
 			listeners: {
@@ -210,12 +265,12 @@ Ext.namespace("GEOR")
 			},
 			
 			items: [{
-
-				xtype: 'tabpanel', width:600, height: 600,	
+				autoHeight: true,	
+				xtype: 'tabpanel', width:800, height: 800,	
 				activeTab: 0,				
 					items: [{
 								//ONGLET 1
-								title: OpenLayers.i18n('cadastrapp.duc.parcelle'),
+								title: OpenLayers.i18n('cadastrapp.duc.parcelle'),	
 								xtype:'form',
 								items: [
 									FiucParcelleGrid
@@ -223,7 +278,7 @@ Ext.namespace("GEOR")
 									},
 									{
 								//ONGLET 2
-								title: OpenLayers.i18n('cadastrapp.duc.proprietaire'),
+								title: OpenLayers.i18n('cadastrapp.duc.propietaire'),
 								xtype:'form',
 								items: [
 									FiucProprietairesGrid

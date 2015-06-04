@@ -113,37 +113,37 @@ Ext.namespace("GEOR")
 		
     // formulaire Parcelles
 		//liste des compléments de numéro de rue : BIS, TER (à compléter ?)
-		var bisStore = getBisStore(); 
-		/*new Ext.data.JsonStore({
+		//var bisStore = getBisStore(); 
+		var bisStore = new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : '--',   value: '--'},
 				{name : 'bis',  value: 'bis'},
 				{name : 'ter', value: 'ter'}
 			]
-		});*/	
+		});
 		
 		//liste des sections : TODO : charger dynamiquement selon la ville choisie
-		var sectionStore = getSectionStore();
-		/*new Ext.data.JsonStore({
+		//var sectionStore = getSectionStore();
+		var sectionStore = new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : 'sect1',   value: 'sect1'},
 				{name : 'sect2',  value: 'sect2'},
 				{name : 'sect3', value: 'sect3'}
 			]
-		});*/
+		});
 		
 		//liste des parcelles : TODO : charger dynamiquement selon la ville choisie et la section choisie
-		var parcelleStore = getParcelleStore();
-		/*new Ext.data.JsonStore({
+		//var parcelleStore = getParcelleStore();
+		var parcelleStore = new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : 'parc1',   value: 'parc1'},
 				{name : 'parc2',  value: 'parc2'},
 				{name : 'parc3', value: 'parc3'}
 			]
-		});*/
+		});
 		
 
 	
