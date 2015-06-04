@@ -43,6 +43,11 @@ getWebappURL = function() {
 	return '../cadastrapp/';
 }
 
+//autocompletion
+getSearchStart = function() {
+	return 3;
+}
+
 
 
 /** api: constructor

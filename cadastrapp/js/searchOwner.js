@@ -48,7 +48,7 @@ Ext.namespace("GEOR")
 				beforequery: function(q){  
 			    	if (q.query) {
 		                var length = q.query.length;
-		                if (length==3) {
+		                if (length == getSearchStart()) {
 		                	if (isNaN(q.query)) {
 		                		//recherche par nom de ville
 		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
@@ -56,7 +56,7 @@ Ext.namespace("GEOR")
 		                		//recherche par code insee
 		                		q.combo.getStore().load({params: {ccoinsee_partiel: q.query}});
 		                	}		                	
-		                } else if (length < 3) {
+		                } else if (length < getSearchStart()) {
 		                	q.combo.getStore().loadData([],false);
 		                }
 		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
@@ -85,7 +85,7 @@ Ext.namespace("GEOR")
 			    beforequery: function(q){  
 			    	if (q.query) {
 		                var length = q.query.length;
-		                if (length==3) {
+		                if (length == getSearchStart()) {
 		                	if (isNaN(q.query)) {
 		                		//recherche par nom de ville
 		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
@@ -93,7 +93,7 @@ Ext.namespace("GEOR")
 		                		//recherche par code insee
 		                		q.combo.getStore().load({params: {ccoinsee_partiel: q.query}});
 		                	}		                	
-		                } else if (length < 3) {
+		                } else if (length < getSearchStart()) {
 		                	q.combo.getStore().loadData([],false);
 		                }
 		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
@@ -251,19 +251,19 @@ Ext.namespace("GEOR")
 								
 								//PARAMS
 								var params = currentForm.getForm().getValues();
+								params.details = 1;
+								var cityCode = currentForm.getForm().findField('ccoinsee').value;
+								params.ccodep = cityCode.substring(0,2);
+								params.ccodir = cityCode.substring(2,3);
+								params.ccocom = cityCode.substring(3,6);
 
 								//envoi des données d'une form
 								Ext.Ajax.request({
 									method: 'GET',
-									url: getWebappURL() + 'getProprietaire',
+									url: getWebappURL() + 'getParcelle',
 									params: params,
 									success: function(result) {
-										//creation d'un store en retour
-										var store = new Ext.data.JsonStore({
-											fields: ['dnomlp', 'dprnlp'],
-											data: Ext.util.JSON.decode(result.responseText)
-										});										
-										addNewResultProprietaire(resultTitle, store);
+										addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
 									},
 									failure: function(result) {
 										alert('ERROR');
@@ -282,18 +282,13 @@ Ext.namespace("GEOR")
 									//soumet la form (pour envoyer le fichier)
 									currentForm.getForm().submit({								
 										method: 'POST',
-										url: getWebappURL() + 'getProprietaire/fromFile',
+										url: getWebappURL() + 'getParcelle/fromFile',
 										params: {
 											//envoi du contenu du store des proprietaires
 											jsonData: Ext.util.JSON.encode(Ext.pluck(proprietaireGrid.getStore().getRange(), 'data'))
 										},
 										success: function(form, action) {
-											//creation d'un store en retour
-											var store = new Ext.data.JsonStore({
-												fields: ['dnomlp', 'dprnlp'],
-													data: Ext.util.JSON.decode(action.response.responseText)
-												});										
-											addNewResultProprietaire(resultTitle, store);
+											addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
 										},
 										failure: function(form, action) {
 											alert('ERROR');
@@ -305,6 +300,11 @@ Ext.namespace("GEOR")
 									
 									//PARAMS
 									var params = currentForm.getForm().getValues();
+									params.details = 1;
+									var cityCode = currentForm.getForm().findField('ccoinsee').value;
+									params.ccodep = cityCode.substring(0,2);
+									params.ccodir = cityCode.substring(2,3);
+									params.ccocom = cityCode.substring(3,6);
 									
 									//liste des proprietaires
 									params.proprietaires = new Array();
@@ -315,15 +315,10 @@ Ext.namespace("GEOR")
 									//envoi des données d'une form
 									Ext.Ajax.request({
 										method: 'GET',
-										url: getWebappURL() + 'getProprietaire',
+										url: getWebappURL() + 'getParcelle',
 										params: params,
 										success: function(result) {
-											//creation d'un store en retour
-											var store = new Ext.data.JsonStore({
-												fields: ['dnomlp', 'dprnlp'],
-												data: Ext.util.JSON.decode(result.responseText)
-											});										
-											addNewResultProprietaire(resultTitle, store);
+											addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
 										},
 										failure: function(result) {
 											alert('ERROR');

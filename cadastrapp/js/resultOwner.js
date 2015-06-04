@@ -31,12 +31,12 @@ Ext.namespace("GEOR")
 				{
 					id:'dnomlp',
 					dataIndex: 'dnomlp',
-					header: OpenLayers.i18n('cadastrapp.proprietaire.result.col1'),
+					header: OpenLayers.i18n('cadastrapp.proprietaire.result.dnomlp'),
 					sortable: true
 				},{
 					id:'dprnlp',
 					dataIndex: 'dprnlp',
-					header: OpenLayers.i18n('cadastrapp.proprietaire.result.col2'),
+					header: OpenLayers.i18n('cadastrapp.proprietaire.result.dprnlp'),
 					sortable: true
 				}]),
 		

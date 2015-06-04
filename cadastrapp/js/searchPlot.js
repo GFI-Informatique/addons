@@ -49,7 +49,7 @@ Ext.namespace("GEOR")
 			    beforequery: function(q){  
 			    	if (q.query) {
 		                var length = q.query.length;
-		                if (length==3) {
+		                if (length == getSearchStart()) {
 		                	if (isNaN(q.query)) {
 		                		//recherche par nom de ville
 		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
@@ -57,7 +57,7 @@ Ext.namespace("GEOR")
 		                		//recherche par code insee
 		                		q.combo.getStore().load({params: {ccoinsee_partiel: q.query}});
 		                	}		                	
-		                } else if (length < 3) {
+		                } else if (length < getSearchStart()) {
 		                	q.combo.getStore().loadData([],false);
 		                }
 		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
@@ -88,7 +88,7 @@ Ext.namespace("GEOR")
 			    beforequery: function(q){  
 			    	if (q.query) {
 		                var length = q.query.length;
-		                if (length==3) {
+		                if (length == getSearchStart()) {
 		                	if (isNaN(q.query)) {
 		                		//recherche par nom de ville
 		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
@@ -96,7 +96,7 @@ Ext.namespace("GEOR")
 		                		//recherche par code insee
 		                		q.combo.getStore().load({params: {ccoinsee_partiel: q.query}});
 		                	}		                	
-		                } else if (length < 3) {
+		                } else if (length < getSearchStart()) {
 		                	q.combo.getStore().loadData([],false);
 		                }
 		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
@@ -286,14 +286,9 @@ Ext.namespace("GEOR")
 									
 									//soumet la form (pour envoyer le fichier)
 									currentForm.getForm().submit({
-										url: getWebappURL() + 'getParcelle',
+										url: getWebappURL() + 'getParcelle/fromFile',
 										success: function(form, action) {
-											//creation d'un store en retour
-											var store = new Ext.data.JsonStore({
-												fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib'],
-												data: Ext.util.JSON.decode(action.response.responseText)
-											});										
-											addNewResultParcelle(cityName, store);
+											addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
 										},
 										failure: function(form, action) {
 											alert('ERROR : ' + action.response.responseText);
@@ -324,12 +319,7 @@ Ext.namespace("GEOR")
 										url: getWebappURL() + 'getParcelle',
 										params: params,
 										success: function(result) {
-											//creation d'un store en retour
-											var store = new Ext.data.JsonStore({
-												fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib'],
-												data: Ext.util.JSON.decode(result.responseText)
-											});										
-											addNewResultParcelle(resultTitle, store);
+											addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
 										},
 										failure: function(result) {
 											alert('ERROR');
@@ -357,12 +347,7 @@ Ext.namespace("GEOR")
 									url: getWebappURL() + 'getParcelle',
 									params: params,
 									success: function(result) {
-										//creation d'un store en retour
-										var store = new Ext.data.JsonStore({
-											fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib'],
-											data: Ext.util.JSON.decode(result.responseText)
-										});										
-										addNewResultParcelle(resultTitle, store);
+										addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
 									},
 									failure: function(result) {
 										alert('ERROR');
