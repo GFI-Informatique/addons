@@ -31,10 +31,7 @@ Ext.namespace("GEOR")
    								[ 'Batiment 1' ], 
                                 [ 'Batiment 2' ]
                                ];
-    var FiucSubdivfiscData = [ 
- 								 [ 'Subdivision fiscale 1' ], 
-                                 [ 'Subdivision fiscale 2' ]
-                               ];
+    var FiucSubdivfiscData = [ 'col1','P' , '067AP' ,'067AP'];
     var FiucHistomutData = [ 
 								 [ 'Histo 1' ], 
                                  [ 'Histo 2' ]
@@ -87,7 +84,13 @@ Ext.namespace("GEOR")
   	
     var FiucSubdivfiscStore = new Ext.data.ArrayStore({
         fields : [ {
-            name : 'subdivfisc'
+            name : 'ccosub'
+        }, {
+            name : 'dcntsf'
+        }, {
+            name : 'grnum_lib'
+        }, {
+            name : 'drcsub'
         }],
         data : FiucSubdivfiscData
     });
@@ -98,6 +101,8 @@ Ext.namespace("GEOR")
         }],
         data : FiucHistomutData
     });
+
+	//var sm = Ext.create('Ext.selection.CheckboxModel');
   		
     FiucParcelleGrid = new Ext.grid.GridPanel({
         store : FiucParcelleStore,
@@ -135,10 +140,13 @@ Ext.namespace("GEOR")
 				border : true,
                 sortable : false,
             },
+			
             columns : [ 
 				{
+
             	header: '',
-				width: 100,
+				//selModel: sm,				
+				 width: 50,
                 dataIndex : 'col1'
             }, 
 				{
@@ -214,8 +222,20 @@ Ext.namespace("GEOR")
                 sortable : false,
             },
             columns : [ {
-            	header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
-                dataIndex : 'subdivisions_fiscales'
+            	header: OpenLayers.i18n('cadastrapp.duc.ccosub'),
+                dataIndex : 'ccosub'
+			}, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.dcntsf'),
+                dataIndex : 'dcntsf'
+            }, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.grnum_lib'),
+                dataIndex : 'grnum_lib'
+            }, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.drcsub'),
+                dataIndex : 'drcsub'
             }]
         }),
 

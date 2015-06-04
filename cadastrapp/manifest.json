@@ -223,6 +223,12 @@
 			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
 			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
 			
+			"cadastrapp.duc.ccosub" : "Lettre indicative",
+			"cadastrapp.duc.dcntsf " : "Contenance",
+			"cadastrapp.duc.grnum_lib " : "Nature de culture",
+			"cadastrapp.duc. drcsub " : "Revenu au 01-01",
+
+			
 			"cadastrapp.duc.batiment" : "Bâtiment",
 			"cadastrapp.duc.subdiv" : "Subdivisions fiscales",
 			"cadastrapp.duc.histomut" : "Historique de mutation",
@@ -426,6 +432,13 @@
 			"cadastrapp.duc.datenaissance" : "Date de naissance",
 			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
 			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
+			
+			"cadastrapp.duc.ccosub" : "Lettre indicative",
+			"cadastrapp.duc.dcntsf " : "Contenance",
+			"cadastrapp.duc.grnum_lib " : "Nature de culture",
+			"cadastrapp.duc. drcsub " : "Revenu au 01-01",
+
+			
 				
             "cadastrapp.duc.designation" : "Designation",
             "cadastrapp.duc.valeur" : "Valeur",
@@ -638,6 +651,13 @@
 			"cadastrapp.duc.datenaissance" : "Date de naissance",
 			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
 			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
+			
+			"cadastrapp.duc.ccosub" : "Lettre indicative",
+			"cadastrapp.duc.dcntsf " : "Contenance",
+			"cadastrapp.duc.grnum_lib " : "Nature de culture",
+			"cadastrapp.duc. drcsub " : "Revenu au 01-01",
+
+			
 					
             "cadastrapp.duc.designation" : "Designation",
             "cadastrapp.duc.valeur" : "Valeur",
@@ -850,6 +870,13 @@
 			"cadastrapp.duc.datenaissance" : "Date de naissance",
 			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
 			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
+			
+			"cadastrapp.duc.ccosub" : "Lettre indicative",
+			"cadastrapp.duc.dcntsf " : "Contenance",
+			"cadastrapp.duc.grnum_lib " : "Nature de culture",
+			"cadastrapp.duc. drcsub " : "Revenu au 01-01",
+
+			
 				
             "cadastrapp.duc.designation" : "Designation",
             "cadastrapp.duc.valeur" : "Valeur",
