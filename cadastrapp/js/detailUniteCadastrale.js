@@ -214,45 +214,47 @@ Ext.namespace("GEOR")
 				xtype: 'tabpanel', width:600, height: 600,	
 				activeTab: 0,				
 					items: [{
-					//ONGLET 1
-					title: OpenLayers.i18n('cadastrapp.parcelle.title.tab1'),
-					xtype:'form',
-					items: [
-						FiucParcelleGrid
-							]
-						},{
-					//ONGLET 2
-					title: OpenLayers.i18n('cadastrapp.parcelle.title.tab1'),
-					xtype:'form',
-					items: [
-						FiucProprietairesGrid
-							]
-						},{
-					//ONGLET 3
-					title: OpenLayers.i18n('cadastrapp.parcelle.title.tab1'),
-					xtype:'form',
-					items: [
-						FiucBatimentsGrid
-							]
-						},{
-					//ONGLET 4
-					title: OpenLayers.i18n('cadastrapp.parcelle.title.tab1'),
-					xtype:'form',
-					items: [
-						FiucSubdivfiscGrid
-							]
+								//ONGLET 1
+								title: OpenLayers.i18n('cadastrapp.duc.parcelle'),
+								xtype:'form',
+								items: [
+									FiucParcelleGrid
+										]
+									},
+									{
+								//ONGLET 2
+								title: OpenLayers.i18n('cadastrapp.duc.proprietaire'),
+								xtype:'form',
+								items: [
+									FiucProprietairesGrid
+										]
+									},
+									{
+								//ONGLET 3
+								title: OpenLayers.i18n('cadastrapp.duc.batiment'),
+								xtype:'form',
+								items: [
+									FiucBatimentsGrid
+										]
+									},
+									{
+								//ONGLET 4
+								title: OpenLayers.i18n('cadastrapp.duc.subdiv'),
+								xtype:'form',
+								items: [
+									FiucSubdivfiscGrid
+										]
 
-						},
-						{
-						//ONGLET 5
-						title:'Historique de mutation',
-						id: 'Form5',
-						xtype: 'form',						
-						items: [
-								FiucHistomutGrid,	//grille "historique de mutation"
-								]
-						}]
-					}]
+									},
+									{
+									//ONGLET 5
+									title:OpenLayers.i18n('cadastrapp.duc.histomut'),
+									xtype:'form',					
+									items: [
+											FiucHistomutGrid,	//grille "historique de mutation"
+											]
+									}]
+								}]
 			
 			});
 		windowFIUC.show();

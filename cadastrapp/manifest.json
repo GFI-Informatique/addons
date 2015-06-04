@@ -190,21 +190,26 @@
  
             "cadastrapp.surface" : "Surface",
             "cadastrapp.CoProprietaire" : "co-owner",
-			
-            "cadastrapp.designation" : "Designation",
-            "cadastrapp.valeur" : "Valeur",
-			"cadastrapp.bordereau.parcellaire" : "Bordereau Parcellaire",
-			"cadastrapp.releve.depropriete" : "Relevé de propriété",
-			"cadastrapp.batiments" : "Batiment(s)",
-			"cadastrapp.habitation.descriptif" : "Habitation et élément(s) incorporé(s)",
-			"cadastrapp.caracteristiques.generales" : "Caractéristiques générales",
-            "cadastrapp.repartition.pieces" : "Répartitions des pièces",
-            "cadastrapp.elements.confort" : "Eléments de confort",
-            "cadastrapp.elements.incorpores" : "Eléments incorporés",
-            "cadastrapp.partie.professionnelle" : "Partie professionnelle",
-            "cadastrapp.dependances" : "Dépendances"
+		
+            "cadastrapp.duc.designation" : "Designation",
+            "cadastrapp.duc.valeur" : "Valeur",
+			"cadastrapp.duc.bordereau.parcellaire" : "Bordereau Parcellaire",
+			"cadastrapp.duc.releve.depropriete" : "Relevé de propriété",
+			"cadastrapp.duc.batiments" : "Batiment(s)",
+			"cadastrapp.duc.parcelle" : "Parcelle",
+			"cadastrapp.duc.propietaire" : "Propriétaire",
+			"cadastrapp.duc.batiment" : "Bâtiment",
+			"cadastrapp.duc.subdiv" : "Subdivisions fiscales",
+			"cadastrapp.duc.histomut" : "Historique de mutation",
+			"cadastrapp.duc.habitation.descriptif" : "Habitation et élément(s) incorporé(s)",
+			"cadastrapp.duc.caracteristiques.generales" : "Caractéristiques générales",
+            "cadastrapp.duc.repartition.pieces" : "Répartitions des pièces",
+            "cadastrapp.duc.elements.confort" : "Eléments de confort",
+            "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
+            "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
+            "cadastrapp.duc.dependances" : "Dépendances"
 
-
+	
         },
         "es": {
             "cadastrapp.cadastre_tools": "Outils Cadastre",
@@ -374,20 +379,26 @@
             "cadastrapp.surface" : "Surface",
             "cadastrapp.CoProprietaire" : "co-owner",
 
-			
-            "cadastrapp.designation" : "Designation",
-            "cadastrapp.valeur" : "Valeur",
-			"cadastrapp.bordereau.parcellaire" : "Bordereau Parcellaire",
-			"cadastrapp.releve.depropriete" : "Relevé de propriété",
-			"cadastrapp.batiments" : "Batiment(s)",
-			"cadastrapp.habitation.descriptif" : "Habitation et élément(s) incorporé(s)",
-			"cadastrapp.caracteristiques.generales" : "Caractéristiques générales",
-            "cadastrapp.repartition.pieces" : "Répartitions des pièces",
-            "cadastrapp.elements.confort" : "Eléments de confort",
-            "cadastrapp.elements.incorpores" : "Eléments incorporés",
-            "cadastrapp.partie.professionnelle" : "Partie professionnelle",
-            "cadastrapp.dependances" : "Dépendances"
+		
+            "cadastrapp.duc.designation" : "Designation",
+            "cadastrapp.duc.valeur" : "Valeur",
+			"cadastrapp.duc.bordereau.parcellaire" : "Bordereau Parcellaire",
+			"cadastrapp.duc.releve.depropriete" : "Relevé de propriété",
+			"cadastrapp.duc.batiments" : "Batiment(s)",
+			"cadastrapp.duc.parcelle" : "Parcelle",
+			"cadastrapp.duc.propietaire" : "Propriétaire",
+			"cadastrapp.duc.batiment" : "Bâtiment",
+			"cadastrapp.duc.subdiv" : "Subdivisions fiscales",
+			"cadastrapp.duc.histomut" : "Historique de mutation",
+			"cadastrapp.duc.habitation.descriptif" : "Habitation et élément(s) incorporé(s)",
+			"cadastrapp.duc.caracteristiques.generales" : "Caractéristiques générales",
+            "cadastrapp.duc.repartition.pieces" : "Répartitions des pièces",
+            "cadastrapp.duc.elements.confort" : "Eléments de confort",
+            "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
+            "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
+            "cadastrapp.duc.dependances" : "Dépendances"
 
+	
 			
         },
         "fr": {
@@ -559,18 +570,23 @@
             "cadastrapp.surface" : "Surface",
             "cadastrapp.CoProprietaire" : "Co-propriétaire",
 			
-            "cadastrapp.designation" : "Designation",
-            "cadastrapp.valeur" : "Valeur",
-			"cadastrapp.bordereau.parcellaire" : "Bordereau Parcellaire",
-			"cadastrapp.releve.depropriete" : "Relevé de propriété",
-			"cadastrapp.batiments" : "Batiment(s)",
-			"cadastrapp.habitation.descriptif" : "Habitation et élément(s) incorporé(s)",
-			"cadastrapp.caracteristiques.generales" : "Caractéristiques générales",
-            "cadastrapp.repartition.pieces" : "Répartitions des pièces",
-            "cadastrapp.elements.confort" : "Eléments de confort",
-            "cadastrapp.elements.incorpores" : "Eléments incorporés",
-            "cadastrapp.partie.professionnelle" : "Partie professionnelle",
-            "cadastrapp.dependances" : "Dépendances"
+            "cadastrapp.duc.designation" : "Designation",
+            "cadastrapp.duc.valeur" : "Valeur",
+			"cadastrapp.duc.bordereau.parcellaire" : "Bordereau Parcellaire",
+			"cadastrapp.duc.releve.depropriete" : "Relevé de propriété",
+			"cadastrapp.duc.batiments" : "Batiment(s)",
+			"cadastrapp.duc.parcelle" : "Parcelle",
+			"cadastrapp.duc.propietaire" : "Propriétaire",
+			"cadastrapp.duc.batiment" : "Bâtiment",
+			"cadastrapp.duc.subdiv" : "Subdivisions fiscales",
+			"cadastrapp.duc.histomut" : "Historique de mutation",
+			"cadastrapp.duc.habitation.descriptif" : "Habitation et élément(s) incorporé(s)",
+			"cadastrapp.duc.caracteristiques.generales" : "Caractéristiques générales",
+            "cadastrapp.duc.repartition.pieces" : "Répartitions des pièces",
+            "cadastrapp.duc.elements.confort" : "Eléments de confort",
+            "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
+            "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
+            "cadastrapp.duc.dependances" : "Dépendances"
 
 			
         },
@@ -742,20 +758,26 @@
             "cadastrapp.surface" : "Oberfläche",
             "cadastrapp.CoProprietaire" : "Miteigner",
 
-			
-            "cadastrapp.designation" : "Designation",
-            "cadastrapp.valeur" : "Valeur",
-			"cadastrapp.bordereau.parcellaire" : "Bordereau Parcellaire",
-			"cadastrapp.releve.depropriete" : "Relevé de propriété",
-			"cadastrapp.batiments" : "Batiment(s)",
-			"cadastrapp.habitation.descriptif" : "Habitation et élément(s) incorporé(s)",
-			"cadastrapp.caracteristiques.generales" : "Caractéristiques générales",
-            "cadastrapp.repartition.pieces" : "Répartitions des pièces",
-            "cadastrapp.elements.confort" : "Eléments de confort",
-            "cadastrapp.elements.incorpores" : "Eléments incorporés",
-            "cadastrapp.partie.professionnelle" : "Partie professionnelle",
-            "cadastrapp.dependances" : "Dépendances"
+		
+            "cadastrapp.duc.designation" : "Designation",
+            "cadastrapp.duc.valeur" : "Valeur",
+			"cadastrapp.duc.bordereau.parcellaire" : "Bordereau Parcellaire",
+			"cadastrapp.duc.releve.depropriete" : "Relevé de propriété",
+			"cadastrapp.duc.batiments" : "Batiment(s)",
+			"cadastrapp.duc.parcelle" : "Parcelle",
+			"cadastrapp.duc.propietaire" : "Propriétaire",
+			"cadastrapp.duc.batiment" : "Bâtiment",
+			"cadastrapp.duc.subdiv" : "Subdivisions fiscales",
+			"cadastrapp.duc.histomut" : "Historique de mutation",
+			"cadastrapp.duc.habitation.descriptif" : "Habitation et élément(s) incorporé(s)",
+			"cadastrapp.duc.caracteristiques.generales" : "Caractéristiques générales",
+            "cadastrapp.duc.repartition.pieces" : "Répartitions des pièces",
+            "cadastrapp.duc.elements.confort" : "Eléments de confort",
+            "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
+            "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
+            "cadastrapp.duc.dependances" : "Dépendances"
 
+	
 			
         }
     }
