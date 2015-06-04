@@ -1,5 +1,6 @@
 {
     "js": [
+		"js/selectFeature.js",
 		"js/detailPlot.js",
 		"js/resultPlot.js",
 		"js/resultOwner.js",
