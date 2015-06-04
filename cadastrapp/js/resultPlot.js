@@ -36,54 +36,33 @@ Ext.namespace("GEOR")
 	        
 			colModel: new Ext.grid.ColumnModel([
 				{
-					id:'parcelle',
+					id:'ccoinsee',
 					dataIndex: 'parcelle',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.col1'),
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.commune'),
 					sortable: true
-				},{
-					id:'ccodep',
-					dataIndex: 'ccodep',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.col2'),
-					sortable: true
-				},{
-					id:'ccodir',
-					dataIndex: 'ccodir',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.col3'),
-					sortable: true
-				},{
-					id:'ccocom',
-					dataIndex: 'ccocom',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.col4'),
-					sortable: true
-				},{
-					id:'ccopre',
-					dataIndex: 'ccopre',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.col5'),
-					sortable: true
-				},{
+				},
+				{
 					id:'ccosec',
 					dataIndex: 'ccosec',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.col6'),
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.ccosec'),
 					sortable: true
-				},{
+				},
+				{
 					id:'dnupla',
 					dataIndex: 'dnupla',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.col7'),
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.dnupla'),
 					sortable: true
-				},{
-					id:'dnvoiri',
-					dataIndex: 'dnvoiri',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.col8'),
+				},
+				{
+					id:'adresse',
+					dataIndex: 'adresse',
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.adresse'),
 					sortable: true
-				},{
-					id:'dindic',
-					dataIndex: 'dindic',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.col9'),
-					sortable: true
-				},{
-					id:'dvoilib',
-					dataIndex: 'dvoilib',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.col10'),
+				},
+				{
+					id:'surface',
+					dataIndex: 'surface',
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.surface'),
 					sortable: true
 				}]),
 				

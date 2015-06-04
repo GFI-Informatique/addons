@@ -40,10 +40,10 @@ onClickDisplayFIUF = function() {
 //    Ext.define("adressecadastrale", {
 //        extend: 'Ext.data.Model',
 //        fields: [
-//				{name: 'dnvoiri', 		  type: 'string'},
-//				{name: 'dindic',   		  type: 'string'},
-//				{name: 'natvoiriv_lib',   type: 'string'},
-//				{name: 'dvoilib',         type: 'string'},
+//                {name: 'dnvoiri',           type: 'string'},
+//                {name: 'dindic',             type: 'string'},
+//                {name: 'natvoiriv_lib',   type: 'string'},
+//                {name: 'dvoilib',         type: 'string'},
 //        ],
 //
 //        belongsTo: 'Parcelle'
@@ -191,10 +191,22 @@ onClickDisplayFIUF = function() {
                 left : 10
             },
 
-            items : [ FiufGlobalInfosGrid, FiufProprietaireGrid ]
+            items : [ FiufGlobalInfosGrid, FiufProprietaireGrid , 
+                      {
+            			
+                      }]
         }, 
-			FiufParcelleListGrid 
-        ]
+            FiufParcelleListGrid 
+        ],
+        buttons: [
+                  {
+                      text: "Seletionner toute les parcelles",
+                      listeners: {
+                          click: function(b,e) {
+                        	  windowFIUF.close();
+                          }
+                      }
+                  }]
 
     });
     windowFIUF.show();

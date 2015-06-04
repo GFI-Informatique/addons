@@ -219,5 +219,22 @@ Ext.namespace("GEOR")
 	}
 	
 	
+	getResultParcelleStore = function (data) {
+		return new Ext.data.JsonStore({
+			fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib', 'surface',
+			         { 
+			       		name: 'ccoinsee', 
+			       		convert: function(v, rec) { return rec.ccodep + rec.ccodir + rec.ccocom; }
+			         },
+			         { 
+			       		name: 'adresse', 
+			       		convert: function(v, rec) {
+			       			return rec.dnvoiri + rec.dindic + ' ' + rec.dvoilib;
+			       		}
+			         }],
+			data: Ext.util.JSON.decode(data)
+		});		
+	}
+	
 	
 	
