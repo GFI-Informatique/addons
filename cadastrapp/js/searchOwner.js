@@ -282,16 +282,13 @@ Ext.namespace("GEOR")
 									//soumet la form (pour envoyer le fichier)
 									currentForm.getForm().submit({								
 										method: 'POST',
-										url: getWebappURL() + 'getParcelle/fromFile',
-										params: {
-											//envoi du contenu du store des proprietaires
-											jsonData: Ext.util.JSON.encode(Ext.pluck(proprietaireGrid.getStore().getRange(), 'data'))
-										},
+										url: getWebappURL() + 'getParcelle/fromProprietairesFile',
+										params: {details: 1},
 										success: function(form, action) {
-											addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
+											addNewResultParcelle(resultTitle, getResultParcelleStore(action.response.responseText));
 										},
 										failure: function(form, action) {
-											alert('ERROR');
+											alert('ERROR : ' + action.response.responseText);
 										}
 									});
 									

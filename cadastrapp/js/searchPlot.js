@@ -286,9 +286,10 @@ Ext.namespace("GEOR")
 									
 									//soumet la form (pour envoyer le fichier)
 									currentForm.getForm().submit({
-										url: getWebappURL() + 'getParcelle/fromFile',
+										url: getWebappURL() + 'getParcelle/fromParcellesFile',
+										params: {details: 1},
 										success: function(form, action) {
-											addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
+											addNewResultParcelle(resultTitle, getResultParcelleStore(action.response.responseText));
 										},
 										failure: function(form, action) {
 											alert('ERROR : ' + action.response.responseText);

@@ -28,7 +28,7 @@ Ext.namespace("GEOR")
 		var tabs = resultParcelleWindow.items.items[0];
 		var newGrid = new GEOR.ResultParcelleGrid({
 			title: title,
-			height: 400,
+			height: 300,
 			border: true,
             closable: true,
 			
@@ -37,7 +37,7 @@ Ext.namespace("GEOR")
 			colModel: new Ext.grid.ColumnModel([
 				{
 					id:'ccoinsee',
-					dataIndex: 'parcelle',
+					dataIndex: 'ccoinsee',
 					header: OpenLayers.i18n('cadastrapp.parcelle.result.commune'),
 					sortable: true
 				},

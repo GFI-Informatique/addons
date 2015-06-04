@@ -21,7 +21,7 @@ Ext.namespace("GEOR")
 		var tabs = resultProprietaireWindow.items.items[0];
 		var newGrid = new Ext.grid.GridPanel({
 			title: title,
-			height: 400,
+			height: 300,
 			border: true,
             closable: true,
 				
