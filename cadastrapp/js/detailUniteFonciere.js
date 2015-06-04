@@ -11,37 +11,83 @@ Ext.namespace("GEOR")
 onClickDisplayFIUF = function() {
     var windowFIUF, parcelleGrid;
 
-    var FiufGlobalInfosData = [ 
-                                [ 'Surface DGFIP', "1420" ], 
-                                [ 'Surface SIG', "1423" ],
-                                [ 'Surface batie', "200" ]
-                              ];
+    var FiufGlobalInfosData = [ [ 'Surface DGFIP', "1420" ],
+            [ 'Surface SIG', "1423" ], [ 'Surface batie', "200" ] ];
+
+    var FiufProprietaireData = [ [ 'Proprietaire 1' ], [ 'Proprietaire 2' ] ];
+    var FiufParcelleListData = [ [ '38852 2225 22', '255','201',"1 Rue louis 1"], 
+                                 [ '38852 2225 22', '255','201',"1 Rue louis 1"],
+                                 [ '38852 2225 22', '255','201',"1 Rue louis 1"] ];
+//    Ext.define('Parcelle', {
+//        extend: 'Ext.data.Model',
+//        fields: [
+//            {name: 'parcelle', type: 'string'},
+//            {name: 'libcom',   type: 'string'},
+//            {name: 'ccodep',   type: 'string'},
+//            {name: 'ccodir',   type: 'string'},
+//            {name: 'ccocom',   type: 'string'},
+//            {name: 'ccopre',   type: 'string'},
+//            {name: 'ccosec',   type: 'string'},
+//            {name: 'dnupla',   type: 'string'},
+//            {name: 'ccopre',   type: 'string'},
+//            {name: 'ccosec',   type: 'string'},
+//            {name: 'dnupla',   type: 'string'},
+//            
+//        ],
+//        hasMany: {model: 'adressecadastrale', name: 'adressecadastrale'},
+//    });
     
-    var FiufProprietaireData = [ 
-                                 [ 'Proprietaire 1' ], 
-                                 [ 'Proprietaire 2' ]
-                               ];
+//    Ext.define("adressecadastrale", {
+//        extend: 'Ext.data.Model',
+//        fields: [
+//				{name: 'dnvoiri', 		  type: 'string'},
+//				{name: 'dindic',   		  type: 'string'},
+//				{name: 'natvoiriv_lib',   type: 'string'},
+//				{name: 'dvoilib',         type: 'string'},
+//        ],
+//
+//        belongsTo: 'Parcelle'
+//    });
+
     
     var FiufGlobalInfosStore = new Ext.data.ArrayStore({
-        fields : [ 
-                   {
-                      name : 'uniteFonciere'
-                   }, 
-                   {
-                	   name : 'surface',
-                	   type : 'float'
-                   	},
-                 ],
+        fields : [ {
+            name : 'uniteFonciere'
+        }, {
+            name : 'surface',
+            type : 'float'
+        }, ],
         data : FiufGlobalInfosData
     });
 
     var FiufProprietaireStore = new Ext.data.ArrayStore({
         fields : [ {
             name : 'proprietaire'
-        }],
+        } ],
         data : FiufProprietaireData
     });
     
+    var FiufParcelleListStore = new Ext.data.ArrayStore({
+        fields : [ {
+            name : 'parcelle',
+            type : 'string',
+        }, 
+        {
+            name : 'surfacedgfip',
+            type : 'string'
+        },
+        {
+            name : 'surfacesig',
+            type : 'string'
+        },
+        {
+            name : 'adresse',
+            type : 'string'
+        },],
+        
+        data : FiufParcelleListData
+    });
+
     FiufGlobalInfosGrid = new Ext.grid.GridPanel({
         store : FiufGlobalInfosStore,
         stateful : true,
@@ -56,9 +102,9 @@ onClickDisplayFIUF = function() {
                 width : 100,
                 dataIndex : 'uniteFonciere'
             }, {
-            	header : OpenLayers.i18n('cadastrapp.surface'),
+                header : OpenLayers.i18n('cadastrapp.surface'),
                 width : 100,
-                renderer: Ext.util.Format.numberRenderer('0,000.00 m'),
+                renderer : Ext.util.Format.numberRenderer('0,000.00 m'),
                 dataIndex : 'surface'
             }, ],
         }),
@@ -66,7 +112,7 @@ onClickDisplayFIUF = function() {
         width : 200,
         border : true,
     });
-    
+
     FiufProprietaireGrid = new Ext.grid.GridPanel({
         store : FiufProprietaireStore,
         stateful : true,
@@ -78,7 +124,7 @@ onClickDisplayFIUF = function() {
                 sortable : false,
             },
             columns : [ {
-            	header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
+                header : OpenLayers.i18n('cadastrapp.CoProprietaire'),
                 width : 150,
                 dataIndex : 'proprietaire'
             }, ],
@@ -88,13 +134,50 @@ onClickDisplayFIUF = function() {
         border : true,
     });
 
-    
+    FiufParcelleListGrid = new Ext.grid.GridPanel({
+        store : FiufParcelleListStore,
+        stateful : true,
+        name : 'Fiuf_ParcelleList',
+        xtype : 'editorgrid',
+        colModel : new Ext.grid.ColumnModel({
+            defaults : {
+                width : 100,
+                sortable : false,
+            },
+            columns : [
+                    {
+                        header : OpenLayers.i18n('cadastrapp.parcelle'),
+                        width : 100,
+                        dataIndex : 'parcelle'
+                    },
+                    {
+                        header : OpenLayers.i18n('cadastrapp.surface') + " "
+                                + OpenLayers.i18n('cadastrapp.parcelle.DGFIP'),
+                        width : 50,
+                        dataIndex : 'surfacedgfip'
+                    },
+                    {
+                        header : OpenLayers.i18n('cadastrapp.surface') + " "
+                                + OpenLayers.i18n('cadastrapp.parcelle.SIG'),
+                        width : 50,
+                        dataIndex : 'surfacesig'
+                    }, {
+                        header : OpenLayers.i18n('cadastrapp.adresse_postale'),
+                        width : 200,
+                        dataIndex : 'adresse'
+                    } ],
+        }),
+        height : 100,
+        width : 450,
+        border : true,
+    });
+
     windowFIUF = new Ext.Window({
         title : 'DXXX',
         frame : true,
         bodyPadding : 10,
         autoScroll : true,
-        width : 450,
+        width : 600,
         minimizable : true,
         closable : true,
         resizable : true,
@@ -103,18 +186,18 @@ onClickDisplayFIUF = function() {
 
         items : [ {
             xtype : 'compositefield',
-            margins :{
-            	 right: 10,
-            	 left: 10
-            }, 
-            
-            items : [ 
-                    FiufGlobalInfosGrid,
-                    FiufProprietaireGrid, 
-                    ]
-        } ]
+            margins : {
+                right : 10,
+                left : 10
+            },
+
+            items : [ FiufGlobalInfosGrid, FiufProprietaireGrid ]
+        }, 
+			FiufParcelleListGrid 
+        ]
 
     });
     windowFIUF.show();
     console.log("displayFIUF onClick")
 };
+;

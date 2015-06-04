@@ -29,18 +29,13 @@ Ext.namespace("GEOR")
             
 			colModel: new Ext.grid.ColumnModel([
 				{
-					id:'ccoinsee',
-					dataIndex: 'ccoinsee',
+					id:'dnomlp',
+					dataIndex: 'dnomlp',
 					header: OpenLayers.i18n('cadastrapp.proprietaire.result.col1'),
 					sortable: true
 				},{
-					id:'libcom',
-					dataIndex: 'libcom',
-					header: OpenLayers.i18n('cadastrapp.proprietaire.result.col2'),
-					sortable: true
-				},{
-					id:'libcom_min',
-					dataIndex: 'libcom_min',
+					id:'dprnlp',
+					dataIndex: 'dprnlp',
 					header: OpenLayers.i18n('cadastrapp.proprietaire.result.col2'),
 					sortable: true
 				}]),
@@ -54,23 +49,23 @@ Ext.namespace("GEOR")
 				rowclick: function(grid, rowIndex, columnIndex, e) {
 					//on fait une requete pour obtenir la listes des parcelles du proprietaire
 					var record = grid.getStore().getAt(rowIndex);
-					var proprietaireName = record.data.libcom_min;		//TODO : changer
-					var proprietaireId = record.data.ccoinsee;			//TODO : changer
+					var proprietaireLastname = record.data.dnomlp;
+					var proprietaireFirstname = record.data.dprnlp;
 					
 					//envoi des données d'une form
 					Ext.Ajax.request({
 						method: 'GET',
-						url:'../cadastrapp/getCommune/ccoinsee_partiel/' + proprietaireId,		//TODO : changer
-						success: function(form, action) {
+						url: getWebappURL() + 'getParcelle?dnomlp=' + proprietaireLastname,		//TODO : changer
+						success: function(result) {
 							//creation d'un store en retour
 							var store = new Ext.data.JsonStore({
-								fields: ['ccoinsee', 'libcom', 'libcom_min'],
-								data: Ext.util.JSON.decode(form.responseText)
-							});							
-							addNewResultParcelle(proprietaireName, store);
+								fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib'],
+								data: Ext.util.JSON.decode(result.responseText)
+							});										
+							addNewResultParcelle(resultTitle, store);
 						},
-						failure: function(form, action) {
-							addNewResultParcelle(proprietaireName, null);
+						failure: function(result) {
+							alert('ERROR');
 						}
 					});
 				}				

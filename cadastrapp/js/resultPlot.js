@@ -32,25 +32,58 @@ Ext.namespace("GEOR")
 			border: true,
             closable: true,
 			
-			//store: (result!=null) ? result : new Ext.data.Store(),
-			store: (result!=null) ? result : new Ext.data.JsonStore({
-				fields : ['ccoinsee', 'libcom_min'],
-				data   : [
-					{ccoinsee: '01234',  libcom_min: 'Ville Test 1'},
-					{ccoinsee: '56789', libcom_min: 'Ville Test 2'}
-				]
-			}),
+			store: (result!=null) ? result : new Ext.data.Store(),
 	        
 			colModel: new Ext.grid.ColumnModel([
 				{
-					id:'ccoinsee',
-					dataIndex: 'ccoinsee',
+					id:'parcelle',
+					dataIndex: 'parcelle',
 					header: OpenLayers.i18n('cadastrapp.parcelle.result.col1'),
 					sortable: true
 				},{
-					id:'libcom_min',
-					dataIndex: 'libcom_min',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.col1'),
+					id:'ccodep',
+					dataIndex: 'ccodep',
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.col2'),
+					sortable: true
+				},{
+					id:'ccodir',
+					dataIndex: 'ccodir',
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.col3'),
+					sortable: true
+				},{
+					id:'ccocom',
+					dataIndex: 'ccocom',
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.col4'),
+					sortable: true
+				},{
+					id:'ccopre',
+					dataIndex: 'ccopre',
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.col5'),
+					sortable: true
+				},{
+					id:'ccosec',
+					dataIndex: 'ccosec',
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.col6'),
+					sortable: true
+				},{
+					id:'dnupla',
+					dataIndex: 'dnupla',
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.col7'),
+					sortable: true
+				},{
+					id:'dnvoiri',
+					dataIndex: 'dnvoiri',
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.col8'),
+					sortable: true
+				},{
+					id:'dindic',
+					dataIndex: 'dindic',
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.col9'),
+					sortable: true
+				},{
+					id:'dvoilib',
+					dataIndex: 'dvoilib',
+					header: OpenLayers.i18n('cadastrapp.parcelle.result.col10'),
 					sortable: true
 				}]),
 				
@@ -63,7 +96,7 @@ Ext.namespace("GEOR")
 				rowclick: function(grid, rowIndex, e) {
 					//on ouvre une fenetre : detail parcelle
 				    var record = grid.getStore().getAt(rowIndex);
-					grid.detailParcelles.push(displayDetailParcelle(record.data.ccoinsee));
+					grid.detailParcelles.push(displayDetailParcelle(record.data.parcelle));
 				},
 				close: function(grid) {
 					//on ferme toutes les fenetres filles : detail parcelle
@@ -72,7 +105,7 @@ Ext.namespace("GEOR")
 							grid.detailParcelles[index].close();
 						}
 					}
-					//on ferme la fenetre si c'est le derneir onglet
+					//on ferme la fenetre si c'est le dernier onglet
 					if (tabs.items.length==1) {
 						resultParcelleWindow.close();
 					}
@@ -82,8 +115,7 @@ Ext.namespace("GEOR")
 		});
 		tabs.insert(0, newGrid);
 		tabs.setActiveTab(0);
-	}
-	
+	}	
     
     
     
