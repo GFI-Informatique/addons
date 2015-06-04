@@ -200,6 +200,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
     /** private: method[constructor]
      *  Private constructor override.
      */
+	
     constructor: function(config) {
         Ext.apply(this, config);
 
@@ -207,7 +208,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         this.actions = [];
 
         this.initMap();
-
+		var info;
         // if set, automatically creates a "cadastrapp" layer
         var style = this.style || OpenLayers.Util.applyDefaults(
             this.defaultStyle, OpenLayers.Feature.Vector.style["default"]);
@@ -232,6 +233,10 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         layer = new OpenLayers.Layer.Vector("__georchestra_cadastrapps", layerOptions);
         this.layer = layer;
         this.map.addLayer(layer);
+
+		//*********************************************************************
+			var feature= selectionTest(this.map);	
+		//*********************************************************************
 
         layer.events.on({
             "beforefeatureselected": this.onBeforeFeatureSelect,
@@ -258,6 +263,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         GEOR.Cadastrapp.superclass.constructor.apply(this, arguments);
     },
 
+
     /** private: method[initMap]
      *  Convenience method to make sure that the map object is correctly set.
      */
@@ -274,6 +280,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         if (!this.toggleGroup) {
             this.toggleGroup = this.map.id;
         }
+
     },
 
    /** private: method[initZoomControls]
@@ -340,6 +347,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                     handler = OpenLayers.Handler.Point;
                     iconCls = "gx-featureediting-cadastrapp-point";
                     tooltip = OpenLayers.i18n("cadastrapp.create_point");
+					
                     break;
                 case "Polygon":
                     handler = OpenLayers.Handler.Polygon;
@@ -597,7 +605,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             iconCls: "gx-featureediting-cadastrapp-demande",
             iconAlign: 'top',
             text: OpenLayers.i18n("cadastrapp.demande"),
-			handler: onClickDemand
+			handler: onClickAskInformations
         };
         button = new Ext.Button(config);
 		
@@ -701,7 +709,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         }
 
         this.featureControl.activate();
-
+		
         var control = this.featureControl;
         control.selectFeature.defer(1, control, [feature]);
 
@@ -877,6 +885,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
     onFeatureSelect: function(event) {
         var feature = (event.geometry) ? event : event.feature;
         this.applyStyle(feature, 'normal', {'recadastrapp': true});
+		
     },
 
     /** private: method[applyStyles]

@@ -7,17 +7,17 @@
 Ext.namespace("GEOR")
 
 
-  	 /** public: method[onClickDemand]
+  	 /** public: method[onClickAskInformations]
      *  :param layer: 
      *  Create ...TODO
      */
-    onClickDemand = function(){
+    onClickAskInformations = function(){
 		
 		var parcBisStore, parcCityStore, parcCityCombo1, parcCityCombo2, parcelleGrid;
 		
 		parcBisStore = getBisStore();
 		
-		parcCityStore = getCityStore();
+		parcCityStore = "";
 
 		//combobox "villes"
 		parcCityCombo1 = new Ext.form.ComboBox({
@@ -113,48 +113,39 @@ Ext.namespace("GEOR")
 		
     // formulaire Parcelles
 		//liste des compléments de numéro de rue : BIS, TER (à compléter ?)
-		var bisStore = getBisStore(); 
-		/*new Ext.data.JsonStore({
+		//var bisStore = getBisStore(); 
+		var bisStore = new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : '--',   value: '--'},
 				{name : 'bis',  value: 'bis'},
 				{name : 'ter', value: 'ter'}
 			]
-		});*/	
+		});
 		
 		//liste des sections : TODO : charger dynamiquement selon la ville choisie
-		var sectionStore = getSectionStore();
-		/*new Ext.data.JsonStore({
+		//var sectionStore = getSectionStore();
+		var sectionStore = new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : 'sect1',   value: 'sect1'},
 				{name : 'sect2',  value: 'sect2'},
 				{name : 'sect3', value: 'sect3'}
 			]
-		});*/
+		});
 		
 		//liste des parcelles : TODO : charger dynamiquement selon la ville choisie et la section choisie
-		var parcelleStore = getParcelleStore();
-		/*new Ext.data.JsonStore({
+		//var parcelleStore = getParcelleStore();
+		var parcelleStore = new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
 				{name : 'parc1',   value: 'parc1'},
 				{name : 'parc2',  value: 'parc2'},
 				{name : 'parc3', value: 'parc3'}
 			]
-		});*/
+		});
 		
-		//liste des villes : TODO : récupérer la liste entière
-		var cityStore = getCityStore();
-		/*new Ext.data.JsonStore({
-			fields : ['name', 'value'],
-			data   : [
-				{name : 'Caen',   value: 'caen'},
-				{name : 'Rennes',  value: 'rennes'},
-				{name : 'Lannion', value: 'lannion'}
-			]
-		});*/
+
 	
 		//listes des section / parcelles saisies : "références"
 		//initialement vide
@@ -261,8 +252,8 @@ Ext.namespace("GEOR")
 			border: true
 		});
 		
-		var demandWindow;
-			demandWindow = new Ext.Window({
+		var askInformationsWindow;
+			askInformationsWindow = new Ext.Window({
             title: 'Demande Informations Foncieres',
 			frame: true,
 			bodyPadding: 10,
@@ -322,7 +313,7 @@ Ext.namespace("GEOR")
 			items: [				
 				{ fieldLabel:OpenLayers.i18n('cadastrapp.demandeinformation.commune'), name: 'commune', width: 280},
 				{ xtype:'tabpanel',	height: 160,
-
+				width: 405,
 				activeTab: 0,
 				items:[{
 				
@@ -344,6 +335,7 @@ Ext.namespace("GEOR")
 				}]
 				},
 				{ xtype:'tabpanel',
+				width: 405,
 				activeTab: 0,
 				items:[{	
 				
@@ -369,7 +361,8 @@ Ext.namespace("GEOR")
 						text: OpenLayers.i18n('cadastrapp.demandeinformation.annuler'),
 						listeners:{
 							click: function(b,e) {
-											demandWindow.close();
+											onClickDisplayFIUC();
+											askInformationsWindow.close();
 											}
 									 }
 						},{
@@ -377,11 +370,11 @@ Ext.namespace("GEOR")
 						text: OpenLayers.i18n('cadastrapp.demandeinformation.imprimer'),
 						listeners:{
 							click: function(b,e) {
-											demandWindow.close();
+											askInformationsWindow.close();
 											}
 									 }							
 						}]
         });
-		demandWindow.show();
+		askInformationsWindow.show();
 		console.log("onClick")
 	};
