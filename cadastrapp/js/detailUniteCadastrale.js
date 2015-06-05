@@ -30,12 +30,12 @@ Ext.namespace("GEOR")
    								[ 'Batiment 1' ], 
                                 [ 'Batiment 2' ]
                                ];
-    var FiucSubdivfiscData = [ 'col1','P' ], 
+    var FiucSubdivfiscData = 			[[ 'col1','P' ], 
 										 ['067AP' ,'067AP'],
-										 ['zret','azr'];
-    var FiucHistomutData = [ 'col1','P' ], 
+										 ['zret','azr']];
+    var FiucHistomutData = [[ 'col1','P' ], 
 										 ['067AP' ,'067AP'],
-										 ['zret','azr'];
+										 ['zret','azr']];
 
 
     var FiucParcelleStore = new Ext.data.ArrayStore({
