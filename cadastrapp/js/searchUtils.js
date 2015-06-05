@@ -172,7 +172,7 @@ Ext.namespace("GEOR")
 					value: '',
 					forceSelection: false,
 					editable:       true,
-					displayField:   'parcelle',
+					displayField:   'dnupla',
 					valueField:     'parcelle',
 					store: getInitParcelleStore(),
 					listeners: {
