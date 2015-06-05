@@ -235,7 +235,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         this.map.addLayer(layer);
 
 		//*********************************************************************
-			var feature= selectionTest(this.map);	
+			selectionTest(this.map);	
 		//*********************************************************************
 
         layer.events.on({

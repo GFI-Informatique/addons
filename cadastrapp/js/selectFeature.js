@@ -6,50 +6,34 @@
 Ext.namespace("GEOR")	
 	
 	selectionTest = function (map){
-		// var cadastre=map.getLayersByName("geo_parcelle");
-		cadastre = new OpenLayers.Layer.WMS(
-				"qgis:geo_parcelle", "http://gd-cms-crai-001.fasgfi.fr/geoserver/qgis/wms", {
-				LAYERS: 'qgis:geo_parcelle',
-				transparent: 'true',
-				format: 'image/png'            
-				}, {
-					isBaseLayer: false,
-					singleTile: true
-		});
-		select = new OpenLayers.Layer.Vector("Selection", {
-					styleMap: new OpenLayers.Style(OpenLayers.Feature.Vector.style["select"])
-		});
+		// var cadastre1=map.getLayersByName("geo_parcelle");
+		var cadastre = new OpenLayers.Layer.Vector(
+            "parcelle",
+            {
+                strategies: [new OpenLayers.Strategy.Fixed()]
+                , projection: new OpenLayers.Projection("EPSG:4326")
+                , protocol: new OpenLayers.Protocol.WFS({
+                    version: "1.1.0",
+                    url: "http://gd-cms-crai-001.fasgfi.fr/geoserver/qgis/wfs",
+                    featurePrefix: 'qgis', //geoserver worspace name
+                    featureType: "geo_parcelle", //geoserver Layer Name
+                    featureNS: "qgis", // Edit Workspace Namespace URI
+                    geometryName: "geom" // field in Feature Type details with type "Geometry"
+                })
+            });
+			map.addLayers([cadastre]);
+			var select = new OpenLayers.Control.SelectFeature(cadastre);
+			map.addControl(select);
+			select.activate();
+		cadastre.events.on({
+                'featureselected': function(e) {
+                    console.log(e.feature);
+                },
+                'featureunselected': function(e) {
+                   console.log("unselected");
+                }
+            });	 
 
-			 
-		map.addLayers([select,cadastre]);
+		//******************************************************************
 
-		control = new OpenLayers.Control.GetFeature({
-					protocol: OpenLayers.Protocol.WFS.fromWMSLayer(cadastre),
-					box: true,
-					hover: true,
-					multipleKey: "shiftKey",
-					toggleKey: "ctrlKey"
-				});
-		control.events.register("featureselected", this, function (e) {
-					select.addFeatures([e.feature]);
-		});
-		control.events.register("featureunselected", this, function (e) {
-					select.removeFeatures([e.feature]);
-		});
-
-		map.addControl(control);
-		control.activate();
-		// this.featureControl=control;
-		// this.map.addControl(this.featureControl);
-		var vector_style = new OpenLayers.Style({
-						'fillColor': '#ff0000',
-						'strokeColor': '#ff0000',
-						'strokeWidth': 5
-						});
-
-		var vector_style_map = new OpenLayers.StyleMap({
-						'default': vector_style
-						});
-
-		select.styleMap = vector_style_map;
 	}
