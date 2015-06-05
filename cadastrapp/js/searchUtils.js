@@ -194,6 +194,42 @@ Ext.namespace("GEOR")
 	}
 	
 	
+	//design de la grille "resultats de recherche de parcelles"
+	getResultParcelleColModel = function() {
+		return new Ext.grid.ColumnModel([
+			{
+				id:'ccoinsee',
+				dataIndex: 'ccoinsee',
+				header: OpenLayers.i18n('cadastrapp.parcelle.result.commune'),
+				sortable: true
+			},
+			{
+				id:'ccosec',
+				dataIndex: 'ccosec',
+				header: OpenLayers.i18n('cadastrapp.parcelle.result.ccosec'),
+				sortable: true
+			},
+			{
+				id:'dnupla',
+				dataIndex: 'dnupla',
+				header: OpenLayers.i18n('cadastrapp.parcelle.result.dnupla'),
+				sortable: true
+			},
+			{
+				id:'adresse',
+				dataIndex: 'adresse',
+				header: OpenLayers.i18n('cadastrapp.parcelle.result.adresse'),
+				sortable: true
+			},
+			{
+				id:'surface',
+				dataIndex: 'surface',
+				header: OpenLayers.i18n('cadastrapp.parcelle.result.surface'),
+				sortable: true
+			}]);
+	}
+	
+	
 	//design et editor des colonnes de la grille "propriétaires"
 	getProprietaireColModel = function(cityId) {
 		return new Ext.grid.ColumnModel([

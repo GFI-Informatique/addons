@@ -293,7 +293,7 @@ Ext.namespace("GEOR")
 											addNewResultParcelle(resultTitle, getResultParcelleStore(action.response.responseText, true));
 										},
 										failure: function(form, action) {
-											alert('ERROR : ' + action.response.responseText);
+											alert('ERROR');
 										}
 									});
 									
