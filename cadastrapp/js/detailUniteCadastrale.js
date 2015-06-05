@@ -47,8 +47,7 @@ Ext.namespace("GEOR")
 								[ 'Revenu','350250' ],
                                 [ 'Compte','350250' ],
  								[ 'Nom','350250' ],
-                                [ 'Prénom','350250' ], 
-                                [ 'Section','067AP' ] 
+                                [ 'Prénom','350250' ]
                             ];
                             
     var FiucSubdivfiscData =[
@@ -247,8 +246,7 @@ Ext.namespace("GEOR")
         colModel : new Ext.grid.ColumnModel({
             defaults : {
                 sortable : false,
-            },
-            columns :            
+            },          
             columns : [ 
                 {
 
