@@ -37,8 +37,7 @@ onClickDisplayFIUC = function() {
 
     var FiucProprietaireStore = new Ext.data.ArrayStore({
         fields : [ {
-            name : 'col1'
-        }, {
+			
             name : 'compte'
         }, {
             name : 'nom'
@@ -64,7 +63,22 @@ onClickDisplayFIUC = function() {
 
     var FiucBatimentsStore = new Ext.data.ArrayStore({
         fields : [ {
-            name : 'batiments'
+            name : 'batiment_niveau'
+        }, {
+            name : 'batiment_porte'
+        }, {
+            name : 'batiment_type'
+        }, {
+            name : 'batiment_date'
+        }, {
+            name : 'batiment_revenu'
+        }, {
+            name : 'compte'
+        }, {
+            name : 'nom'
+        }, {
+            name : 'prenom'
+        }, {            name : 'batiments'
         } ],
         data : FiucBatimentsData
     });
@@ -130,15 +144,13 @@ onClickDisplayFIUC = function() {
                 border : true,
                 sortable : false,
             },
-
-            columns : [ {
-
-                header : '',
-                // selModel: sm,
-                width : 50,
-                dataIndex : 'col1'
-            }, {
-                header : OpenLayers.i18n('cadastrapp.duc.compte'),
+            
+            columns : [ 
+				{
+					selModel: sm
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.compte'),
                 dataIndex : 'compte'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.nom'),
@@ -182,15 +194,52 @@ onClickDisplayFIUC = function() {
         colModel : new Ext.grid.ColumnModel({
             defaults : {
                 sortable : false,
-            },
-            columns : [ {
-                header : OpenLayers.i18n('cadastrapp.CoProprietaire'),
-                dataIndex : 'batiments'
-            } ]
-        }),
+            },          
+            columns : [ 
+                {
+
+                header: '',
+                //selModel: sm,                
+                 width: 50,
+                dataIndex : 'col1'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.batiment_niveau'),
+                dataIndex : 'batiment_niveau'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.batiment_porte'),
+                dataIndex : 'batiment_porte'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.batiment_type'),
+                dataIndex : 'batiment_type'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.batiment_date'),
+                dataIndex : 'batiment_date'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.batiment_revenu'),
+                dataIndex : 'batiment_revenu'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.compte'),
+                dataIndex : 'compte'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.nom'),
+                dataIndex : 'nom'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.prenom'),
+                dataIndex : 'prenom'
+
+            }]
+        })
 
     });
-
+    
     FiucSubdivfiscGrid = new Ext.grid.GridPanel({
         store : FiucSubdivfiscStore,
         stateful : true,
@@ -322,4 +371,6 @@ onClickDisplayFIUC = function() {
 function loadBorderauParcellaire(){
 	
 	console.log ("download borderau function");
+	//TODO
+	//onClickPrintBordereauParcellaireWindow(parcellId);
 };
