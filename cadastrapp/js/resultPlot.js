@@ -14,61 +14,42 @@ Ext.namespace("GEOR")
 
 
 	var resultParcelleWindow;
+	var tabCounter = 1;
 
   	/** public: method[onClickRechercheProprietaire]
      *  :param layer: 
      *  Create ...TODO
      */
-    addNewResultParcelle = function(title, result) {
+	addNewResultParcelle = function(title, result) {
+		addNewResult(title, result, OpenLayers.i18n('cadastrapp.parcelle.result.nodata'));
+	}
+	
+	addVoidResultParcelle = function() {
+		addNewResult(OpenLayers.i18n('cadastrapp.parcelle.result.selection.title'), null, OpenLayers.i18n('cadastrapp.parcelle.result.selection.content'));
+	}
+	
+    addNewResult = function(title, result, message) {
 		if (resultParcelleWindow == null) {
 			initResultParcelle();
 		}
 		resultParcelleWindow.show();
 		
 		var tabs = resultParcelleWindow.items.items[0];
+		tabCounter = tabCounter+1;
 		var newGrid = new GEOR.ResultParcelleGrid({
 			title: title,
+			id: 'resultParcelleWindowTab'+tabCounter,
 			height: 300,
 			border: true,
             closable: true,
 			
 			store: (result!=null) ? result : new Ext.data.Store(),
 	        
-			colModel: new Ext.grid.ColumnModel([
-				{
-					id:'ccoinsee',
-					dataIndex: 'ccoinsee',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.commune'),
-					sortable: true
-				},
-				{
-					id:'ccosec',
-					dataIndex: 'ccosec',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.ccosec'),
-					sortable: true
-				},
-				{
-					id:'dnupla',
-					dataIndex: 'dnupla',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.dnupla'),
-					sortable: true
-				},
-				{
-					id:'adresse',
-					dataIndex: 'adresse',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.adresse'),
-					sortable: true
-				},
-				{
-					id:'surface',
-					dataIndex: 'surface',
-					header: OpenLayers.i18n('cadastrapp.parcelle.result.surface'),
-					sortable: true
-				}]),
+			colModel: getResultParcelleColModel(),
 				
 			viewConfig: {
 				deferEmptyText: false,
-				emptyText: OpenLayers.i18n('cadastrapp.parcelle.result.nodata')
+				emptyText: message
 			},
 			
 			listeners: {
@@ -76,7 +57,7 @@ Ext.namespace("GEOR")
 					//on ouvre une fenetre : detail parcelle
 				    var record = grid.getStore().getAt(rowIndex);
 					grid.detailParcelles.push(
-							//TEST
+							//TODO : cf. alert
 							//displayDetailParcelle(record.data.parcelle)
 					);
 					alert('TODO : appeler la methode qui ouvre la fenetre de détail de la parcelle (qui doit retourner l objet Window)');
@@ -89,8 +70,13 @@ Ext.namespace("GEOR")
 						}
 					}
 					//on ferme la fenetre si c'est le dernier onglet
-					if (tabs.items.length==1) {
+					if (tabs.items.length==2) {
+						//si il ne reste que cet onglet et l'onglet '+', fermer la fenetre
 						resultParcelleWindow.close();
+					} else {
+						//on selectionne manuellement le nouvel onglet à activer, pour eviter de tomber sur le '+' (qui va tenter de refaire un onglet et ça va faire nimporte quoi)
+						var index = tabs.items.findIndex('id', grid.id);
+						tabs.setActiveTab((index==0) ? 1 : (index-1));
 					}
 				}
 			}
@@ -98,8 +84,7 @@ Ext.namespace("GEOR")
 		});
 		tabs.insert(0, newGrid);
 		tabs.setActiveTab(0);
-	}	
-    
+	}
     
     
     initResultParcelle = function() {						
@@ -126,7 +111,20 @@ Ext.namespace("GEOR")
 			
 			items: [
 			{
-				xtype:'tabpanel'
+				xtype:'tabpanel',
+				
+				items: [{
+					xtype: 'panel',
+					title: '+',
+					border: true,
+					closable: false,
+					
+					listeners: {
+						activate: function(grid) {
+							addVoidResultParcelle();
+						}
+					}
+				}]
 			}],
 			
 			buttons: [
