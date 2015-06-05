@@ -196,30 +196,13 @@ Ext.namespace("GEOR")
 				header: OpenLayers.i18n('cadastrapp.proprietaire.proprietaires.col1'),
 				width: 100,
 				sortable: false,
-				editor: new Ext.form.ComboBox({
-					mode: 'local',
-					value: '',
-					forceSelection: true,
-					editable:       true,
-					displayField:   'name',
-					valueField:     'name',
-					store: getProprietaireStore(cityId),
-					listeners: {
-					    beforequery: function(q){  
-					    	if (q.query) {
-				                var length = q.query.length;
-				                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
-				                q.query.length = length;
-				            }
-					    }
-					}
-				})
+				editor: new Ext.form.TextField({ allowBlank: false })
 			}
 		]);		
 	}
 	
 	
-	getResultParcelleStore = function (result) {
+	getResultParcelleStore = function (result, fromForm) {
 		return new Ext.data.JsonStore({
 			fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib', 'surface',
 			         { 
@@ -232,7 +215,7 @@ Ext.namespace("GEOR")
 			       			return rec.dnvoiri + rec.dindic + ' ' + rec.dvoilib;
 			       		}
 			         }],
-			data: Ext.util.JSON.decode(result).data
+			data: (fromForm) ? Ext.util.JSON.decode(result).data : Ext.util.JSON.decode(result)
 		});		
 	}
 	

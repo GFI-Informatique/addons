@@ -24,18 +24,18 @@ Ext.namespace("GEOR")
 								[ 'Commune','350250' ], 
 								[ 'Section','067AP' ] 
 							];
-    var FiucProrietaireData =  [ 
-								[ 'col1','P' , '067AP' ,'067AP' ,'067AP' ,'067AP' ,'067AP' ,'067AP' ,'067AP','067AP','067AP' ]
-							];
+    var FiucProrietaireData =  [ 'col1','P' , '067AP' ,'067AP' ,'067AP' ,'067AP' ,'067AP' ,'067AP' ,'067AP','067AP','067AP' ];
+							
     var FiucBatimentsData = [ 
    								[ 'Batiment 1' ], 
                                 [ 'Batiment 2' ]
                                ];
-    var FiucSubdivfiscData = [ 'col1','P' , '067AP' ,'067AP'];
-    var FiucHistomutData = [ 
-								 [ 'Histo 1' ], 
-                                 [ 'Histo 2' ]
-                               ];
+    var FiucSubdivfiscData = [ 'col1','P' ], 
+										 ['067AP' ,'067AP'],
+										 ['zret','azr'];
+    var FiucHistomutData = [ 'col1','P' ], 
+										 ['067AP' ,'067AP'],
+										 ['zret','azr'];
 
 
     var FiucParcelleStore = new Ext.data.ArrayStore({
@@ -84,20 +84,24 @@ Ext.namespace("GEOR")
   	
     var FiucSubdivfiscStore = new Ext.data.ArrayStore({
         fields : [ {
-            name : 'ccosub'
+            name : 'lettreindic'
         }, {
-            name : 'dcntsf'
+            name : 'contenance'
         }, {
-            name : 'grnum_lib'
+            name : 'terrain'
         }, {
-            name : 'drcsub'
+            name : 'revenu'
         }],
         data : FiucSubdivfiscData
     });
   	
     var FiucHistomutStore = new Ext.data.ArrayStore({
         fields : [ {
-            name : 'histomutations'
+            name : 'dateacte'
+        }, {
+            name : 'reference.parcelle'
+        },{
+            name : 'type.mutation'
         }],
         data : FiucHistomutData
     });
@@ -222,20 +226,20 @@ Ext.namespace("GEOR")
                 sortable : false,
             },
             columns : [ {
-            	header: OpenLayers.i18n('cadastrapp.duc.ccosub'),
-                dataIndex : 'ccosub'
+            	header: OpenLayers.i18n('cadastrapp.duc.lettreindic'),
+                dataIndex : 'lettreindic'
 			}, 
 				{
-            	header: OpenLayers.i18n('cadastrapp.duc.dcntsf'),
-                dataIndex : 'dcntsf'
+            	header: OpenLayers.i18n('cadastrapp.duc.contenance'),
+                dataIndex : 'contenance'
             }, 
 				{
-            	header: OpenLayers.i18n('cadastrapp.duc.grnum_lib'),
-                dataIndex : 'grnum_lib'
+            	header: OpenLayers.i18n('cadastrapp.duc.terrain'),
+                dataIndex : 'terrain'
             }, 
 				{
-            	header: OpenLayers.i18n('cadastrapp.duc.drcsub'),
-                dataIndex : 'drcsub'
+            	header: OpenLayers.i18n('cadastrapp.duc.revenu'),
+                dataIndex : 'revenu'
             }]
         }),
 
@@ -253,8 +257,16 @@ Ext.namespace("GEOR")
                 sortable : false,
             },
             columns : [ {
-            	header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
-                dataIndex : 'historique_mutation'
+            	header: OpenLayers.i18n('cadastrapp.duc.dateacte'),
+                dataIndex : 'dateacte'
+			}, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.reference_parcelle'),
+                dataIndex : 'reference.parcelle'
+            }, 
+				{
+            	header: OpenLayers.i18n('cadastrapp.duc.type_mutation'),
+                dataIndex : 'type.mutation'
             }]
         }),
 
@@ -279,7 +291,7 @@ Ext.namespace("GEOR")
 			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
 
 			listeners: {
-				close(window) {
+				close: function(window) {
 					windowFIUC = null;
 				}
 			},

@@ -102,7 +102,7 @@ Ext.namespace("GEOR")
 			    },
 				change: function(combo, newValue, oldValue) {
 					//refaire le section store pour cette ville						
-					proprietaireGrid.reconfigure(getVoidProprietaireStore(), getProprietaireColModel(newValue));
+					//proprietaireGrid.reconfigure(getVoidProprietaireStore(), getProprietaireColModel(newValue));
 					proprietaireWindow.buttons[0].enable();
 				}
 			}
@@ -263,7 +263,7 @@ Ext.namespace("GEOR")
 									url: getWebappURL() + 'getParcelle',
 									params: params,
 									success: function(result) {
-										addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
+										addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
 									},
 									failure: function(result) {
 										alert('ERROR');
@@ -285,7 +285,7 @@ Ext.namespace("GEOR")
 										url: getWebappURL() + 'getParcelle/fromProprietairesFile',
 										params: {details: 1},
 										success: function(form, action) {
-											addNewResultParcelle(resultTitle, getResultParcelleStore(action.response.responseText));
+											addNewResultParcelle(resultTitle, getResultParcelleStore(action.response.responseText, true));
 										},
 										failure: function(form, action) {
 											alert('ERROR : ' + action.response.responseText);
@@ -304,9 +304,9 @@ Ext.namespace("GEOR")
 									params.ccocom = cityCode.substring(3,6);
 									
 									//liste des proprietaires
-									params.proprietaires = new Array();
+									params.dnupro = new Array();
 									proprietaireGrid.getStore().each(function(record) {  
-										params.proprietaires.push(record.data.proprietaire); 
+										params.dnupro.push(record.data.proprietaire); 
 									});
 									
 									//envoi des données d'une form
@@ -315,7 +315,7 @@ Ext.namespace("GEOR")
 										url: getWebappURL() + 'getParcelle',
 										params: params,
 										success: function(result) {
-											addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
+											addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
 										},
 										failure: function(result) {
 											alert('ERROR');
