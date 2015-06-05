@@ -219,7 +219,7 @@ Ext.namespace("GEOR")
 	}
 	
 	
-	getResultParcelleStore = function (result) {
+	getResultParcelleStore = function (result, fromForm) {
 		return new Ext.data.JsonStore({
 			fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib', 'surface',
 			         { 
@@ -232,7 +232,7 @@ Ext.namespace("GEOR")
 			       			return rec.dnvoiri + rec.dindic + ' ' + rec.dvoilib;
 			       		}
 			         }],
-			data: Ext.util.JSON.decode(result).data
+			data: (fromForm) ? Ext.util.JSON.decode(result).data : Ext.util.JSON.decode(result)
 		});		
 	}
 	
