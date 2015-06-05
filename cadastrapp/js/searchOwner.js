@@ -128,6 +128,7 @@ Ext.namespace("GEOR")
 					}
 				},
 				afteredit: function(e) {
+					//on ajoute un champ vide, si le dernier champ est complet
 					var lastIndex = e.grid.store.getCount()-1;
 					var lastData = e.grid.store.getAt(e.grid.store.getCount()-1).data;
 					
