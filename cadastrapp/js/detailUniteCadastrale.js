@@ -1,18 +1,16 @@
-
-	/** api: (define)
-	*  module = GEOR
-	*  class = Cadastrapp
-	*  base_link = `Ext.util.Observable <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
-	*/
+/** api: (define)
+ * api: (define) 
+ * module = GEOR
+ * class = Cadastrapp 
+ * base_link = * `Ext.util.Observable <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
+ */
 Ext.namespace("GEOR")
 
-
-       /** public: method[onClickDisplayFIUC]
-     *  :param layer: 
-     *  Create ...TODO
-     */
-    onClickDisplayFIUC = function(){
-        //déclaration des variables relatives aux données cadastrales
+/**
+ * public: method[onClickDisplayFIUC] :param layer: Create ...TODO
+ */
+ onClickDisplayFIUC = function(){
+        //d�claration des variables relatives aux donn�es cadastrales
         var ccodep, ccodir, ccocom, gcopre, ccosec, dnupla, dnupro, dnomlp, dprnlp, expnee, dnomcp, dprncp, adressehabitation , jdatnss , dldnss, ccodro_lib, dnvoiri, dindic, natvoiriv_lib, dvoilib, dcntpa, supf, gparbat, gurbpa;
         var dniv, dpor, cconlc_lib, dvlrt, jdatat, dnupro, dnomlp, dprnlp, expnee, dnomcp, dprncp
         
@@ -27,15 +25,15 @@ Ext.namespace("GEOR")
     var FiucProrietaireData =   [
                                 [ 'Compte','350250' ],
 								[ 'Nom','350250' ],
-                                [ 'Prénom','350250' ],
- 								[ 'Mention du complément','350250' ],
-                                [ 'Nom complément','350250' ], 
-                                [ 'Prénom complément','350250' ], 
-                                [ 'Nom complément','350250' ], 
+                                [ 'Pr�nom','350250' ],
+ 								[ 'Mention du compl�ment','350250' ],
+                                [ 'Nom compl�ment','350250' ], 
+                                [ 'Pr�nom compl�ment','350250' ], 
+                                [ 'Nom compl�ment','350250' ], 
                                 [ 'Adresse','350250' ], 
                                 [ 'Date de naissance','350250' ], 
                                 [ 'Lieu de naissance','350250' ], 
-                                [ 'Libellé - Code du droit réel','350250' ], 
+                                [ 'Libell� - Code du droit r�el','350250' ], 
                                 [ 'Lettre indicative','067AP' ] 
                             ];
                             
@@ -47,7 +45,7 @@ Ext.namespace("GEOR")
 								[ 'Revenu','350250' ],
                                 [ 'Compte','350250' ],
  								[ 'Nom','350250' ],
-                                [ 'Prénom','350250' ]
+                                [ 'Pr�nom','350250' ]
                             ];
                             
     var FiucSubdivfiscData =[
@@ -59,20 +57,10 @@ Ext.namespace("GEOR")
 
 	var FiucHistomutData = [ 
 								[ 'Date acte','067AP' ],
-                                [ 'Référence de la parcelle mère','067AP' ],
+                                [ 'R�f�rence de la parcelle m�re','067AP' ],
 								[ 'Type de mutation','067AP' ] 
 							];
-   var FiucParcelleData = [ [ 'Commune', '350250' ], [ 'Section', '067AP' ] ];
-    var FiucProrietaireData = [ 'col1', 'P', '067AP', '067AP', '067AP',
-            '067AP', '067AP', '067AP', '067AP', '067AP', '067AP' ];
-    var FiucBatimentsData = [ [ 'Batiment 1' ], [ 'Batiment 2' ] ];
-    var FiucSubdivfiscData = [ [ 'col1', 'P' ], [ '067AP', '067AP' ],
-            [ 'zret', 'azr' ] ];
-    var FiucHistomutData = [ [ 'col1', 'P' ], [ '067AP', '067AP' ],
-                             [ 'col1', 'P' ]];
  
-
-
     var FiucParcelleStore = new Ext.data.ArrayStore({
         fields : [ {
             name : 'designation'
@@ -85,7 +73,6 @@ Ext.namespace("GEOR")
 
     var FiucProprietaireStore = new Ext.data.ArrayStore({
         fields : [ {
-			
             name : 'compte'
         }, {
             name : 'nom'
@@ -109,6 +96,7 @@ Ext.namespace("GEOR")
         data : FiucProrietaireData
     });
       
+
     var FiucBatimentsStore = new Ext.data.ArrayStore({
         fields : [ {
             name : 'batiment_niveau'
@@ -155,7 +143,7 @@ Ext.namespace("GEOR")
         data : FiucHistomutData
     });
 
-    var sm = Ext.create('Ext.selection.CheckboxModel');
+    
           
     FiucParcelleGrid = new Ext.grid.GridPanel({
         store : FiucParcelleStore,
@@ -180,14 +168,15 @@ Ext.namespace("GEOR")
         }),
 
     });
-    
+   // var sm = new Ext.selection.CheckboxSeclectionModel();
     FiucProprietairesGrid = new Ext.grid.GridPanel({
         store : FiucProprietaireStore,
         stateful : true,
         height : 500,
-        title: 'Relevé de propriété',
+        title: 'Relev� de propri�t�',
         name : 'Fiuc_Proprietaire',
         xtype : 'editorgrid',
+     //   sm : sm,
         colModel : new Ext.grid.ColumnModel({
             defaults : {
                 border : true,
@@ -195,9 +184,6 @@ Ext.namespace("GEOR")
             },
             
             columns : [ 
-				{
-					selModel: sm
-            }, 
                 {
                 header: OpenLayers.i18n('cadastrapp.duc.compte'),
                 dataIndex : 'compte'
@@ -355,7 +341,7 @@ Ext.namespace("GEOR")
     });
                     
 
-          //Construction de la fenêtre principale
+          //Construction de la fen�tre principale
         var windowFIUC;
             windowFIUC = new Ext.Window({
             title: 'TODO',
@@ -428,11 +414,11 @@ Ext.namespace("GEOR")
             });
         windowFIUC.show();
     console.log("displayFIUC onClick")
-	};
+}
 	
-	function loadBorderauParcellaire(){
+function loadBorderauParcellaire(){
 	
 	console.log ("download borderau function");
 	//TODO
 	//onClickPrintBordereauParcellaireWindow(parcellId);
-};
+}
