@@ -432,4 +432,6 @@ Ext.namespace("GEOR")
 	function loadBorderauParcellaire(){
 	
 	console.log ("download borderau function");
+	//TODO
+	//onClickPrintBordereauParcellaireWindow(parcellId);
 };
