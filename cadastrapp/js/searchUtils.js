@@ -196,24 +196,7 @@ Ext.namespace("GEOR")
 				header: OpenLayers.i18n('cadastrapp.proprietaire.proprietaires.col1'),
 				width: 100,
 				sortable: false,
-				editor: new Ext.form.ComboBox({
-					mode: 'local',
-					value: '',
-					forceSelection: true,
-					editable:       true,
-					displayField:   'name',
-					valueField:     'name',
-					store: getProprietaireStore(cityId),
-					listeners: {
-					    beforequery: function(q){  
-					    	if (q.query) {
-				                var length = q.query.length;
-				                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
-				                q.query.length = length;
-				            }
-					    }
-					}
-				})
+				editor: new Ext.form.TextField({ allowBlank: false })
 			}
 		]);		
 	}
