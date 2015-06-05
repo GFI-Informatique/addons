@@ -129,12 +129,13 @@ Ext.namespace("GEOR")
 					if (e.column == 1) {
 						//pas d'edition de parcelle si aucune section selectionnée
 						if (e.record.data.section == '') return false;
+						
 						//on remplace le contenu du store des parcelles selon la section selectionnée
 						reloadParcelleStore(e.grid.getColumnModel().getColumnById(e.field).editor.getStore(), parcCityCombo1.value, e.record.data.section);
-						//e.grid.getColumnModel().getColumnById(e.field).editor.getStore().loadData(getParcelleStore(parcCityCombo1.value, e.record.data.section).reader.jsonData);
 					}
 				},
-				afteredit: function(e) {
+				afteredit: function(e) {				
+					//on ajoute un champ vide, si le dernier champ est complet
 					var lastIndex = e.grid.store.getCount()-1;
 					var lastData = e.grid.store.getAt(e.grid.store.getCount()-1).data;
 					

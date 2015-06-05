@@ -167,13 +167,17 @@ Ext.namespace("GEOR")
 				header: OpenLayers.i18n('cadastrapp.parcelle.references.col2'),
 				width: 100,
 				sortable: false,
+				renderer: function(value, metadata, record, rowIndex, colIndex, store) {
+					//on affiche le numéro du plan depuis l'id de la parcelle
+					return (value!=undefined && value.length >= 4) ? (value.substring(value.length-4)) : null;
+				},				
 				editor: new Ext.form.ComboBox({
 					mode: 'local',
 					value: '',
 					forceSelection: false,
 					editable:       true,
-					displayField:   'dnupla',
-					valueField:     'parcelle',
+					displayField:   'dnupla',			//on affiche dans les choix le numéro du plan (4 dernier chiffres de l'id de la parcelle)
+					valueField:     'parcelle',			//on conservec comme valeur l'id entier de la parcelle
 					store: getInitParcelleStore(),
 					listeners: {
 					    beforequery: function(q){  
