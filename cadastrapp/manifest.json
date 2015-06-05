@@ -434,13 +434,12 @@
 			"cadastrapp.duc.adresse" : "Adresse'",
 			"cadastrapp.duc.datenaissance" : "Date de naissance",
 			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
-			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
+			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",			
+			"cadastrapp.duc.lettreindic" : "Lettre indicative",
 			
-			"cadastrapp.duc.ccosub" : "Lettre indicative",
-			"cadastrapp.duc.dcntsf " : "Contenance",
-			"cadastrapp.duc.grnum_lib " : "Nature de culture",
-			"cadastrapp.duc. drcsub " : "Revenu au 01-01",
-			
+			"cadastrapp.duc.contenance " : "Contenance",
+			"cadastrapp.duc.nature.terrain " : "Nature de culture",
+			"cadastrapp.duc. revenu " : "Revenu au 01-01",
 			"cadastrapp.duc.dateacte" : "Date acte",
 			"cadastrapp.duc.reference.parcelle " : "Référence de la parcelle mère",
 			"cadastrapp.duc.type.mutation " : "Type de mutation",		
@@ -657,10 +656,6 @@
 			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
 			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
 			
-			"cadastrapp.duc.lettreindic" : "Lettre indicative",
-			"cadastrapp.duc.contenance " : "Contenance",
-			"cadastrapp.duc.terrain " : "Nature de culture",
-			"cadastrapp.duc. revenu " : "Revenu au 01-01",
 
 			
 			"cadastrapp.duc.lettreindic" : "Lettre indicative",
