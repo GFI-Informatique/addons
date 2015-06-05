@@ -172,6 +172,11 @@ onClickDisplayFIUF = function() {
         border : true,
     });
 
+    FiufDownloadPdfButton = new Ext.Button({
+        name : 'FiufDownloadPdfButton',
+        cls : "pdf_button"
+        
+    });
     windowFIUF = new Ext.Window({
         title : 'DXXX',
         frame : true,
@@ -191,10 +196,11 @@ onClickDisplayFIUF = function() {
                 left : 10
             },
 
-            items : [ FiufGlobalInfosGrid, FiufProprietaireGrid , 
-                      {
-            			
-                      }]
+            items : [ 
+                      FiufGlobalInfosGrid, 
+                      FiufProprietaireGrid,
+                      FiufDownloadPdfButton
+                    ]
         }, 
             FiufParcelleListGrid 
         ],
