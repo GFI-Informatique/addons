@@ -24,7 +24,7 @@ Ext.namespace("GEOR")
                                 [ 'Commune','350250' ], 
                                 [ 'Section','067AP' ] 
                             ];
-    var FiucProrietaireData =   [ 
+    var FiucProrietaireData =   [
                                 [ 'Compte','350250' ],
 								[ 'Nom','350250' ],
                                 [ 'Prénom','350250' ],
@@ -76,8 +76,7 @@ Ext.namespace("GEOR")
 
     var FiucProprietaireStore = new Ext.data.ArrayStore({
         fields : [ {
-            name : 'col1'
-        }, {
+			
             name : 'compte'
         }, {
             name : 'nom'
@@ -146,7 +145,7 @@ Ext.namespace("GEOR")
         data : FiucHistomutData
     });
 
-    //var sm = Ext.create('Ext.selection.CheckboxModel');
+    var sm = Ext.create('Ext.selection.CheckboxModel');
           
     FiucParcelleGrid = new Ext.grid.GridPanel({
         store : FiucParcelleStore,
@@ -186,12 +185,8 @@ Ext.namespace("GEOR")
             },
             
             columns : [ 
-                {
-
-                header: '',
-                //selModel: sm,                
-                 width: 50,
-                dataIndex : 'col1'
+				{
+					selModel: sm
             }, 
                 {
                 header: OpenLayers.i18n('cadastrapp.duc.compte'),
