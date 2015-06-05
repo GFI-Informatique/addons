@@ -10,7 +10,7 @@ Ext.namespace("GEOR")
  * public: method[onClickDisplayFIUC] :param layer: Create ...TODO
  */
  onClickDisplayFIUC = function(){
-        //d�claration des variables relatives aux donn�es cadastrales
+        //déclaration des variables relatives aux données cadastrales
         var ccodep, ccodir, ccocom, gcopre, ccosec, dnupla, dnupro, dnomlp, dprnlp, expnee, dnomcp, dprncp, adressehabitation , jdatnss , dldnss, ccodro_lib, dnvoiri, dindic, natvoiriv_lib, dvoilib, dcntpa, supf, gparbat, gurbpa;
         var dniv, dpor, cconlc_lib, dvlrt, jdatat, dnupro, dnomlp, dprnlp, expnee, dnomcp, dprncp
         
@@ -25,15 +25,15 @@ Ext.namespace("GEOR")
     var FiucProrietaireData =   [
                                 [ 'Compte','350250' ],
 								[ 'Nom','350250' ],
-                                [ 'Pr�nom','350250' ],
- 								[ 'Mention du compl�ment','350250' ],
-                                [ 'Nom compl�ment','350250' ], 
-                                [ 'Pr�nom compl�ment','350250' ], 
-                                [ 'Nom compl�ment','350250' ], 
+                                [ 'Prénom','350250' ],
+ 								[ 'Mention du complément','350250' ],
+                                [ 'Nom complément','350250' ], 
+                                [ 'Prénom complément','350250' ], 
+                                [ 'Nom complément','350250' ], 
                                 [ 'Adresse','350250' ], 
                                 [ 'Date de naissance','350250' ], 
                                 [ 'Lieu de naissance','350250' ], 
-                                [ 'Libell� - Code du droit r�el','350250' ], 
+                                [ 'Libellé - Code du droit réel','350250' ], 
                                 [ 'Lettre indicative','067AP' ] 
                             ];
                             
@@ -45,7 +45,7 @@ Ext.namespace("GEOR")
 								[ 'Revenu','350250' ],
                                 [ 'Compte','350250' ],
  								[ 'Nom','350250' ],
-                                [ 'Pr�nom','350250' ]
+                                [ 'Prénom','350250' ]
                             ];
                             
     var FiucSubdivfiscData =[
@@ -57,7 +57,7 @@ Ext.namespace("GEOR")
 
 	var FiucHistomutData = [ 
 								[ 'Date acte','067AP' ],
-                                [ 'R�f�rence de la parcelle m�re','067AP' ],
+                                [ 'Référence de la parcelle mére','067AP' ],
 								[ 'Type de mutation','067AP' ] 
 							];
  
@@ -114,8 +114,7 @@ Ext.namespace("GEOR")
             name : 'nom'
         }, {
             name : 'prenom'
-        }, {            name : 'batiments'
-        } ],
+        }],
         data : FiucBatimentsData
     });
       
@@ -168,12 +167,12 @@ Ext.namespace("GEOR")
         }),
 
     });
-   // var sm = new Ext.selection.CheckboxSeclectionModel();
+    //var sm = new Ext.selection.CheckboxSeclectionModel();
     FiucProprietairesGrid = new Ext.grid.GridPanel({
         store : FiucProprietaireStore,
         stateful : true,
         height : 500,
-        title: 'Relev� de propri�t�',
+        title: 'Relevé de propriété',
         name : 'Fiuc_Proprietaire',
         xtype : 'editorgrid',
      //   sm : sm,
@@ -341,7 +340,7 @@ Ext.namespace("GEOR")
     });
                     
 
-          //Construction de la fen�tre principale
+          //Construction de la fenêtre principale
         var windowFIUC;
             windowFIUC = new Ext.Window({
             title: 'TODO',

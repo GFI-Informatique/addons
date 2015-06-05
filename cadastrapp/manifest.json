@@ -226,6 +226,7 @@
 			"cadastrapp.duc.batiment_type " : "Type",
 			"cadastrapp.duc.batiment_date " : "Date",
 			"cadastrapp.duc.batiment_revenu " : "Revenu",
+			"cadastrapp.duc.batiment_descriptif " : "Descriptif",
 
 			
 			
@@ -453,6 +454,7 @@
 			"cadastrapp.duc.batiment_type " : "Type",
 			"cadastrapp.duc.batiment_date " : "Date",
 			"cadastrapp.duc.batiment_revenu " : "Revenu",
+			"cadastrapp.duc.batiment_descriptif " : "Descriptif",
 
 			
 			
@@ -685,6 +687,7 @@
 			"cadastrapp.duc.batiment_type " : "Type",
 			"cadastrapp.duc.batiment_date " : "Date",
 			"cadastrapp.duc.batiment_revenu " : "Revenu",
+			"cadastrapp.duc.batiment_descriptif " : "Descriptif",
 
 			
 			
@@ -918,6 +921,7 @@
 			"cadastrapp.duc.batiment_type " : "Type",
 			"cadastrapp.duc.batiment_date " : "Date",
 			"cadastrapp.duc.batiment_revenu " : "Revenu",
+			"cadastrapp.duc.batiment_descriptif " : "Descriptif",
 
 			
 			
