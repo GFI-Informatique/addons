@@ -221,6 +221,14 @@
 			"cadastrapp.duc.datenaissance" : "Date de naissance",
 			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
 			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
+
+			"cadastrapp.duc.batiment_niveau" : "Niveau",
+			"cadastrapp.duc.batiment_porte " : "Porte",
+			"cadastrapp.duc.batiment_type " : "Type",
+			"cadastrapp.duc.batiment_date " : "Date",
+			"cadastrapp.duc.batiment_revenu " : "Revenu",
+
+			
 			
 			"cadastrapp.duc.lettreindic" : "Lettre indicative",
 			"cadastrapp.duc.contenance " : "Contenance",
@@ -434,12 +442,20 @@
 			"cadastrapp.duc.adresse" : "Adresse",
 			"cadastrapp.duc.datenaissance" : "Date de naissance",
 			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
-			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",			
-			"cadastrapp.duc.lettreindic" : "Lettre indicative",
+			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
+
+			"cadastrapp.duc.batiment_niveau" : "Niveau",
+			"cadastrapp.duc.batiment_porte " : "Porte",
+			"cadastrapp.duc.batiment_type " : "Type",
+			"cadastrapp.duc.batiment_date " : "Date",
+			"cadastrapp.duc.batiment_revenu " : "Revenu",
+
 			
+			"cadastrapp.duc.lettreindic" : "Lettre indicative",			
 			"cadastrapp.duc.contenance " : "Contenance",
 			"cadastrapp.duc.nature.terrain " : "Nature de culture",
 			"cadastrapp.duc. revenu " : "Revenu au 01-01",
+			
 			"cadastrapp.duc.dateacte" : "Date acte",
 			"cadastrapp.duc.reference.parcelle " : "Référence de la parcelle mère",
 			"cadastrapp.duc.type.mutation " : "Type de mutation",		
@@ -655,6 +671,13 @@
 			"cadastrapp.duc.datenaissance" : "Date de naissance",
 			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
 			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
+
+			"cadastrapp.duc.batiment_niveau" : "Niveau",
+			"cadastrapp.duc.batiment_porte " : "Porte",
+			"cadastrapp.duc.batiment_type " : "Type",
+			"cadastrapp.duc.batiment_date " : "Date",
+			"cadastrapp.duc.batiment_revenu " : "Revenu",
+
 			
 
 			
@@ -878,6 +901,13 @@
 			"cadastrapp.duc.datenaissance" : "Date de naissance",
 			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
 			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
+
+			"cadastrapp.duc.batiment_niveau" : "Niveau",
+			"cadastrapp.duc.batiment_porte " : "Porte",
+			"cadastrapp.duc.batiment_type " : "Type",
+			"cadastrapp.duc.batiment_date " : "Date",
+			"cadastrapp.duc.batiment_revenu " : "Revenu",
+
 			
 			"cadastrapp.duc.lettreindic" : "Lettre indicative",
 			"cadastrapp.duc.contenance " : "Contenance",

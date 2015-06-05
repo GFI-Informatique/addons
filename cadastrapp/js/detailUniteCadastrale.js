@@ -24,18 +24,45 @@ Ext.namespace("GEOR")
                                 [ 'Commune','350250' ], 
                                 [ 'Section','067AP' ] 
                             ];
-    var FiucProrietaireData =  [ 'col1','P' , '067AP' ,'067AP' ,'067AP' ,'067AP' ,'067AP' ,'067AP' ,'067AP','067AP','067AP' ];
+    var FiucProrietaireData =   [ 
+                                [ 'Compte','350250' ],
+								[ 'Nom','350250' ],
+                                [ 'Prénom','350250' ],
+ 								[ 'Mention du complément','350250' ],
+                                [ 'Nom complément','350250' ], 
+                                [ 'Prénom complément','350250' ], 
+                                [ 'Nom complément','350250' ], 
+                                [ 'Adresse','350250' ], 
+                                [ 'Date de naissance','350250' ], 
+                                [ 'Lieu de naissance','350250' ], 
+                                [ 'Libellé - Code du droit réel','350250' ], 
+                                [ 'Lettre indicative','067AP' ] 
+                            ];
                             
-    var FiucBatimentsData = [ 
-                                   [ 'Batiment 1' ], 
-                                [ 'Batiment 2' ]
-                               ];
-    var FiucSubdivfiscData =             [[ 'col1','P' ], 
-                                         ['067AP' ,'067AP'],
-                                         ['zret','azr']];
-    var FiucHistomutData = [[ 'col1','P' ], 
-                            ['067AP' ,'067AP'],
-                            ['zret','azr']];
+    var FiucBatimentsData =   [ 
+								[ 'Niveau','350250' ],
+                                [ 'Porte','350250' ],
+ 								[ 'Type','350250' ],
+                                [ 'Date','350250' ], 
+								[ 'Revenu','350250' ],
+                                [ 'Compte','350250' ],
+ 								[ 'Nom','350250' ],
+                                [ 'Prénom','350250' ], 
+                                [ 'Section','067AP' ] 
+                            ];
+                            
+    var FiucSubdivfiscData =[
+								[ 'Lettre indicative','067AP' ],
+                                [ 'Contenance','067AP' ],
+                                [ 'Nature de culture','067AP' ],
+                                [ 'Revenu au 01-01','067AP' ] 
+							];
+
+	var FiucHistomutData = [ 
+								[ 'Date acte','067AP' ],
+                                [ 'Référence de la parcelle mère','067AP' ],
+								[ 'Type de mutation','067AP' ] 
+							];
 
 
     var FiucParcelleStore = new Ext.data.ArrayStore({
@@ -77,7 +104,21 @@ Ext.namespace("GEOR")
       
     var FiucBatimentsStore = new Ext.data.ArrayStore({
         fields : [ {
-            name : 'batiments'
+            name : 'batiment_niveau'
+        }, {
+            name : 'batiment_porte'
+        }, {
+            name : 'batiment_type'
+        }, {
+            name : 'batiment_date'
+        }, {
+            name : 'batiment_revenu'
+        }, {
+            name : 'compte'
+        }, {
+            name : 'nom'
+        }, {
+            name : 'prenom'
         }],
         data : FiucBatimentsData
     });
@@ -207,11 +248,49 @@ Ext.namespace("GEOR")
             defaults : {
                 sortable : false,
             },
-            columns : [ {
-                header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
-                dataIndex : 'batiments'
+            columns :            
+            columns : [ 
+                {
+
+                header: '',
+                //selModel: sm,                
+                 width: 50,
+                dataIndex : 'col1'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.batiment_niveau'),
+                dataIndex : 'batiment_niveau'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.batiment_porte'),
+                dataIndex : 'batiment_porte'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.batiment_type'),
+                dataIndex : 'batiment_type'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.batiment_date'),
+                dataIndex : 'batiment_date'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.batiment_revenu'),
+                dataIndex : 'batiment_revenu'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.compte'),
+                dataIndex : 'compte'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.nom'),
+                dataIndex : 'nom'
+            }, 
+                {
+                header: OpenLayers.i18n('cadastrapp.duc.prenom'),
+                dataIndex : 'prenom'
+
             }]
-        }),
+        })
 
     });
     
