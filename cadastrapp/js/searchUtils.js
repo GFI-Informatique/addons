@@ -142,7 +142,7 @@ Ext.namespace("GEOR")
 				editor: new Ext.form.ComboBox({
 					mode: 'local',
 					value: '',
-					forceSelection: true,
+					forceSelection: false,
 					editable:       true,
 					displayField:   'fullccosec',
 					valueField:     'fullccosec',
@@ -167,7 +167,7 @@ Ext.namespace("GEOR")
 				editor: new Ext.form.ComboBox({
 					mode: 'local',
 					value: '',
-					forceSelection: true,
+					forceSelection: false,
 					editable:       true,
 					displayField:   'parcelle',
 					valueField:     'parcelle',
