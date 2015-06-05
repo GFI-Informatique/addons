@@ -62,6 +62,14 @@ Ext.namespace("GEOR")
                                 [ 'Référence de la parcelle mère','067AP' ],
 								[ 'Type de mutation','067AP' ] 
 							];
+   var FiucParcelleData = [ [ 'Commune', '350250' ], [ 'Section', '067AP' ] ];
+    var FiucProrietaireData = [ 'col1', 'P', '067AP', '067AP', '067AP',
+            '067AP', '067AP', '067AP', '067AP', '067AP', '067AP' ];
+    var FiucBatimentsData = [ [ 'Batiment 1' ], [ 'Batiment 2' ] ];
+    var FiucSubdivfiscData = [ [ 'col1', 'P' ], [ '067AP', '067AP' ],
+            [ 'zret', 'azr' ] ];
+    var FiucHistomutData = [ [ 'col1', 'P' ], [ '067AP', '067AP' ],
+ 
 
 
     var FiucParcelleStore = new Ext.data.ArrayStore({
@@ -117,7 +125,8 @@ Ext.namespace("GEOR")
             name : 'nom'
         }, {
             name : 'prenom'
-        }],
+        }, {            name : 'batiments'
+        } ],
         data : FiucBatimentsData
     });
       
@@ -418,6 +427,9 @@ Ext.namespace("GEOR")
             });
         windowFIUC.show();
     console.log("displayFIUC onClick")
-    };
+	};
 	
+	function loadBorderauParcellaire(){
 	
+	console.log ("download borderau function");
+};
