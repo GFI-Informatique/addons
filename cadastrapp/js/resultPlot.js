@@ -75,7 +75,11 @@ Ext.namespace("GEOR")
 				rowclick: function(grid, rowIndex, e) {
 					//on ouvre une fenetre : detail parcelle
 				    var record = grid.getStore().getAt(rowIndex);
-					grid.detailParcelles.push(displayDetailParcelle(record.data.parcelle));
+					grid.detailParcelles.push(
+							//TEST
+							//displayDetailParcelle(record.data.parcelle)
+					);
+					alert('TODO : appeler la methode qui ouvre la fenetre de détail de la parcelle (qui doit retourner l objet Window)');
 				},
 				close: function(grid) {
 					//on ferme toutes les fenetres filles : detail parcelle

@@ -1,9 +1,8 @@
 {
     "js": [
+    	"js/printBordereauParcellaire.js",
 		"js/selectFeature.js",
-		"js/detailPlot.js",
 		"js/resultPlot.js",
-		"js/resultOwner.js",
 		"js/searchUtils.js",
 		"js/searchOwner.js",
 		"js/searchPlot.js",
@@ -126,7 +125,7 @@
             "cadastrapp.no_title": "no title", 
             "cadastrapp.uniteFonciere": "Property unit",
             
-              "cadastrapp.parcelle.libcom": "Libellé de la commune en majuscules non accentuée",
+             "cadastrapp.parcelle.libcom": "Libellé de la commune en majuscules non accentuée",
              "cadastrapp.parcelle.ccodep": "Code département",
              "cadastrapp.parcelle.ccodir": "Code direction",
              "cadastrapp.parcelle.ccocom": "Code commune",
@@ -249,7 +248,12 @@
             "cadastrapp.duc.elements.confort" : "Eléments de confort",
             "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
             "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
-            "cadastrapp.duc.dependances" : "Dépendances"
+            "cadastrapp.duc.dependances" : "Dépendances",
+
+			"cadastrapp.bordereauparcellaire.title" : "Bordereau Parcellaire",
+			"cadastrapp.bordereauparcellaire.data" : "Données propriétaires",
+			"cadastrapp.bordereauparcellaire.data.without" : "Sans données nominatives",
+			"cadastrapp.bordereauparcellaire.data.with" : "Avec données nominatives"
 
 	
         },
@@ -474,7 +478,12 @@
             "cadastrapp.duc.elements.confort" : "Eléments de confort",
             "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
             "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
-            "cadastrapp.duc.dependances" : "Dépendances"
+            "cadastrapp.duc.dependances" : "Dépendances",
+
+			"cadastrapp.bordereauparcellaire.title" : "Bordereau Parcellaire",
+			"cadastrapp.bordereauparcellaire.data" : "Données propriétaires",
+			"cadastrapp.bordereauparcellaire.data.without" : "Sans données nominatives",
+			"cadastrapp.bordereauparcellaire.data.with" : "Avec données nominatives"
 
 	
 			
@@ -493,6 +502,7 @@
 			"cadastrapp.recherches": "Fonctions avancées",
 			"cadastrapp.search": "Rechercher",
 			"cadastrapp.close": "Fermer",
+			"cadastrapp.generate": "Générer",
 			"cadastrapp.parcelle": "Parcelle",
 			"cadastrapp.parcelle.identifiant": "Par identifiant cadastral",
 			"cadastrapp.parcelle.adresse": "Par adresse cadastrale",
@@ -704,9 +714,12 @@
             "cadastrapp.duc.elements.confort" : "Eléments de confort",
             "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
             "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
-            "cadastrapp.duc.dependances" : "Dépendances"
+            "cadastrapp.duc.dependances" : "Dépendances",
 
-			
+			"cadastrapp.bordereauparcellaire.title" : "Bordereau Parcellaire",
+			"cadastrapp.bordereauparcellaire.data" : "Données propriétaires",
+			"cadastrapp.bordereauparcellaire.data.without" : "Sans données nominatives",
+			"cadastrapp.bordereauparcellaire.data.with" : "Avec données nominatives"
         },
         "de": {
             "cadastrapp.cadastre_tools": "Outils Cadastre",
@@ -935,7 +948,12 @@
             "cadastrapp.duc.elements.confort" : "Eléments de confort",
             "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
             "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
-            "cadastrapp.duc.dependances" : "Dépendances"
+            "cadastrapp.duc.dependances" : "Dépendances",
+
+			"cadastrapp.bordereauparcellaire.title" : "Bordereau Parcellaire",
+			"cadastrapp.bordereauparcellaire.data" : "Données propriétaires",
+			"cadastrapp.bordereauparcellaire.data.without" : "Sans données nominatives",
+			"cadastrapp.bordereauparcellaire.data.with" : "Avec données nominatives"
 
 	
 			
