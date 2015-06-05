@@ -41,8 +41,10 @@ selectionTest = function(map) {
                 success : function(result) {
                     console.log('test 1');
                     console.log(result);
-                    onClickDisplayInfoBulle(ccocom, ccodep, ccodir, ccopre, 
-                            ccosec, dindic, dnupla, dnvoiri, dvoilib, parcelleId ); 
+                    var parcelleData = eval(result.responseText);
+                    console.log(parcelleData);
+                    onClickDisplayInfoBulle(parcelleData[0].ccocom, parcelleData[0].ccodep, parcelleData[0].ccodir, parcelleData[0].ccopre, 
+                    		parcelleData[0].ccosec, parcelleData[0].dindic, parcelleData[0].dnupla, parcelleData[0].dnvoiri, parcelleData[0].dvoilib, parcelleData[0].parcelle ); 
                 },
                 params : params,
             });
