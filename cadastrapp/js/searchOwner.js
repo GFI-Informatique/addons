@@ -48,7 +48,7 @@ Ext.namespace("GEOR")
 				beforequery: function(q){  
 			    	if (q.query) {
 		                var length = q.query.length;
-		                if (length == getSearchStart()) {
+		                if (length >= getSearchStart() && q.combo.getStore().getCount() == 0) {
 		                	if (isNaN(q.query)) {
 		                		//recherche par nom de ville
 		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
@@ -85,7 +85,7 @@ Ext.namespace("GEOR")
 			    beforequery: function(q){  
 			    	if (q.query) {
 		                var length = q.query.length;
-		                if (length == getSearchStart()) {
+		                if (length >= getSearchStart() && q.combo.getStore().getCount() == 0) {
 		                	if (isNaN(q.query)) {
 		                		//recherche par nom de ville
 		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
