@@ -52,7 +52,7 @@ Ext.namespace("GEOR")
 				fields: ['ccoinsee', 'ccopre', 'ccosec', 'geo_section',
 					{ 
 				       name: 'fullccosec', 
-				       convert: function(v, rec) { return (rec.ccopre.trim().length>0) ? (rec.ccopre.trim() + '-' + rec.ccosec.trim()) : rec.ccosec.trim(); }
+				       convert: function(v, rec) { return rec.ccopre + rec.ccosec; }
 				    }]
 			});
 		} else {
@@ -74,14 +74,17 @@ Ext.namespace("GEOR")
 		});
 	}
 	reloadParcelleStore = function(parcelleStore, cityId, sectionId) {
-		if (parcelleStore!=null && cityId!=null && sectionId!=null) {			
+		if (parcelleStore!=null && cityId!=null && sectionId!=null) {
+			var prefix = sectionId.substring(0, sectionId.length-2);
+			var section = sectionId.substring(sectionId.length-2, sectionId.length);
+			
 			parcelleStore.load({params: {
 				details: 1,
 				ccodep: cityId.substring(0,2),
 				ccodir: cityId.substring(2,3),
 				ccocom: cityId.substring(3,6),
-				ccopre: (sectionId.indexOf('-')>0) ? sectionId.split('-')[0] : '',
-				ccosec: (sectionId.indexOf('-')>0) ? sectionId.split('-')[1] : sectionId,
+				ccopre: prefix,
+				ccosec: section,
 			}});
 		}
 	}
