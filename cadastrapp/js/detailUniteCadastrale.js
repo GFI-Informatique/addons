@@ -291,7 +291,7 @@ Ext.namespace("GEOR")
 			defaults: {autoHeight: true, bodyStyle:'padding:10px', flex: 1},
 
 			listeners: {
-				close(window) {
+				close: function(window) {
 					windowFIUC = null;
 				}
 			},

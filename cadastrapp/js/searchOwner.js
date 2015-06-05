@@ -263,7 +263,7 @@ Ext.namespace("GEOR")
 									url: getWebappURL() + 'getParcelle',
 									params: params,
 									success: function(result) {
-										addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
+										addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
 									},
 									failure: function(result) {
 										alert('ERROR');
@@ -285,7 +285,7 @@ Ext.namespace("GEOR")
 										url: getWebappURL() + 'getParcelle/fromProprietairesFile',
 										params: {details: 1},
 										success: function(form, action) {
-											addNewResultParcelle(resultTitle, getResultParcelleStore(action.response.responseText));
+											addNewResultParcelle(resultTitle, getResultParcelleStore(action.response.responseText, true));
 										},
 										failure: function(form, action) {
 											alert('ERROR : ' + action.response.responseText);
@@ -315,7 +315,7 @@ Ext.namespace("GEOR")
 										url: getWebappURL() + 'getParcelle',
 										params: params,
 										success: function(result) {
-											addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
+											addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
 										},
 										failure: function(result) {
 											alert('ERROR');

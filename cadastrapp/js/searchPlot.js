@@ -138,10 +138,10 @@ Ext.namespace("GEOR")
 					var lastIndex = e.grid.store.getCount()-1;
 					var lastData = e.grid.store.getAt(e.grid.store.getCount()-1).data;
 					
-					if (lastData.section!='') {
+					if (lastData.section!='' && lastData.parcelle!='') {
 						var p = new e.grid.store.recordType({section:'', parcelle:''}); // create new record
 						e.grid.stopEditing();
-						e.grid.store.add(p); // insert a new record into the store (also see add)
+						e.grid.store.add(p); 	//insert a new record into the store (also see add)
 						this.startEditing(e.row, 1);
 					}
 				}
@@ -289,7 +289,7 @@ Ext.namespace("GEOR")
 										url: getWebappURL() + 'getParcelle/fromParcellesFile',
 										params: {details: 1},
 										success: function(form, action) {
-											addNewResultParcelle(resultTitle, getResultParcelleStore(action.response.responseText));
+											addNewResultParcelle(resultTitle, getResultParcelleStore(action.response.responseText, true));
 										},
 										failure: function(form, action) {
 											alert('ERROR : ' + action.response.responseText);
@@ -320,7 +320,7 @@ Ext.namespace("GEOR")
 										url: getWebappURL() + 'getParcelle',
 										params: params,
 										success: function(result) {
-											addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
+											addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
 										},
 										failure: function(result) {
 											alert('ERROR');
@@ -348,7 +348,7 @@ Ext.namespace("GEOR")
 									url: getWebappURL() + 'getParcelle',
 									params: params,
 									success: function(result) {
-										addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText));
+										addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
 									},
 									failure: function(result) {
 										alert('ERROR');
