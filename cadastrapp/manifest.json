@@ -9,6 +9,7 @@
 		"js/askInformations.js",
 		"js/detailUniteFonciere.js",
 		"js/detailUniteCadastrale.js",
+		"js/infoBulle.js",
         "js/Cadastrapp.js",
         "js/FeaturePanel.js",
         "js/main.js",
