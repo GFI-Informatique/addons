@@ -58,8 +58,10 @@ Ext.namespace("GEOR")
 				    var record = grid.getStore().getAt(rowIndex);
 					grid.detailParcelles.push(
 							//TODO : cf. alert
+							//
 							//displayDetailParcelle(record.data.parcelle)
 					);
+
 					alert('TODO : appeler la methode qui ouvre la fenetre de détail de la parcelle (qui doit retourner l objet Window)');
 				},
 				close: function(grid) {
