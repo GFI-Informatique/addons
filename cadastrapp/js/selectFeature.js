@@ -90,8 +90,10 @@ Ext.namespace("GEOR")
 				
 				
 			}
+			//TODO : appel de la fonction qui gère l'état 2 de(s) entité(s)
 			console.log("appel de la fonction qui gère l'état 2 de(s) entité(s): ");
 			console.log(selctedFeatures);
+			onClickDisplayFIUC(selctedFeatures[0].data.geo_parcelle);
 			return selctedFeatures;
     }
 	
