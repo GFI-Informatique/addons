@@ -44,3 +44,8 @@
 .displayfieldGray {
 	color: gray
 }
+
+.pdf-button {
+    background-image: url(../images/silk/pdf_icon.png) !important;
+    width:48px!important; height:48px!important;
+}
