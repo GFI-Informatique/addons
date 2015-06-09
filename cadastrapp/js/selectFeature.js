@@ -62,7 +62,8 @@ Ext.namespace("GEOR")
 						return;
                     e.feature.state = "1";
 					cadastre.drawFeature(e.feature);
-					console.log("appel de la fonction qui gère l'état 1 de l'entité: "+e.feature);
+					console.log("appel de la fonction qui gère l'état 1 de l'entité: ");
+					console.log(e.feature);
                 },
                 'featureunselected': function(e) {
 					if(e.feature.state == "2")
@@ -86,9 +87,11 @@ Ext.namespace("GEOR")
 					feat2.state = "2";
 					layer.drawFeature(feat2);
 				}
-				console.log("appel de la fonction qui gère l'état 2 de(s) entité(s): "+selctedFeatures);
+				
 				
 			}
+			console.log("appel de la fonction qui gère l'état 2 de(s) entité(s): ");
+			console.log(selctedFeatures);
 			return selctedFeatures;
     }
 	
