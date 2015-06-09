@@ -7,8 +7,8 @@ Ext.namespace("GEOR")
 
 //onClickDisplayInfoBulle = function(ccocom, ccodep, ccodir, ccopre, 
 //        ccosec, dindic, dnupla, dnvoiri, dvoilib, parcelleId ){
-	
-	onClickDisplayInfoBulle = function(){
+    
+    onClickDisplayInfoBulle = function(){
     var parcelleId = "20146303810000E0958";
     var ccocom = "381";
     var ccodep = "63";
@@ -78,18 +78,18 @@ Ext.namespace("GEOR")
             labelWidth : 120,
             autoHeight : true,
             defaultType : 'field',
-            items : [ {fieldLabel : 'ccocom', name : 'ccocom',width : 280},
-						{fieldLabel : 'ccosec',name : 'ccosec',width : 280},
-						{fieldLabel : 'ccodep',name : 'ccosec',width : 280},
-						{fieldLabel : 'ccodir',name : 'ccosec',width : 280},
-						{fieldLabel : 'parcelleId',name : 'ccosec',width : 280},
-						{fieldLabel : 'ccopre',name : 'ccosec',width : 280},
-						{fieldLabel : 'dindic',name : 'ccosec',width : 280},
-						{fieldLabel : 'dnupla',name : 'ccosec',width : 280},
-						{fieldLabel : 'dnvoiri',name : 'ccosec',width : 280},
-						{fieldLabel : 'dvoilib',name : 'ccosec',width : 280}
+            items : [     
+                        {fieldLabel : 'ccocom',     xtype: 'label', text : ccocom,     width : 280},
+                        {fieldLabel : 'ccosec',     xtype: 'label', text : ccosec,     width : 280},
+                        {fieldLabel : 'ccodep',     xtype: 'label', text : ccodep,     width : 280},
+                        {fieldLabel : 'ccodir',     xtype: 'label', text : ccodir,     width : 280},
+                        {fieldLabel : 'ccopre',     xtype: 'label', text : ccopre,     width : 280},
+                        {fieldLabel : 'dindic',     xtype: 'label', text : dindic,     width : 280},
+                        {fieldLabel : 'dnupla',     xtype: 'label', text : dnupla,     width : 280},
+                        {fieldLabel : 'dnvoiri',    xtype: 'label', text : dnvoiri,    width : 280},
+                        {fieldLabel : 'dvoilib',    xtype: 'label', text : dvoilib,    width : 280},
+                        {fieldLabel : 'parcelleId', xtype: 'label', text : parcelleId, width : 280}
             ]
-        // items: [InfoBulleStore]
         } ],
 
     /*
