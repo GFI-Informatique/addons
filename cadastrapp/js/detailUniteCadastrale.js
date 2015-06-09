@@ -23,43 +23,76 @@ Ext.namespace("GEOR")
                                 [ 'Section','067AP' ] 
                             ];
     var FiucProrietaireData =   [
-                                [ 'Compte','350250' ],
-								[ 'Nom','350250' ],
-                                [ 'Prénom','350250' ],
- 								[ 'Mention du complément','350250' ],
-                                [ 'Nom complément','350250' ], 
-                                [ 'Prénom complément','350250' ], 
-                                [ 'Nom complément','350250' ], 
-                                [ 'Adresse','350250' ], 
-                                [ 'Date de naissance','350250' ], 
-                                [ 'Lieu de naissance','350250' ], 
-                                [ 'Libellé - Code du droit réel','350250' ], 
-                                [ 'Lettre indicative','067AP' ] 
+                                 {
+                                "dnupro" : "proprietaire1",
+                                "dnomlp" : "proprietaire1",
+                                "dprnlp" : "proprietaire1",
+                                "epxnee" : "ano",
+                                "dnomcp" : "proprietaire1",
+                                "dprncp" : "proprietaire1",
+                                "dlign4" : "proprietaire1",
+                                "dlign4" : "proprietaire1",
+                                "dlign5" : "proprietaire1",
+                                "dlign6" : "proprietaire1",
+                                "dldnss" : "proprietaire1",
+                                "jdatnss" : "1900-01-01",
+                                "ccodro_lib" : "PROPRIETAIRE1"
+                            }, {
+                                "dnupro" : "proprietaire2",
+                                "dnomlp" : "proprietaire2",
+                                "dprnlp" : "proprietaire2",
+                                "epxnee" : "ano",
+                                "dnomcp" : "proprietaire2",
+                                "dprncp" : "proprietaire2",
+                                "dlign4" : "proprietaire2",
+                                "dlign4" : "proprietaire2",
+                                "dlign5" : "proprietaire2",
+                                "dlign6" : "proprietaire2",
+                                "dldnss" : "proprietaire2",
+                                "jdatnss" : "1900-01-01",
+                                "ccodro_lib" : "PROPRIETAIRE2"
+                            },
+                             {
+                                "dnupro" : "proprietaire3",
+                                "dnomlp" : "proprietaire3",
+                                "dprnlp" : "proprietaire3",
+                                "epxnee" : "ano",
+                                "dnomcp" : "proprietaire3",
+                                "dprncp" : "proprietaire3",
+                                "dlign4" : "proprietaire3",
+                                "dlign4" : "proprietaire3",
+                                "dlign5" : "proprietaire3",
+                                "dlign6" : "proprietaire3",
+                                "dldnss" : "proprietaire3",
+                                "jdatnss" : "1900-01-01",
+                                "ccodro_lib" : "PROPRIETAIRE3"
+                            }    
+                                
                             ];
                             
     var FiucBatimentsData =   [ 
-								[ 'Niveau','350250' ],
+                                [ 'Niveau','350250' ],
                                 [ 'Porte','350250' ],
- 								[ 'Type','350250' ],
+                                 [ 'Type','350250' ],
                                 [ 'Date','350250' ], 
-								[ 'Revenu','350250' ],
+                                [ 'Revenu','350250' ],
                                 [ 'Compte','350250' ],
- 								[ 'Nom','350250' ],
+                                 [ 'Nom','350250' ],
                                 [ 'Prénom','350250' ]
                             ];
                             
     var FiucSubdivfiscData =[
-								[ 'Lettre indicative','067AP' ],
+                                [ 'Lettre indicative','067AP' ],
                                 [ 'Contenance','067AP' ],
                                 [ 'Nature de culture','067AP' ],
                                 [ 'Revenu au 01-01','067AP' ] 
-							];
+                            ];
 
-	var FiucHistomutData = [ 
-								[ 'Date acte','067AP' ],
+    var FiucHistomutData = [ 
+                                [ 'Date acte','067AP' ],
                                 [ 'Référence de la parcelle mére','067AP' ],
-								[ 'Type de mutation','067AP' ] 
-							];
+                                [ 'Type de mutation','067AP' ] 
+                            ];
  
     var FiucParcelleStore = new Ext.data.ArrayStore({
         fields : [ {
@@ -71,31 +104,39 @@ Ext.namespace("GEOR")
     });
 
 
-    var FiucProprietaireStore = new Ext.data.ArrayStore({
+    var FiucProprietaireStore = new Ext.data.JsonStore({
+        root :'',
+        totalProperty : 'total',
+        idProperty : "dnupro",
+        remoteSort : false,
+        autoDestroy:true,
         fields : [ {
-            name : 'compte'
+            name : 'dnupro'
         }, {
-            name : 'nom'
+            name : 'dnomlp'
         }, {
-            name : 'prenom'
+            name : 'dprnlp'
         }, {
-            name : 'mentioncpl'
+            name : 'expnee'
         }, {
-            name : 'nomcpl'
+            name : 'dnomcp'
         }, {
-            name : 'prenomcpl'
+            name : 'dprncp'
         }, {
-            name : 'adresse'
+            name : 'dlign4'
         }, {
-            name : 'datenaissance'
+            name : 'jdatnss'
         }, {
-            name : 'lieunaissance'
+            name : 'dldnss'
         }, {
-            name : 'cco_lib'
+            name : 'ccpdro_lib'
         } ],
-        data : FiucProrietaireData
+        proxy: new Ext.data.HttpProxy({
+            url: getWebappURL() + 'getProprietaire?dnomIp=anonymous',
+            method: 'GET'
+         }),
     });
-      
+
 
     var FiucBatimentsStore = new Ext.data.ArrayStore({
         fields : [ {
@@ -142,7 +183,6 @@ Ext.namespace("GEOR")
         data : FiucHistomutData
     });
 
-    
           
     FiucParcelleGrid = new Ext.grid.GridPanel({
         store : FiucParcelleStore,
@@ -167,7 +207,33 @@ Ext.namespace("GEOR")
         }),
 
     });
-    //var sm = new Ext.selection.CheckboxSeclectionModel();
+    
+    
+    // PROPRIETAIRE 
+    var proprietaireDownloadPdfButton = new Ext.Button({
+        name : 'proprietaireDownloadPdfButton',
+        cls : "pdf_button"
+        
+    });
+    var sm = new Ext.grid.CheckboxSelectionModel();
+    var bbar = new Ext.PagingToolbar({
+        pageSize : 25,
+        store : FiucProprietaireStore,
+        displayInfo : true,
+        displayMsg : 'Displaying topics {0} - {1} of {2}',
+        emptyMsg : "No topics to display",
+        items : [ {
+            pressed : true,
+            enableToggle : true,
+            text : 'Show Preview',
+            cls : 'x-btn-text-icon details',
+            toggleHandler : function(btn, pressed) {
+                var view = grid.getView();
+                view.showPreview = pressed;
+                view.refresh();
+            }
+        } ]
+    });
     FiucProprietairesGrid = new Ext.grid.GridPanel({
         store : FiucProprietaireStore,
         stateful : true,
@@ -175,37 +241,37 @@ Ext.namespace("GEOR")
         title: 'Relevé de propriété',
         name : 'Fiuc_Proprietaire',
         xtype : 'editorgrid',
-     //   sm : sm,
+        selModel : sm,
+        bbar : bbar,
         colModel : new Ext.grid.ColumnModel({
             defaults : {
                 border : true,
                 sortable : false,
             },
-            
-            columns : [ 
+            columns : [sm, 
                 {
                 header: OpenLayers.i18n('cadastrapp.duc.compte'),
-                dataIndex : 'compte'
+                dataIndex : 'dnupro'
             }, 
                 {
                 header: OpenLayers.i18n('cadastrapp.duc.nom'),
-                dataIndex : 'nom'
+                dataIndex : 'dnomlp'
             }, 
                 {
                 header: OpenLayers.i18n('cadastrapp.duc.prenom'),
-                dataIndex : 'prenom'
+                dataIndex : 'dprnlp'
             }, 
                 {
                 header: OpenLayers.i18n('cadastrapp.duc.mentioncpl'),
-                dataIndex : 'mentioncpl'
+                dataIndex : 'epxnee'
             }, 
                 {
                 header: OpenLayers.i18n('cadastrapp.duc.nomcpl'),
-                dataIndex : 'nomcpl'
+                dataIndex : 'dnomcp'
             }, 
                 {
                 header: OpenLayers.i18n('cadastrapp.duc.prenomcpl'),
-                dataIndex : 'prenomcpl'
+                dataIndex : 'dprncp'
             }, 
                 {
                 header: OpenLayers.i18n('cadastrapp.duc.adresse'),
@@ -213,14 +279,14 @@ Ext.namespace("GEOR")
             }, 
                 {
                 header: OpenLayers.i18n('cadastrapp.duc.datenaissance'),
-                dataIndex : 'datenaissance'
+                dataIndex : 'jdatnss'
             }, {
                 header: OpenLayers.i18n('cadastrapp.duc.lieunaissance'),
-                dataIndex : 'lieunaissance'
+                dataIndex : 'dldnss'
             },
                 {
                 header: OpenLayers.i18n('cadastrapp.duc.cco_lib'),
-                dataIndex : 'cco_lib'
+                dataIndex : 'ccodro_lib'
             }]
         }),
 
@@ -338,7 +404,18 @@ Ext.namespace("GEOR")
         }),
 
     });
-                    
+ 
+    FiucReleveCadastralPdfButton = new Ext.Button({
+        name : 'FiucReleveCadastralPdfButton',
+        cls : "pdf_button"
+        
+    });                   
+ 
+    FiucReleveDeProprietePdfButton = new Ext.Button({
+        name : 'FiucReleveDeProprietePdfButton',
+        cls : "pdf_button"
+        
+    });                   
 
           //Construction de la fenêtre principale
         var windowFIUC;
@@ -380,7 +457,8 @@ Ext.namespace("GEOR")
                                 title: OpenLayers.i18n('cadastrapp.duc.propietaire'),
                                 xtype:'form',
                                 items: [
-                                    FiucProprietairesGrid
+                                        proprietaireDownloadPdfButton, 
+                                        FiucProprietairesGrid
                                         ]
                                     },
                                     {
@@ -388,7 +466,7 @@ Ext.namespace("GEOR")
                                 title: OpenLayers.i18n('cadastrapp.duc.batiment'),
                                 xtype:'form',
                                 items: [
-                                    FiucBatimentsGrid
+                                        FiucBatimentsGrid
                                         ]
                                     },
                                     {
