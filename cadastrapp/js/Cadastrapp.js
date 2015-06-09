@@ -22,7 +22,10 @@ Ext.namespace("GEOR");
 
 
 //VARIABLES GLOBALES
-
+//***************
+var selctedFeatures = [];
+var styleFeatures;
+//***************
 //checkboxes : cadatre et foncier
 var _isCadastre = true;
 var _isFoncier = false;
@@ -235,6 +238,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         this.map.addLayer(layer);
 
 		//*********************************************************************
+			// this.featureControl=selectionTest(this.map);	
 			selectionTest(this.map);	
 		//*********************************************************************
 
@@ -366,6 +370,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                 scope: this
             });
 
+
             actionOptions = {
                 control: control,
                 map: this.map,
@@ -386,6 +391,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 
             this.actions.push(action);
         }
+
     },
 
 	
@@ -707,12 +713,12 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             cadastrappControl.deactivate();
             this.lastDrawControl = cadastrappControl;
         }
-
-        this.featureControl.activate();
-		
-        var control = this.featureControl;
-        control.selectFeature.defer(1, control, [feature]);
-
+		//**************************
+        // this.featureControl.activate();		
+		selctedFeatures = selectFeatureIntersection(this.map,feature);
+        // var control = this.featureControl;
+        // control.selectFeature.defer(1, control, [feature]);
+		//**************************
     },
 
     /** private: method[onModificationStart]
