@@ -253,7 +253,8 @@
             "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
             "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
             "cadastrapp.duc.dependances" : "Dépendances",
-
+            "cadastrapp.contenancedgfip" : "DGFiP",
+            "cadastrapp.sig" : 	"SIG", 
 			"cadastrapp.bordereauparcellaire.title" : "Bordereau Parcellaire",
 			"cadastrapp.bordereauparcellaire.data" : "Données propriétaires",
 			"cadastrapp.bordereauparcellaire.data.without" : "Sans données nominatives",
@@ -486,6 +487,8 @@
             "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
             "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
             "cadastrapp.duc.dependances" : "Dépendances",
+            "cadastrapp.contenancedgfip" : "DGFiP",
+            "cadastrapp.sig" : 	"SIG", 
 
 			"cadastrapp.bordereauparcellaire.title" : "Bordereau Parcellaire",
 			"cadastrapp.bordereauparcellaire.data" : "Données propriétaires",
@@ -725,7 +728,8 @@
             "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
             "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
             "cadastrapp.duc.dependances" : "Dépendances",
-
+            "cadastrapp.contenancedgfip" : "DGFiP",
+            "cadastrapp.sig" : 	"SIG", 
 			"cadastrapp.bordereauparcellaire.title" : "Bordereau Parcellaire",
 			"cadastrapp.bordereauparcellaire.data" : "Données propriétaires",
 			"cadastrapp.bordereauparcellaire.data.without" : "Sans données nominatives",
@@ -962,7 +966,8 @@
             "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
             "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
             "cadastrapp.duc.dependances" : "Dépendances",
-
+            "cadastrapp.contenancedgfip" : "DGFiP",
+            "cadastrapp.sig" : 	"SIG", 
 			"cadastrapp.bordereauparcellaire.title" : "Bordereau Parcellaire",
 			"cadastrapp.bordereauparcellaire.data" : "Données propriétaires",
 			"cadastrapp.bordereauparcellaire.data.without" : "Sans données nominatives",

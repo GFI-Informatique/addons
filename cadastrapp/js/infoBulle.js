@@ -9,44 +9,23 @@ Ext.namespace("GEOR")
 //        ccosec, dindic, dnupla, dnvoiri, dvoilib, parcelleId ){
     
     onClickDisplayInfoBulle = function(){
-    var parcelleId = "20146303810000E0958";
-    var ccocom = "381";
+    var parcelleId = "025";
+    var libcom = "CLERMONT";
+    var ccocom = "63005";
     var ccodep = "63";
     var ccodir = "0";
     var ccopre = "";
-    var ccosec = "E";
+    var ccosec = "AZ";
+    var natvoi = "rue";
     var dindic = "";
     var dnupla = "0958";
-    var dnvoiri = "";
+    var dnvoiri = "16";
+    var dcntpa_sum = "789.56";
+	var sigcal_sum = "712.22";
+	var surfbati = "156.5";
     var dvoilib = "PUY DES GOUTTES";
+	var comptecommunal = "63005L112"
 
-    var InfoBulleData = [ [ "20146303810000E0958", "381", "63", "0", "", "E",
-            "", "0958", "", "PUY DES GOUTTES" ] ];
-
-    var InfoBulleStore = new Ext.data.ArrayStore({
-        fields : [ {
-            name : 'ccocom'
-        }, {
-            name : 'ccosec'
-        }, {
-            name : 'ccodep'
-        }, {
-            name : 'ccodir'
-        }, {
-            name : 'parcelleId'
-        }, {
-            name : 'ccopre'
-        }, {
-            name : 'dindic'
-        }, {
-            name : 'dnupla'
-        }, {
-            name : 'dnvoiri'
-        }, {
-            name : 'dvoilib'
-        } ],
-        data : InfoBulleData
-    });
     // Construction de la fenêtre principale
     var windowDisplayInfoBulle;
     windowDisplayInfoBulle = new Ext.Window({
@@ -60,11 +39,12 @@ Ext.namespace("GEOR")
         constrainHeader : true,
 
         border : false,
-        labelWidth : 400,
-        width : 850,
+//        labelWidth : 100,
+ //       width : 300,
         defaults : {
             autoHeight : true,
-            bodyStyle : 'padding:10px',
+			autoWidth : true,
+            bodyStyle : 'padding:1px',
             flex : 1
         },
 
@@ -74,24 +54,31 @@ Ext.namespace("GEOR")
          */
         items : [ {
             xtype : 'fieldset',
-            title : 'XXX',
-            labelWidth : 120,
+			font: '6px Arial',
+            labelWidth : 0,
+			padding: 5,
             autoHeight : true,
-            defaultType : 'field',
-            items : [     
-                        {fieldLabel : 'ccocom',     xtype: 'label', text : ccocom,     width : 280},
-                        {fieldLabel : 'ccosec',     xtype: 'label', text : ccosec,     width : 280},
-                        {fieldLabel : 'ccodep',     xtype: 'label', text : ccodep,     width : 280},
-                        {fieldLabel : 'ccodir',     xtype: 'label', text : ccodir,     width : 280},
-                        {fieldLabel : 'ccopre',     xtype: 'label', text : ccopre,     width : 280},
-                        {fieldLabel : 'dindic',     xtype: 'label', text : dindic,     width : 280},
-                        {fieldLabel : 'dnupla',     xtype: 'label', text : dnupla,     width : 280},
-                        {fieldLabel : 'dnvoiri',    xtype: 'label', text : dnvoiri,    width : 280},
-                        {fieldLabel : 'dvoilib',    xtype: 'label', text : dvoilib,    width : 280},
-                        {fieldLabel : 'parcelleId', xtype: 'label', text : parcelleId, width : 280}
-            ]
-        } ],
+            defaultType : 'label',
+			items : [   
+			
+                        {fieldLabel: ' ',	xtype: 'label', text : libcom+'('+ccocom+')'},
+                        {fieldLabel: ' ',	xtype: 'label', text : parcelleId+ccosec},
+                        {fieldLabel: ' ',	xtype: 'label', text : dnvoiri +' '+ dindic +' '+natvoi+' '+dvoilib},
+                        {fieldLabel: ' ',	xtype: 'label', text : dcntpa_sum+'m2'},
+                        {fieldLabel: ' ',	xtype: 'label', text : sigcal_sum+'m2'},
+ 						{fieldLabel: ' ',	xtype: 'label', text : comptecommunal},
+                        {fieldLabel: ' ',	xtype: 'label', text : dcntpa_sum},
+                        {fieldLabel: ' ',	xtype: 'label', text : sigcal_sum},
+                        {fieldLabel: ' ',	xtype: 'label', text : surfbati}                       
+				]
 
+        } ],
+/**		
+		if (_isCadastre)
+		{}
+		if (_isFoncier)
+		{}
+*/
     /*
      * //windowDisplayInfoBulle.show(ccocom,ccodep,ccodir,
      * ccopre,ccosec,dindic,dnupla,dnvoiri,dvoilib,parcelleId);
