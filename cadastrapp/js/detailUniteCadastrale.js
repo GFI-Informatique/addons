@@ -338,7 +338,18 @@ Ext.namespace("GEOR")
         }),
 
     });
-                    
+ 
+    FiucReleveCadastralPdfButton = new Ext.Button({
+        name : 'FiucReleveCadastralPdfButton',
+        cls : "pdf_button"
+        
+    });                   
+ 
+    FiucReleveDeProprietePdfButton = new Ext.Button({
+        name : 'FiucReleveDeProprietePdfButton',
+        cls : "pdf_button"
+        
+    });                   
 
           //Construction de la fenêtre principale
         var windowFIUC;

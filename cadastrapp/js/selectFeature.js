@@ -43,8 +43,8 @@ selectionTest = function(map) {
                     console.log(result);
                     var parcelleData = eval(result.responseText);
                     console.log(parcelleData);
-                    onClickDisplayInfoBulle(parcelleData[0].ccocom, parcelleData[0].ccodep, parcelleData[0].ccodir, parcelleData[0].ccopre, 
-                    		parcelleData[0].ccosec, parcelleData[0].dindic, parcelleData[0].dnupla, parcelleData[0].dnvoiri, parcelleData[0].dvoilib, parcelleData[0].parcelle ); 
+                    //onClickDisplayInfoBulle(parcelleData[0].ccocom, parcelleData[0].ccodep, parcelleData[0].ccodir, parcelleData[0].ccopre, 
+                    //		parcelleData[0].ccosec, parcelleData[0].dindic, parcelleData[0].dnupla, parcelleData[0].dnvoiri, parcelleData[0].dvoilib, parcelleData[0].parcelle ); 
                 },
                 params : params,
             });

@@ -437,7 +437,9 @@ onClickAskInformations = function() {
                                     .i18n('cadastrapp.demandeinformation.imprimer'),
                             listeners : {
                                 click : function(b, e) {
+									onClickDisplayInfoBulle();
                                     askInformationsWindow.close();
+									
                                 }
                             }
                         } ]
