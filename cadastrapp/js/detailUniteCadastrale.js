@@ -9,7 +9,7 @@ Ext.namespace("GEOR")
  * public: method[onClickDisplayFIUC] :param layer: Create ...TODO
  */
 
-var FiucBatimentsStore;
+
 
 onClickDisplayFIUC = function(parcelleId) {
 
@@ -26,7 +26,8 @@ onClickDisplayFIUC = function(parcelleId) {
         }, ],
         data : FiucParcelleData
     });
-
+	
+	var FiucBatimentsStore;
     
     var parcelleDownloadPdfButton = new Ext.ButtonGroup({
     	bodyBorder:false,
@@ -44,7 +45,7 @@ onClickDisplayFIUC = function(parcelleId) {
 			        	
 			        	Ext.Ajax.request({
 			        		   url: getWebappURL() + 'createBordereauParcellaire?parcelle='+parcelleId ,
-			        		   failure: function(){alert("erreur lors de la créatio du "+OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'))},
+			        		   failure: function(){alert("erreur lors de la création du "+OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'))},
 			        		   params: { }
 		        		});
 			        }
@@ -199,7 +200,7 @@ onClickDisplayFIUC = function(parcelleId) {
 			        name : 'proprietaireDownloadPdfButton',
 			        iconCls : "pdf-button",
 			        handler : function () {
-			        	// TODO : call PDF function with selected propriete
+			        	createReleveDePropriete();
 			        	// see below funtion 
 			        }
     	        }, 
@@ -368,10 +369,10 @@ onClickDisplayFIUC = function(parcelleId) {
     });
 
     // ONGLET 4
-    var FiucSubdivfiscData = [ [ 'Lettre indicative', '067AP' ],
+ /*   var FiucSubdivfiscData = [ [ 'Lettre indicative', '067AP' ],
             [ 'Contenance', '067AP' ], [ 'Nature de culture', '067AP' ],
-            [ 'Revenu au 01-01', '067AP' ] ];
-
+            [ 'Revenu au 01-01', '067AP' ] ];*/
+    var FiucSubdivfiscData = [ "proprietaire1", "proprietaire1", "ano", "proprietaire1"];
     var FiucSubdivfiscStore = new Ext.data.ArrayStore({
         fields : [ {
             name : 'lettreindic'

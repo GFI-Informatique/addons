@@ -58,7 +58,7 @@ Ext.namespace("GEOR")
 				    var record = grid.getStore().getAt(rowIndex);
 					grid.detailParcelles.push(
 							//TODO : cf. alert
-							//
+							onClickDisplayFIUC(record.data.parcelle)
 							//displayDetailParcelle(record.data.parcelle)
 					);
 

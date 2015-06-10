@@ -1,5 +1,7 @@
 {
     "js": [
+		"js/createReleveDePropriete.js",
+		"js/createBordereauParcellaire.js",
     	"js/printBordereauParcellaire.js",
 		"js/selectFeature.js",
 		"js/resultPlot.js",
