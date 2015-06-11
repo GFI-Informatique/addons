@@ -12,7 +12,6 @@ Ext.namespace("GEOR")
 
 
 onClickDisplayFIUC = function(parcelleId) {
-
     // ONGLET 1
 
     var FiucParcelleData = [ [ 'Commune', '350250' ], [ 'Section', '067AP' ],

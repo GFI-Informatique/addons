@@ -29,7 +29,7 @@ onClickDisplayInfoBulle = function() {
     var batical = "156.5";
     var dvoilib = "PUY DES GOUTTES";
     var comptecommunal = "XXXX";
-    var dnupro;
+    var dnupro="dupond";
     var dcntpa;
     // INIT infobulle
 
@@ -56,13 +56,42 @@ onClickDisplayInfoBulle = function() {
             sigcal_sum = obj[0].sigcal_sum;
             batical = obj[0].batical;
             //TODO : tout les infos a afficher sont a passes en param
-            displayInfoBulle(comptecommunal);
+            
         }
 
     });
-
-   
-}
+	if ((isCadastre()===true) && (isFoncier()===false)) 
+			
+		{
+			alert('iscadastre=true and isfoncier=false'),
+			//TODO : a remettre ans le success de l'ajax une fois le Webservice OK
+			displayInfoBulle(comptecommunal);
+		} 
+	if ((isCadastre()===false) && (isFoncier()===true)) 
+		
+		{
+			alert('iscadastre=false and isfoncier=true'),
+			//TODO : a remettre ans le success de l'ajax une fois le Webservice OK
+			displayInfoBulle(comptecommunal);
+		} 
+		
+	if ((isCadastre()===true) && (isFoncier()===true)) 
+		
+		{
+			alert('iscadastre=true and isfoncier=true'),
+			//TODO : a remettre ans le success de l'ajax une fois le Webservice OK
+			displayInfoBulle(comptecommunal);
+		} 
+	if ((isCadastre()===false) && (isFoncier()===false)) 
+		
+		
+			alert('iscadastre=false and isfoncier=false')
+			//TODO : a remettre ans le success de l'ajax une fois le Webservice OK
+		//displayInfoBulle(comptecommunal);
+		
+				
+				
+};
 
 function displayInfoBulle(comptecommunal) {
 
@@ -87,8 +116,7 @@ function displayInfoBulle(comptecommunal) {
             bodyStyle : 'padding:1px',
             flex : 1
         },
-		if (_isCadastre)
-		{
+
         /*
          * listeners: { close: function(window) { windowDisplayInfoBulle = null; },
          */
@@ -124,7 +152,7 @@ function displayInfoBulle(comptecommunal) {
 //                text : sigcal_sum + 'm2'
 //            }, 
             {
-                xtype : 'displayfield',
+                xtype : 'label',
                 value : comptecommunal,
                 hideLabel : true
             }, 
@@ -143,9 +171,10 @@ function displayInfoBulle(comptecommunal) {
 //            } 
             ]
 
-        } ]
-		 }
+        } ],
+
+//		 }
     });
-    
+
     windowDisplayInfoBulle.show();
 }

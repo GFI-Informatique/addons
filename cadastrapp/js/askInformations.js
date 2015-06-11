@@ -11,10 +11,9 @@ Ext.namespace("GEOR")
 onClickAskInformations = function() {
 
     var parcBisStore, parcCityStore, parcCityCombo1, parcCityCombo2, parcelleGrid;
+    bisStore = getBisStore();
 
-    parcBisStore = getBisStore();
-
-    parcCityStore = "";
+    parcCityStore = getPartialCityStore();
 
     // combobox "villes"
     parcCityCombo1 = new Ext.form.ComboBox({
@@ -426,8 +425,8 @@ onClickAskInformations = function() {
                                     .i18n('cadastrapp.demandeinformation.annuler'),
                             listeners : {
                                 click : function(b, e) {
-                                    onClickDisplayFIUC();
-									//onClickDisplayFIUF();
+                                    //onClickDisplayFIUC();
+									onClickDisplayFIUF();
                                     askInformationsWindow.close();
                                 }
                             }
