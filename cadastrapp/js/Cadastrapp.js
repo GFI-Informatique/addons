@@ -23,6 +23,7 @@ Ext.namespace("GEOR");
 
 //VARIABLES GLOBALES
 //***************
+
 var selctedFeatures = [];
 var styleFeatures;
 //***************
@@ -240,7 +241,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 
 		//*********************************************************************
 			// this.featureControl=selectionTest(this.map);	
-			selectionTest(this.map);	
+			createSelectionControl(this.map);	
 		//*********************************************************************
 
         layer.events.on({
@@ -298,10 +299,10 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
          handler = OpenLayers.Handler.Path;
          iconCls = "gx-featureediting-zoom";
          tooltip = OpenLayers.i18n("Zoom to results extent");
-
+		// control =new OpenLayers.Control.ZoomToMaxExtent();
          actionOptions = {
-                control: control,
-                map: this.map,
+                // control: control,
+                // map: this.map,
                 // button options
                 toggleGroup: this.toggleGroup,
                 allowDepress: false,
@@ -312,10 +313,11 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                 iconAlign: 'top',
                 // check item options
                 group: this.toggleGroup,
-                checked: false
+                checked: false,
+				handler:zoomToSelectedFeatures	
             };
 
-            action = new GeoExt.Action(actionOptions);
+            action = new Ext.Button(actionOptions);
 
             this.actions.push(action);
         
@@ -717,6 +719,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 		//**************************
         // this.featureControl.activate();		
 		selctedFeatures = selectFeatureIntersection(this.map,feature);
+		// modifyStyle("20146300830000A0696","2");
         // var control = this.featureControl;
         // control.selectFeature.defer(1, control, [feature]);
 		//**************************
