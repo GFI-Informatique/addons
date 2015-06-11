@@ -427,6 +427,7 @@ onClickAskInformations = function() {
                             listeners : {
                                 click : function(b, e) {
                                     onClickDisplayFIUC();
+									//onClickDisplayFIUF();
                                     askInformationsWindow.close();
                                 }
                             }

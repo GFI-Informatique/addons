@@ -206,7 +206,7 @@ onClickDisplayFIUF = function() {
         ],
         buttons: [
                   {
-                      text: "Seletionner toute les parcelles",
+                      text: "Seletionner toutes les parcelles",
                       listeners: {
                           click: function(b,e) {
                         	  windowFIUF.close();
