@@ -7,8 +7,8 @@ Ext.namespace("GEOR")
 	// créer le control de selection et la couche des parcelle à partir du wfs et appliquer le control à la couche
 	createSelectionControl = function (map){
 		// style à appliquer sur la couche cadastre
-		var style=GEOR.custom.ADDONS[2].defautStyleParcelle;
-		var selectedStyle =GEOR.custom.ADDONS[2].selectedStyle;
+		var style=GEOR.custom.defautStyleParcelle;
+		var selectedStyle =GEOR.custom.selectedStyle;
 		  styleFeatures = new OpenLayers.StyleMap(new OpenLayers.Style({ // param config
 				fillColor:"${getFill}", // couleur des entités en fonction de l'état
                 strokeColor: style.strokeColor,
@@ -36,7 +36,7 @@ Ext.namespace("GEOR")
 						}
 				}
 			}));
-		var WFSLayerSetting =GEOR.custom.ADDONS[2].WFSLayerSetting;
+		var WFSLayerSetting =GEOR.custom.WFSLayerSetting;
 		var cadastre = new OpenLayers.Layer.Vector( // création de la couche à partir du WFS
             WFSLayerSetting.layerName, // nom visible sur le panel
             {
@@ -93,7 +93,6 @@ Ext.namespace("GEOR")
 					selctedFeatures.push(feat2);
 					feat2.state = "2";
 					layer.drawFeature(feat2);
-					console.log(feat2.attributes.geo_parcelle);
 			}				
 		}
 		console.log("appel de la fonction qui gère l'état 2 de(s) entité(s): ");
