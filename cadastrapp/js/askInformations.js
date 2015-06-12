@@ -91,7 +91,42 @@ onClickAskInformations = function() {
 				}
 			}
 		});
-		
+		parcCityCombo3 = new Ext.form.ComboBox({
+			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
+			hiddenName: 'ccoinsee',
+            allowBlank:false,
+			width: 300,
+			mode: 'local',
+			value: '',
+			forceSelection: true,
+			editable: true,
+			displayField: 'displayname',
+			valueField: 'ccoinsee',
+			store: getPartialCityStore(),
+			listeners: {
+			    beforequery: function(q){  
+			    	if (q.query) {
+		                var length = q.query.length;
+		                if (length >= getSearchStart() && q.combo.getStore().getCount() == 0) {
+		                	if (isNaN(q.query)) {
+		                		//recherche par nom de ville
+		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
+		                	} else {
+		                		//recherche par code insee
+		                		q.combo.getStore().load({params: {ccoinsee_partiel: q.query}});
+		                	}		                	
+		                } else if (length < getSearchStart()) {
+		                	q.combo.getStore().loadData([],false);
+		                }
+		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+		                q.query.length = length;
+		            }
+			    },
+				change: function(combo, newValue, oldValue) {
+					parcelleWindow.buttons[0].enable();
+				}
+			}
+		});		
 		//grille "références"
 		parcelleGrid = new Ext.grid.EditorGridPanel({
 			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.references'),
@@ -397,12 +432,8 @@ onClickAskInformations = function() {
                             defaultType : 'textfield',
                             labelWidth : 120,
                             items : [
-                                    {
-                                        fieldLabel : OpenLayers
-                                                .i18n('cadastrapp.demandeinformation.commune'),
-                                        name : 'commune',
-                                        width : 280
-                                    },
+                                    
+ 									parcCityCombo3,		//combobox "villes"
                                     {
                                         xtype : 'tabpanel',
                                         height : 160,
