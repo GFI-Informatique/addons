@@ -388,10 +388,13 @@ onClickAskInformations = function() {
                                                 .i18n('cadastrapp.demandeinformation.prenom'),
                                         name : 'prenom',
                                         width : 280
+                                    },									
+                                    {
+                                        fieldLabel : OpenLayers
+                                                .i18n('cadastrapp.parcelle.city'),
+                                        name : 'city',
+                                        width : 280
                                     },
-                                    
-										parcCityCombo2,		//combobox "villes"
-
 
                                     {
                                         xtype : 'compositefield',
@@ -411,8 +414,7 @@ onClickAskInformations = function() {
                                             width : 190
                                         } ]
                                     },
-									
-                                    {
+                                     {
                                         fieldLabel : OpenLayers
                                                 .i18n('cadastrapp.demandeinformation.lieudit'),
                                         name : 'lieudit',
@@ -489,7 +491,7 @@ onClickAskInformations = function() {
                                     .i18n('cadastrapp.demandeinformation.annuler'),
                             listeners : {
                                 click : function(b, e) {
-                                    //onClickDisplayFIUC();
+                                    onClickDisplayFIUC();
 									onClickDisplayFIUF();
                                     askInformationsWindow.close();
                                 }
