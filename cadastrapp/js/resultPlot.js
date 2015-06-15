@@ -61,6 +61,10 @@ Ext.namespace("GEOR")
 							onClickDisplayFIUC(record.data.parcelle)
 							//displayDetailParcelle(record.data.parcelle)
 					);
+					//*****************************************
+					// on modifie le style de la parcelle selectionnée
+					modifyStyleParcelle("record.data.parcelle","2");
+					//*****************************************
 
 					//alert('TODO : appeler la methode qui ouvre la fenetre de détail de la parcelle (qui doit retourner l objet Window)');
 				},
@@ -80,6 +84,11 @@ Ext.namespace("GEOR")
 						var index = tabs.items.findIndex('id', grid.id);
 						tabs.setActiveTab((index==0) ? 1 : (index-1));
 					}
+					//*********************
+					// remettre le style de la couche à zero
+					var layer=getLayerByName(WFSLayerSetting.layerName);
+					clearLayerSelection(layer);
+					//*********************
 				}
 			}
 		

@@ -24,7 +24,7 @@ Ext.namespace("GEOR");
 //VARIABLES GLOBALES
 //***************
 
-var selctedFeatures = [];
+var selectedFeatures = [];
 var styleFeatures;
 //***************
 //checkboxes : cadatre et foncier
@@ -718,7 +718,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         }
 		//**************************
         // this.featureControl.activate();		
-		selctedFeatures = selectFeatureIntersection(this.map,feature);
+		selctedFeatures = selectFeatureIntersection(feature);
 		// modifyStyle("20146300830000A0696","2");
         // var control = this.featureControl;
         // control.selectFeature.defer(1, control, [feature]);

@@ -76,50 +76,61 @@ Ext.namespace("GEOR")
         });	 
 		return select;	
 	}
-	selectFeatureIntersection=	function (map,feature) {
-
-		var layer=map.getLayersByName("parcelle")[0];
+	// rechange le style et vide le tableau des entités selectionnées
+	clearLayerSelection=	function (layer) {
+		for (i = 0; i < selectedFeatures.length; i++) { // remise à zero des entités selectionnées
+				selectedFeatures[i].state= null;
+				layer.drawFeature(selectedFeatures[i]);
+		}
+		selectedFeatures = [];
+	}
+	selectFeatureIntersection=	function (feature) {
+		var WFSLayerSetting =GEOR.custom.WFSLayerSetting;
+		var layer=getLayerByName(WFSLayerSetting.layerName);
         var features = layer.features;
         var  feat2, isIntersects;
-		for (i = 0; i < selctedFeatures.length; i++) { // remise à zero des entités selectionnées
-				selctedFeatures[i].state= null;
-				layer.drawFeature(selctedFeatures[i]);
-		}
-		selctedFeatures = [];
+		clearLayerSelection(layer);
 		for(var j=0; j<features.length; j++) {
 			feat2 = features[j];
 			isIntersects = feature.geometry.intersects(feat2.geometry); //intersection entre l'entité dessinée feature et les entités de la couche
 			if (isIntersects) {
-					selctedFeatures.push(feat2);
+					selectedFeatures.push(feat2);
 					feat2.state = "2";
 					layer.drawFeature(feat2);
 			}				
 		}
 		console.log("appel de la fonction qui gère l'état 2 de(s) entité(s): ");
-		console.log(selctedFeatures);
-		return selctedFeatures;
+		console.log(selectedFeatures);
+		return selectedFeatures;
     }
 	
-	modifyStyle=function(idParcelle,etatFeature) {
+	getLayerByName=function(layerName){
 		var map=GeoExt.MapPanel.guess().map;
-		var layer=map.getLayersByName("parcelle")[0];
+		var layer=map.getLayersByName(layerName)[0];
+		return layer;
+	}
+	
+	modifyStyleParcelle=function(idParcelle,etatFeature) {
+		var WFSLayerSetting =GEOR.custom.WFSLayerSetting;
+		var layer=getLayerByName(WFSLayerSetting.layerName);
 		var feature = layer.getFeaturesByAttribute("geo_parcelle",idParcelle)
 		feature.state = etatFeature;
 		layer.drawFeature(feature);
+		selectedFeatures.push(feature)
 	}
 	zoomToSelectedFeatures =function() { // zoom sur les entités selectionnées etat 2 
 
-		 if (selctedFeatures.length>0){ 
+		 if (selectedFeatures.length>0){ 
 		 // récupération des bordure de  l'enveloppe des entités selectionnées
-			var minLeft=selctedFeatures[0].geometry.bounds.left;
-			maxRight=selctedFeatures[0].geometry.bounds.right;
-			minBottom=selctedFeatures[0].geometry.bounds.bottom;
-			maxTop=selctedFeatures[0].geometry.bounds.top;
-			 for (i = 0; i < selctedFeatures.length; i++) {
-				minLeft=Math.min(minLeft,selctedFeatures[i].geometry.bounds.left)
-				maxRight=Math.max(maxRight,selctedFeatures[i].geometry.bounds.right)
-				minBottom=Math.min(minBottom,selctedFeatures[i].geometry.bounds.bottom)
-				maxTop=Math.max(maxTop,selctedFeatures[i].geometry.bounds.top)
+			var minLeft=selectedFeatures[0].geometry.bounds.left;
+			maxRight=selectedFeatures[0].geometry.bounds.right;
+			minBottom=selectedFeatures[0].geometry.bounds.bottom;
+			maxTop=selectedFeatures[0].geometry.bounds.top;
+			 for (i = 0; i < selectedFeatures.length; i++) {
+				minLeft=Math.min(minLeft,selectedFeatures[i].geometry.bounds.left)
+				maxRight=Math.max(maxRight,selectedFeatures[i].geometry.bounds.right)
+				minBottom=Math.min(minBottom,selectedFeatures[i].geometry.bounds.bottom)
+				maxTop=Math.max(maxTop,selectedFeatures[i].geometry.bounds.top)
 			 }
 			 map=GeoExt.MapPanel.guess().map;
 			 map.zoomToExtent([minLeft,minBottom,maxRight,maxTop]); //zoom sur l'enveloppe
