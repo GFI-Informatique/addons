@@ -11,9 +11,9 @@ Ext.namespace("GEOR")
 
 
 
-onClickDisplayFIUC = function(parcelleId) {
+onClickDisplayFIUC = function(parcellId) {
     // ONGLET 1
-
+	
     var FiucParcelleData = [ [ 'Commune', '350250' ], [ 'Section', '067AP' ],
             [ 'Parcelle', '073AP' ] ];
 
@@ -23,10 +23,17 @@ onClickDisplayFIUC = function(parcelleId) {
         }, {
             name : 'valeur'
         }, ],
+		proxy: new Ext.data.HttpProxy({
+        url: getWebappURL() + 'getParcelle?parcelle=parcellId',
+        method: 'GET'
+         }),
+//		fields : ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec']
+
         data : FiucParcelleData
     });
 	
 	var FiucBatimentsStore;
+	var FiucParcelleStore;
     
     var parcelleDownloadPdfButton = new Ext.ButtonGroup({
     	bodyBorder:false,

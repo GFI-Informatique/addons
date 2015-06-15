@@ -268,6 +268,32 @@ Ext.namespace("GEOR")
 						fieldClass: 'displayfieldGray'
 					}
 					]
+				},{
+				
+					//ONGLET 3
+					title: OpenLayers.i18n('cadastrapp.parcelle.title.tab3'),
+					xtype:'form',
+					defaultType: 'displayfield',
+					id: 'parcThirdForm',
+					height: 200,
+
+					items: [
+
+					{
+						value: OpenLayers.i18n('cadastrapp.parcelle.street.exemple'),
+						fieldClass: 'displayfieldGray'
+					},
+					{
+						xtype: 'textfield',
+						fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.town'),
+						name: 'town',
+						width: 300
+					},
+					{
+						value: OpenLayers.i18n('cadastrapp.parcelle.town.exemple'),
+						fieldClass: 'displayfieldGray'
+					}
+					]
 				}]
 			}],
 			

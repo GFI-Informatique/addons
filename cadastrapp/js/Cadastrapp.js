@@ -44,7 +44,8 @@ console.log('Droits : CNIL1 (' + isCNIL1() + ') ; CNIL2 (' + isCNIL2() + ')');
 
 //url web-app
 getWebappURL = function() {
-	return '../cadastrapp/';
+//	return '../cadastrapp/';
+	return 'http://gd-cms-crai-001.fasgfi.fr:8480/cadastrapp/';
 
 }
 

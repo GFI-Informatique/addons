@@ -40,10 +40,12 @@
 			"cadastrapp.close": "Fermer",
 			"cadastrapp.parcelle": "Parcelle",
 			"cadastrapp.parcelle.identifiant": "Par identifiant cadastral",
+			"cadastrapp.parcelle.ident": " Identifiant ",
 			"cadastrapp.parcelle.adresse": "Par adresse cadastrale",
 			"cadastrapp.parcelle.title": "Recherche des parcelles",
 			"cadastrapp.parcelle.title.tab1": "Référence",
 			"cadastrapp.parcelle.title.tab2": "Adresse cadastrale",
+			"cadastrapp.parcelle.title.tab3" : "Identifiant cadastral",
 			"cadastrapp.parcelle.or": "ou",
 			"cadastrapp.parcelle.city": "Ville, Commune",
 			"cadastrapp.parcelle.city.exemple": "ex. Rennes, Cesson-Sévigné",
@@ -280,8 +282,11 @@
 			"cadastrapp.parcelle.identifiant": "Par identifiant cadastral",
 			"cadastrapp.parcelle.adresse": "Par adresse cadastrale",
 			"cadastrapp.parcelle.title": "Recherche des parcelles",
+			"cadastrapp.parcelle.ident": " Identifiant ",
+
 			"cadastrapp.parcelle.title.tab1": "Référence",
 			"cadastrapp.parcelle.title.tab2": "Adresse cadastrale",
+			"cadastrapp.parcelle.title.tab3" : "Identifiant cadastral",
 			"cadastrapp.parcelle.or": "ou",
 			"cadastrapp.parcelle.city": "Ville, Commune",
 			"cadastrapp.parcelle.city.exemple": "ex. Rennes, Cesson-Sévigné",
@@ -517,8 +522,11 @@
 			"cadastrapp.parcelle.identifiant": "Par identifiant cadastral",
 			"cadastrapp.parcelle.adresse": "Par adresse cadastrale",
 			"cadastrapp.parcelle.title": "Recherche des parcelles",
+			"cadastrapp.parcelle.ident": " Identifiant ",
+
 			"cadastrapp.parcelle.title.tab1": "Référence",
 			"cadastrapp.parcelle.title.tab2": "Adresse cadastrale",
+			"cadastrapp.parcelle.title.tab3" : "Identifiant cadastral",
 			"cadastrapp.parcelle.or": "ou",
 			"cadastrapp.parcelle.city": "Ville, Commune",
 			"cadastrapp.parcelle.city.exemple": "ex. Rennes, Cesson-Sévigné",
@@ -766,8 +774,11 @@
 			"cadastrapp.parcelle.town": "Lieu-dit",
 			"cadastrapp.parcelle.town.exemple": "ex. Mont-Romain, La morinaie",
 			"cadastrapp.parcelle.references": "Référence(s)",
+			"cadastrapp.parcelle.ident": " Identifiant ",
+
 			"cadastrapp.parcelle.references.col1": "Section",
 			"cadastrapp.parcelle.references.col2": "Parcelle",
+			"cadastrapp.parcelle.title.tab3" : "Identifiant cadastral",
 			"cadastrapp.parcelle.result.title": "Sélection de parcelles",
 			"cadastrapp.parcelle.result.nodata": "Aucune données",
 			"cadastrapp.parcelle.result.selection.title": "Sélection",
@@ -935,8 +946,6 @@
 			"cadastrapp.duc.batiment_date " : "Date",
 			"cadastrapp.duc.batiment_revenu " : "Revenu",
 			"cadastrapp.duc.batiment_descriptif " : "Descriptif",
-
-			
 			
 			"cadastrapp.duc.lettreindic" : "Lettre indicative",
 			"cadastrapp.duc.contenance " : "Contenance",
@@ -972,8 +981,6 @@
 			"cadastrapp.bordereauparcellaire.data" : "Données propriétaires",
 			"cadastrapp.bordereauparcellaire.data.without" : "Sans données nominatives",
 			"cadastrapp.bordereauparcellaire.data.with" : "Avec données nominatives"
-
-	
 			
         }
     }
