@@ -26,6 +26,13 @@ Ext.namespace("GEOR")
 		parcelleWindow.show();
 		parcelleWindow.items.items[0].setActiveTab(1);
 	}		
+    onClickRechercheParcelle3 = function() {
+		if (parcelleWindow == null) {
+			initRechercheParcelle();
+		}
+		parcelleWindow.show();
+		parcelleWindow.items.items[0].setActiveTab(2);
+	}		
 		
 	initRechercheParcelle = function(){
 		var parcBisStore, parcCityCombo1, parcCityCombo2, parcelleGrid;

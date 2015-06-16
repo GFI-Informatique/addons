@@ -261,6 +261,59 @@ Ext.namespace("GEOR")
 			data: (fromForm) ? Ext.util.JSON.decode(result).data : Ext.util.JSON.decode(result)
 		});		
 	}
+	/*
+	getResultFicParcelleStore = function (result, fromForm) {
+		return new Ext.data.JsonStore({
+			fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib', 'surface',
+			         { 
+			       		name: 'ccoinsee', 
+			       		convert: function(v, rec) { return rec.ccodep + rec.ccodir + rec.ccocom; }
+			         },
+			         { 
+			       		name: 'ccosec', 
+			       		convert: function(v, rec) {
+			       			return rec.gcopre + rec.ccosec;
+			       		},
+						
+			         { 
+			       		name: 'dnupla', 
+			       		convert: function(v, rec) {
+			       			return rec.dnupla;
+			       		},
+						{ 
+			       		name: 'adresse', 
+			       		convert: function(v, rec) {
+			       			return rec.dnvoiri + rec.dindic + ' ' + rec.dvoilib;
+			       		},
+						{ 
+			       		name: 'dvoilib', 
+			       		convert: function(v, rec) {
+			       			return rec.natvoiriv_lib + ' ' + rec.dvoilib;
+			       		},
+						{ 
+			       		name: 'dcntpa', 
+			       		convert: function(v, rec) {
+			       			return rec.dcntpa  + 'm2';
+			       		},
+						{ 
+			       		name: 'supf', 
+			       		convert: function(v, rec) {
+			       			return rec.supf  + 'm2';
+			       		},
+						{ 
+			       		name: 'gparbat', 
+			       		convert: function(v, rec) {
+			       			return rec.gparbat;
+			       		},
+						{ 
+			       		name: 'gurbpa', 
+			       		convert: function(v, rec) {
+			       			return rec.gurbpa;
+			       		}
+			         }],
+			data: (fromForm) ? Ext.util.JSON.decode(result).data : Ext.util.JSON.decode(result)
+		});		
+	}*/
 	
 	
 	

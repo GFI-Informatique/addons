@@ -14,24 +14,49 @@ Ext.namespace("GEOR")
 onClickDisplayFIUC = function(parcellId) {
     // ONGLET 1
 	
-    var FiucParcelleData = [ [ 'Commune', '350250' ], [ 'Section', '067AP' ],
-            [ 'Parcelle', '073AP' ] ];
+    var FiucParcelleData = [ [ 'Commune', '' ], 
+										[ 'Section', '' ],
+										[ 'Parcelle', '' ],
+										[ 'Voie (Code fantoir)', '' ],
+										[ 'Adresse cadastralle', '' ],
+										[ 'Contenance DGFiP', '' ],
+										[ 'Contenance calculée', '' ],
+										[ 'Parcelle bâtie', '' ],
+										[ 'Appartient à un secteur urbain', '' ]];
 
-    var FiucParcelleStore = new Ext.data.ArrayStore({
+    var FiucParcelleStore = new Ext.data.JsonStore({
         fields : [ {
             name : 'designation'
         }, {
             name : 'valeur'
         }, ],
+		totalProperty : 'total',
+        idProperty : "parcellId",
+		autoLoad: true,
 		proxy: new Ext.data.HttpProxy({
         url: getWebappURL() + 'getParcelle?parcelle=parcellId',
-        method: 'GET'
-         }),
-//		fields : ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec']
+        method: 'GET',
+		//fields: [ [ 'Commune', 'ccodep '+'ccodir '+'ccocom' ], [ 'Section', 'gcopre'+'ccosec' ],
+          //  [ 'Parcelle', 'dnupla' ] ,[ 'Voie (Code fantoir)', 'dnvoiri' +'dindic'] ,[ 'Adresse cadastralle', 'natvoiriv_lib'+' ' +'dvoilib' ] ,[ 'Contenance DGFiP', 'dcntpa '+'m2' ] ,[ 'Contenance calculée', 'supf ' +'m2'] ,[ 'Parcelle bâtie', 'gparbat' ] ,[ 'Appartient à un secteur urbain', 'gurbpa' ] ]
 
-        data : FiucParcelleData
+		  //name: [ [], [], [], [], [], [], [dvoilib], [dcntpa], [gparbat], [gurbpa]]}),
+		}),
+
+	data : FiucParcelleData
+
     });
-	
+	//envoi des données d'une form
+/*								Ext.Ajax.request({
+									method: 'GET',
+									url: getWebappURL() + 'getParcelle?parcelle=parcellId',
+									params: params,
+									success: function(result) {
+										addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
+									},
+									failure: function(result) {
+										alert('ERROR');
+									}
+								});*/
 	var FiucBatimentsStore;
 	var FiucParcelleStore;
     

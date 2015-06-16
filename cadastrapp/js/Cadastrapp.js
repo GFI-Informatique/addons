@@ -490,10 +490,10 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 				text: OpenLayers.i18n("cadastrapp.parcelle"),
 				menu: scrollMenuRechercheParcelle
 			});
-				//sous-sous-menu : recherche parcelle - par identifiant
+				//sous-sous-menu : recherche parcelle - par référence
 				var buttonRechercheParcelleIdentifiant = scrollMenuRechercheParcelle.add({
-					tooltip: OpenLayers.i18n("cadastrapp.parcelle.identifiant"),
-					text: OpenLayers.i18n("cadastrapp.parcelle.identifiant")
+					tooltip: OpenLayers.i18n("cadastrapp.parcelle.refer"),
+					text: OpenLayers.i18n("cadastrapp.parcelle.refer")
 				});
 				buttonRechercheParcelleIdentifiant.on('click', onClickRechercheParcelle1);
 			
@@ -502,8 +502,14 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 					tooltip: OpenLayers.i18n("cadastrapp.parcelle.adresse"),
 					text: OpenLayers.i18n("cadastrapp.parcelle.adresse")
 				});
-				buttonRechercheParcelleAdresse.on('click', onClickRechercheParcelle2);				
-			
+				buttonRechercheParcelleAdresse.on('click', onClickRechercheParcelle2);
+				
+				//sous-sous-menu : recherche parcelle - par identifiant cadastral
+				var buttonRechercheParcelleAdresse = scrollMenuRechercheParcelle.add({
+					tooltip: OpenLayers.i18n("cadastrapp.parcelle.identifiant"),
+					text: OpenLayers.i18n("cadastrapp.parcelle.identifiant")
+				});
+				buttonRechercheParcelleAdresse.on('click', onClickRechercheParcelle3);					
 			
 			//sous-menu : recherche proprietaire
 			var scrollMenuRechercheProprietaire = new Ext.menu.Menu();
