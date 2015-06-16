@@ -278,19 +278,14 @@ Ext.namespace("GEOR")
 					height: 200,
 
 					items: [
-
-					{
-						value: OpenLayers.i18n('cadastrapp.parcelle.street.exemple'),
-						fieldClass: 'displayfieldGray'
-					},
 					{
 						xtype: 'textfield',
-						fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.town'),
+						fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.ident'),
 						name: 'town',
 						width: 300
 					},
 					{
-						value: OpenLayers.i18n('cadastrapp.parcelle.town.exemple'),
+						value: OpenLayers.i18n('cadastrapp.parcelle.ident.exemple'),
 						fieldClass: 'displayfieldGray'
 					}
 					]
