@@ -546,6 +546,10 @@ onClickDisplayFIUC = function(parcellId) {
 
         listeners : {
             close : function(window) {
+				// AJOUT HAMZA
+				var feature = getFeatureById(parcelleId);
+				setState(feature, "1");
+				// FIN AJOUT	
                 windowFIUC = null;
             }
         },

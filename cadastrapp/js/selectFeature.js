@@ -10,98 +10,287 @@ Ext.namespace("GEOR")
 		var style=GEOR.custom.defautStyleParcelle;
 		var selectedStyle =GEOR.custom.selectedStyle;
 		  styleFeatures = new OpenLayers.StyleMap(new OpenLayers.Style({ // param config
-				fillColor:"${getFill}", // couleur des entités en fonction de l'état
-                strokeColor: style.strokeColor,
-				strokeWidth:style.strokeWidth,
+				fillColor:"${getFillColor}", // couleur des entités en fonction de l'état
+                strokeColor: "${getStrokeColor}",
+				strokeWidth:"${getstrokeWidth}",
+				fillOpacity:"${getFillOpacity}",
                 pointRadius: style.pointRadius,
 				pointerEvents: style.pointerEvents,
-				label:"${getId}",  // étiquette : attribut "tex"
 				fontSize: style.fontSize
             },
 			{
 				context: {
-					 getId: function(feature) {
-						label = "";
-						if(map.getZoom() > 16 && feature.attributes.tex) // param config
-							label = feature.attributes.tex; // param config
-						return label;
-						},
-					getFill: function(feature) {
+					getFillColor: function(feature) {
 						fill = selectedStyle.defautColor;
 						if(feature.state == "1") 
 							fill = selectedStyle.colorSelected1;
 						if(feature.state == "2") 
 							fill = selectedStyle.colorSelected2; 
 						return fill;
-						}
+						},
+					getFillOpacity: function(feature) {
+						opacity = 1;
+						if(!feature.state)
+							opacity = 0;
+						if(feature.state == "1" || feature.state == "2") 
+							opacity = selectedStyle.opacity;
+						return opacity;
+						},	
+					getStrokeColor: function(feature) {
+						color = style.strokeColor;
+						if(feature.state == "1") 
+							color = selectedStyle.colorSelected1;
+						if(feature.state == "2") 
+							color = selectedStyle.colorSelected2; 
+						return color;
+						},	
+					getstrokeWidth: function(feature) {
+						width = style.strokeWidth;
+						if(feature.state == "1" || feature.state == "2") 
+							width = selectedStyle.strokeWidth;
+						return width;
+						},	
+		
 				}
 			}));
-		var WFSLayerSetting =GEOR.custom.WFSLayerSetting;
-		var cadastre = new OpenLayers.Layer.Vector( // création de la couche à partir du WFS
-            WFSLayerSetting.layerName, // nom visible sur le panel
-            {
-                strategies: [new OpenLayers.Strategy.Fixed()]
-                , projection: new OpenLayers.Projection(WFSLayerSetting.srsName) // système de coordonnées
-                , protocol: new OpenLayers.Protocol.WFS({
-                    version: WFSLayerSetting.version, 
-                    url: WFSLayerSetting.url, // param config
-                    featurePrefix: WFSLayerSetting.featurePrefix, //geoserver worspace name
-                    featureType:WFSLayerSetting.featureType, //geoserver Layer Name
-                    featureNS: WFSLayerSetting.featureNS, // Edit Workspace Namespace URI
-                    geometryName: WFSLayerSetting.geometryName// field in Feature Type details with type "Geometry"
-                }),
-				 styleMap:styleFeatures // association du style 
-            });
-
-
-		map.addLayers([cadastre]); // ajout de la couche à la carte
-		var select = new OpenLayers.Control.SelectFeature(cadastre); //création du controleur de selection
-		map.addControl(select);
-		select.activate();
-		cadastre.events.on({ 
-                'featureselected': function(e) { 
-					if(e.feature.state == "2") // si l'entité est dans l'etat 2 (cad fiche affichée) 
-						return;
-                    e.feature.state = "1"; //sinon (cad etat==null) )on change l'etat
-					cadastre.drawFeature(e.feature); // mise à jour du dessin
-					console.log("appel de la fonction qui gère l'état 1 de l'entité: ");
-					console.log(e.feature);
+		
+		selectLayer = new OpenLayers.Layer.Vector("selection");
+		selectLayer.styleMap=styleFeatures;
+		var state;
+		map.addLayer(selectLayer);
+		OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+                defaultHandlerOptions: {
+                    'single': true,
+                    'double': false,
+                    'pixelTolerance': 0,
+                    'stopSingle': false,
+                    'stopDouble': false
                 },
-                'featureunselected': function(e) {
-					if(e.feature.state == "2")
-						return;
-					e.feature.state = null;
-					cadastre.drawFeature(e.feature);
+
+                initialize: function(options) {
+                    this.handlerOptions = OpenLayers.Util.extend(
+                        {}, this.defaultHandlerOptions
+                    );
+                    OpenLayers.Control.prototype.initialize.apply(
+                        this, arguments
+                    ); 
+                    this.handler = new OpenLayers.Handler.Click(
+                        this, {
+                            'click': this.trigger
+                        }, this.handlerOptions
+                    );
+                }, 
+
+                trigger: function(e) {
+					lonlat = map.getLonLatFromPixel(e.xy);
+					getFeaturesWFSSpatial("Point", lonlat.lon+","+lonlat.lat, "clickSelector");
                 }
-        });	 
-		return select;	
+
+            });
+			 var click = new OpenLayers.Control.Click();
+             map.addControl(click);
+             click.activate();
+
+		
+	}
+	getFeaturesWFSSpatial=	function (typeGeom, coords, typeSelector) {
+		var filter;
+		var polygoneElements="", endPolygoneElements="";
+		if(typeGeom == "Polygon") {
+			polygoneElements = "<gml:outerBoundaryIs><gml:LinearRing>";
+			endPolygoneElements = "</gml:LinearRing></gml:outerBoundaryIs>";
+		}
+		filter = '<Filter xmlns:gml="http://www.opengis.net/gml"><Intersects><PropertyName>geom</PropertyName><gml:'+typeGeom+'>'+polygoneElements+'<gml:coordinates>'+coords+'</gml:coordinates>'+endPolygoneElements+'</gml:'+typeGeom+'></Intersects></Filter>';
+		var WFSLayerSetting = GEOR.custom.WFSLayerSetting
+		var wfsUrl = WFSLayerSetting.wfsUrl ;
+		var featureJson = "";
+		Ext.Ajax.request({
+		  url : wfsUrl,
+		  method: 'GET',
+		  headers: { 'Content-Type': 'application/json' },                     
+		  params : { 
+				"request" : WFSLayerSetting.request,
+				"version" : WFSLayerSetting.version,
+				"service" : WFSLayerSetting.service,
+				"typename" : WFSLayerSetting.typename,
+				"outputFormat" : WFSLayerSetting.outputFormat,
+				"filter": filter
+		  },
+		  success: function (response) {
+				featureJson = response.responseText;
+				var geojson_format = new OpenLayers.Format.GeoJSON();
+				var resultSelection = geojson_format.read(featureJson);
+				var feature, state;
+				var parcelsIds = [];
+				for(var i=0; i<resultSelection.length; i++) {
+					feature = geojson_format.read(featureJson)[i];
+					if(feature) {
+						var exist = false;
+						var j = -1;
+						for (j=0; j < selectedFeatures.length && !exist; j++){
+							 // if(selectedFeatures[j].attributes.geo_parcelle == feature.attributes.geo_parcelle) {
+							 if(selectedFeatures[j].fid == feature.fid) {
+									exist = true;
+									if (exist){
+										feature = selectedFeatures[j];
+									}		
+								}
+						}
+						if(!exist) {
+							selectLayer.addFeatures(feature);
+							selectedFeatures.push(feature);
+						}
+						
+						state = changeStateFeature(feature, j-1, typeSelector);
+						if(state == "2") {
+							parcelsIds.push(feature.attributes.geo_parcelle);
+						}
+							
+					}
+				}
+				
+				showTabSelection(parcelsIds);
+				
+		},
+		  failure: function (response) {
+			  console.log("Error ",response.responseText);
+			   }
+		 });
+	}
+	
+	getFeaturesWFSAttribute = function (idParcelle) {
+		var filter;
+		filter = "geo_parcelle='"+idParcelle+"'";
+		var WFSLayerSetting = GEOR.custom.WFSLayerSetting
+		var wfsUrl = WFSLayerSetting.wfsUrl ;
+		var featureJson = "";
+		Ext.Ajax.request({
+		  url : wfsUrl,
+		  method: 'GET',
+		  headers: { 'Content-Type': 'application/json' },                     
+		  params : { 
+				"request" : WFSLayerSetting.request,
+				"version" : WFSLayerSetting.version,
+				"service" : WFSLayerSetting.service,
+				"typename" : WFSLayerSetting.typename,
+				"outputFormat" : WFSLayerSetting.outputFormat,
+				"cql_filter": filter
+		  },
+		  success: function (response) {
+				featureJson = response.responseText;
+				var geojson_format = new OpenLayers.Format.GeoJSON();
+				var resultSelection = geojson_format.read(featureJson);
+				var feature = geojson_format.read(featureJson)[0];
+				if(feature) {
+					selectLayer.addFeatures(feature);
+					selectedFeatures.push(feature);
+					
+					changeStateFeature(feature, null, "searchSelector");
+				}
+			},
+			  failure: function (response) {
+				  console.log("Error ",response.responseText);
+				}
+		 });
+	}
+	
+	showTabSelection = function (parcelsIds) {
+		if(parcelsIds.length > 0) {
+			var params = {"ccoinsee" : "630103"};
+			params.details = 1;
+			var cityCode = params.ccoinsee;
+			params.ccodep = cityCode.substring(0,2);
+			params.ccodir = cityCode.substring(2,3);
+			params.ccocom = cityCode.substring(3,6);
+			
+			//liste des parcelles
+			//parcelle: Ext.util.JSON.encode(Ext.pluck(parcelleGrid.getStore().getRange(), 'data'))
+			params.parcelle = new Array();
+			for(var i=0; i < parcelsIds.length; i++)
+				params.parcelle.push(parcelsIds[i]);							
+			
+			//envoi la liste de resultat
+			Ext.Ajax.request({
+				method: 'GET',
+				url: getWebappURL() + 'getParcelle',
+				params: params,
+				success: function(result) {
+					addNewResultParcelle("result selection ("+parcelsIds.length+")", getResultParcelleStore(result.responseText, false));
+				},
+				failure: function(result) {
+					alert('ERROR');
+				}
+			});
+		}
+	}
+	
+	getFeatureById = function (idParcelle) {
+		for (var i=0; i < selectedFeatures.length; i++) { 
+			if(selectedFeatures[i].attributes.geo_parcelle == idParcelle)
+				return selectedFeatures[i];
+		}
+		return null;
+	}
+	
+	setState = function (feature, state) {
+		feature.state = state;
+		selectLayer.drawFeature(feature);
+	}
+	
+	changeStateFeature = function (feature, index, typeSelector) {
+		var state = null;
+		if(typeSelector == "clickSelector") {
+			if (feature.state == "1")
+			{
+				state = "2";
+				
+			}else if (feature.state == "2") {
+				selectedFeatures.splice(index, 1);
+				selectLayer.removeFeatures([feature]);
+				// selectLayer.drawFeature(feature);
+			}
+			else {
+				state = "1";
+			}
+		}
+		else if(typeSelector == "featureSelector") {
+			state = "2";
+		}
+		else if(typeSelector == "searchSelector") {
+			state = "1";
+		}
+		
+		setState(feature, state);
+		return state;
+		
+		// console.dir(selectedFeatures);
 	}
 	// rechange le style et vide le tableau des entités selectionnées
-	clearLayerSelection=	function (layer) {
-		for (i = 0; i < selectedFeatures.length; i++) { // remise à zero des entités selectionnées
-				selectedFeatures[i].state= null;
-				layer.drawFeature(selectedFeatures[i]);
-		}
+	clearLayerSelection=function () {
+		// for (i = 0; i < selectedFeatures.length; i++) { // remise à zero des entités selectionnées
+				// selectedFeatures[i].state= null;
+				// selectLayer.drawFeature(selectedFeatures[i]);
+		// }
 		selectedFeatures = [];
+		selectLayer.removeAllFeatures();
+		
 	}
 	selectFeatureIntersection=	function (feature) {
-		var WFSLayerSetting =GEOR.custom.WFSLayerSetting;
-		var layer=getLayerByName(WFSLayerSetting.layerName);
-        var features = layer.features;
-        var  feat2, isIntersects;
-		clearLayerSelection(layer);
-		for(var j=0; j<features.length; j++) {
-			feat2 = features[j];
-			isIntersects = feature.geometry.intersects(feat2.geometry); //intersection entre l'entité dessinée feature et les entités de la couche
-			if (isIntersects) {
-					selectedFeatures.push(feat2);
-					feat2.state = "2";
-					layer.drawFeature(feat2);
-			}				
+		var typeGeom = feature.geometry.id.split('_')[2];
+		var coords = "";
+		if(typeGeom == "Point") {
+			coords = feature.geometry.x+","+feature.geometry.y;
+		} else {
+			var components = feature.geometry.components;
+			if(typeGeom == "Polygon")
+				components = components[0].components;
+			coords = components[0].x+","+components[0].y;
+			for(var i=1; i<components.length; i++) {
+				coords += " "+components[i].x+","+components[i].y;
+			}
 		}
-		console.log("appel de la fonction qui gère l'état 2 de(s) entité(s): ");
-		console.log(selectedFeatures);
-		return selectedFeatures;
+		getFeaturesWFSSpatial(typeGeom, coords, "featureSelector");
+
     }
 	
 	getLayerByName=function(layerName){
@@ -109,15 +298,7 @@ Ext.namespace("GEOR")
 		var layer=map.getLayersByName(layerName)[0];
 		return layer;
 	}
-	
-	modifyStyleParcelle=function(idParcelle,etatFeature) {
-		var WFSLayerSetting =GEOR.custom.WFSLayerSetting;
-		var layer=getLayerByName(WFSLayerSetting.layerName);
-		var feature = layer.getFeaturesByAttribute("geo_parcelle",idParcelle)
-		feature.state = etatFeature;
-		layer.drawFeature(feature);
-		selectedFeatures.push(feature)
-	}
+
 	zoomToSelectedFeatures =function() { // zoom sur les entités selectionnées etat 2 
 
 		 if (selectedFeatures.length>0){ 
