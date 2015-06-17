@@ -13,7 +13,7 @@ Ext.namespace("GEOR")
 
 onClickDisplayFIUC = function(parcellId) {
     // ONGLET 1
-	
+
     var FiucParcelleData = [ [ 'Commune', '' ], 
 										[ 'Section', '' ],
 										[ 'Parcelle', '' ],
@@ -25,38 +25,57 @@ onClickDisplayFIUC = function(parcellId) {
 										[ 'Appartient à un secteur urbain', '' ]];
 
     var FiucParcelleStore = new Ext.data.JsonStore({
-        fields : [ {
+
+		totalProperty : 'total',
+        idProperty : "parcellId",
+		autoLoad: true,
+		//proxy: new Ext.data.HttpProxy({
+        url: getWebappURL() + 'getParcelle?parcelle='+parcellId,
+        method: 'GET',
+/*        fields :[ [ {
             name : 'designation'
         }, {
             name : 'valeur'
         }, ],
-		totalProperty : 'total',
-        idProperty : "parcellId",
-		autoLoad: true,
-		proxy: new Ext.data.HttpProxy({
-        url: getWebappURL() + 'getParcelle?parcelle=parcellId',
-        method: 'GET',
-		//fields: [ [ 'Commune', 'ccodep '+'ccodir '+'ccocom' ], [ 'Section', 'gcopre'+'ccosec' ],
-          //  [ 'Parcelle', 'dnupla' ] ,[ 'Voie (Code fantoir)', 'dnvoiri' +'dindic'] ,[ 'Adresse cadastralle', 'natvoiriv_lib'+' ' +'dvoilib' ] ,[ 'Contenance DGFiP', 'dcntpa '+'m2' ] ,[ 'Contenance calculée', 'supf ' +'m2'] ,[ 'Parcelle bâtie', 'gparbat' ] ,[ 'Appartient à un secteur urbain', 'gurbpa' ] ]
+			[ {
+            name : 'Commune'
+        }, {
+            data : 'ccodep '+'ccodir '+'ccocom'
+        }, ]],        */
+//		fields : [ 'dnupla'],
+		fields : [ 'designation ','valeur'],
+		data:  [ 
+					{ "designation":"Commune", "valeur":'ccocom'},
+					{"designation": "Section","valeur":"ccosec"},
+					{"designation": "Parcelle", "valeur":"Peter Smith"},
+					{ "designation":"Voie (Code fantoir)", "valeur":"Tom Smith"},
+					{"designation": "Adresse cadastralle", "valeur":"Andy Smith"},
+					{ "designation":"Contenance DGFiP", "valeur":"Andy Smith"},
+					{"designation": "Contenance calculée", "valeur":"Andy Smith"},
+					{ "designation":"Parcelle bâtie", "valeur":"Andy Smith"},
+					{"designation": "Appartient à un secteur urbain", "valeur":"Andy Smith"},
+				  ],/*
+		FiucParcelleData :  [ [ 'Commune', 'ccocom' ], 
+										[ 'Section', 'ccosec' ],
+										[ 'Parcelle', 'dnupla' ],
+										[ 'Voie (Code fantoir)', 'cconvo' ],
+										[ 'Adresse cadastralle', '' ],
+										[ 'Contenance DGFiP', '' ],
+										[ 'Contenance calculée', '' ],
+										[ 'Parcelle bâtie', '' ],
+										[ 'Appartient à un secteur urbain', '' ]],*/
 
-		  //name: [ [], [], [], [], [], [], [dvoilib], [dcntpa], [gparbat], [gurbpa]]}),
-		}),
+		
+		//data: {[   'ccodep '+'ccodir '+'ccocom' ], ['gcopre'+'ccosec' ],
+		//[ 'dnupla' ] ,[ 'dnvoiri' +'dindic'] ,[ 'cconvo'+' ' +'dvoilib' ] ,[ 'dcntpa '+'m2' ] ,[ 'supf ' +'m2'] ,[ 'gparbat' ] ,[ 'gurbpa' ] ]},
 
-	data : FiucParcelleData
+
+		 //name: {['Commune'],[ 'Section'],  [ 'Parcelle' ] ,[ 'Voie (Code fantoir)'] ,[ 'Adresse cadastralle'] ,[ 'Contenance DGFiP'] ,[ 'Contenance calculée'] ,[ 'Parcelle bâtie'] ,[ 'Appartient à un secteur urbain'] }
+
+
 
     });
-	//envoi des données d'une form
-/*								Ext.Ajax.request({
-									method: 'GET',
-									url: getWebappURL() + 'getParcelle?parcelle=parcellId',
-									params: params,
-									success: function(result) {
-										addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
-									},
-									failure: function(result) {
-										alert('ERROR');
-									}
-								});*/
+
 	var FiucBatimentsStore;
 	var FiucParcelleStore;
     
@@ -94,21 +113,29 @@ onClickDisplayFIUC = function(parcellId) {
         title : 'Bordereau parcellaire',
         name : 'Fiuc_Parcelle',
         xtype : 'editorgrid',
-        colModel : new Ext.grid.ColumnModel({
+
+            columns : [
+                  {header: "Description", dataIndex: 'description'},
+                  {header: "Valeur", dataIndex: 'valeur'}
+              ]
+
+
+    });
+
+ /*       colModel : new Ext.grid.ColumnModel({
             defaults : {
                 border : true,
                 sortable : false,
             },
             columns : [ {
                 header : OpenLayers.i18n('cadastrapp.duc.designation'),
-                dataIndex : 'designation'
+                dataIndex :OpenLayers.i18n('cadastrapp.parcelle.city'),
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.valeur'),
-                dataIndex : 'valeur'
-            } ]
+				dataIndex : 'dnupla'}]
         }),
 
-    });
+    });*/
 
     // ONGLET 2
     var FiucProrietaireData = [

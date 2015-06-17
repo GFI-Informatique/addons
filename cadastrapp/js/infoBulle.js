@@ -20,7 +20,7 @@ onClickDisplayInfoBulle = function() {
     var ccodir = "0";
     var ccopre = "";
     var ccosec = "AZ";
-    var natvoi = "rue";
+    var cconvo = "rue";
     var dindic = "";
     var dnupla = "0958";
     var dnvoiri = "16";
@@ -141,7 +141,7 @@ function displayInfoBulle(comptecommunal) {
 //                html : "<br />"
 //            }, {
 //                xtype : 'label',
-//                text : dnvoiri + ' ' + dindic + ' ' + natvoi + ' ' + dvoilib
+//                text : dnvoiri + ' ' + dindic + ' ' + cconvo + ' ' + dvoilib
 //            }, {
 //                fieldLabel : ' ',
 //                xtype : 'label',

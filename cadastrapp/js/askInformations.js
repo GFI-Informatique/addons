@@ -491,8 +491,8 @@ onClickAskInformations = function() {
                                     .i18n('cadastrapp.demandeinformation.annuler'),
                             listeners : {
                                 click : function(b, e) {
-                                    onClickDisplayFIUC(record.data.parcelle);
-									//onClickDisplayFIUF();
+                                    //onClickDisplayFIUC(record.data.parcelle);
+									onClickDisplayFIUF();
                                     askInformationsWindow.close();
                                 }
                             }

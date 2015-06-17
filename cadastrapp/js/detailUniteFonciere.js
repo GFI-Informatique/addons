@@ -42,7 +42,7 @@ onClickDisplayFIUF = function() {
 //        fields: [
 //                {name: 'dnvoiri',           type: 'string'},
 //                {name: 'dindic',             type: 'string'},
-//                {name: 'natvoiriv_lib',   type: 'string'},
+//                {name: 'cconvo',   type: 'string'},
 //                {name: 'dvoilib',         type: 'string'},
 //        ],
 //

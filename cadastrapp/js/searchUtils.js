@@ -247,7 +247,7 @@ Ext.namespace("GEOR")
 	
 	getResultParcelleStore = function (result, fromForm) {
 		return new Ext.data.JsonStore({
-			fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib', 'surface',
+			fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'cconvo', 'dvoilib', 'surface',
 			         { 
 			       		name: 'ccoinsee', 
 			       		convert: function(v, rec) { return rec.ccodep + rec.ccodir + rec.ccocom; }
@@ -255,7 +255,7 @@ Ext.namespace("GEOR")
 			         { 
 			       		name: 'adresse', 
 			       		convert: function(v, rec) {
-			       			return rec.dnvoiri + rec.dindic + ' ' + rec.dvoilib;
+			       			return rec.dnvoiri + rec.dindic +' '+rec.cconvo  +' ' + rec.dvoilib;
 			       		}
 			         }],
 			data: (fromForm) ? Ext.util.JSON.decode(result).data : Ext.util.JSON.decode(result)
@@ -283,12 +283,12 @@ Ext.namespace("GEOR")
 						{ 
 			       		name: 'adresse', 
 			       		convert: function(v, rec) {
-			       			return rec.dnvoiri + rec.dindic + ' ' + rec.dvoilib;
+			       			return rec.dnvoiri + rec.dindic + ' '+ rec.cconvo +' ' + rec.dvoilib;
 			       		},
 						{ 
 			       		name: 'dvoilib', 
 			       		convert: function(v, rec) {
-			       			return rec.natvoiriv_lib + ' ' + rec.dvoilib;
+			       			return  ' ' + rec.dvoilib;
 			       		},
 						{ 
 			       		name: 'dcntpa', 
