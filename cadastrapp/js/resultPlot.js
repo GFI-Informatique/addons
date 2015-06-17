@@ -36,6 +36,7 @@ Ext.namespace("GEOR")
 		
 		var tabs = resultParcelleWindow.items.items[0];
 		tabCounter = tabCounter+1;
+		
 		var newGrid = new GEOR.ResultParcelleGrid({
 			title: title,
 			id: 'resultParcelleWindowTab'+tabCounter,
@@ -63,7 +64,9 @@ Ext.namespace("GEOR")
 					);
 					//*****************************************
 					// on modifie le style de la parcelle selectionnée
-					modifyStyleParcelle("record.data.parcelle","2");
+					var feature = getFeatureById(record.data.parcelle);
+					feature.state = 2;
+					selectLayer.drawFeature(feature);
 					//*****************************************
 
 					//alert('TODO : appeler la methode qui ouvre la fenetre de détail de la parcelle (qui doit retourner l objet Window)');
@@ -84,15 +87,20 @@ Ext.namespace("GEOR")
 						var index = tabs.items.findIndex('id', grid.id);
 						tabs.setActiveTab((index==0) ? 1 : (index-1));
 					}
-					//*********************
-					// remettre le style de la couche à zero
-					var layer=getLayerByName(WFSLayerSetting.layerName);
-					clearLayerSelection(layer);
-					//*********************
+					
+					
+
 				}
 			}
 		
 		});
+		var parcelle;
+		clearLayerSelection();
+		for(var i=0; i<newGrid.getStore().totalLength; i++) {
+			parcelle = newGrid.getStore().getAt(i);
+			getFeaturesWFSAttribute(parcelle.data.parcelle);
+		}
+		
 		tabs.insert(0, newGrid);
 		tabs.setActiveTab(0);
 	}
@@ -116,6 +124,11 @@ Ext.namespace("GEOR")
 			
 			listeners: {
 				close: function(window) {
+					
+					//*********************
+					// remettre le style de la couche à zero
+					clearLayerSelection();
+					//*********************
 					resultParcelleWindow = null;
 				}
 			},
