@@ -288,7 +288,7 @@ Ext.namespace("GEOR")
 					{
 						xtype: 'textfield',
 						fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.ident'),
-						name: 'town',
+						name: 'ident',
 						width: 300
 					},
 					{

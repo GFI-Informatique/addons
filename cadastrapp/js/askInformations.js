@@ -10,8 +10,10 @@ Ext.namespace("GEOR")
  */
 onClickAskInformations = function() {
 
+	var parcelleWindow;
+
     var parcBisStore, parcCityStore, parcCityCombo1, parcCityCombo2, parcelleGrid;
-    bisStore = getBisStore();
+    parcBisStore = getBisStore();
 
     parcCityStore = getPartialCityStore();
 
@@ -491,7 +493,7 @@ onClickAskInformations = function() {
                                     .i18n('cadastrapp.demandeinformation.annuler'),
                             listeners : {
                                 click : function(b, e) {
-                                    //onClickDisplayFIUC(record.data.parcelle);
+                                    onClickDisplayFIUC(record.data.parcelle);
 									onClickDisplayFIUF();
                                     askInformationsWindow.close();
                                 }

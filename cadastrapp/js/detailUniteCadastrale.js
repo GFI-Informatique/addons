@@ -13,7 +13,8 @@ Ext.namespace("GEOR")
 
 onClickDisplayFIUC = function(parcellId) {
     // ONGLET 1
-
+	var FiucBatimentsStore;
+    
     var FiucParcelleData = [ [ 'Commune', '' ], 
 										[ 'Section', '' ],
 										[ 'Parcelle', '' ],
@@ -76,9 +77,7 @@ onClickDisplayFIUC = function(parcellId) {
 
     });
 
-	var FiucBatimentsStore;
-	var FiucParcelleStore;
-    
+
     var parcelleDownloadPdfButton = new Ext.ButtonGroup({
     	bodyBorder:false,
     	border:false,
@@ -166,53 +165,9 @@ onClickDisplayFIUC = function(parcellId) {
                     "proprietaire1", "proprietaire1", "proprietaire1",
                     "proprietaire1", "1900-01-01", "PROPRIETAIRE1" ] ];
 
-    var FiucProrietaireData2 = [ {
-        "dnupro" : "proprietaire1",
-        "dnomlp" : "proprietaire1",
-        "dprnlp" : "proprietaire1",
-        "epxnee" : "ano",
-        "dnomcp" : "proprietaire1",
-        "dprncp" : "proprietaire1",
-        "dlign4" : "proprietaire1",
-        "dlign4" : "proprietaire1",
-        "dlign5" : "proprietaire1",
-        "dlign6" : "proprietaire1",
-        "dldnss" : "proprietaire1",
-        "jdatnss" : "1900-01-01",
-        "ccodro_lib" : "PROPRIETAIRE1"
-    }, {
-        "dnupro" : "proprietaire2",
-        "dnomlp" : "proprietaire2",
-        "dprnlp" : "proprietaire2",
-        "epxnee" : "ano",
-        "dnomcp" : "proprietaire2",
-        "dprncp" : "proprietaire2",
-        "dlign4" : "proprietaire2",
-        "dlign4" : "proprietaire2",
-        "dlign5" : "proprietaire2",
-        "dlign6" : "proprietaire2",
-        "dldnss" : "proprietaire2",
-        "jdatnss" : "1900-01-01",
-        "ccodro_lib" : "PROPRIETAIRE2"
-    }, {
-        "dnupro" : "proprietaire3",
-        "dnomlp" : "proprietaire3",
-        "dprnlp" : "proprietaire3",
-        "epxnee" : "ano",
-        "dnomcp" : "proprietaire3",
-        "dprncp" : "proprietaire3",
-        "dlign4" : "proprietaire3",
-        "dlign4" : "proprietaire3",
-        "dlign5" : "proprietaire3",
-        "dlign6" : "proprietaire3",
-        "dldnss" : "proprietaire3",
-        "jdatnss" : "1900-01-01",
-        "ccodro_lib" : "PROPRIETAIRE3"
-    }
-
-    ];
-
+ 
     var FiucProprietaireStore = new Ext.data.ArrayStore({
+		
         root : '',
         totalProperty : 'total',
         idProperty : "dnupro",
@@ -547,7 +502,7 @@ onClickDisplayFIUC = function(parcellId) {
         listeners : {
             close : function(window) {
 				// AJOUT HAMZA
-				var feature = getFeatureById(parcelleId);
+				var feature = getFeatureById(parcellId);
 				setState(feature, "1");
 				// FIN AJOUT	
                 windowFIUC = null;
