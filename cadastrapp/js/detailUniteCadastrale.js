@@ -63,7 +63,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
             secteururbain = result[0].gurbpa;
             console.log(commune);
            
-            FiucParcelleData = [ [ "Commune", commune ],
+            FiucParcelleData = [[ 'Commune', commune ],
                                  [ 'Section', section ],
                                  [ 'Parcelle', parcelle ],
 								[ 'Voie', voie ] ,
@@ -74,6 +74,8 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 								[ 'Secteur urbain', secteururbain ] 
 								];
             FiucParcelleStore.loadData(FiucParcelleData,false);
+			
+             data : FiucParcelleData;
            
         }
     });  			
