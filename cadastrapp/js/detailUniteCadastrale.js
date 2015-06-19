@@ -11,71 +11,80 @@ Ext.namespace("GEOR")
 
 
 
-onClickDisplayFIUC = function(parcellId) {
+onClickDisplayFIUC = function(parcelleId) {
+	var commune ='';
+	var section ='';
+	var parcelle ='';
+	var voie ='';
+	var adresse ='';
+	var contenanceDGFiP ='';
+	var contenancecalculee ='';
+	var parcellebatie ='';
+	var secteururbain ='';
+	
+	
+	var FiucParcelleData =[];
+	
+	 
+var FiucParcelleStore = new Ext.data.ArrayStore({
+                        fields : [ {
+                            name : 'designation'
+                        }, {
+                            name : 'valeur'
+                        }, ],
+                        data : FiucParcelleData
+                    });
+					
+		 Ext.Ajax.request({
+ 
+        url: getWebappURL() + 'getParcelle?parcelle='+parcelleId+"&details=1",
+        method: 'GET',
+   
+        //params: params,
+        success: function(response) {
+            console.log(response.responseText);
+            var result = eval(response.responseText);
+            commune = result[0].ccodep + result[0].ccodir + result[0].ccocom;
+			
+            section = result[0].ccopre + result[0].ccosec;
+			
+            parcelle = result[0].dnupla;
+			
+            voie = result[0].dnvoiri + result[0].dindic;
+			
+            adresse = result[0].cconvo + result[0].dvoilib;
+			
+            contenanceDGFiP = result[0].dcntpa;
+			
+            contenancecalculee = result[0].supf;
+			
+            parcellebatie = result[0].gparbat ;
+			
+            secteururbain = result[0].gurbpa;
+            console.log(commune);
+           
+            FiucParcelleData = [ [ "Commune", commune ],
+                                 [ 'Section', section ],
+                                 [ 'Parcelle', parcelle ],
+								[ 'Voie', voie ] ,
+								[ 'Adresse', adresse ] ,
+								[ 'Contenance DGFiP', contenanceDGFiP ] ,
+								[ 'Contenance calculée', contenancecalculee ] ,
+								[ 'Parcelle bâtie', parcellebatie ] ,
+								[ 'Secteur urbain', secteururbain ] 
+								];
+            FiucParcelleStore.loadData(FiucParcelleData,false);
+           
+        }
+    });  			
+	
+	
     // ONGLET 1
 	var FiucBatimentsStore;
     
-    var FiucParcelleData = [ [ 'Commune', '' ], 
-										[ 'Section', '' ],
-										[ 'Parcelle', '' ],
-										[ 'Voie (Code fantoir)', '' ],
-										[ 'Adresse cadastralle', '' ],
-										[ 'Contenance DGFiP', '' ],
-										[ 'Contenance calculée', '' ],
-										[ 'Parcelle bâtie', '' ],
-										[ 'Appartient à un secteur urbain', '' ]];
-
-    var FiucParcelleStore = new Ext.data.JsonStore({
-
-		totalProperty : 'total',
-        idProperty : "parcellId",
-		autoLoad: true,
-		//proxy: new Ext.data.HttpProxy({
-        url: getWebappURL() + 'getParcelle?parcelle='+parcellId,
-        method: 'GET',
-/*        fields :[ [ {
-            name : 'designation'
-        }, {
-            name : 'valeur'
-        }, ],
-			[ {
-            name : 'Commune'
-        }, {
-            data : 'ccodep '+'ccodir '+'ccocom'
-        }, ]],        */
-//		fields : [ 'dnupla'],
-		fields : [ 'designation ','valeur'],
-		data:  [ 
-					{ "designation":"Commune", "valeur":'ccocom'},
-					{"designation": "Section","valeur":"ccosec"},
-					{"designation": "Parcelle", "valeur":"Peter Smith"},
-					{ "designation":"Voie (Code fantoir)", "valeur":"Tom Smith"},
-					{"designation": "Adresse cadastralle", "valeur":"Andy Smith"},
-					{ "designation":"Contenance DGFiP", "valeur":"Andy Smith"},
-					{"designation": "Contenance calculée", "valeur":"Andy Smith"},
-					{ "designation":"Parcelle bâtie", "valeur":"Andy Smith"},
-					{"designation": "Appartient à un secteur urbain", "valeur":"Andy Smith"},
-				  ],/*
-		FiucParcelleData :  [ [ 'Commune', 'ccocom' ], 
-										[ 'Section', 'ccosec' ],
-										[ 'Parcelle', 'dnupla' ],
-										[ 'Voie (Code fantoir)', 'cconvo' ],
-										[ 'Adresse cadastralle', '' ],
-										[ 'Contenance DGFiP', '' ],
-										[ 'Contenance calculée', '' ],
-										[ 'Parcelle bâtie', '' ],
-										[ 'Appartient à un secteur urbain', '' ]],*/
-
-		
-		//data: {[   'ccodep '+'ccodir '+'ccocom' ], ['gcopre'+'ccosec' ],
-		//[ 'dnupla' ] ,[ 'dnvoiri' +'dindic'] ,[ 'cconvo'+' ' +'dvoilib' ] ,[ 'dcntpa '+'m2' ] ,[ 'supf ' +'m2'] ,[ 'gparbat' ] ,[ 'gurbpa' ] ]},
+										
 
 
-		 //name: {['Commune'],[ 'Section'],  [ 'Parcelle' ] ,[ 'Voie (Code fantoir)'] ,[ 'Adresse cadastralle'] ,[ 'Contenance DGFiP'] ,[ 'Contenance calculée'] ,[ 'Parcelle bâtie'] ,[ 'Appartient à un secteur urbain'] }
-
-
-
-    });
 
 
     var parcelleDownloadPdfButton = new Ext.ButtonGroup({
@@ -113,7 +122,7 @@ onClickDisplayFIUC = function(parcellId) {
         name : 'Fiuc_Parcelle',
         xtype : 'editorgrid',
 
-            columns : [
+           columns : [
                   {header: "Description", dataIndex: 'description'},
                   {header: "Valeur", dataIndex: 'valeur'}
               ]
@@ -502,7 +511,7 @@ onClickDisplayFIUC = function(parcellId) {
         listeners : {
             close : function(window) {
 				// AJOUT HAMZA
-				var feature = getFeatureById(parcellId);
+				var feature = getFeatureById(parcelleId);
 				setState(feature, "1");
 				// FIN AJOUT	
                 windowFIUC = null;
@@ -611,5 +620,5 @@ function loadBorderauParcellaire() {
 
     console.log("download borderau function");
     // TODO
-    // onClickPrintBordereauParcellaireWindow(parcellId);
+    // onClickPrintBordereauParcellaireWindow(parcelleId);
 }
