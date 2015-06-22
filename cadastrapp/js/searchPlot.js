@@ -164,7 +164,7 @@ Ext.namespace("GEOR")
 			autoScroll:true,
 			minimizable: false,
 			closable: true,
-			resizable: false,
+			resizable: true,
 			draggable : true,
 			constrainHeader: true,
 			

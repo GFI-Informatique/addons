@@ -229,6 +229,8 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     	items :[
     	        {
     	        	xtype : 'button', 
+					width : 24,
+					height: 24,
 			        name : 'proprietaireDownloadPdfButton',
 			        iconCls : "pdf-button",
 			        handler : function () {
@@ -242,7 +244,27 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     	        }, 
     ]
     });
-
+    var descriptifHabitationDetailsButton = new Ext.ButtonGroup({
+    	bodyBorder:false,
+    	border:false,
+    	hideBorders:true,
+    	frame : false,
+    	items :[
+    	        {
+    	        	xtype : 'button', 
+			        name : 'descriptifHabitationDetailsButton',
+			        iconCls : "House",
+			        handler : function () {
+			        	//createReleveDePropriete();
+			        	// see below funtion 
+			        }
+    	        }, 
+    	        {
+    	        	xtype : 'label', 
+			        text : OpenLayers.i18n('cadastrapp.duc.batiment_descriptif'),
+    	        }, 
+    ]
+    });
     var sm = new Ext.grid.CheckboxSelectionModel();
     var bbar = new Ext.PagingToolbar({
         pageSize : 25,
@@ -426,15 +448,15 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         success: function(response) {
             console.log(response.responseText);
             var result = eval(response.responseText);
-			lettreindic = result[0].ccosub;
+			lettreindic = result[0].dnupla;
 			
-            contenance = result[0].ccopre + result[0].ccosec;
+            contenance = result[0].dnupla;
 			
             terrain = result[0].dnupla;
 			
-            revenu = result[0].cconvo + result[0].dvoilib;
+            revenu = result[0].dnupla ;
 
-            console.log(commune);
+            console.log(lettreindic);
            
             FiucSubdivData =[{ name : 'lettreindic'} ,
 										{ name : 'contenance' },
@@ -560,7 +582,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         autoScroll : true,
         minimizable : false,
         closable : true,
-        resizable : false,
+        resizable : true,
         draggable : true,
         constrainHeader : true,
 

@@ -360,7 +360,6 @@ onClickAskInformations = function() {
                 frame : true,
                 bodyPadding : 10,
                 autoScroll : true,
-                resizable : false,
                 width : 450,
                 closable : true,
                 resizable : true,
