@@ -12,6 +12,7 @@ Ext.namespace("GEOR")
 
 
 onClickDisplayFIUC = function(parcelleId) {
+	//variables de l'onglet parcelle
 	var commune ='';
 	var section ='';
 	var parcelle ='';
@@ -20,11 +21,22 @@ onClickDisplayFIUC = function(parcelleId) {
 	var contenanceDGFiP ='';
 	var contenancecalculee ='';
 	var parcellebatie ='';
-	var secteururbain ='';
+	var secteururbain ='';	
 	
-	
+	//variables de l'onglet propriétaire
+	//variables de l'onglet batiment
+	//variables de l'onglet subdivision fiscales
+	var lettreindic= '';
+	var contenance = '';
+	var terrain = '';
+	var revenu = '';
+	//variables de l'onglet historique de mutation
+
 	var FiucParcelleData =[];
-	
+	var FiucProprietaireData=[];
+	var FiucBatimentData=[];
+	var FiucSubdivData =[];
+	    var FiucHistomutData = [];
 	 
 var FiucParcelleStore = new Ext.data.ArrayStore({
                         fields : [ {
@@ -84,11 +96,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     // ONGLET 1
 	var FiucBatimentsStore;
     
-										
-
-
-
-
+									
     var parcelleDownloadPdfButton = new Ext.ButtonGroup({
     	bodyBorder:false,
     	border:false,
@@ -125,7 +133,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         xtype : 'editorgrid',
 
            columns : [
-                  {header: "Description", dataIndex: 'description'},
+                  {header: "Description", dataIndex: 'designation'},
                   {header: "Valeur", dataIndex: 'valeur'}
               ]
 
@@ -148,7 +156,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     });*/
 
     // ONGLET 2
-    var FiucProrietaireData = [
+    var FiucProprietaireData = [
             [ "proprietaire1", "proprietaire1", "ano", "proprietaire1",
                     "proprietaire1", "proprietaire1", "proprietaire1",
                     "proprietaire1", "proprietaire1", "proprietaire1",
@@ -209,7 +217,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         // url: getWebappURL() + 'getProprietaire?dnomIp=anonymous',
         // method: 'GET'
         // }),
-        data : FiucProrietaireData
+        data : FiucProprietaireData
     });
     
 
@@ -224,7 +232,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 			        name : 'proprietaireDownloadPdfButton',
 			        iconCls : "pdf-button",
 			        handler : function () {
-			        	createReleveDePropriete();
+			        	//createReleveDePropriete();
 			        	// see below funtion 
 			        }
     	        }, 
@@ -396,7 +404,6 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
  /*   var FiucSubdivfiscData = [ [ 'Lettre indicative', '067AP' ],
             [ 'Contenance', '067AP' ], [ 'Nature de culture', '067AP' ],
             [ 'Revenu au 01-01', '067AP' ] ];*/
-    var FiucSubdivfiscData = [ "proprietaire1", "proprietaire1", "ano", "proprietaire1"];
     var FiucSubdivfiscStore = new Ext.data.ArrayStore({
         fields : [ {
             name : 'lettreindic'
@@ -407,10 +414,65 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         }, {
             name : 'revenu'
         } ],
-        data : FiucSubdivfiscData
+                        data : FiucSubdivData
+                    });
+					
+		 Ext.Ajax.request({
+ 
+        url: getWebappURL() + 'getParcelle?parcelle='+parcelleId+"&details=1",
+        method: 'GET',
+   
+        //params: params,
+        success: function(response) {
+            console.log(response.responseText);
+            var result = eval(response.responseText);
+			lettreindic = result[0].ccosub;
+			
+            contenance = result[0].ccopre + result[0].ccosec;
+			
+            terrain = result[0].dnupla;
+			
+            revenu = result[0].cconvo + result[0].dvoilib;
+
+            console.log(commune);
+           
+            FiucSubdivData =[{ name : 'lettreindic'} ,
+										{ name : 'contenance' },
+										{ name : 'terrain' },
+										{ name : ' revenu' }
+									];
+            FiucSubdivfiscStore.loadData(FiucSubdivData,false);
+			
+             data : FiucSubdivData;
+		}
+		/*
+        fields : [ {
+            name : 'lettreindic'
+        }, {
+            name : 'contenance'
+        }, {
+            name : 'terrain'
+        }, {
+            name : 'revenu'
+        } ],
+        data : FiucSubdivfiscData*/
     });
     
     var FiucSubdivfiscGrid = new Ext.grid.GridPanel({
+		store : FiucSubdivfiscStore,
+        stateful : true,
+        height : 500,
+        title : 'Subdivisions fiscales',
+        name : 'Fiuc_Subdivisions_fiscales',
+        xtype : 'editorgrid',
+
+           columns : [
+                  {header: "Lettre indicative", dataIndex: 'lettreindic'},
+                  {header: "Contenance", dataIndex: 'contenance'},
+                  {header: "Nature de culture", dataIndex: 'terrain'},
+                  {header: "Revenu au 01/01", dataIndex: 'revenu'},
+            ]
+/*
         store : FiucSubdivfiscStore,
         stateful : true,
         height : 500,
@@ -433,7 +495,8 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
                 header : OpenLayers.i18n('cadastrapp.duc.revenu'),
                 dataIndex : 'revenu'
             } ]
-        }),
+        }),*/
+		
 
     });
 
@@ -549,6 +612,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
                                       frame : false,
                                       items : buttonBatimentList
                                     },
+									
                                    FiucBatimentsGrid ]
                     }, {
                         // ONGLET 4
@@ -618,9 +682,9 @@ function reloadBatimentStore(bat) {
     FiucBatimentsStore.loadData(Data);
 }
 
-function loadBorderauParcellaire() {
+function loadbordereauParcellaire() {
 
-    console.log("download borderau function");
+    console.log("download bordereau function");
     // TODO
     // onClickPrintBordereauParcellaireWindow(parcelleId);
 }
