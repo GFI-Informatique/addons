@@ -48,7 +48,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
                     });
 					
 		 Ext.Ajax.request({
- 
+		//A remplacer par getFIC
         url: getWebappURL() + 'getParcelle?parcelle='+parcelleId+"&details=1",
         method: 'GET',
    
@@ -78,7 +78,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
             FiucParcelleData = [[ 'Commune', commune ],
                                  [ 'Section', section ],
                                  [ 'Parcelle', parcelle ],
-								[ 'Voie', voie ] ,
+								[ 'Voie (Code fantoir)', voie ] ,
 								[ 'Adresse', adresse ] ,
 								[ 'Contenance DGFiP', contenanceDGFiP ] ,
 								[ 'Contenance calculée', contenancecalculee ] ,
@@ -105,6 +105,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     	items :[
     	        {
     	        	xtype : 'button', 
+					scale : 'small',
 			        name : 'proprietaireDownloadPdfButton',
 			        iconCls : "pdf-button",
 			        handler : function () {
@@ -229,8 +230,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     	items :[
     	        {
     	        	xtype : 'button', 
-					width : 24,
-					height: 24,
+					scale : 'small',
 			        name : 'proprietaireDownloadPdfButton',
 			        iconCls : "pdf-button",
 			        handler : function () {
@@ -253,7 +253,8 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     	        {
     	        	xtype : 'button', 
 			        name : 'descriptifHabitationDetailsButton',
-			        iconCls : "House",
+					scale : 'small',
+			        iconCls : "house",
 			        handler : function () {
 			        	//createReleveDePropriete();
 			        	// see below funtion 
@@ -383,6 +384,35 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         title : 'batiment(s)',
         name : 'Fiuc_Batiments',
         xtype : 'editorgrid',
+		items :[{
+    	        	xtype : 'button', 
+					scale : 'small',
+			        name : 'proprietaireDownloadPdfButton',
+			        iconCls : "pdf-button",
+			        handler : function () {
+			        	//createReleveDePropriete();
+			        	// see below funtion 
+			        }
+    	        }, 
+    	        {
+    	        	xtype : 'label', 
+			        text : OpenLayers.i18n('cadastrapp.duc.releve.depropriete'),
+    	        }, 
+    	        {
+    	        	xtype : 'button', 
+					scale : 'small',
+			        name : 'descriptifHabitationDetailsButton',
+			        iconCls : "house",
+			        handler : function () {
+			        	//createReleveDePropriete();
+			        	// see below funtion 
+			        }
+    	        }, 
+    	        {
+    	        	xtype : 'label', 
+			        text : 'Descriptif',
+    	        }, 
+    ],
         colModel : new Ext.grid.ColumnModel({
             defaults : {
                 sortable : false,
