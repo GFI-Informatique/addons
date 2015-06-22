@@ -95,13 +95,14 @@ Ext.namespace("GEOR")
 	}
 	getFeaturesWFSSpatial=	function (typeGeom, coords, typeSelector) {
 		var filter;
+		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
 		var polygoneElements="", endPolygoneElements="";
 		if(typeGeom == "Polygon") {
 			polygoneElements = "<gml:outerBoundaryIs><gml:LinearRing>";
 			endPolygoneElements = "</gml:LinearRing></gml:outerBoundaryIs>";
 		}
-		filter = '<Filter xmlns:gml="http://www.opengis.net/gml"><Intersects><PropertyName>geom</PropertyName><gml:'+typeGeom+'>'+polygoneElements+'<gml:coordinates>'+coords+'</gml:coordinates>'+endPolygoneElements+'</gml:'+typeGeom+'></Intersects></Filter>';
-		var WFSLayerSetting = GEOR.custom.WFSLayerSetting
+		filter = '<Filter xmlns:gml="http://www.opengis.net/gml"><Intersects><PropertyName>'+WFSLayerSetting.geometryField+'</PropertyName><gml:'+typeGeom+'>'+polygoneElements+'<gml:coordinates>'+coords+'</gml:coordinates>'+endPolygoneElements+'</gml:'+typeGeom+'></Intersects></Filter>';
+
 		var wfsUrl = WFSLayerSetting.wfsUrl ;
 		var featureJson = "";
 		Ext.Ajax.request({
@@ -121,15 +122,16 @@ Ext.namespace("GEOR")
 				var geojson_format = new OpenLayers.Format.GeoJSON();
 				var resultSelection = geojson_format.read(featureJson);
 				var feature, state;
-				var parcelsIds = [];
+				var parcelsIds = [], codComm = null;
+				
 				for(var i=0; i<resultSelection.length; i++) {
 					feature = geojson_format.read(featureJson)[i];
 					if(feature) {
 						var exist = false;
 						var j = -1;
 						for (j=0; j < selectedFeatures.length && !exist; j++){
-							 // if(selectedFeatures[j].attributes.geo_parcelle == feature.attributes.geo_parcelle) {
-							 if(selectedFeatures[j].fid == feature.fid) {
+							 // if(selectedFeatures[j].attributes.geo_parcelle == feature.attributes.geo_parcelle) { //renvoie des cas errronnées psk la géométrie est dupliquer pour quelques parcelles
+							 if(selectedFeatures[j].fid == feature.fid) { // remplacer par cette ligne
 									exist = true;
 									if (exist){
 										feature = selectedFeatures[j];
@@ -143,13 +145,15 @@ Ext.namespace("GEOR")
 						
 						state = changeStateFeature(feature, j-1, typeSelector);
 						if(state == "2") {
-							parcelsIds.push(feature.attributes.geo_parcelle);
+							parcelsIds.push(feature.attributes.id_parc);
+							codComm = feature.attributes.codcomm;
+							//console.log(codComm);
 						}
 							
 					}
 				}
 				
-				showTabSelection(parcelsIds);
+				showTabSelection(codComm, parcelsIds);
 				
 		},
 		  failure: function (response) {
@@ -160,8 +164,8 @@ Ext.namespace("GEOR")
 	
 	getFeaturesWFSAttribute = function (idParcelle) {
 		var filter;
-		filter = "geo_parcelle='"+idParcelle+"'";
 		var WFSLayerSetting = GEOR.custom.WFSLayerSetting
+		filter = ""+WFSLayerSetting.nameFieldIdParcelle+"='"+idParcelle+"'";
 		var wfsUrl = WFSLayerSetting.wfsUrl ;
 		var featureJson = "";
 		Ext.Ajax.request({
@@ -194,14 +198,27 @@ Ext.namespace("GEOR")
 		 });
 	}
 	
-	showTabSelection = function (parcelsIds) {
+	showTabSelection = function (codComm, parcelsIds) {
 		if(parcelsIds.length > 0) {
-			var params = {"ccoinsee" : "630103"};
+			//var params = {"ccoinsee" : "630103"};
+			// var params = {"ccoinsee" : codComm};
+			// params.details = 1;
+			// var cityCode = params.ccoinsee;
+			// params.ccodep = cityCode.substring(0,2);
+			// params.ccodir = cityCode.substring(2,3);
+			// params.ccocom = cityCode.substring(3,6);
+			
+			var params = {"code" : parcelsIds[0]};
 			params.details = 1;
-			var cityCode = params.ccoinsee;
+			var cityCode = params.code;
 			params.ccodep = cityCode.substring(0,2);
 			params.ccodir = cityCode.substring(2,3);
 			params.ccocom = cityCode.substring(3,6);
+			params.ccopre = cityCode.substring(6,9);
+			params.ccosec = cityCode.substring(9,11);
+			params.dnupla = cityCode.substring(11,15);
+
+
 			
 			//liste des parcelles
 			//parcelle: Ext.util.JSON.encode(Ext.pluck(parcelleGrid.getStore().getRange(), 'data'))
@@ -214,19 +231,24 @@ Ext.namespace("GEOR")
 				method: 'GET',
 				url: getWebappURL() + 'getParcelle',
 				params: params,
-				success: function(result) {
+				username : "testadmin",
+				password : "testadmin",
+				success: function(result,opt) {
+					var jsonData = Ext.decode(result.responseText);
 					addNewResultParcelle("result selection ("+parcelsIds.length+")", getResultParcelleStore(result.responseText, false));
 				},
 				failure: function(result) {
 					alert('ERROR');
 				}
 			});
+
+			
 		}
 	}
 	
 	getFeatureById = function (idParcelle) {
 		for (var i=0; i < selectedFeatures.length; i++) { 
-			if(selectedFeatures[i].attributes.geo_parcelle == idParcelle)
+			if(selectedFeatures[i].attributes.id_parc == idParcelle)
 				return selectedFeatures[i];
 		}
 		return null;

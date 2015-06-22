@@ -65,8 +65,11 @@ Ext.namespace("GEOR")
 					//*****************************************
 					// on modifie le style de la parcelle selectionnée
 					var feature = getFeatureById(record.data.parcelle);
+					if (feature){
 					feature.state = 2;
 					selectLayer.drawFeature(feature);
+					}else 
+						console.log("pas d'entité trouvée dans la base avec ce numero")
 					//*****************************************
 
 					//alert('TODO : appeler la methode qui ouvre la fenetre de détail de la parcelle (qui doit retourner l objet Window)');
