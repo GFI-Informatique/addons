@@ -118,6 +118,8 @@ Ext.namespace("GEOR")
 				"filter": filter
 		  },
 		  success: function (response) {
+				var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
+				var idField = WFSLayerSetting.nameFieldIdParcelle;
 				featureJson = response.responseText;
 				var geojson_format = new OpenLayers.Format.GeoJSON();
 				var resultSelection = geojson_format.read(featureJson);
@@ -145,15 +147,16 @@ Ext.namespace("GEOR")
 						
 						state = changeStateFeature(feature, j-1, typeSelector);
 						if(state == "2") {
-							parcelsIds.push(feature.attributes.id_parc);
+							// parcelsIds.push(feature.attributes.id_parc);
+							parcelsIds.push(feature.attributes[idField]);
 							codComm = feature.attributes.codcomm;
-							//console.log(codComm);
+
 						}
 							
 					}
 				}
 				
-				showTabSelection(codComm, parcelsIds);
+				showTabSelection( parcelsIds,codComm);
 				
 		},
 		  failure: function (response) {
@@ -198,7 +201,7 @@ Ext.namespace("GEOR")
 		 });
 	}
 	
-	showTabSelection = function (codComm, parcelsIds) {
+	showTabSelection = function (parcelsIds,codComm) {
 		if(parcelsIds.length > 0) {
 			//var params = {"ccoinsee" : "630103"};
 			// var params = {"ccoinsee" : codComm};
@@ -247,8 +250,10 @@ Ext.namespace("GEOR")
 	}
 	
 	getFeatureById = function (idParcelle) {
+		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
+		var idField = WFSLayerSetting.nameFieldIdParcelle;
 		for (var i=0; i < selectedFeatures.length; i++) { 
-			if(selectedFeatures[i].attributes.id_parc == idParcelle)
+			if(selectedFeatures[i].attributes[idField] == idParcelle)
 				return selectedFeatures[i];
 		}
 		return null;
