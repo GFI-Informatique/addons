@@ -46,8 +46,9 @@ console.log('Droits : CNIL1 (' + isCNIL1() + ') ; CNIL2 (' + isCNIL2() + ')');
 //url web-app
 getWebappURL = function() {
 	return '../cadastrapp/';
-	//return 'http://gd-cms-crai-001.fasgfi.fr:8480/cadastrapp/';
+	// return 'http://gd-cms-crai-001.fasgfi.fr:8480/cadastrapp/';
 	//return 'https://MQ-CMS-CRAI-001.fasgfi.fr:8480/cadastrapp/';
+	
 
 }
 
@@ -289,7 +290,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         if (!this.toggleGroup) {
             this.toggleGroup = this.map.id;
         }
-		
+
     },
 
    /** private: method[initZoomControls]
