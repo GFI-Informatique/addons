@@ -241,7 +241,7 @@ Ext.namespace("GEOR")
 					addNewResultParcelle("result selection ("+parcelsIds.length+")", getResultParcelleStore(result.responseText, false));
 				},
 				failure: function(result) {
-					alert('ERROR');
+					alert('ERROR-');
 				}
 			});
 
