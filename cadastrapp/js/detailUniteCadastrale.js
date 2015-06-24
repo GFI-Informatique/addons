@@ -12,6 +12,8 @@ Ext.namespace("GEOR")
 
 
 onClickDisplayFIUC = function(parcelleId) {
+	//titre de la fenetre
+	var titleFIUC ='';
 	//variables de l'onglet parcelle
 	var commune ='';
 	var section ='';
@@ -87,7 +89,10 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 								];
             FiucParcelleStore.loadData(FiucParcelleData,false);
 			
-             data : FiucParcelleData;
+            data : FiucParcelleData;
+			 
+			//titre de la fenetre
+			titleFIUC =result[0].ccodep + result[0].ccodir + result[0].ccocom + '-'+result[0].ccopre + result[0].ccosec+'-'+result[0].dnupla;
            
         }
     });  			
@@ -157,9 +162,8 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     });*/
 
     // ONGLET 2
-    var FiucProprietaireData = [
-            [ "proprietaire1", "proprietaire1", "ano", "proprietaire1",
-                    "proprietaire1", "proprietaire1", "proprietaire1",
+    var FiucProprietaireData = [ 'dnupro', 'dnomlp', 'dprnlp', 'expnee','dnomcp','dprncp','dlign1','jdatnss','dldnss','ccpdro_lib'];
+ /*                   "proprietaire1", "proprietaire1", "proprietaire1",
                     "proprietaire1", "proprietaire1", "proprietaire1",
                     "1900-01-01", "PROPRIETAIRE1" ],
             [ "proprietaire1", "ano", "proprietaire1", "proprietaire1",
@@ -183,7 +187,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
             [ "proprietaire1", "proprietaire1", "proprietaire1", "ano",
                     "proprietaire1", "proprietaire1", "proprietaire1",
                     "proprietaire1", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "1900-01-01", "PROPRIETAIRE1" ] ];
+                    "proprietaire1", "1900-01-01", "PROPRIETAIRE1" ] ];*/
 
  
     var FiucProprietaireStore = new Ext.data.ArrayStore({
@@ -607,7 +611,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     // Construction de la fenêtre principale
     var windowFIUC;
     windowFIUC = new Ext.Window({
-        title : 'TODO',
+        title : 'titleFIUC',
         frame : true,
         autoScroll : true,
         minimizable : false,

@@ -57,11 +57,14 @@ Ext.namespace("GEOR")
 				rowclick: function(grid, rowIndex, e) {
 					//on ouvre une fenetre : detail parcelle
 				    var record = grid.getStore().getAt(rowIndex);
-					grid.detailParcelles.push(
+						if (isCadastre()===true) {
+							grid.detailParcelles.push(
 							//TODO : cf. alert
 							onClickDisplayFIUC(record.data.parcelle)
 							//displayDetailParcelle(record.data.parcelle)
-					);
+						
+						);
+					}
 					//*****************************************
 					// on modifie le style de la parcelle selectionnée
 					var feature = getFeatureById(record.data.parcelle);

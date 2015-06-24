@@ -425,9 +425,6 @@ Ext.namespace("GEOR")
 									}
 								});
 							}		
-						} else {
-							alert('Parcelle non trouvée');
-							
 						}
 
 
