@@ -301,10 +301,12 @@ Ext.namespace("GEOR")
 			
 			buttons: [{
 				text: OpenLayers.i18n('cadastrapp.search'),
-				disabled: true,
+				disabled: false,
 				listeners: {
 					click: function(b,e) {
 						var currentForm = parcelleWindow.items.items[0].getActiveTab();
+						
+						
 						if (currentForm.id == 'parcFirstForm') {
 							if (currentForm.getForm().isValid()) {
 								//TITRE de l'onglet resultat
@@ -356,9 +358,12 @@ Ext.namespace("GEOR")
 										}
 									});
 								}
-							}
+							}	
 							
-						} else {
+							
+							
+						}
+						if (currentForm.id == 'parcSecondForm') {
 							if (currentForm.getForm().isValid()) {
 								//TITRE de l'onglet resultat
 								var resultTitle = currentForm.getForm().findField('ccoinsee').lastSelectionText;
@@ -383,8 +388,49 @@ Ext.namespace("GEOR")
 										alert('ERROR');
 									}
 								});
-							}
+							}	
+							
 						}
+						if (currentForm.id == 'parcThirdForm') {
+					
+							if (currentForm.getForm().isValid()) {
+								//PARAMS
+								var params = currentForm.getForm().getValues();
+								
+								//TITRE de l'onglet resultat
+								var resultTitle = currentForm.getForm().getValues().ident;
+								
+								var parcelleId = currentForm.getForm().getValues().ident;							
+								
+								console.log(params);
+								
+								//liste des parcelles
+								//parcelle: Ext.util.JSON.encode(Ext.pluck(parcelleGrid.getStore().getRange(), 'data'))
+								params.parcelle = new Array();
+								parcelleGrid.getStore().each(function(record) {  
+									params.parcelle.push(record.data.parcelle); 
+								});	
+
+								
+								//envoi des données d'une form
+								Ext.Ajax.request({
+									method: 'GET',
+									url: getWebappURL() + 'getParcelle?parcelle='+parcelleId+"&details=1",
+									//params: params,
+									success: function(result) {
+										addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
+									},
+									failure: function(result) {
+										alert('ERROR');
+									}
+								});
+							}		
+						} else {
+							alert('Parcelle non trouvée');
+							
+						}
+
+
 					}
 				}
 			},{
