@@ -49,6 +49,7 @@ getWebappURL = function() {
 	//return 'http://gd-cms-crai-001.fasgfi.fr:8480/cadastrapp/';
 	//return 'https://MQ-CMS-CRAI-001.fasgfi.fr:8480/cadastrapp/';
 	//return 'https://cadastrapp-qualif.asogfi.fr/cadastrapp/';
+	//return 'http://gfi510456:8089/cadastrapp/';
 	
 
 }

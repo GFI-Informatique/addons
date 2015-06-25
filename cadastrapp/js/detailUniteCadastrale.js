@@ -26,6 +26,21 @@ onClickDisplayFIUC = function(parcelleId) {
 	var secteururbain ='';	
 	
 	//variables de l'onglet propriétaire
+	var compteproprietaire ='';
+	var qualiteabregee ='';
+	var nomdusage ='';
+	var prenomdusage ='';
+	var mentioncomplement ='';
+	var nomcomplement ='';
+	var prenomcomplement ='';
+	var adressehabitation ='';
+	var lieunaissance ='';
+	var datenaissance ='';
+	var codedroitreel ='';
+	var libellecodedroitreel ='';
+
+	
+	
 	//variables de l'onglet batiment
 	//variables de l'onglet subdivision fiscales
 	var lettreindic= '';
@@ -51,9 +66,10 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 					
 		 Ext.Ajax.request({
 		//A remplacer par getFIC
-        url: getWebappURL() + 'getParcelle?parcelle='+parcelleId+"&details=1",
-        method: 'GET',
-   
+        //url: getWebappURL() + 'getParcelle?parcelle='+parcelleId+"&details=1",
+        //method: 'GET',
+        url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=0",
+        //method: 'GET',   
         //params: params,
         success: function(response) {
             console.log(response.responseText);
@@ -99,7 +115,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 	
 	
     // ONGLET 1
-	var FiucBatimentsStore;
+
     
 									
     var parcelleDownloadPdfButton = new Ext.ButtonGroup({
@@ -210,7 +226,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         }, {
             name : 'dprncp'
         }, {
-            name : 'dlign1'
+            name : 'adressehabitation'
         }, {
             name : 'jdatnss'
         }, {
@@ -342,7 +358,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 
     // ONGLET 3
 
-    FiucBatimentsStore = new Ext.data.ArrayStore({
+    var FiucBatimentsStore = new Ext.data.ArrayStore({
         fields : [ {
             name : 'batiment_niveau'
         }, {
