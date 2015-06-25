@@ -609,7 +609,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     // });
 
     // Construction de la fenêtre principale
-    var windowFIUC;
+    // var windowFIUC;
     windowFIUC = new Ext.Window({
         title : 'titleFIUC',
         frame : true,
@@ -634,6 +634,10 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 				// AJOUT HAMZA
 				var feature = getFeatureById(parcelleId);
 				setState(feature, "1");
+				newGrid.getSelectionModel().clearSelections();
+				for (i = 0; i < selectedFeatures.length; i++) {
+					changeStateFeature(selectedFeatures[i],-1,"alltoYellow")
+				}
 				// FIN AJOUT	
                 windowFIUC = null;
             }
