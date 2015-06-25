@@ -34,10 +34,10 @@ Ext.namespace("GEOR")
 		}
 		resultParcelleWindow.show();
 		
-		var tabs = resultParcelleWindow.items.items[0];
+		tabs = resultParcelleWindow.items.items[0];
 		tabCounter = tabCounter+1;
 		
-		var newGrid = new GEOR.ResultParcelleGrid({
+		newGrid = new GEOR.ResultParcelleGrid({
 			title: title,
 			id: 'resultParcelleWindowTab'+tabCounter,
 			height: 300,
@@ -54,36 +54,6 @@ Ext.namespace("GEOR")
 			},
 			
 			listeners: {
-				rowclick: function(grid, rowIndex, e) {
-					//on ouvre une fenetre : detail parcelle
-				    var record = grid.getStore().getAt(rowIndex);
-						if (isCadastre()===true) {
-							grid.detailParcelles.push(
-							//TODO : cf. alert
-							onClickDisplayFIUC(record.data.parcelle)
-							//displayDetailParcelle(record.data.parcelle)
-						) 
-						}
-						if  (isFoncier()===true) {
-							grid.detailParcelles.push(
-							//TODO : modifier parametre
-							onClickDisplayFIUF()						
-						);
-						
-
-					}
-					//*****************************************
-					// on modifie le style de la parcelle selectionnée
-					var feature = getFeatureById(record.data.parcelle);
-					if (feature){
-					feature.state = 2;
-					selectLayer.drawFeature(feature);
-					}else 
-						console.log("pas d'entité trouvée dans la base avec ce numero")
-					//*****************************************
-
-					//alert('TODO : appeler la methode qui ouvre la fenetre de détail de la parcelle (qui doit retourner l objet Window)');
-				},
 				close: function(grid) {
 					//on ferme toutes les fenetres filles : detail parcelle
 					for	(var index = 0; index < grid.detailParcelles.length; index++) {
@@ -107,8 +77,29 @@ Ext.namespace("GEOR")
 			}
 		
 		});
+		newGrid.addListener("rowclick",function(grid, rowIndex, e) {
+					if (windowFIUC)
+						windowFIUC.close();
+					//on ouvre une fenetre : detail parcelle
+				    var record = grid.getStore().getAt(rowIndex);
+					grid.detailParcelles.push(
+							//TODO : cf. alert
+							onClickDisplayFIUC(record.data.parcelle)
+							//displayDetailParcelle(record.data.parcelle)
+					);
+					//*****************************************
+					// on modifie le style de la parcelle selectionnée
+					var feature = getFeatureById(record.data.parcelle);
+					if (feature){
+					feature.state = 2;
+					selectLayer.drawFeature(feature);
+					}else 
+						console.log("pas d'entité trouvée dans la base avec ce numero")
+					//*****************************************
+
+					//alert('TODO : appeler la methode qui ouvre la fenetre de détail de la parcelle (qui doit retourner l objet Window)');
+		});
 		var parcelle;
-		clearLayerSelection();
 		for(var i=0; i<newGrid.getStore().totalLength; i++) {
 			parcelle = newGrid.getStore().getAt(i);
 			getFeaturesWFSAttribute(parcelle.data.parcelle);
@@ -141,6 +132,7 @@ Ext.namespace("GEOR")
 					//*********************
 					// remettre le style de la couche à zero
 					clearLayerSelection();
+					newGrid.getSelectionModel().clearSelections();
 					//*********************
 					resultParcelleWindow = null;
 				}

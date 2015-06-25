@@ -87,14 +87,16 @@ Ext.namespace("GEOR")
                 }
 
             });
-			 var click = new OpenLayers.Control.Click();
+			 click = new OpenLayers.Control.Click();
              map.addControl(click);
              click.activate();
 
 		
 	}
+
 	getFeaturesWFSSpatial=	function (typeGeom, coords, typeSelector) {
-		var filter;
+		var filter; 
+		var selectRows=false; // ligne dans le resultat de recherche doit être selectionnée si etat =2
 		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
 		var polygoneElements="", endPolygoneElements="";
 		if(typeGeom == "Polygon") {
@@ -118,8 +120,8 @@ Ext.namespace("GEOR")
 				"filter": filter
 		  },
 		  success: function (response) {
-				var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
-				var idField = WFSLayerSetting.nameFieldIdParcelle;
+				var WFSLayerSetting = GEOR.custom.WFSLayerSetting; 
+				var idField = WFSLayerSetting.nameFieldIdParcelle; // champ identifiant de parcelle dans geoserver
 				featureJson = response.responseText;
 				var geojson_format = new OpenLayers.Format.GeoJSON();
 				var resultSelection = geojson_format.read(featureJson);
@@ -146,23 +148,146 @@ Ext.namespace("GEOR")
 						}
 						
 						state = changeStateFeature(feature, j-1, typeSelector);
-						if(state == "2") {
-							// parcelsIds.push(feature.attributes.id_parc);
-							parcelsIds.push(feature.attributes[idField]);
-							codComm = feature.attributes.codcomm;
-
+						var id=feature.attributes[idField];
+						if(state == "1" || state == "2") {
+							parcelsIds.push(id);
+						}else {
+							// newGrid.getSelectionModel().clearSelections()
+							newGrid.getStore().removeAt(indexRowParcelle(id));
 						}
 							
 					}
 				}
-				
-				showTabSelection( parcelsIds,codComm);
+				if (state == "2")
+					selectRows=true;
+
+				showTabSelection( parcelsIds,selectRows);
 				
 		},
 		  failure: function (response) {
 			  console.log("Error ",response.responseText);
 			   }
 		 });
+	}
+	indexRowParcelle = function (idParcelle){	
+		var rowIndex = newGrid.getStore().find('parcelle', idParcelle);
+		return 	rowIndex;
+	}
+	var TopicRecord = Ext.data.Record.create([
+				{name: 'adresse', mapping: 'adresse'},
+				{name: 'ccocom', mapping: 'ccocom'},
+				{name: 'ccoinsee', mapping: 'ccoinsee'},
+				{name: 'ccodep', mapping: 'ccodep'},
+				{name: 'ccodir', mapping: 'ccodir'},
+				{name: 'ccoinsee', mapping: 'ccoinsee'},
+				{name: 'cconvo', mapping: 'cconvo'},
+				{name: 'ccopre', mapping: 'ccopre'},
+				{name: 'ccosec', mapping: 'ccosec'},
+				{name: 'dindic', mapping: 'dindic'},
+				{name: 'dnupla', mapping: 'dnupla'},
+				{name: 'dnvoiri', mapping: 'dnvoiri'},
+				{name: 'dvoilib', mapping: 'dvoilib'},
+				{name: 'parcelle', mapping: 'parcelle'},
+				{name: 'surface', mapping: 'surface'}
+		]);			
+	var geojson_format = new OpenLayers.Format.JSON();
+	showTabSelection = function (parcelsIds,selectRows) {
+
+		if(parcelsIds.length > 0) {
+			var params = {"code" : parcelsIds[0]};
+			params.details = 1;
+			var cityCode = params.code;
+			params.ccodep = cityCode.substring(0,2);
+			params.ccodir = cityCode.substring(2,3);
+			params.ccocom = cityCode.substring(3,6);
+			params.ccopre = cityCode.substring(6,9);
+			params.ccosec = cityCode.substring(9,11);
+			params.dnupla = cityCode.substring(11,15);
+			
+			//liste des parcelles
+			//parcelle: Ext.util.JSON.encode(Ext.pluck(parcelleGrid.getStore().getRange(), 'data'))
+			params.parcelle = new Array();
+			for(var i=0; i < parcelsIds.length; i++)
+				params.parcelle.push(parcelsIds[i]);
+			var newRecord;		
+			//envoi la liste de resultat
+			Ext.Ajax.request({
+				method: 'GET',
+				url: getWebappURL() + 'getParcelle',
+				params: params,
+				username : "testadmin",
+				password : "testadmin",
+				success: function(result,opt) {
+					var data = geojson_format.read(result.responseText);
+					if (!tabs || !tabs.activeTab) { // si la fenetre de recherche n'est pas ouverte
+						addNewResultParcelle("result selection ("+parcelsIds.length+")", getResultParcelleStore(result.responseText, false));
+						newGrid.on('viewready', function(view,firstRow,lastRow){
+							if (selectRows ) {
+								for(var i=0; i < data.length; i++){
+									rowIndex = indexRowParcelle(data[i].parcelle);
+									newGrid.getSelectionModel().selectRow(rowIndex,true);
+									
+								}
+							}
+						}); 
+					}
+					else {
+						var ccoinsee ="";
+						for(var i=0; i < data.length; i++){
+							if (indexRowParcelle(data[i].parcelle) == -1) {
+								ccoinsee = data[i].ccodep+data[i].ccodir+data[i].ccocom;
+								newRecord = new TopicRecord({
+									adresse	:	(data[i].adresse)?data[i].adresse:data[i].dvoilib,
+									ccocom	:	data[i].ccocom,
+									ccoinsee:	ccoinsee,
+									ccodep	:	data[i].ccodep,
+									ccodir	:	data[i].ccodir,
+									cconvo	:	data[i].cconvo,
+									ccopre	:	data[i].ccopre,
+									ccosec	:	data[i].ccosec,
+									dindic	:	data[i].dindic,
+									dnupla	:	data[i].dnupla,
+									dnvoiri	:	data[i].dnvoiri,
+									dvoilib	:	data[i].dvoilib,
+									parcelle:	data[i].parcelle,
+									surface	:	data[i].surface,
+								});
+								newGrid.getStore().add(newRecord);
+							
+							}
+						}
+						if (selectRows  ) {
+							for(var i=0; i < data.length; i++){
+								rowIndex = indexRowParcelle(data[i].parcelle);
+								newGrid.getSelectionModel().selectRow(rowIndex,true);
+							}
+						}
+					}
+					// newGrid.getSelectionModel().mode ="MULTI";
+					// newGrid.getSelectionModel().allowDeselect =false;
+					
+				},
+				failure: function(result) {
+					alert('ERROR-');
+				}
+			});
+
+			
+		}
+	}
+	indexFeatureSelected =function(feature){
+		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
+		var idField = WFSLayerSetting.nameFieldIdParcelle;
+		var exist = false;
+		for (j=0; j < selectedFeatures.length && !exist; j++){
+			 // if(selectedFeatures[j].attributes.geo_parcelle == feature.attributes.geo_parcelle) { //renvoie des cas errronnées psk la géométrie est dupliquer pour quelques parcelles
+			if(selectedFeatures[j].attributes[idField] == feature.attributes[idField]) { // remplacer par cette ligne
+				exist = true;
+				if (exist)
+					return j;			
+			}
+		}
+		return -1;
 	}
 	
 	getFeaturesWFSAttribute = function (idParcelle) {
@@ -189,10 +314,11 @@ Ext.namespace("GEOR")
 				var resultSelection = geojson_format.read(featureJson);
 				var feature = geojson_format.read(featureJson)[0];
 				if(feature) {
-					selectLayer.addFeatures(feature);
-					selectedFeatures.push(feature);
-					
-					changeStateFeature(feature, null, "searchSelector");
+					if (indexFeatureSelected(feature) == -1) {
+						selectLayer.addFeatures(feature);
+						selectedFeatures.push(feature);
+						changeStateFeature(feature, null, "searchSelector");
+					}	
 				}
 			},
 			  failure: function (response) {
@@ -201,53 +327,7 @@ Ext.namespace("GEOR")
 		 });
 	}
 	
-	showTabSelection = function (parcelsIds,codComm) {
-		if(parcelsIds.length > 0) {
-			//var params = {"ccoinsee" : "630103"};
-			// var params = {"ccoinsee" : codComm};
-			// params.details = 1;
-			// var cityCode = params.ccoinsee;
-			// params.ccodep = cityCode.substring(0,2);
-			// params.ccodir = cityCode.substring(2,3);
-			// params.ccocom = cityCode.substring(3,6);
-			
-			var params = {"code" : parcelsIds[0]};
-			params.details = 1;
-			var cityCode = params.code;
-			params.ccodep = cityCode.substring(0,2);
-			params.ccodir = cityCode.substring(2,3);
-			params.ccocom = cityCode.substring(3,6);
-			params.ccopre = cityCode.substring(6,9);
-			params.ccosec = cityCode.substring(9,11);
-			params.dnupla = cityCode.substring(11,15);
 
-
-			
-			//liste des parcelles
-			//parcelle: Ext.util.JSON.encode(Ext.pluck(parcelleGrid.getStore().getRange(), 'data'))
-			params.parcelle = new Array();
-			for(var i=0; i < parcelsIds.length; i++)
-				params.parcelle.push(parcelsIds[i]);							
-			
-			//envoi la liste de resultat
-			Ext.Ajax.request({
-				method: 'GET',
-				url: getWebappURL() + 'getParcelle',
-				params: params,
-				username : "testadmin",
-				password : "testadmin",
-				success: function(result,opt) {
-					var jsonData = Ext.decode(result.responseText);
-					addNewResultParcelle("result selection ("+parcelsIds.length+")", getResultParcelleStore(result.responseText, false));
-				},
-				failure: function(result) {
-					alert('ERROR-');
-				}
-			});
-
-			
-		}
-	}
 	
 	getFeatureById = function (idParcelle) {
 		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
@@ -263,30 +343,33 @@ Ext.namespace("GEOR")
 		feature.state = state;
 		selectLayer.drawFeature(feature);
 	}
-	
+
 	changeStateFeature = function (feature, index, typeSelector) {
 		var state = null;
-		if(typeSelector == "clickSelector") {
-			if (feature.state == "1")
-			{
-				state = "2";
-				
-			}else if (feature.state == "2") {
-				selectedFeatures.splice(index, 1);
-				selectLayer.removeFeatures([feature]);
-				// selectLayer.drawFeature(feature);
-			}
-			else {
-				state = "1";
-			}
+		switch(typeSelector) {
+				case  "clickSelector":
+										if (feature.state == "1"){
+											state = "2";	
+										}else if (feature.state == "2") {
+											selectedFeatures.splice(index, 1);
+											selectLayer.destroyFeatures([feature]);
+										}
+										else {
+											state = "1";
+										}
+										
+										break;
+				case "featureSelector":
+										state = "2";
+										click.activate();
+										break;
+				case "alltoYellow":
+				case "searchSelector":
+										state = "1";
+										break;
+
 		}
-		else if(typeSelector == "featureSelector") {
-			state = "2";
-		}
-		else if(typeSelector == "searchSelector") {
-			state = "1";
-		}
-		
+	
 		setState(feature, state);
 		return state;
 		
@@ -307,6 +390,7 @@ Ext.namespace("GEOR")
 		var coords = "";
 		if(typeGeom == "Point") {
 			coords = feature.geometry.x+","+feature.geometry.y;
+			click.deactivate();
 		} else {
 			var components = feature.geometry.components;
 			if(typeGeom == "Polygon")
