@@ -62,8 +62,15 @@ Ext.namespace("GEOR")
 							//TODO : cf. alert
 							onClickDisplayFIUC(record.data.parcelle)
 							//displayDetailParcelle(record.data.parcelle)
-						
+						) 
+						}
+						if  (isFoncier()===true) {
+							grid.detailParcelles.push(
+							//TODO : modifier parametre
+							onClickDisplayFIUF()						
 						);
+						
+
 					}
 					//*****************************************
 					// on modifie le style de la parcelle selectionnée
