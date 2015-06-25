@@ -54,7 +54,8 @@ onClickDisplayFIUC = function(parcelleId) {
 	var FiucBatimentData=[];
 	var FiucSubdivData =[];
 	    var FiucHistomutData = [];
-	 
+
+    // ONGLET 1		
 var FiucParcelleStore = new Ext.data.ArrayStore({
                         fields : [ {
                             name : 'designation'
@@ -69,7 +70,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         //url: getWebappURL() + 'getParcelle?parcelle='+parcelleId+"&details=1",
         //method: 'GET',
         url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=0",
-        //method: 'GET',   
+        method: 'GET',   
         //params: params,
         success: function(response) {
             console.log(response.responseText);
@@ -113,10 +114,6 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         }
     });  			
 	
-	
-    // ONGLET 1
-
-    
 									
     var parcelleDownloadPdfButton = new Ext.ButtonGroup({
     	bodyBorder:false,
@@ -178,69 +175,88 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     });*/
 
     // ONGLET 2
-    var FiucProprietaireData = [ 'dnupro', 'dnomlp', 'dprnlp', 'expnee','dnomcp','dprncp','dlign1','jdatnss','dldnss','ccpdro_lib'];
- /*                   "proprietaire1", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "proprietaire1", "proprietaire1",
-                    "1900-01-01", "PROPRIETAIRE1" ],
-            [ "proprietaire1", "ano", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "proprietaire1", "1900-01-01",
-                    "PROPRIETAIRE1" ],
-            [ "ano", "proprietaire1", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "1900-01-01", "PROPRIETAIRE1" ],
-            [ "proprietaire1", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "1900-01-01", "PROPRIETAIRE1" ],
-            [ "proprietaire1", "proprietaire1", "proprietaire1", "ano",
-                    "proprietaire1", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "1900-01-01", "PROPRIETAIRE1" ],
-            [ "proprietaire1", "proprietaire1", "proprietaire1", "ano",
-                    "proprietaire1", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "1900-01-01", "PROPRIETAIRE1" ],
-            [ "proprietaire1", "proprietaire1", "proprietaire1", "ano",
-                    "proprietaire1", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "proprietaire1", "proprietaire1",
-                    "proprietaire1", "1900-01-01", "PROPRIETAIRE1" ] ];*/
+    //var FiucProprietaireData = [{name: 'codedroitreel'},{name:'compteproprietaire'}, {name:'nomdusage'},{name: 'prenomdusage'},{name:'mentioncomplement'},{name:'nomcomplement'},{name:'prenomcomplement'},{name:'adressehabitation'},{name:'datenaissance'},{name:'lieunaissance'},{name:'libellecodedroitreel'}];
 
  
     var FiucProprietaireStore = new Ext.data.ArrayStore({
 		
-        root : '',
-        totalProperty : 'total',
-        idProperty : "dnupro",
-        remoteSort : false,
-        autoDestroy : true,
+        //root : '',
+        //totalProperty : 'total',
+        //idProperty : "dnupro",
+        //remoteSort : false,
+        //autoDestroy : true,
         fields : [ {
-            name : 'dnupro'
+			name : 'codedroitreel '
+		}, {
+            name : 'compteproprietaire'
         }, {
-            name : 'dnomlp'
+            name : 'nomdusage'
         }, {
-            name : 'dprnlp'
+            name : 'prenomdusage'
         }, {
-            name : 'expnee'
+            name : 'mentioncomplement'
         }, {
-            name : 'dnomcp'
+            name : 'nomcomplement'
         }, {
-            name : 'dprncp'
+            name : 'prenomcomplement'
         }, {
             name : 'adressehabitation'
         }, {
-            name : 'jdatnss'
+            name : 'datenaissance'
         }, {
-            name : 'dldnss'
+            name : 'lieunaissance'
         }, {
-            name : 'ccpdro_lib'
+            name : 'libellecodedroitreel'
         } ],
+		
+		
         // proxy: new Ext.data.HttpProxy({
         // url: getWebappURL() + 'getProprietaire?dnomIp=anonymous',
         // method: 'GET'
         // }),
         data : FiucProprietaireData
     });
-    
+		console.log(getWebappURL() + 'getFIC?parcelle='+parcelleId);
+    	Ext.Ajax.request({
+		//A remplacer par getFIC
+        //url: getWebappURL() + 'getParcelle?parcelle='+parcelleId+"&details=1",
+        //method: 'GET',
+        url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=1",
+
+        method: 'GET',   
+        //params: params,
+        success: function(response) {
+            console.log(response.responseText);
+            var result = eval(response.responseText);
+            codedroitreel = result[0].ccodro;
+			
+            compteproprietaire = result[0].dnupro;
+			
+            nomdusage = result[0].dnomlp;
+			
+            prenomdusage = result[0].dprnlp;
+			
+            mentioncomplement = result[0].expnee;
+			
+            nomcomplement = result[0].dnomcp;
+			
+            prenomcomplement = result[0].dprncp;
+			
+            adressehabitation = result[0].dlign3 + result[0].dlign4+ result[0].dlign5 + result[0].dlign6;
+			
+           datenaissance = result[0].jdatnss ;
+		   
+           lieunaissance = result[0].dldnss ;
+		   
+           libellecodedroitreel = result[0].ccpdro_lib ;
+			           
+           FiucProprietaireData = [ codedroitreel,compteproprietaire, nomdusage, prenomdusage,mentioncomplement,nomcomplement,prenomcomplement,adressehabitation,datenaissance,lieunaissance,libellecodedroitreel];
+ 
+            FiucProprietaireStore.loadData(FiucProprietaireData,false);
+			
+            data : FiucProprietaireData;
+        }
+    });  			
 
     var proprietaireDownloadPdfButton = new Ext.ButtonGroup({
     	bodyBorder:false,
@@ -322,35 +338,34 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
             },
             columns : [ sm, {
                 header : OpenLayers.i18n('cadastrapp.duc.compte'),
-                dataIndex : 'dnupro'
+                dataIndex : 'compteproprietaire'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.nom'),
-                dataIndex : 'dnomlp'
+                dataIndex : 'nomdusage'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.prenom'),
-                dataIndex : 'dprnlp'
+                dataIndex : 'prenomdusage'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.mentioncpl'),
-                dataIndex : 'epxnee'
+                dataIndex : 'mentioncomplement'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.nomcpl'),
-                dataIndex : 'dnomcp'
+                dataIndex : 'nomcomplement'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.prenomcpl'),
-                dataIndex : 'dprncp'
+                dataIndex : 'prenomcomplement'
             }, {
-                // TODO : adresse doit etre la concatenation de dlign1..4
                 header : OpenLayers.i18n('cadastrapp.duc.adresse'),
-                dataIndex : 'dlign1'
+                dataIndex : 'adressehabitation'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.datenaissance'),
-                dataIndex : 'jdatnss'
+                dataIndex : 'datenaissance'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.lieunaissance'),
-                dataIndex : 'dldnss'
+                dataIndex : 'lieunaissance'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.cco_lib'),
-                dataIndex : 'ccodro_lib'
+                dataIndex : 'libellecodedroitreel'
             } ]
         }),
 
