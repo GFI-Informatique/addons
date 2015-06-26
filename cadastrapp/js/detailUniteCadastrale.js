@@ -78,7 +78,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         method: 'GET',   
         //params: params,
         success: function(response) {
-            console.log(response.responseText);
+            //console.log(response.responseText);
             var result = eval(response.responseText);
             commune = result[0].ccodep + result[0].ccodir + result[0].ccocom;
 			
@@ -97,7 +97,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
             parcellebatie = result[0].gparbat ;
 			
             secteururbain = result[0].gurbpa;
-            console.log(commune);
+            //console.log(commune);
            
             FiucParcelleData = [[ 'Commune', commune ],
                                  [ 'Section', section ],
@@ -352,7 +352,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     var buttonBatimentList = [];
     
     for ( var i=0; i< batimentsList.length ; i++ ) {
-        console.log('batiment : ' + batimentsList[i]);
+        //console.log('batiment : ' + batimentsList[i]);
         var buttonBatiment = new Ext.Button({
             id:batimentsList[i],
             text : batimentsList[i],
@@ -485,7 +485,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
    
         //params: params,
         success: function(response) {
-            console.log(response.responseText);
+            //console.log(response.responseText);
             var result = eval(response.responseText);
 			lettreindic = result[0].ccosub;
 			
@@ -495,7 +495,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 			
             revenu = result[0].drcsub;
 
-            console.log(lettreindic);
+            //console.log(lettreindic);
            
             FiucSubdivData =[{
 										name : 'lettreindic',
@@ -608,7 +608,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     // });
 
     // Construction de la fenêtre principale
-    // var windowFIUC;
+    var windowFIUC;
     windowFIUC = new Ext.Window({
         title : 'titleFIUC',
         frame : true,
@@ -631,12 +631,16 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         listeners : {
             close : function(window) {
 				// AJOUT HAMZA
+				// deselection de la ligne
+				var rowIndex = indexRowParcelle(parcelleId);
+				newGrid.getSelectionModel().deselectRow(rowIndex);
+				// mise à jour des tableau de fenêtres ouvertes
+				var index =newGrid.idParcellesOuvertes.indexOf(parcelleId);
+				newGrid.idParcellesOuvertes.splice(index-1,1);
+				newGrid.fichesOuvertes.splice(index-1,1);
 				var feature = getFeatureById(parcelleId);
-				setState(feature, "1");
-				newGrid.getSelectionModel().clearSelections();
-				for (i = 0; i < selectedFeatures.length; i++) {
-					changeStateFeature(selectedFeatures[i],-1,"alltoYellow")
-				}
+				if (feature)
+					changeStateFeature(feature, -1, "yellow");
 				// FIN AJOUT	
                 windowFIUC = null;
             }
@@ -691,20 +695,23 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 
     });
     windowFIUC.show();
-    console.log("displayFIUC onClick")
+	newGrid.fichesOuvertes.push(windowFIUC);
+	newGrid.idParcellesOuvertes.push(parcelleId);
+	// window=FiucParcelleGrid.findParentByType("window");
+    //console.log("displayFIUC onClick")
 }
 
 // return checked rows on proprietaie grid
 function getSelectedProprietaire() {
     var proprietaireSelected = grid.getSelectionModel().getSelections();
-    console.log(proprietaireSelected);
+    //console.log(proprietaireSelected);
 
 }
 
 // TODO mettre ca sur utils
 
 function reloadBatimentStore(bat) {
-    console.log( bat);
+    //console.log( bat);
     var FiucBatiments1Data = [
             [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ],
             [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ],
@@ -743,7 +750,7 @@ function reloadBatimentStore(bat) {
 
 function loadbordereauParcellaire() {
 
-    console.log("download bordereau function");
+    //console.log("download bordereau function");
     // TODO
     // onClickPrintBordereauParcellaireWindow(parcelleId);
 }

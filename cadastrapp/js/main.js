@@ -17,6 +17,23 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
             map: this.map,
             popupOptions: {unpinnable: false, draggable: true}
         });
+			//********************************		
+		// var wmsSetting = GEOR.custom.wmsLayer; 
+		// cadastre = new OpenLayers.Layer.WMS(
+			// wmsSetting.layerNameInPanel,wmsSetting.url, {
+			// LAYERS: wmsSetting.layerNameGeoserver,
+			// transparent: wmsSetting.transparent,
+			// format: wmsSetting.format           
+			// }, {
+				// isBaseLayer: false,
+				// singleTile: true
+		// });
+		// layer =cadastrapp.map.getLayersByName(wmsSetting.layerNameInPanel)[0];	
+		// if (layer) 	
+				// this.map.removeLayer(layer)		
+				
+		// this.map.addLayers([cadastre]);
+	//***************	
         this.window = new Ext.Window({
             title: OpenLayers.i18n('cadastrapp.cadastre_tools'),
             width: 540,

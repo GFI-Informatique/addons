@@ -9,7 +9,9 @@ Ext.namespace("GEOR")
 	//type de grille spécifique :
 	//detailParcelles : liste des fenetres filles ouvertes
 	GEOR.ResultParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
-		detailParcelles: new Array()
+		detailParcelles: new Array(),
+		fichesOuvertes: new Array(),
+		idParcellesOuvertes: new Array(),
 	});
 
 
@@ -32,9 +34,33 @@ Ext.namespace("GEOR")
 		if (resultParcelleWindow == null) {
 			initResultParcelle();
 		}
-		resultParcelleWindow.show();
 		
+		resultParcelleWindow.show();
 		tabs = resultParcelleWindow.items.items[0];
+		//**********
+			tabs.addListener('beforetabchange',function(tab, newTab, currentTab ){
+			var store;
+				if (currentTab) {
+					if (currentTab.store) {
+						store =currentTab.store.data.items;
+						changeStateParcelleOfTab(store,"tmp"); // deselection des parcelles
+					}
+				}
+				if (newTab) {
+					if (newTab.store) {
+						store =newTab.store.data.items;
+						changeStateParcelleOfTab(store,"yellow"); //selection en jaune
+						
+						var selectedRows=newTab.getSelectionModel().selections.items ; 
+						changeStateParcelleOfTab(selectedRows,"blue"); //selection en bleue 
+						
+						
+					}
+				}
+			});
+		
+		//**********
+
 		tabCounter = tabCounter+1;
 		
 		newGrid = new GEOR.ResultParcelleGrid({
@@ -69,25 +95,27 @@ Ext.namespace("GEOR")
 						//on selectionne manuellement le nouvel onglet à activer, pour eviter de tomber sur le '+' (qui va tenter de refaire un onglet et ça va faire nimporte quoi)
 						var index = tabs.items.findIndex('id', grid.id);
 						tabs.setActiveTab((index==0) ? 1 : (index-1));
+						//*************
+						// quand on ferme l'onglet on deselectionne toutes les parcelles
+						store =grid.store.data.items;
+						changeStateParcelleOfTab(store,"reset");
+						//*************
 					}
-					
-					
 
-				}
+				},
+               // staterestore: function(tabPanel, tab){
+                    // alert("tab changed");
+                // }
 			}
 		
 		});
 		newGrid.addListener("rowclick",function(grid, rowIndex, e) {
-			
 					if  (isFoncier()===true) {
 							grid.detailParcelles.push(
 							//TODO : modifier parametre
 							onClickDisplayFIUF()						
 						);
 					}
-					if(isCadastre()===true) {
-					if (windowFIUC)
-						windowFIUC.close();
 					//on ouvre une fenetre : detail parcelle
 				    var record = grid.getStore().getAt(rowIndex);
 					grid.detailParcelles.push(
@@ -99,9 +127,8 @@ Ext.namespace("GEOR")
 					// on modifie le style de la parcelle selectionnée
 					var feature = getFeatureById(record.data.parcelle);
 					if (feature){
-					feature.state = 2;
-					selectLayer.drawFeature(feature);
-					}else 
+					changeStateFeature(feature, -1, "blue");
+					}else {
 						console.log("pas d'entité trouvée dans la base avec ce numero")
 					//*****************************************
 
@@ -109,6 +136,8 @@ Ext.namespace("GEOR")
 					}		
 
 		});
+
+		
 		var parcelle;
 		for(var i=0; i<newGrid.getStore().totalLength; i++) {
 			parcelle = newGrid.getStore().getAt(i);
@@ -117,6 +146,19 @@ Ext.namespace("GEOR")
 		
 		tabs.insert(0, newGrid);
 		tabs.setActiveTab(0);
+	}
+	
+	changeStateParcelleOfTab = function(store,typeSelector){ // met à jour l'état des parcelles en fonction de l'évènement sur l'onglet
+		var  id,index,feature;
+		for(var i=0; i<store.length  ; i++) { //selection
+							id=store[i].data.parcelle ;
+							feature = getFeatureById(id);
+							if (feature){
+								index=indexFeatureSelected(feature);
+								changeStateFeature(feature, index, typeSelector);
+							}
+		}
+	
 	}
     
     
@@ -142,9 +184,13 @@ Ext.namespace("GEOR")
 					//*********************
 					// remettre le style de la couche à zero
 					clearLayerSelection();
-					newGrid.getSelectionModel().clearSelections();
+					closeAllWindowFIUC();
 					//*********************
 					resultParcelleWindow = null;
+				},
+				show: function(window)  {
+				// lors du changement entre onglets : deselection de toutes les parcelles et selection de celles du nouvel onglet
+
 				}
 			},
 			
