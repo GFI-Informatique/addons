@@ -48,12 +48,17 @@ onClickDisplayFIUC = function(parcelleId) {
 	var terrain = '';
 	var revenu = '';
 	//variables de l'onglet historique de mutation
+	var 	dateacte = '';
+	var	referenceparcelle = '';		
+     var  typemutation
+	
+	//Declaration des data
 
 	var FiucParcelleData =[];
 	var FiucProprietaireData=[];
 	var FiucBatimentData=[];
 	var FiucSubdivData =[];
-	    var FiucHistomutData = [];
+	var FiucHistomutData = [];
 
     // ONGLET 1		
 var FiucParcelleStore = new Ext.data.ArrayStore({
@@ -159,62 +164,25 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 
     });
 
- /*       colModel : new Ext.grid.ColumnModel({
-            defaults : {
-                border : true,
-                sortable : false,
-            },
-            columns : [ {
-                header : OpenLayers.i18n('cadastrapp.duc.designation'),
-                dataIndex :OpenLayers.i18n('cadastrapp.parcelle.city'),
-            }, {
-                header : OpenLayers.i18n('cadastrapp.duc.valeur'),
-				dataIndex : 'dnupla'}]
-        }),
-
-    });*/
 
     // ONGLET 2
-    //var FiucProprietaireData = [{name: 'codedroitreel'},{name:'compteproprietaire'}, {name:'nomdusage'},{name: 'prenomdusage'},{name:'mentioncomplement'},{name:'nomcomplement'},{name:'prenomcomplement'},{name:'adressehabitation'},{name:'datenaissance'},{name:'lieunaissance'},{name:'libellecodedroitreel'}];
+ //   FiucProprietaireData = [{codedroitreel,compteproprietaire,nomdusage,prenomdusage,mentioncomplement,nomcomplement,prenomcomplement,adressehabitation,datenaissance,lieunaissance,libellecodedroitreel}];
 
  
     var FiucProprietaireStore = new Ext.data.ArrayStore({
 		
        //root : 'rowsproprietaire',
         //totalProperty : 'total',
-        idProperty : 'compteproprietaire',
+        //idProperty : 'compteproprietaire',
         //remoteSort : false,
         //autoDestroy : true,
-        fields : [ {
-			name : 'codedroitreel '
-		}, {
-            name : 'compteproprietaire'
-        }, {
-            name : 'nomdusage'
-        }, {
-            name : 'prenomdusage'
-        }, {
-            name : 'mentioncomplement'
-        }, {
-            name : 'nomcomplement'
-        }, {
-            name : 'prenomcomplement'
-        }, {
-            name : 'adressehabitation'
-        }, {
-            name : 'datenaissance'
-        }, {
-            name : 'lieunaissance'
-        }, {
-            name : 'libellecodedroitreel'
-        } ],
+        fields : FiucProprietaireData,
 		
 		
         // proxy: new Ext.data.HttpProxy({
         // url: getWebappURL() + 'getProprietaire?dnomIp=anonymous',
         // method: 'GET'
         // }),
-        data : FiucProprietaireData
     });
 		console.log(getWebappURL() + 'getFIC?parcelle='+parcelleId);
     	Ext.Ajax.request({
@@ -227,6 +195,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         //params: params,
         success: function(response) {
             console.log(response.responseText);
+			console.log(rowIndex);
             var result = eval(response.responseText);
             codedroitreel = result[0].ccodro;
 			
@@ -250,8 +219,8 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 		   
            libellecodedroitreel = result[0].ccpdro_lib ;
 			           
-           FiucProprietaireData = [ codedroitreel,compteproprietaire, nomdusage, prenomdusage,mentioncomplement,nomcomplement,prenomcomplement,adressehabitation,datenaissance,lieunaissance,libellecodedroitreel];
- 
+			FiucProprietaireData = [{codedroitreel,compteproprietaire,nomdusage,prenomdusage,mentioncomplement,nomcomplement,prenomcomplement,adressehabitation,datenaissance,lieunaissance,libellecodedroitreel}];
+             console.log(FiucProprietaireData);
             FiucProprietaireStore.loadData(FiucProprietaireData,false);
 			
             data : FiucProprietaireData;
@@ -280,28 +249,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     	        }, 
     ]
     });
-    var descriptifHabitationDetailsButton = new Ext.ButtonGroup({
-    	bodyBorder:false,
-    	border:false,
-    	hideBorders:true,
-    	frame : false,
-    	items :[
-    	        {
-    	        	xtype : 'button', 
-			        name : 'descriptifHabitationDetailsButton',
-					scale : 'small',
-			        iconCls : "house",
-			        handler : function () {
-			        	//createReleveDePropriete();
-			        	// see below funtion 
-			        }
-    	        }, 
-    	        {
-    	        	xtype : 'label', 
-			        text : OpenLayers.i18n('cadastrapp.duc.batiment_descriptif'),
-    	        }, 
-    ]
-    });
+
     var sm = new Ext.grid.CheckboxSelectionModel();
     var bbar = new Ext.PagingToolbar({
         pageSize : 25,
@@ -337,9 +285,12 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
                 sortable : false,
             },
             columns : [ sm, {
-                header : OpenLayers.i18n('cadastrapp.duc.compte'),
-                dataIndex : 'compteproprietaire'
+                header : OpenLayers.i18n('cadastrapp.proprietaires.ccodro'),
+                dataIndex : 'codedroitreel'
             }, {
+				header : OpenLayers.i18n('cadastrapp.duc.compte'),
+                dataIndex : 'compteproprietaire'
+            },{
                 header : OpenLayers.i18n('cadastrapp.duc.nom'),
                 dataIndex : 'nomdusage'
             }, {
@@ -411,6 +362,29 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         buttonBatimentList.push(buttonBatiment);
 
     }
+	
+	    var descriptifHabitationDetailsButton = new Ext.ButtonGroup({
+    	bodyBorder:false,
+    	border:false,
+    	hideBorders:true,
+    	frame : false,
+    	items :[
+    	        {
+    	        	xtype : 'button', 
+			        name : 'descriptifHabitationDetailsButton',
+					scale : 'small',
+			        iconCls : "house",
+			        handler : function () {
+			        	//createReleveDePropriete();
+			        	// see below funtion 
+			        }
+    	        }, 
+    	        {
+    	        	xtype : 'label', 
+			        text : OpenLayers.i18n('cadastrapp.duc.batiment_descriptif'),
+    	        }, 
+    ]
+    });
 
     var FiucBatimentsGrid = new Ext.grid.GridPanel({
         store : FiucBatimentsStore,
@@ -493,56 +467,48 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
             [ 'Revenu au 01-01', '067AP' ] ];*/
     var FiucSubdivfiscStore = new Ext.data.ArrayStore({
         fields : [ {
-            name : 'lettreindic'
-        }, {
-            name : 'contenance'
-        }, {
-            name : 'terrain'
-        }, {
-            name : 'revenu'
-        } ],
-                        data : FiucSubdivData
-                    });
+					name : 'lettreindic'
+				}, {
+					name : 'contenance'
+				}, {
+					name : 'terrain'
+				}, {
+					name : 'revenu'
+				} ],
+                data : FiucSubdivData
+          });
 					
 		 Ext.Ajax.request({
  
-        url: getWebappURL() + 'getParcelle?parcelle='+parcelleId+"&details=1",
+        url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=3",
         method: 'GET',
    
         //params: params,
         success: function(response) {
             console.log(response.responseText);
             var result = eval(response.responseText);
-			lettreindic = result[0].dnupla;
+			lettreindic = result[0].ccosub;
 			
-            contenance = result[0].dnupla;
+            contenance = result[0].dcntsf;
 			
-            terrain = result[0].dnupla;
+            terrain = result[0].grnum_lib;
 			
-            revenu = result[0].dnupla ;
+            revenu = result[0].drcsub;
 
             console.log(lettreindic);
            
-            FiucSubdivData =[{ name : 'lettreindic'} ,
-										{ name : 'contenance' },
-										{ name : 'terrain' },
-										{ name : ' revenu' }
+            FiucSubdivData =[{
+										name : 'lettreindic',
+										name : 'contenance',
+										name : 'terrain',
+										name : ' revenu' }
 									];
             FiucSubdivfiscStore.loadData(FiucSubdivData,false);
 			
              data : FiucSubdivData;
+			 
 		}
-		/*
-        fields : [ {
-            name : 'lettreindic'
-        }, {
-            name : 'contenance'
-        }, {
-            name : 'terrain'
-        }, {
-            name : 'revenu'
-        } ],
-        data : FiucSubdivfiscData*/
+
     });
     
     var FiucSubdivfiscGrid = new Ext.grid.GridPanel({
@@ -559,49 +525,51 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
                   {header: "Nature de culture", dataIndex: 'terrain'},
                   {header: "Revenu au 01/01", dataIndex: 'revenu'},
             ]
-/*
-        store : FiucSubdivfiscStore,
-        stateful : true,
-        height : 500,
-        name : 'Fiuc_Subdivisions_fiscales',
-        xtype : 'editorgrid',
-        colModel : new Ext.grid.ColumnModel({
-            defaults : {
-                sortable : false,
-            },
-            columns : [ {
-                header : OpenLayers.i18n('cadastrapp.duc.lettreindic'),
-                dataIndex : 'lettreindic'
-            }, {
-                header : OpenLayers.i18n('cadastrapp.duc.contenance'),
-                dataIndex : 'contenance'
-            }, {
-                header : OpenLayers.i18n('cadastrapp.duc.terrain'),
-                dataIndex : 'terrain'
-            }, {
-                header : OpenLayers.i18n('cadastrapp.duc.revenu'),
-                dataIndex : 'revenu'
-            } ]
-        }),*/
-		
 
     });
 
     // ONGLET 5
-    var FiucHistomutData = [ [ 'Date acte', '067AP' ],
-            [ 'Référence de la parcelle mére', '067AP' ],
-            [ 'Type de mutation', '067AP' ] ];
 
     var FiucHistomutStore = new Ext.data.ArrayStore({
         fields : [ {
             name : 'dateacte'
         }, {
-            name : 'reference.parcelle'
+            name : 'referenceparcelle'
         }, {
-            name : 'type.mutation'
+            name : 'typemutation'
         } ],
         data : FiucHistomutData
     });
+		 Ext.Ajax.request({
+ 
+        url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=4",
+        method: 'GET',
+   
+        //params: params,
+        success: function(response) {
+            console.log(response.responseText);
+            var result = eval(response.responseText);
+			dateacte = result[0].jdatat;
+			
+            referenceparcelle = result[0].ccocom  + ' ' +result[0].ccoprem +' '+result[0].ccosecm +' '+result[0].dnuplam;
+			
+            typemutation = result[0].type_filiation;
+            console.log(lettreindic);
+           
+            FiucHistomutData =[{
+										name : 'lettreindic',
+										name : 'contenance',
+										name : 'terrain',
+										name : ' revenu' }
+									];
+            FiucHistomutStore.loadData(FiucHistomutData,false);
+			
+             data : FiucHistomutData
+			}
+			 
+		});
+			
+
 
     var FiucHistomutGrid = new Ext.grid.GridPanel({
         store : FiucHistomutStore,
@@ -617,11 +585,11 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
                 header : OpenLayers.i18n('cadastrapp.duc.dateacte'),
                 dataIndex : 'dateacte'
             }, {
-                header : OpenLayers.i18n('cadastrapp.duc.reference_parcelle'),
-                dataIndex : 'reference.parcelle'
+                header : "Référence de la parcelle mère",
+                dataIndex : 'referenceparcelle'
             }, {
-                header : OpenLayers.i18n('cadastrapp.duc.type_mutation'),
-                dataIndex : 'type.mutation'
+                header : "Type de mutation",
+                dataIndex : 'typemutation'
             } ]
         }),
 
