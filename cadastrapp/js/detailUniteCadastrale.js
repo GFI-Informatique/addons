@@ -180,9 +180,9 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
  
     var FiucProprietaireStore = new Ext.data.ArrayStore({
 		
-        //root : '',
+       //root : 'rowsproprietaire',
         //totalProperty : 'total',
-        //idProperty : "dnupro",
+        idProperty : 'compteproprietaire',
         //remoteSort : false,
         //autoDestroy : true,
         fields : [ {
