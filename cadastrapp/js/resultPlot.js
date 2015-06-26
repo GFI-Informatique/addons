@@ -78,6 +78,14 @@ Ext.namespace("GEOR")
 		
 		});
 		newGrid.addListener("rowclick",function(grid, rowIndex, e) {
+			
+					if  (isFoncier()===true) {
+							grid.detailParcelles.push(
+							//TODO : modifier parametre
+							onClickDisplayFIUF()						
+						);
+					}
+					if(isCadastre()===true) {
 					if (windowFIUC)
 						windowFIUC.close();
 					//on ouvre une fenetre : detail parcelle
@@ -98,6 +106,8 @@ Ext.namespace("GEOR")
 					//*****************************************
 
 					//alert('TODO : appeler la methode qui ouvre la fenetre de détail de la parcelle (qui doit retourner l objet Window)');
+					}		
+
 		});
 		var parcelle;
 		for(var i=0; i<newGrid.getStore().totalLength; i++) {
