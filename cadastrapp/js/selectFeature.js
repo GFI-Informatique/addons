@@ -91,7 +91,6 @@ Ext.namespace("GEOR")
              map.addControl(click);
              click.activate();
 
-		
 	}
 
 	getFeaturesWFSSpatial=	function (typeGeom, coords, typeSelector) {
@@ -152,14 +151,16 @@ Ext.namespace("GEOR")
 						if(state == "1" || state == "2") {
 							parcelsIds.push(id);
 						}else {
-							// newGrid.getSelectionModel().clearSelections()
-							newGrid.getStore().removeAt(indexRowParcelle(id));
+							// newGrid.getStore().removeAt(indexRowParcelle(id));
+							tabs.activeTab.store.removeAt(indexRowParcelle(id));
+							closeWindowFIUC(id);
 						}
 							
 					}
 				}
-				if (state == "2")
+				if (state == "2"){
 					selectRows=true;
+				}	
 
 				showTabSelection( parcelsIds,selectRows);
 				
@@ -169,8 +170,21 @@ Ext.namespace("GEOR")
 			   }
 		 });
 	}
+	closeWindowFIUC = function (idParcelle){	
+		var index =newGrid.idParcellesOuvertes.indexOf(idParcelle);
+		var ficheCourante =newGrid.fichesOuvertes[index];
+		ficheCourante.close();
+	}
+	closeAllWindowFIUC  = function (){	
+		for (var j=0; j < newGrid.fichesOuvertes.length; j++){
+			newGrid.fichesOuvertes[j].close();
+		}
+		newGrid.fichesOuvertes = [];
+		newGrid.idParcellesOuvertes = [];
+	}
 	indexRowParcelle = function (idParcelle){	
 		var rowIndex = newGrid.getStore().find('parcelle', idParcelle);
+		// var rowIndex = tabs.activeTab.store.find('parcelle', idParcelle);
 		return 	rowIndex;
 	}
 	var TopicRecord = Ext.data.Record.create([
@@ -205,7 +219,6 @@ Ext.namespace("GEOR")
 			params.dnupla = cityCode.substring(11,15);
 			
 			//liste des parcelles
-			//parcelle: Ext.util.JSON.encode(Ext.pluck(parcelleGrid.getStore().getRange(), 'data'))
 			params.parcelle = new Array();
 			for(var i=0; i < parcelsIds.length; i++)
 				params.parcelle.push(parcelsIds[i]);
@@ -226,6 +239,9 @@ Ext.namespace("GEOR")
 								for(var i=0; i < data.length; i++){
 									rowIndex = indexRowParcelle(data[i].parcelle);
 									newGrid.getSelectionModel().selectRow(rowIndex,true);
+									newGrid.detailParcelles.push( //affichage de la fenêtre cadastrale
+										onClickDisplayFIUC(data[i].parcelle)
+									);
 									
 								}
 							}
@@ -252,7 +268,7 @@ Ext.namespace("GEOR")
 									parcelle:	data[i].parcelle,
 									surface	:	data[i].surface,
 								});
-								newGrid.getStore().add(newRecord);
+								tabs.activeTab.store.add(newRecord);
 							
 							}
 						}
@@ -260,10 +276,13 @@ Ext.namespace("GEOR")
 							for(var i=0; i < data.length; i++){
 								rowIndex = indexRowParcelle(data[i].parcelle);
 								newGrid.getSelectionModel().selectRow(rowIndex,true);
+								newGrid.detailParcelles.push( //affichage de la fenêtre cadastrale
+									onClickDisplayFIUC(data[i].parcelle)
+								);
 							}
 						}
 					}
-					// newGrid.getSelectionModel().mode ="MULTI";
+					newGrid.getSelectionModel().mode ="MULTI";
 					// newGrid.getSelectionModel().allowDeselect =false;
 					
 				},
@@ -359,13 +378,20 @@ Ext.namespace("GEOR")
 										}
 										
 										break;
-				case "featureSelector":
+				case "blue":
 										state = "2";
 										click.activate();
 										break;
-				case "alltoYellow":
+				case "yellow":
 				case "searchSelector":
 										state = "1";
+										break;
+										
+				case "reset":			selectedFeatures.splice(index, 1);
+										selectLayer.destroyFeatures([feature]);
+										break;
+										
+				case "tmp":				state = null;
 										break;
 
 		}
@@ -377,13 +403,8 @@ Ext.namespace("GEOR")
 	}
 	// rechange le style et vide le tableau des entités selectionnées
 	clearLayerSelection=function () {
-		// for (i = 0; i < selectedFeatures.length; i++) { // remise à zero des entités selectionnées
-				// selectedFeatures[i].state= null;
-				// selectLayer.drawFeature(selectedFeatures[i]);
-		// }
 		selectedFeatures = [];
-		selectLayer.removeAllFeatures();
-		
+		selectLayer.removeAllFeatures();	
 	}
 	selectFeatureIntersection=	function (feature) {
 		var typeGeom = feature.geometry.id.split('_')[2];
@@ -400,7 +421,8 @@ Ext.namespace("GEOR")
 				coords += " "+components[i].x+","+components[i].y;
 			}
 		}
-		getFeaturesWFSSpatial(typeGeom, coords, "featureSelector");
+		getFeaturesWFSSpatial(typeGeom, coords, "blue");
+		
 
     }
 	

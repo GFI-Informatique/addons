@@ -28,8 +28,7 @@ var selectedFeatures = [];
 var styleFeatures;
 var selectLayer;
 var newGrid,tabs;
-var windowFIUC;
-var click
+var click;
 //***************
 //checkboxes : cadatre et foncier
 var _isCadastre = true;
@@ -49,7 +48,7 @@ console.log('Droits : CNIL1 (' + isCNIL1() + ') ; CNIL2 (' + isCNIL2() + ')');
 //url web-app
 getWebappURL = function() {
 	return '../cadastrapp/';
-	//return 'http://gd-cms-crai-001.fasgfi.fr:8480/cadastrapp/';
+	// return 'http://gd-cms-crai-001.fasgfi.fr:8480/cadastrapp/';
 	//return 'https://MQ-CMS-CRAI-001.fasgfi.fr:8480/cadastrapp/';
 	//return 'https://cadastrapp-qualif.asogfi.fr/cadastrapp/';
 	//return 'http://gfi510456:8089/cadastrapp/';
@@ -249,7 +248,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         this.map.addLayer(layer);
 
 		//*********************************************************************
-			// this.featureControl=selectionTest(this.map);	
 			createSelectionControl(this.map);	
 		//*********************************************************************
 
@@ -295,6 +293,24 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         if (!this.toggleGroup) {
             this.toggleGroup = this.map.id;
         }
+		//*************
+			// var wmsSetting = GEOR.custom.wmsLayer; 
+			// cadastre = new OpenLayers.Layer.WMS(
+				// wmsSetting.layerNameInPanel,wmsSetting.url, {
+				// LAYERS: wmsSetting.layerNameGeoserver,
+				// transparent: wmsSetting.transparent,
+				// format: wmsSetting.format           
+				// }, {
+					// isBaseLayer: false,
+					// singleTile: true
+			// });
+			// layer =this.map.getLayersByName(wmsSetting.layerNameInPanel)[0];	
+			// if (layer) 	
+					// this.map.removeLayer(layer)		
+					
+			// this.map.addLayers([cadastre]);
+
+		//*************
 
     },
 
@@ -313,8 +329,8 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                 // control: control,
                 // map: this.map,
                 // button options
-                toggleGroup: this.toggleGroup,
-                allowDepress: false,
+                //toggleGroup: this.toggleGroup,
+                allowDepress: true,
                 pressed: false,
                 tooltip: tooltip,
                 iconCls: iconCls,
@@ -327,7 +343,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             };
 
             action = new Ext.Button(actionOptions);
-
             this.actions.push(action);
         
     },
