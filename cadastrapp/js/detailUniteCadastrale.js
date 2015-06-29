@@ -610,7 +610,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     // Construction de la fenêtre principale
     var windowFIUC;
     windowFIUC = new Ext.Window({
-        title : 'titleFIUC',
+        title : parcelleId,
         frame : true,
         autoScroll : true,
         minimizable : false,
