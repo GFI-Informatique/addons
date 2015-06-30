@@ -183,7 +183,6 @@ onClickDisplayFIUF = function() {
         bodyPadding : 10,
         autoScroll : true,
         width : 600,
-        minimizable : true,
         closable : true,
         resizable : true,
         draggable : true,
