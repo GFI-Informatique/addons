@@ -84,12 +84,34 @@ Ext.namespace("GEOR")
                 trigger: function(e) {
 					lonlat = map.getLonLatFromPixel(e.xy);
 					getFeaturesWFSSpatial("Point", lonlat.lon+","+lonlat.lat, "clickSelector");
+						// info = new OpenLayers.Control.WMSGetFeatureInfo({ 
+							// url: 'http://gd-cms-crai-001.fasgfi.fr/geoserver/qgis/wms', 
+							// title: 'Identify features by clicking', 
+							// queryVisible: true,
+							// /*version: layers[0].params.VERSION, */
+							// layers: 'qgis:geo_parcelle',           
+							// eventListeners: { 
+									// getfeatureinfo: function(event) { 
+										// map.addPopup(new OpenLayers.Popup.FramedCloud( 
+											// "chicken", 
+											// map.getLonLatFromPixel(event.xy), 
+											// null, 
+											// event.text, 
+											// null, 
+											// true 
+										// )); 
+									// } 
+								// } 
+							// }); 
+						// map.addControl(info); 
+						// info.activate();
                 }
 
             });
 			 click = new OpenLayers.Control.Click();
              map.addControl(click);
              click.activate();
+
 
 	}
 
@@ -118,7 +140,7 @@ Ext.namespace("GEOR")
 				"outputFormat" : WFSLayerSetting.outputFormat,
 				"filter": filter
 		  },
-		  success: function (response) {
+			success: function (response) {
 				var WFSLayerSetting = GEOR.custom.WFSLayerSetting; 
 				var idField = WFSLayerSetting.nameFieldIdParcelle; // champ identifiant de parcelle dans geoserver
 				featureJson = response.responseText;
@@ -153,7 +175,7 @@ Ext.namespace("GEOR")
 						}else {
 							// newGrid.getStore().removeAt(indexRowParcelle(id));
 							tabs.activeTab.store.removeAt(indexRowParcelle(id));
-							closeWindowFIUC(id);
+							closeWindowFIUC(id,newGrid);
 						}
 							
 					}
@@ -164,19 +186,21 @@ Ext.namespace("GEOR")
 
 				showTabSelection( parcelsIds,selectRows);
 				
-		},
-		  failure: function (response) {
-			  console.log("Error ",response.responseText);
-			   }
+			},
+			callback : function() {
+			},
+			failure: function (response) {
+				console.log("Error ",response.responseText);
+			}
 		 });
 	}
-	closeWindowFIUC = function (idParcelle){	
-		var index =newGrid.idParcellesOuvertes.indexOf(idParcelle);
-		var ficheCourante =newGrid.fichesOuvertes[index];
+	closeWindowFIUC = function (idParcelle,grid){	
+		var index =grid.idParcellesOuvertes.indexOf(idParcelle);
+		var ficheCourante =grid.fichesOuvertes[index];
 		ficheCourante.close();
 	}
 	closeAllWindowFIUC  = function (){	
-		for (var j=0; j < newGrid.fichesOuvertes.length; j++){
+		for (var j=newGrid.fichesOuvertes.length-1; j>=0; j--){
 			newGrid.fichesOuvertes[j].close();
 		}
 		newGrid.fichesOuvertes = [];
@@ -206,7 +230,6 @@ Ext.namespace("GEOR")
 		]);			
 	var geojson_format = new OpenLayers.Format.JSON();
 	showTabSelection = function (parcelsIds,selectRows) {
-
 		if(parcelsIds.length > 0) {
 			var params = {"code" : parcelsIds[0]};
 			params.details = 1;
@@ -222,7 +245,8 @@ Ext.namespace("GEOR")
 			params.parcelle = new Array();
 			for(var i=0; i < parcelsIds.length; i++)
 				params.parcelle.push(parcelsIds[i]);
-			var newRecord;		
+			var newRecord;	
+	
 			//envoi la liste de resultat
 			Ext.Ajax.request({
 				method: 'GET',
@@ -236,6 +260,8 @@ Ext.namespace("GEOR")
 						addNewResultParcelle("result selection ("+parcelsIds.length+")", getResultParcelleStore(result.responseText, false));
 						newGrid.on('viewready', function(view,firstRow,lastRow){
 							if (selectRows ) {
+							// newGrid.getSelectionModel().mode ="MULTI";	
+							// newGrid.getSelectionModel().allowDeselect =false;
 								for(var i=0; i < data.length; i++){
 									rowIndex = indexRowParcelle(data[i].parcelle);
 									newGrid.getSelectionModel().selectRow(rowIndex,true);
@@ -282,7 +308,7 @@ Ext.namespace("GEOR")
 							}
 						}
 					}
-					newGrid.getSelectionModel().mode ="MULTI";
+
 					// newGrid.getSelectionModel().allowDeselect =false;
 					
 				},
@@ -422,6 +448,7 @@ Ext.namespace("GEOR")
 			}
 		}
 		getFeaturesWFSSpatial(typeGeom, coords, "blue");
+
 		
 
     }

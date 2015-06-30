@@ -39,24 +39,22 @@ Ext.namespace("GEOR")
 		tabs = resultParcelleWindow.items.items[0];
 		//**********
 			tabs.addListener('beforetabchange',function(tab, newTab, currentTab ){
-			var store;
-				if (currentTab) {
+				var store;
+				if (currentTab) { // cad la table de resultats est ouverte et on navigue entre les onglets,  sinon toute selection en bleue sur la carte va redevenir jaune
 					if (currentTab.store) {
 						store =currentTab.store.data.items;
 						changeStateParcelleOfTab(store,"tmp"); // deselection des parcelles
 					}
-				}
-				if (newTab) {
-					if (newTab.store) {
-						store =newTab.store.data.items;
-						changeStateParcelleOfTab(store,"yellow"); //selection en jaune
-						
-						var selectedRows=newTab.getSelectionModel().selections.items ; 
-						changeStateParcelleOfTab(selectedRows,"blue"); //selection en bleue 
-						
-						
+				
+					if (newTab) {
+						if (newTab.store) {
+							store =newTab.store.data.items;
+							changeStateParcelleOfTab(store,"yellow"); //selection en jaune
+							var selectedRows=newTab.getSelectionModel().selections.items ; 
+							changeStateParcelleOfTab(selectedRows,"blue"); //selection en bleue 
+						}
 					}
-				}
+				}	
 			});
 		
 		//**********
@@ -73,7 +71,10 @@ Ext.namespace("GEOR")
 			store: (result!=null) ? result : new Ext.data.Store(),
 	        
 			colModel: getResultParcelleColModel(),
-				
+			// selModel: {
+                // mode: 'MULTI'
+            // },
+			multiSelect: true,
 			viewConfig: {
 				deferEmptyText: false,
 				emptyText: message
@@ -116,42 +117,32 @@ Ext.namespace("GEOR")
 							onClickDisplayFIUF()						
 						);
 					}
-
-				//on ouvre une fenetre : detail parcelle
-				var record = grid.getStore().getAt(rowIndex);
-				if (grid.idParcellesOuvertes.indexOf(record.data.parcelle) == -1) {
-					grid.detailParcelles.push(
-							//TODO : cf. alert
-							onClickDisplayFIUC(record.data.parcelle)
-							//displayDetailParcelle(record.data.parcelle)
-					);
-					//*****************************************
-					// on modifie le style de la parcelle selectionnée
-					var feature = getFeatureById(record.data.parcelle);
-					if (feature){
-					changeStateFeature(feature, -1, "blue");
-					}else {
-						console.log("pas d'entité trouvée dans la base avec ce numero")
-					//*****************************************
-
-					//alert('TODO : appeler la methode qui ouvre la fenetre de détail de la parcelle (qui doit retourner l objet Window)');
-					}	
-				}else {
-					var rowIndex = indexRowParcelle(record.data.parcelle);
-					newGrid.getSelectionModel().deselectRow(rowIndex);
-					// mise à jour des tableau de fenêtres ouvertes
-					var index =grid.idParcellesOuvertes.indexOf(record.data.parcelle);
-					closeWindowFIUC(record.data.parcelle);
-					grid.idParcellesOuvertes.splice(index-1,1);
-					grid.fichesOuvertes.splice(index-1,1);
-					var feature = getFeatureById(record.data.parcelle);
-					if (feature)
-						changeStateFeature(feature, -1, "yellow");
-				}	
-
+			// on parcourant le tableau de façon générique on gérera les cas de selection simple et multiple pour tout les cliques sue les lignes
+			var selection  = grid.getSelectionModel();
+			var id,index;
+			for(var i=0; i<grid.store.getCount(); i++) { // on parcour tout le tableau
+				id =grid.store.getAt(i).data.parcelle;
+				 if(selection.isSelected(i)){ // si ligne selectionnée
+					if (grid.idParcellesOuvertes.indexOf(id) == -1) { //si fenêtre n'existe pas on l'affiche 
+						grid.detailParcelles.push(onClickDisplayFIUC(id));
+						var feature = getFeatureById(id);
+						if (feature)
+							changeStateFeature(feature, -1, "blue");
+					}
+				 }else {
+					if (grid.idParcellesOuvertes.indexOf(id) != -1) {
+						closeWindowFIUC(id,grid);
+						var feature = getFeatureById(id);
+						if (feature)
+							changeStateFeature(feature, -1, "yellow");								
+					}
+				 }
+			
+			}
+				//*****************************************
 		});
 
-		
+
 		var parcelle;
 		for(var i=0; i<newGrid.getStore().totalLength; i++) {
 			parcelle = newGrid.getStore().getAt(i);
