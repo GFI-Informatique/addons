@@ -181,22 +181,28 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
  //   FiucProprietaireData = [{codedroitreel,compteproprietaire,nomdusage,prenomdusage,mentioncomplement,nomcomplement,prenomcomplement,adressehabitation,datenaissance,lieunaissance,libellecodedroitreel}];
 
  
-    var FiucProprietaireStore = new Ext.data.ArrayStore({
+    var FiucProprietaireStore = new Ext.data.JsonStore({
 		
+		url : getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=1",
+	//	root : "",
+		autoLoad : true,
+	    
        //root : 'rowsproprietaire',
         //totalProperty : 'total',
         //idProperty : 'compteproprietaire',
         //remoteSort : false,
         //autoDestroy : true,
 
-			fields : [{codedroitreel, compteproprietaire, nomdusage, prenomdusage, mentioncomplement, nomcomplement, prenomcomplement, adressehabitation, datenaissance, lieunaissance,libellecodedroitreel
-			}],
-		data : FiucProprietaireData
+			fields : ['ccodro', 'dnupro', 'dnomlp', 'dprnlp', 'expnee', 'dnomcp', 'dprncp', 
+			   {   name : 'adress',
+			        convert : function (v, rec) {return  rec.dlign3 + rec.dlign4 + rec.dlign5 + rec.dlign6}
+				},
+			            'jdatnss', 'dldnss', 'ccodro_lib'],
 		
 		});
 	
 
-    	Ext.Ajax.request({
+/*Ext.Ajax.request({
 
         url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=1",
 
@@ -236,7 +242,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
             //data : FiucProprietaireData;
         }
     });  			
-
+*/
     var proprietaireDownloadPdfButton = new Ext.ButtonGroup({
     	bodyBorder:false,
     	border:false,
@@ -294,39 +300,42 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
                 border : true,
                 sortable : false,
             },
+			
+			
+			
             columns : [ sm, {
                 header : OpenLayers.i18n('cadastrapp.proprietaires.ccodro'),
-                dataIndex : 'codedroitreel'
+                dataIndex : 'ccodro'
             }, {
 				header : OpenLayers.i18n('cadastrapp.duc.compte'),
-                dataIndex : 'compteproprietaire'
+                dataIndex : 'dnupro'
             },{
                 header : OpenLayers.i18n('cadastrapp.duc.nom'),
-                dataIndex : 'nomdusage'
+                dataIndex : 'dnomlp'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.prenom'),
-                dataIndex : 'prenomdusage'
+                dataIndex : 'dprnlp'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.mentioncpl'),
-                dataIndex : 'mentioncomplement'
+                dataIndex : 'expnee'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.nomcpl'),
-                dataIndex : 'nomcomplement'
+                dataIndex : 'dnomcp'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.prenomcpl'),
-                dataIndex : 'prenomcomplement'
+                dataIndex : 'dprncp'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.adresse'),
-                dataIndex : 'adressehabitation'
+                dataIndex : 'adress'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.datenaissance'),
-                dataIndex : 'datenaissance'
+                dataIndex : 'jdatnss'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.lieunaissance'),
-                dataIndex : 'lieunaissance'
+                dataIndex : 'dldnss'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.cco_lib'),
-                dataIndex : 'libellecodedroitreel'
+                dataIndex : 'ccodro_lib'
             } ]
         }),
 
@@ -334,24 +343,20 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 
     // ONGLET 3
 
-    var FiucBatimentsStore = new Ext.data.ArrayStore({
-        fields : [ {
-            name : 'batiment_niveau'
-        }, {
-            name : 'batiment_porte'
-        }, {
-            name : 'batiment_type'
-        }, {
-            name : 'batiment_date'
-        }, {
-            name : 'batiment_revenu'
-        }, {
-            name : 'compte'
-        }, {
-            name : 'nom'
-        }, {
-            name : 'prenom'
-        } ],
+    var FiucBatimentsStore = new Ext.data.JsonStore({
+				
+		url : getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=2",
+	//	root : "",
+		autoLoad : true,
+	    
+       //root : 'rowsproprietaire',
+        //totalProperty : 'total',
+        //idProperty : 'compteproprietaire',
+        //remoteSort : false,
+        //autoDestroy : true,
+
+		
+        fields : [ 'dniv', 'dpor','cconlc_lib', 'dvlrt', 'jdatat', 'dnupro', 'dnomlp', 'dprnlp','epxnee','dnomcp','dprncp'],
     });
     
     var batimentsList = [];
@@ -444,28 +449,40 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
                 dataIndex : 'col1'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.batiment_niveau'),
-                dataIndex : 'batiment_niveau'
+                dataIndex : 'dniv'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.batiment_porte'),
-                dataIndex : 'batiment_porte'
+                dataIndex : 'dpor'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.batiment_type'),
-                dataIndex : 'batiment_type'
+                dataIndex : 'cconlc_lib'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.batiment_date'),
-                dataIndex : 'batiment_date'
+                dataIndex : 'jdatat'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.batiment_revenu'),
-                dataIndex : 'batiment_revenu'
+                dataIndex : 'dvlrt'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.compte'),
-                dataIndex : 'compte'
+                dataIndex : 'dnupro'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.nom'),
-                dataIndex : 'nom'
+                dataIndex : 'dnomlp'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.prenom'),
-                dataIndex : 'prenom'
+                dataIndex : 'dprnlp'
+
+            }, {
+                header : OpenLayers.i18n('cadastrapp.duc.prenom'),
+                dataIndex : 'epxnee'
+
+            }, {
+                header : OpenLayers.i18n('cadastrapp.duc.prenom'),
+                dataIndex : 'dnomcp'
+
+            }, {
+                header : OpenLayers.i18n('cadastrapp.duc.prenom'),
+                dataIndex : 'dprncp'
 
             } ]
         })
@@ -475,20 +492,15 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
  /*   var FiucSubdivfiscData = [ [ 'Lettre indicative', '067AP' ],
             [ 'Contenance', '067AP' ], [ 'Nature de culture', '067AP' ],
             [ 'Revenu au 01-01', '067AP' ] ];*/
-    var FiucSubdivfiscStore = new Ext.data.ArrayStore({
-        fields : [ {
-					name : 'lettreindic'
-				}, {
-					name : 'contenance'
-				}, {
-					name : 'terrain'
-				}, {
-					name : 'revenu'
-				} ],
-                data : FiucSubdivData
+    var FiucSubdivfiscStore = new Ext.data.JsonStore({
+		autoLoad : true,
+		 
+        url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=3",
+        method: 'GET',
+        fields : [  'ccosub','dcntsf ','grnum_lib','drcsub'],
           });
 					
-		 Ext.Ajax.request({
+/*		 Ext.Ajax.request({
  
         url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=3",
         method: 'GET',
@@ -519,7 +531,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 			 
 		}
 
-    });
+    });*/
     
     var FiucSubdivfiscGrid = new Ext.grid.GridPanel({
 		store : FiucSubdivfiscStore,
@@ -528,29 +540,36 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         title : 'Subdivisions fiscales',
         name : 'Fiuc_Subdivisions_fiscales',
         xtype : 'editorgrid',
+		colModel : new Ext.grid.ColumnModel({
+            defaults : {
+            border : true,
+            sortable : false,
+            },
+			
 
            columns : [
-                  {header: "Lettre indicative", dataIndex: 'lettreindic'},
-                  {header: "Contenance", dataIndex: 'contenance'},
-                  {header: "Nature de culture", dataIndex: 'terrain'},
-                  {header: "Revenu au 01/01", dataIndex: 'revenu'},
+                  {header: "Lettre indicative", dataIndex: 'ccosub'},
+                  {header: "Contenance", dataIndex: 'dcntsf'},
+                  {header: "Nature de culture", dataIndex: 'grnum_lib'},
+                  {header: "Revenu au 01/01", dataIndex: 'drcsub'},
             ]
+        }),
 
     });
 
     // ONGLET 5
 
     var FiucHistomutStore = new Ext.data.ArrayStore({
-        fields : [ {
-            name : 'dateacte'
-        }, {
-            name : 'referenceparcelle'
-        }, {
-            name : 'typemutation'
-        } ],
-        data : FiucHistomutData
-    });
-		 Ext.Ajax.request({
+		autoLoad : true,
+        url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=4",
+        method: 'GET',
+        fields : [  'jdatat',
+				{   name : 'referenceparcelle',
+			        convert : function (v, rec) {return  rec.ccocom   + ' '+rec.ccoprem  + ' '+rec.ccosecm  + ' '+ rec.dnuplam}
+				},'type_filiation',]
+
+				});
+/*		 Ext.Ajax.request({
  
         url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=4",
         method: 'GET',
@@ -576,7 +595,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
              data : FiucHistomutData
 			}
 			 
-		});
+		});*/
 			
 
 
@@ -592,13 +611,13 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
             },
             columns : [ {
                 header : OpenLayers.i18n('cadastrapp.duc.dateacte'),
-                dataIndex : 'dateacte'
+                dataIndex : 'jdatat'
             }, {
                 header : "Référence de la parcelle mère",
                 dataIndex : 'referenceparcelle'
             }, {
                 header : "Type de mutation",
-                dataIndex : 'typemutation'
+                dataIndex : 'type_filiation'
             } ]
         }),
 
