@@ -116,8 +116,10 @@ Ext.namespace("GEOR")
 							onClickDisplayFIUF()						
 						);
 					}
-					//on ouvre une fenetre : detail parcelle
-				    var record = grid.getStore().getAt(rowIndex);
+
+				//on ouvre une fenetre : detail parcelle
+				var record = grid.getStore().getAt(rowIndex);
+				if (grid.idParcellesOuvertes.indexOf(record.data.parcelle) == -1) {
 					grid.detailParcelles.push(
 							//TODO : cf. alert
 							onClickDisplayFIUC(record.data.parcelle)
@@ -133,7 +135,19 @@ Ext.namespace("GEOR")
 					//*****************************************
 
 					//alert('TODO : appeler la methode qui ouvre la fenetre de détail de la parcelle (qui doit retourner l objet Window)');
-					}		
+					}	
+				}else {
+					var rowIndex = indexRowParcelle(record.data.parcelle);
+					newGrid.getSelectionModel().deselectRow(rowIndex);
+					// mise à jour des tableau de fenêtres ouvertes
+					var index =grid.idParcellesOuvertes.indexOf(record.data.parcelle);
+					closeWindowFIUC(record.data.parcelle);
+					grid.idParcellesOuvertes.splice(index-1,1);
+					grid.fichesOuvertes.splice(index-1,1);
+					var feature = getFeatureById(record.data.parcelle);
+					if (feature)
+						changeStateFeature(feature, -1, "yellow");
+				}	
 
 		});
 

@@ -293,24 +293,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         if (!this.toggleGroup) {
             this.toggleGroup = this.map.id;
         }
-		//*************
-			// var wmsSetting = GEOR.custom.wmsLayer; 
-			// cadastre = new OpenLayers.Layer.WMS(
-				// wmsSetting.layerNameInPanel,wmsSetting.url, {
-				// LAYERS: wmsSetting.layerNameGeoserver,
-				// transparent: wmsSetting.transparent,
-				// format: wmsSetting.format           
-				// }, {
-					// isBaseLayer: false,
-					// singleTile: true
-			// });
-			// layer =this.map.getLayersByName(wmsSetting.layerNameInPanel)[0];	
-			// if (layer) 	
-					// this.map.removeLayer(layer)		
-					
-			// this.map.addLayers([cadastre]);
-
-		//*************
 
     },
 
