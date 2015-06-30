@@ -42,6 +42,18 @@ onClickDisplayFIUC = function(parcelleId) {
 	
 	
 	//variables de l'onglet batiment
+	var niveau ='';
+	var porte ='';
+	var type ='';
+	var date ='';
+	var revenu ='';
+	var compteprop ='';
+	var nom ='';
+	var prenom ='';
+	var nomcplt ='';
+	var prenomcplt ='';
+
+	
 	//variables de l'onglet subdivision fiscales
 	var lettreindic= '';
 	var contenance = '';
@@ -50,12 +62,12 @@ onClickDisplayFIUC = function(parcelleId) {
 	//variables de l'onglet historique de mutation
 	var 	dateacte = '';
 	var	referenceparcelle = '';		
-     var  typemutation
+     var  typemutation = '';
 	
 	//Declaration des data
 
 	var FiucParcelleData =[];
-	var FiucProprietaireData=[];
+	var FiucProprietaireData=['','','','','','','','','','',''];
 	var FiucBatimentData=[];
 	var FiucSubdivData =[];
 	var FiucHistomutData = [];
@@ -176,19 +188,16 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         //idProperty : 'compteproprietaire',
         //remoteSort : false,
         //autoDestroy : true,
-        fields : FiucProprietaireData,
+
+			fields : [{codedroitreel, compteproprietaire, nomdusage, prenomdusage, mentioncomplement, nomcomplement, prenomcomplement, adressehabitation, datenaissance, lieunaissance,libellecodedroitreel
+			}],
+		data : FiucProprietaireData
 		
-		
-        // proxy: new Ext.data.HttpProxy({
-        // url: getWebappURL() + 'getProprietaire?dnomIp=anonymous',
-        // method: 'GET'
-        // }),
-    });
-		console.log(getWebappURL() + 'getFIC?parcelle='+parcelleId);
+		});
+	
+
     	Ext.Ajax.request({
-		//A remplacer par getFIC
-        //url: getWebappURL() + 'getParcelle?parcelle='+parcelleId+"&details=1",
-        //method: 'GET',
+
         url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=1",
 
         method: 'GET',   
@@ -197,6 +206,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
             console.log(response.responseText);
 			console.log(rowIndex);
             var result = eval(response.responseText);
+			console.log(result.length);
             codedroitreel = result[0].ccodro;
 			
             compteproprietaire = result[0].dnupro;
@@ -223,7 +233,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
              console.log(FiucProprietaireData);
             FiucProprietaireStore.loadData(FiucProprietaireData,false);
 			
-            data : FiucProprietaireData;
+            //data : FiucProprietaireData;
         }
     });  			
 
@@ -554,7 +564,6 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
             referenceparcelle = result[0].ccocom  + ' ' +result[0].ccoprem +' '+result[0].ccosecm +' '+result[0].dnuplam;
 			
             typemutation = result[0].type_filiation;
-            console.log(lettreindic);
            
             FiucHistomutData =[{
 										name : 'lettreindic',
@@ -610,7 +619,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     // Construction de la fenêtre principale
     var windowFIUC;
     windowFIUC = new Ext.Window({
-        title : 'titleFIUC',
+        title : titleFIUC,
         frame : true,
         autoScroll : true,
         minimizable : false,
