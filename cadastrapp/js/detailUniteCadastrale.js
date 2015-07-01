@@ -24,53 +24,11 @@ onClickDisplayFIUC = function(parcelleId) {
 	var contenancecalculee ='';
 	var parcellebatie ='';
 	var secteururbain ='';	
-	
-	//variables de l'onglet propriétaire
-	var compteproprietaire ='';
-	var qualiteabregee ='';
-	var nomdusage ='';
-	var prenomdusage ='';
-	var mentioncomplement ='';
-	var nomcomplement ='';
-	var prenomcomplement ='';
-	var adressehabitation ='';
-	var lieunaissance ='';
-	var datenaissance ='';
-	var codedroitreel ='';
-	var libellecodedroitreel ='';
 
-	
-	
-	//variables de l'onglet batiment
-	var niveau ='';
-	var porte ='';
-	var type ='';
-	var date ='';
-	var revenu ='';
-	var compteprop ='';
-	var nom ='';
-	var prenom ='';
-	var nomcplt ='';
-	var prenomcplt ='';
-
-	
-	//variables de l'onglet subdivision fiscales
-	var lettreindic= '';
-	var contenance = '';
-	var terrain = '';
-	var revenu = '';
-	//variables de l'onglet historique de mutation
-	var 	dateacte = '';
-	var	referenceparcelle = '';		
-     var  typemutation = '';
-	
 	//Declaration des data
 
 	var FiucParcelleData =[];
-	var FiucProprietaireData=['','','','','','','','','','',''];
-	var FiucBatimentData=[];
-	var FiucSubdivData =[];
-	var FiucHistomutData = [];
+
 
     // ONGLET 1		
 var FiucParcelleStore = new Ext.data.ArrayStore({
@@ -178,8 +136,6 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 
 
     // ONGLET 2
- //   FiucProprietaireData = [{codedroitreel,compteproprietaire,nomdusage,prenomdusage,mentioncomplement,nomcomplement,prenomcomplement,adressehabitation,datenaissance,lieunaissance,libellecodedroitreel}];
-
  
     var FiucProprietaireStore = new Ext.data.JsonStore({
 		
@@ -193,7 +149,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         //remoteSort : false,
         //autoDestroy : true,
 
-			fields : ['ccodro', 'dnupro', 'dnomlp', 'dprnlp', 'expnee', 'dnomcp', 'dprncp', 
+			fields : ['ccodro', 'dnupro', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp', 
 			   {   name : 'adress',
 			        convert : function (v, rec) {return  rec.dlign3 + rec.dlign4 + rec.dlign5 + rec.dlign6}
 				},
@@ -202,47 +158,6 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 		});
 	
 
-/*Ext.Ajax.request({
-
-        url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=1",
-
-        method: 'GET',   
-        //params: params,
-        success: function(response) {
-            console.log(response.responseText);
-			console.log(rowIndex);
-            var result = eval(response.responseText);
-			console.log(result.length);
-            codedroitreel = result[0].ccodro;
-			
-            compteproprietaire = result[0].dnupro;
-			
-            nomdusage = result[0].dnomlp;
-			
-            prenomdusage = result[0].dprnlp;
-			
-            mentioncomplement = result[0].expnee;
-			
-            nomcomplement = result[0].dnomcp;
-			
-            prenomcomplement = result[0].dprncp;
-			
-            adressehabitation = result[0].dlign3 + result[0].dlign4+ result[0].dlign5 + result[0].dlign6;
-			
-           datenaissance = result[0].jdatnss ;
-		   
-           lieunaissance = result[0].dldnss ;
-		   
-           libellecodedroitreel = result[0].ccpdro_lib ;
-			           
-			FiucProprietaireData = [{codedroitreel,compteproprietaire,nomdusage,prenomdusage,mentioncomplement,nomcomplement,prenomcomplement,adressehabitation,datenaissance,lieunaissance,libellecodedroitreel}];
-             console.log(FiucProprietaireData);
-            FiucProprietaireStore.loadData(FiucProprietaireData,false);
-			
-            //data : FiucProprietaireData;
-        }
-    });  			
-*/
     var proprietaireDownloadPdfButton = new Ext.ButtonGroup({
     	bodyBorder:false,
     	border:false,
@@ -317,7 +232,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
                 dataIndex : 'dprnlp'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.mentioncpl'),
-                dataIndex : 'expnee'
+                dataIndex : 'epxnee'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.nomcpl'),
                 dataIndex : 'dnomcp'
@@ -346,7 +261,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     var FiucBatimentsStore = new Ext.data.JsonStore({
 				
 		url : getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=2",
-	//	root : "",
+		//	root : "",
 		autoLoad : true,
 	    
        //root : 'rowsproprietaire',
@@ -354,7 +269,6 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         //idProperty : 'compteproprietaire',
         //remoteSort : false,
         //autoDestroy : true,
-
 		
         fields : [ 'dniv', 'dpor','cconlc_lib', 'dvlrt', 'jdatat', 'dnupro', 'dnomlp', 'dprnlp','epxnee','dnomcp','dprncp'],
     });
@@ -489,50 +403,19 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     });
 
     // ONGLET 4
- /*   var FiucSubdivfiscData = [ [ 'Lettre indicative', '067AP' ],
-            [ 'Contenance', '067AP' ], [ 'Nature de culture', '067AP' ],
-            [ 'Revenu au 01-01', '067AP' ] ];*/
+
     var FiucSubdivfiscStore = new Ext.data.JsonStore({
 		autoLoad : true,
 		 
         url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=3",
         method: 'GET',
-        fields : [  'ccosub','dcntsf ','grnum_lib','drcsub'],
+        fields : [  'ccosub', 
+				{   name : 'contenance',
+			        convert : function (v, rec) {return  rec.dcntsf}
+				},
+				'cgrnum_lib','drcsub'],
           });
-					
-/*		 Ext.Ajax.request({
- 
-        url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=3",
-        method: 'GET',
-   
-        //params: params,
-        success: function(response) {
-            //console.log(response.responseText);
-            var result = eval(response.responseText);
-			lettreindic = result[0].ccosub;
-			
-            contenance = result[0].dcntsf;
-			
-            terrain = result[0].grnum_lib;
-			
-            revenu = result[0].drcsub;
-
-            //console.log(lettreindic);
-           
-            FiucSubdivData =[{
-										name : 'lettreindic',
-										name : 'contenance',
-										name : 'terrain',
-										name : ' revenu' }
-									];
-            FiucSubdivfiscStore.loadData(FiucSubdivData,false);
-			
-             data : FiucSubdivData;
-			 
-		}
-
-    });*/
-    
+					    
     var FiucSubdivfiscGrid = new Ext.grid.GridPanel({
 		store : FiucSubdivfiscStore,
         stateful : true,
@@ -549,8 +432,8 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 
            columns : [
                   {header: "Lettre indicative", dataIndex: 'ccosub'},
-                  {header: "Contenance", dataIndex: 'dcntsf'},
-                  {header: "Nature de culture", dataIndex: 'grnum_lib'},
+                  {header: "Contenance", dataIndex: 'contenance'},
+                  {header: "Nature de culture", dataIndex: 'cgrnum_lib'},
                   {header: "Revenu au 01/01", dataIndex: 'drcsub'},
             ]
         }),
@@ -563,40 +446,18 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 		autoLoad : true,
         url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=4",
         method: 'GET',
-        fields : [  'jdatat',
+        fields : [  
+				{   name : 'date',
+			        convert : function (v, rec) {return  rec.jdatat}
+				},
 				{   name : 'referenceparcelle',
-			        convert : function (v, rec) {return  rec.ccocom   + ' '+rec.ccoprem  + ' '+rec.ccosecm  + ' '+ rec.dnuplam}
-				},'type_filiation',]
+			        convert : function (v, rec) {return  rec.ccocomm   + ' '+rec.ccoprem  + ' '+rec.ccosecm  + ' '+ rec.dnuplam}
+				},
+				{   name : 'filiation',
+			        convert : function (v, rec) {return  rec.type_filiation}
+				}]
 
 				});
-/*		 Ext.Ajax.request({
- 
-        url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=4",
-        method: 'GET',
-   
-        //params: params,
-        success: function(response) {
-            console.log(response.responseText);
-            var result = eval(response.responseText);
-			dateacte = result[0].jdatat;
-			
-            referenceparcelle = result[0].ccocom  + ' ' +result[0].ccoprem +' '+result[0].ccosecm +' '+result[0].dnuplam;
-			
-            typemutation = result[0].type_filiation;
-           
-            FiucHistomutData =[{
-										name : 'lettreindic',
-										name : 'contenance',
-										name : 'terrain',
-										name : ' revenu' }
-									];
-            FiucHistomutStore.loadData(FiucHistomutData,false);
-			
-             data : FiucHistomutData
-			}
-			 
-		});*/
-			
 
 
     var FiucHistomutGrid = new Ext.grid.GridPanel({
@@ -611,13 +472,13 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
             },
             columns : [ {
                 header : OpenLayers.i18n('cadastrapp.duc.dateacte'),
-                dataIndex : 'jdatat'
+                dataIndex : 'date'
             }, {
                 header : "Référence de la parcelle mère",
                 dataIndex : 'referenceparcelle'
             }, {
                 header : "Type de mutation",
-                dataIndex : 'type_filiation'
+                dataIndex : 'filiation'
             } ]
         }),
 
