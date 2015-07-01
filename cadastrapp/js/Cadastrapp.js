@@ -249,6 +249,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 
 		//*********************************************************************
 			createSelectionControl(this.map);	
+			addPopupOnhover(this.map);
 		//*********************************************************************
 
         layer.events.on({
