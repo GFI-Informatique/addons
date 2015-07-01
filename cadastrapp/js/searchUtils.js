@@ -70,7 +70,7 @@ Ext.namespace("GEOR")
                 url: getWebappURL() + 'getParcelle',
                 method: 'GET'
              }),
-			fields : ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib']
+			fields : ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib','dcntpa']
 		});
 	}
 	reloadParcelleStore = function(parcelleStore, cityId, sectionId) {
@@ -222,8 +222,8 @@ Ext.namespace("GEOR")
 				sortable: true
 			},
 			{
-				id:'surface',
-				dataIndex: 'surface',
+				id:'dcntpa',
+				dataIndex: 'dcntpa',
 				header: OpenLayers.i18n('cadastrapp.parcelle.result.surface'),
 				sortable: true
 			}]);
@@ -247,7 +247,7 @@ Ext.namespace("GEOR")
 	
 	getResultParcelleStore = function (result, fromForm) {
 		return new Ext.data.JsonStore({
-			fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'cconvo', 'dvoilib', 'surface',
+			fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'cconvo', 'dvoilib', 'dcntpa',
 			         { 
 			       		name: 'ccoinsee', 
 			       		convert: function(v, rec) { return rec.ccodep + rec.ccodir + rec.ccocom; }
@@ -261,59 +261,7 @@ Ext.namespace("GEOR")
 			data: (fromForm) ? Ext.util.JSON.decode(result).data : Ext.util.JSON.decode(result)
 		});		
 	}
-	/*
-	getResultFicParcelleStore = function (result, fromForm) {
-		return new Ext.data.JsonStore({
-			fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib', 'surface',
-			         { 
-			       		name: 'ccoinsee', 
-			       		convert: function(v, rec) { return rec.ccodep + rec.ccodir + rec.ccocom; }
-			         },
-			         { 
-			       		name: 'ccosec', 
-			       		convert: function(v, rec) {
-			       			return rec.gcopre + rec.ccosec;
-			       		},
-						
-			         { 
-			       		name: 'dnupla', 
-			       		convert: function(v, rec) {
-			       			return rec.dnupla;
-			       		},
-						{ 
-			       		name: 'adresse', 
-			       		convert: function(v, rec) {
-			       			return rec.dnvoiri + rec.dindic + ' '+ rec.cconvo +' ' + rec.dvoilib;
-			       		},
-						{ 
-			       		name: 'dvoilib', 
-			       		convert: function(v, rec) {
-			       			return  ' ' + rec.dvoilib;
-			       		},
-						{ 
-			       		name: 'dcntpa', 
-			       		convert: function(v, rec) {
-			       			return rec.dcntpa  + 'm2';
-			       		},
-						{ 
-			       		name: 'supf', 
-			       		convert: function(v, rec) {
-			       			return rec.supf  + 'm2';
-			       		},
-						{ 
-			       		name: 'gparbat', 
-			       		convert: function(v, rec) {
-			       			return rec.gparbat;
-			       		},
-						{ 
-			       		name: 'gurbpa', 
-			       		convert: function(v, rec) {
-			       			return rec.gurbpa;
-			       		}
-			         }],
-			data: (fromForm) ? Ext.util.JSON.decode(result).data : Ext.util.JSON.decode(result)
-		});		
-	}*/
+
 	
 	
 	
