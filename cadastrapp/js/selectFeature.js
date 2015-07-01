@@ -90,7 +90,63 @@ Ext.namespace("GEOR")
 			 click = new OpenLayers.Control.Click();
              map.addControl(click);
              click.activate();
+	}
+	addPopupOnhover=function(map){
+		// class definition
+		OpenLayers.Control.Hover = OpenLayers.Class(OpenLayers.Control, {                
+                defaultHandlerOptions: {
+                    'delay': 200,
+                    'pixelTolerance': null,
+                    'stopMove': false
+                },
+                initialize: function(options) {
+                    this.handlerOptions = OpenLayers.Util.extend(
+                        {}, this.defaultHandlerOptions
+                    );
+                    OpenLayers.Control.prototype.initialize.apply(
+                        this, arguments
+                    ); 
+                    this.handler = new OpenLayers.Handler.Hover(
+                        this,
+                        {'pause': this.onPause, 'move': this.onMove},
+                        this.handlerOptions
+                    );
+                }, 
+                onPause: function(evt) {
+                    /*var output = document.getElementById(this.key + 'Output');
+                    var msg = 'pause ' + evt.xy;
+                    output.value = output.value + msg + "\r\n";*/
+					win = new Ext.Window({
+										title: 'Add',
+										layout: 'fit',
+										autoScroll: true,
+										y: 120,
+										width: 300,
+										height: 150,
+										modal: true,
+										closeAction: 'hide',
+										// items: [formpanel]
+									});
+					win.show();
+					win.body.update("TODO");
+					
+                },
+                onMove: function(evt) {
+                    // if this control sent an Ajax request (e.g. GetFeatureInfo) when
+                    // the mouse pauses the onMove callback could be used to abort that
+                    // request.
+                }
+            });
+			var infoControls = {
+                    'hover': new OpenLayers.Control.Hover({
+                        handlerOptions: {
+                            'delay': 5000
+                        }
+                    })
+			};
 
+			map.addControl(infoControls["hover"]); 
+			infoControls["hover"].activate();
 	}
 
 	getFeaturesWFSSpatial=	function (typeGeom, coords, typeSelector) {
@@ -153,7 +209,7 @@ Ext.namespace("GEOR")
 						}else {
 							// newGrid.getStore().removeAt(indexRowParcelle(id));
 							tabs.activeTab.store.removeAt(indexRowParcelle(id));
-							closeWindowFIUC(id);
+							closeWindowFIUC(id,newGrid);
 						}
 							
 					}
@@ -164,19 +220,21 @@ Ext.namespace("GEOR")
 
 				showTabSelection( parcelsIds,selectRows);
 				
-		},
-		  failure: function (response) {
-			  console.log("Error ",response.responseText);
-			   }
+			},
+			callback : function() {
+			},
+			failure: function (response) {
+				console.log("Error ",response.responseText);
+			}
 		 });
 	}
-	closeWindowFIUC = function (idParcelle){	
-		var index =newGrid.idParcellesOuvertes.indexOf(idParcelle);
-		var ficheCourante =newGrid.fichesOuvertes[index];
+	closeWindowFIUC = function (idParcelle,grid){	
+		var index =grid.idParcellesOuvertes.indexOf(idParcelle);
+		var ficheCourante =grid.fichesOuvertes[index];
 		ficheCourante.close();
 	}
-	closeAllWindowFIUC  = function (){	
-		for (var j=0; j < newGrid.fichesOuvertes.length; j++){
+	closeAllWindowFIUC  = function (){
+		for (var j=newGrid.fichesOuvertes.length-1; j>=0; j--){
 			newGrid.fichesOuvertes[j].close();
 		}
 		newGrid.fichesOuvertes = [];
@@ -222,7 +280,6 @@ Ext.namespace("GEOR")
 			params.parcelle = new Array();
 			for(var i=0; i < parcelsIds.length; i++)
 				params.parcelle.push(parcelsIds[i]);
-			var newRecord;		
 			//envoi la liste de resultat
 			Ext.Ajax.request({
 				method: 'GET',

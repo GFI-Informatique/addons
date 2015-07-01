@@ -664,8 +664,8 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 				newGrid.getSelectionModel().deselectRow(rowIndex);
 				// mise à jour des tableau de fenêtres ouvertes
 				var index =newGrid.idParcellesOuvertes.indexOf(parcelleId);
-				newGrid.idParcellesOuvertes.splice(index-1,1);
-				newGrid.fichesOuvertes.splice(index-1,1);
+				newGrid.idParcellesOuvertes.splice(index,1);
+				newGrid.fichesOuvertes.splice(index,1);
 				var feature = getFeatureById(parcelleId);
 				if (feature)
 					changeStateFeature(feature, -1, "yellow");
