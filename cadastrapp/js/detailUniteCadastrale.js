@@ -159,6 +159,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 	
 
     var proprietaireDownloadPdfButton = new Ext.ButtonGroup({
+		//setSize: {width: 16px, height: 16px},
     	bodyBorder:false,
     	border:false,
     	hideBorders:true,
@@ -213,7 +214,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         colModel : new Ext.grid.ColumnModel({
             defaults : {
                 border : true,
-                sortable : false,
+                sortable : true,
             },
 			
 			
@@ -270,7 +271,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         //remoteSort : false,
         //autoDestroy : true,
 		
-        fields : [ 'dniv', 'dpor','cconlc_lib', 'dvlrt', 'jdatat', 'dnupro', 'dnomlp', 'dprnlp','epxnee','dnomcp','dprncp'],
+        fields : [ 'dniv', 'dpor','cconlc_lib', 'dvlrt', 'jdatat', 'dnupro',  'ddenom','dnomlp', 'dprnlp','epxnee','dnomcp','dprncp'],
     });
     
     var batimentsList = [];
@@ -322,6 +323,8 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         title : 'batiment(s)',
         name : 'Fiuc_Batiments',
         xtype : 'editorgrid',
+		
+		/*
 		items :[{
     	        	xtype : 'button', 
 					scale : 'small',
@@ -350,35 +353,37 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     	        	xtype : 'label', 
 			        text : 'Descriptif',
     	        }, 
-    ],
+    ],*/
         colModel : new Ext.grid.ColumnModel({
             defaults : {
-                sortable : false,
+            sortable : true,
             },
             columns : [ {
 
-                header : '',
-                // selModel: sm,
+                selModel: sm,
                 width : 50,
-                dataIndex : 'col1'
+                //dataIndex : 'col1'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.batiment_niveau'),
                 dataIndex : 'dniv'
             }, {
-                header : OpenLayers.i18n('cadastrapp.duc.batiment_porte'),
+                header : "Porte",
                 dataIndex : 'dpor'
             }, {
-                header : OpenLayers.i18n('cadastrapp.duc.batiment_type'),
+                header : "Type",
                 dataIndex : 'cconlc_lib'
             }, {
-                header : OpenLayers.i18n('cadastrapp.duc.batiment_date'),
+                header : "Date",
                 dataIndex : 'jdatat'
             }, {
-                header : OpenLayers.i18n('cadastrapp.duc.batiment_revenu'),
+                header : "Revenu",
                 dataIndex : 'dvlrt'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.compte'),
                 dataIndex : 'dnupro'
+            }, {
+                header : OpenLayers.i18n('cadastrapp.duc.denomination'),
+                dataIndex : 'ddenom'
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.nom'),
                 dataIndex : 'dnomlp'
@@ -387,15 +392,15 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
                 dataIndex : 'dprnlp'
 
             }, {
-                header : OpenLayers.i18n('cadastrapp.duc.prenom'),
+                header : OpenLayers.i18n('cadastrapp.duc.mentioncpl'),
                 dataIndex : 'epxnee'
 
             }, {
-                header : OpenLayers.i18n('cadastrapp.duc.prenom'),
+                header : OpenLayers.i18n('cadastrapp.duc.nomcpl'),
                 dataIndex : 'dnomcp'
 
             }, {
-                header : OpenLayers.i18n('cadastrapp.duc.prenom'),
+                header : OpenLayers.i18n('cadastrapp.duc.prenomcp'),
                 dataIndex : 'dprncp'
 
             } ]
@@ -426,7 +431,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 		colModel : new Ext.grid.ColumnModel({
             defaults : {
             border : true,
-            sortable : false,
+            sortable : true,
             },
 			
 
@@ -468,7 +473,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         xtype : 'editorgrid',
         colModel : new Ext.grid.ColumnModel({
             defaults : {
-                sortable : false,
+            sortable : true,
             },
             columns : [ {
                 header : OpenLayers.i18n('cadastrapp.duc.dateacte'),
@@ -543,19 +548,19 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
             activeTab : 0,
             items : [
                     {
-                        // ONGLET 1
+                        // ONGLET 1: Parcelle
                         title : OpenLayers.i18n('cadastrapp.duc.parcelle'),
                         xtype : 'form',
                         items : [ parcelleDownloadPdfButton , FiucParcelleGrid ]
                     },
                     {
-                        // ONGLET 2
+                        // ONGLET 2: Propriétaire
                         title : OpenLayers.i18n('cadastrapp.duc.propietaire'),
                         xtype : 'form',
                         items : [ proprietaireDownloadPdfButton,
                                 FiucProprietairesGrid ]
                     }, {
-                        // ONGLET 3
+                        // ONGLET 3: Batiment
                         title : OpenLayers.i18n('cadastrapp.duc.batiment'),
                         xtype : 'form',
                         items : [ 
@@ -567,18 +572,16 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 									
                                    FiucBatimentsGrid ]
                     }, {
-                        // ONGLET 4
+                        // ONGLET 4: Subivision fiscale
                         title : OpenLayers.i18n('cadastrapp.duc.subdiv'),
                         xtype : 'form',
                         items : [ FiucSubdivfiscGrid ]
 
                     }, {
-                        // ONGLET 5
+                        // ONGLET 5: Historique de mutation
                         title : OpenLayers.i18n('cadastrapp.duc.histomut'),
                         xtype : 'form',
-                        items : [ FiucHistomutGrid, // grille "historique de
-                                                    // mutation"
-                        ]
+                        items : [ FiucHistomutGrid]
                     } ]
         } ]
 
@@ -593,10 +596,15 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 // return checked rows on proprietaie grid
 function getSelectedProprietaire() {
     var proprietaireSelected = grid.getSelectionModel().getSelections();
-    //console.log(proprietaireSelected);
+    console.log(proprietaireSelected);
 
 }
+// return checked rows on batiment grid
+function getSelectedBatiment() {
+    var batimentSelected = grid.getSelectionModel().getSelections();
+    console.log(proprietaireSelected);
 
+}
 // TODO mettre ca sur utils
 
 function reloadBatimentStore(bat) {
@@ -634,7 +642,7 @@ function reloadBatimentStore(bat) {
     } else if(bat == "A3") {
         Data = FiucBatiments3Data;
     }
-    FiucBatimentsStore.loadData(Data);
+    //FiucBatimentsStore.loadData(Data);
 }
 
 function loadbordereauParcellaire() {
