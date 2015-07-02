@@ -218,6 +218,7 @@
 			"cadastrapp.duc.propietaire" : "Propriétaire",
 			
 			"cadastrapp.duc.compte" : "Compte",
+			"cadastrapp.duc.denomination": "Dénomination",
 			"cadastrapp.duc.nom" : "Nom",
 			"cadastrapp.duc.prenom" : "Prénom",
 			"cadastrapp.duc.mentioncpl" : "Mention du complément",
@@ -454,6 +455,7 @@
 
 			
 			"cadastrapp.duc.compte" : "Compte",
+			"cadastrapp.duc.denomination": "Dénomination",
 			"cadastrapp.duc.nom" : "Nom",
 			"cadastrapp.duc.prenom" : "Prénom",
 			"cadastrapp.duc.mentioncpl" : "Mention du complément",
@@ -695,6 +697,7 @@
             "cadastrapp.CoProprietaire" : "Co-propriétaire",
 			
 			"cadastrapp.duc.compte" : "Compte",
+			"cadastrapp.duc.denomination": "Dénomination",
 			"cadastrapp.duc.nom" : "Nom",
 			"cadastrapp.duc.prenom" : "Prénom",
 
@@ -937,6 +940,7 @@
 
 			
 			"cadastrapp.duc.compte" : "Compte",
+			"cadastrapp.duc.denomination": "Dénomination",
 			"cadastrapp.duc.nom" : "Nom",
 			"cadastrapp.duc.prenom" : "Prénom",
 
