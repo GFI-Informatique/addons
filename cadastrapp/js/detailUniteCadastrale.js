@@ -41,9 +41,6 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
                     });
 					
 		 Ext.Ajax.request({
-		//A remplacer par getFIC
-        //url: getWebappURL() + 'getParcelle?parcelle='+parcelleId+"&details=1",
-        //method: 'GET',
         url: getWebappURL() + 'getFIC?parcelle='+parcelleId+"&onglet=0",
         method: 'GET',   
         //params: params,
@@ -85,7 +82,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 			 
 			//titre de la fenetre
 			titleFIUC =result[0].ccodep + result[0].ccodir + result[0].ccocom + '-'+result[0].ccopre + result[0].ccosec+'-'+result[0].dnupla;
-           
+            console.log(titleFIUC);         
         }
     });  			
 	
@@ -323,8 +320,9 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
         title : 'batiment(s)',
         name : 'Fiuc_Batiments',
         xtype : 'editorgrid',
+        selModel : sm,
+        bbar : bbar,		
 		
-		/*
 		items :[{
     	        	xtype : 'button', 
 					scale : 'small',
@@ -348,21 +346,20 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 			        	//createReleveDePropriete();
 			        	// see below funtion 
 			        }
-    	        }, 
+    	        }, /*
     	        {
     	        	xtype : 'label', 
 			        text : 'Descriptif',
-    	        }, 
-    ],*/
+    	        }, */
+    ],
         colModel : new Ext.grid.ColumnModel({
             defaults : {
             sortable : true,
             },
             columns : [ {
 
-                selModel: sm,
-                width : 50,
-                //dataIndex : 'col1'
+                sm,
+				bbar : bbar,
             }, {
                 header : OpenLayers.i18n('cadastrapp.duc.batiment_niveau'),
                 dataIndex : 'dniv'
@@ -504,7 +501,7 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
     // Construction de la fenêtre principale
     var windowFIUC;
     windowFIUC = new Ext.Window({
-        title : titleFIUC,
+        title : 'titleFIUC',
         frame : true,
         autoScroll : true,
         minimizable : false,
