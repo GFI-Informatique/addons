@@ -13,7 +13,7 @@ Ext.namespace("GEOR")
 
 onClickDisplayFIUC = function(parcelleId) {
 	//titre de la fenetre
-	var titleFIUC ='';
+	var titleFIUC =parcelleId;
 	//variables de l'onglet parcelle
 	var commune ='';
 	var section ='';
@@ -524,12 +524,13 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 				var rowIndex = indexRowParcelle(parcelleId);
 				newGrid.getSelectionModel().deselectRow(rowIndex);
 				// mise à jour des tableau de fenêtres ouvertes
-				var index =newGrid.idParcellesOuvertes.indexOf(parcelleId);
-				newGrid.idParcellesOuvertes.splice(index,1);
-				newGrid.fichesOuvertes.splice(index,1);
+				var index =newGrid.idParcellesCOuvertes.indexOf(parcelleId);
+				newGrid.idParcellesCOuvertes.splice(index,1);
+				newGrid.fichesCOuvertes.splice(index,1);
 				var feature = getFeatureById(parcelleId);
 				if (feature)
 					changeStateFeature(feature, -1, "yellow");
+				closeWindowFIUF(parcelleId,newGrid);	// on ferme la fenêtre foncière si ouverte
 				// FIN AJOUT	
                 windowFIUC = null;
             }
@@ -584,8 +585,8 @@ var FiucParcelleStore = new Ext.data.ArrayStore({
 
     });
     windowFIUC.show();
-	newGrid.fichesOuvertes.push(windowFIUC);
-	newGrid.idParcellesOuvertes.push(parcelleId);
+	newGrid.fichesCOuvertes.push(windowFIUC);
+	newGrid.idParcellesCOuvertes.push(parcelleId);
 	// window=FiucParcelleGrid.findParentByType("window");
     //console.log("displayFIUC onClick")
 }

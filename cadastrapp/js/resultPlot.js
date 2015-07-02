@@ -10,8 +10,10 @@ Ext.namespace("GEOR")
 	//detailParcelles : liste des fenetres filles ouvertes
 	GEOR.ResultParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
 		detailParcelles: new Array(),
-		fichesOuvertes: new Array(),
-		idParcellesOuvertes: new Array(),
+		fichesCOuvertes: new Array(),
+		idParcellesCOuvertes: new Array(),
+		fichesFOuvertes: new Array(),
+		idParcellesFOuvertes: new Array(),
 	});
 
 
@@ -71,9 +73,6 @@ Ext.namespace("GEOR")
 			store: (result!=null) ? result : new Ext.data.Store(),
 	        
 			colModel: getResultParcelleColModel(),
-			// selModel: {
-                // mode: 'MULTI'
-            // },
 			multiSelect: true,
 			viewConfig: {
 				deferEmptyText: false,
@@ -104,42 +103,29 @@ Ext.namespace("GEOR")
 					}
 
 				},
-               // staterestore: function(tabPanel, tab){
-                    // alert("tab changed");
-                // }
 			}
 		
 		});
 		newGrid.addListener("rowclick",function(grid, rowIndex, e) {
-					if  (isFoncier()===true) {
-							grid.detailParcelles.push(
-							//TODO : modifier parametre
-							onClickDisplayFIUF()						
-						);
-					}
 			// on parcourant le tableau de façon générique on gérera les cas de selection simple et multiple pour tout les cliques sue les lignes
 			var selection  = grid.getSelectionModel();
-			var id,index;
+			var id,index,feature;
 			for(var i=0; i<grid.store.getCount(); i++) { // on parcour tout le tableau
 				id =grid.store.getAt(i).data.parcelle;
-				 if(selection.isSelected(i)){ // si ligne selectionnée
-					if (grid.idParcellesOuvertes.indexOf(id) == -1) { //si fenêtre n'existe pas on l'affiche 
-						grid.detailParcelles.push(onClickDisplayFIUC(id));
-						var feature = getFeatureById(id);
+				feature = getFeatureById(id);
+				if(selection.isSelected(i)){ // si ligne selectionnée
+						openFoncierOrCadastre(id,grid);
 						if (feature)
 							changeStateFeature(feature, -1, "blue");
-					}
-				 }else {
-					if (grid.idParcellesOuvertes.indexOf(id) != -1) {
-						closeWindowFIUC(id,grid);
-						var feature = getFeatureById(id);
+				}else {
+						closeFoncierAndCadastre(id,grid);
 						if (feature)
 							changeStateFeature(feature, -1, "yellow");								
-					}
-				 }
+					
+				}
 			
 			}
-				//*****************************************
+
 		});
 
 
@@ -165,7 +151,36 @@ Ext.namespace("GEOR")
 		}
 	
 	}
-    
+    openFoncierOrCadastre = function(id,grid) {
+		cadastreExiste = (grid.idParcellesCOuvertes.indexOf(id) != -1)
+		foncierExiste = (grid.idParcellesFOuvertes.indexOf(id) != -1)
+		if (isFoncier() && isCadastre()){
+			if (!foncierExiste) 
+				grid.detailParcelles.push(onClickDisplayFIUF(id));
+			if (!cadastreExiste)
+				grid.detailParcelles.push(onClickDisplayFIUC(id));
+			return "2";
+		}else if (isCadastre()){
+					if (!cadastreExiste) 
+						grid.detailParcelles.push(onClickDisplayFIUC(id));
+					return "F"	;
+				}
+			  else if (isFoncier()) {
+						if (!foncierExiste) 
+							grid.detailParcelles.push(onClickDisplayFIUF(id));
+						return "C";
+					}
+		return "0"	;								
+	}
+    closeFoncierAndCadastre = function(idParcelle,grid) {
+		cadastreExiste = (grid.idParcellesCOuvertes.indexOf(idParcelle) != -1)
+		foncierExiste = (grid.idParcellesFOuvertes.indexOf(idParcelle) != -1)
+		if (cadastreExiste) 
+			closeWindowFIUC(idParcelle,grid);
+		if (foncierExiste) 
+			closeWindowFIUF(idParcelle,grid);
+								
+	}
     
     initResultParcelle = function() {						
 		//fenêtre principale
@@ -190,6 +205,7 @@ Ext.namespace("GEOR")
 					// remettre le style de la couche à zero
 					clearLayerSelection();
 					closeAllWindowFIUC();
+					closeAllWindowFIUF();
 					//*********************
 					resultParcelleWindow = null;
 				},
