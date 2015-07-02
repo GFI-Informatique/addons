@@ -8,7 +8,7 @@ Ext.namespace("GEOR")
 /**
  * public: method[onClickdisplayFIUF] :param layer: Create ...TODO
  */
-onClickDisplayFIUF = function() {
+onClickDisplayFIUF = function(parcelleId) {
     var windowFIUF, parcelleGrid;
 
     var FiufGlobalInfosData = [ [ 'Surface DGFIP', "1420" ],
@@ -178,7 +178,7 @@ onClickDisplayFIUF = function() {
         
     });
     windowFIUF = new Ext.Window({
-        title : 'DXXX',
+        title : parcelleId,
         frame : true,
         bodyPadding : 10,
         autoScroll : true,
@@ -203,6 +203,25 @@ onClickDisplayFIUF = function() {
         }, 
             FiufParcelleListGrid 
         ],
+		// AJOUT HAMZA
+		listeners : {
+            close : function(window) {
+				// deselection de la ligne
+				var rowIndex = indexRowParcelle(parcelleId);
+				newGrid.getSelectionModel().deselectRow(rowIndex);
+				// mise à jour des tableau de fenêtres ouvertes
+				var index =newGrid.idParcellesFOuvertes.indexOf(parcelleId);
+				newGrid.idParcellesFOuvertes.splice(index,1);
+				newGrid.fichesFOuvertes.splice(index,1);
+				var feature = getFeatureById(parcelleId);
+				if (feature)
+					changeStateFeature(feature, -1, "yellow");
+				closeWindowFIUC(parcelleId,newGrid);	// on ferme la fenêtre cadastrale si ouverte 
+					
+                windowFIUF = null;
+            }
+        },
+		// FIN AJOUT
         buttons: [
                   {
                       text: "Seletionner toutes les parcelles",
@@ -214,7 +233,9 @@ onClickDisplayFIUF = function() {
                   }]
 
     });
+	newGrid.fichesFOuvertes.push(windowFIUF);
+	newGrid.idParcellesFOuvertes.push(parcelleId);
     windowFIUF.show();
-    console.log("displayFIUF onClick")
+    //console.log("displayFIUF onClick")
 };
 ;

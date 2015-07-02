@@ -10,8 +10,8 @@ Ext.namespace("GEOR")
 		var style=GEOR.custom.defautStyleParcelle;
 		var selectedStyle =GEOR.custom.selectedStyle;
 		  styleFeatures = new OpenLayers.StyleMap(new OpenLayers.Style({ // param config
-				fillColor:"${getFillColor}", // couleur des entités en fonction de l'état
-                strokeColor: "${getStrokeColor}",
+				fillColor:"${getFillColor}", // style des entités en fonction de l'état
+                strokeColor: "${getStrokeColor}", 
 				strokeWidth:"${getstrokeWidth}",
 				fillOpacity:"${getFillOpacity}",
                 pointRadius: style.pointRadius,
@@ -54,11 +54,11 @@ Ext.namespace("GEOR")
 				}
 			}));
 		
-		selectLayer = new OpenLayers.Layer.Vector("selection");
+		selectLayer = new OpenLayers.Layer.Vector("selection"); // création de la couche des entités selectionnées 
 		selectLayer.styleMap=styleFeatures;
-		var state;
-		map.addLayer(selectLayer);
-		OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+		var state; // l'état de selection de chaque entité : null=non séléctionnée, 1=sélection jaune, 2 = sélection bleue
+		map.addLayer(selectLayer); // ajout de la couche à la carte
+		OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, { //création de la classe de l'écouteur   clique              
                 defaultHandlerOptions: {
                     'single': true,
                     'double': false,
@@ -82,17 +82,23 @@ Ext.namespace("GEOR")
                 }, 
 
                 trigger: function(e) {
-					lonlat = map.getLonLatFromPixel(e.xy);
+					lonlat = map.getLonLatFromPixel(e.xy); //récupération de la longitude et latitude à partir du clique
 					getFeaturesWFSSpatial("Point", lonlat.lon+","+lonlat.lat, "clickSelector");
                 }
 
             });
-			 click = new OpenLayers.Control.Click();
+			 click = new OpenLayers.Control.Click(); 
+			  // ajout et activation du controleur de click
              map.addControl(click);
              click.activate();
 	}
+
+	//créer un popup quand on survole la map
 	addPopupOnhover=function(map){
 		// class definition
+		var popup;
+		var popupConfig =GEOR.custom.popup;
+		//comme pour le clique , on crée la classe du controleur hover
 		OpenLayers.Control.Hover = OpenLayers.Class(OpenLayers.Control, {                
                 defaultHandlerOptions: {
                     'delay': 200,
@@ -113,23 +119,30 @@ Ext.namespace("GEOR")
                     );
                 }, 
                 onPause: function(evt) {
-                    /*var output = document.getElementById(this.key + 'Output');
-                    var msg = 'pause ' + evt.xy;
-                    output.value = output.value + msg + "\r\n";*/
-					win = new Ext.Window({
-										title: 'Add',
-										layout: 'fit',
-										autoScroll: true,
-										y: 120,
-										width: 300,
-										height: 150,
-										modal: true,
-										closeAction: 'hide',
-										// items: [formpanel]
-									});
-					win.show();
-					win.body.update("TODO");
-					
+					//var map=GeoExt.MapPanel.guess().map;
+					zoom = map.getZoom();
+					//suppression du popup s'il existe
+					if (popup) 
+							popup.destroy();
+					// affichage si niveau de zoom convenable		
+					if (zoom > popupConfig.minZoom) {
+						lonlat = map.getLonLatFromPixel(evt.xy);
+						popup = new GeoExt.Popup({
+							map:map,
+							anchored: true,
+							title: "My Popup",
+							location: lonlat,
+							width: 200,
+							html: "<div>TODO TODO</div>",
+							collapsible: true
+						});
+						
+						popup.show();
+						document.body.onmousemove = function(e) {
+						//quand on bouge on supprime le popup
+							popup.destroy()
+						}
+					}
                 },
                 onMove: function(evt) {
                     // if this control sent an Ajax request (e.g. GetFeatureInfo) when
@@ -137,10 +150,12 @@ Ext.namespace("GEOR")
                     // request.
                 }
             });
+			// création du controleur de survol
 			var infoControls = {
                     'hover': new OpenLayers.Control.Hover({
                         handlerOptions: {
-                            'delay': 5000
+						//delai d'affichage du popup
+                            'delay': popupConfig.timeToShow
                         }
                     })
 			};
@@ -148,7 +163,7 @@ Ext.namespace("GEOR")
 			map.addControl(infoControls["hover"]); 
 			infoControls["hover"].activate();
 	}
-
+	// envoie une requete au geoserveur pour faire une intersection de la couche wms avec la géométrie donnée en paramètres
 	getFeaturesWFSSpatial=	function (typeGeom, coords, typeSelector) {
 		var filter; 
 		var selectRows=false; // ligne dans le resultat de recherche doit être selectionnée si etat =2
@@ -188,6 +203,7 @@ Ext.namespace("GEOR")
 					if(feature) {
 						var exist = false;
 						var j = -1;
+						// on teste si l'entité est déja selectionnée
 						for (j=0; j < selectedFeatures.length && !exist; j++){
 							 // if(selectedFeatures[j].attributes.geo_parcelle == feature.attributes.geo_parcelle) { //renvoie des cas errronnées psk la géométrie est dupliquer pour quelques parcelles
 							 if(selectedFeatures[j].fid == feature.fid) { // remplacer par cette ligne
@@ -197,19 +213,23 @@ Ext.namespace("GEOR")
 									}		
 								}
 						}
+						// on l'ajoute à la selection si elle n'est pas trouvée
 						if(!exist) {
 							selectLayer.addFeatures(feature);
 							selectedFeatures.push(feature);
 						}
-						
+						// on met à jour son état
 						state = changeStateFeature(feature, j-1, typeSelector);
 						var id=feature.attributes[idField];
+						// si la parcelle est selectionnée on récupère son id pour le getParcelle pour le tableau
 						if(state == "1" || state == "2") {
 							parcelsIds.push(id);
 						}else {
+						//sinon on la vire du tableau et on ferme les fenêtres de détail
 							// newGrid.getStore().removeAt(indexRowParcelle(id));
 							tabs.activeTab.store.removeAt(indexRowParcelle(id));
 							closeWindowFIUC(id,newGrid);
+							closeWindowFIUF(id,newGrid);
 						}
 							
 					}
@@ -228,18 +248,37 @@ Ext.namespace("GEOR")
 			}
 		 });
 	}
+	//ferme la fenetre de fiche cadastrale
 	closeWindowFIUC = function (idParcelle,grid){	
-		var index =grid.idParcellesOuvertes.indexOf(idParcelle);
-		var ficheCourante =grid.fichesOuvertes[index];
-		ficheCourante.close();
+		var index =grid.idParcellesCOuvertes.indexOf(idParcelle);
+		var ficheCourante =grid.fichesCOuvertes[index];
+		if (ficheCourante)
+			ficheCourante.close();
 	}
+		//ferme la fenetre de fiche foncière
+	closeWindowFIUF = function (idParcelle,grid){	
+		var index =grid.idParcellesFOuvertes.indexOf(idParcelle);
+		var ficheCourante =grid.fichesFOuvertes[index];
+		if (ficheCourante)
+			ficheCourante.close();
+	}
+	//ferme toutes les fenêtres de fiches cadastrales
 	closeAllWindowFIUC  = function (){
-		for (var j=newGrid.fichesOuvertes.length-1; j>=0; j--){
-			newGrid.fichesOuvertes[j].close();
+		for (var j=newGrid.fichesCOuvertes.length-1; j>=0; j--){
+			newGrid.fichesCOuvertes[j].close();
 		}
-		newGrid.fichesOuvertes = [];
-		newGrid.idParcellesOuvertes = [];
+		newGrid.fichesCOuvertes = [];
+		newGrid.idParcellesCOuvertes = [];
 	}
+	//ferme toutes les fenêtres de fiches foncières
+	closeAllWindowFIUF  = function (){
+		for (var j=newGrid.fichesFOuvertes.length-1; j>=0; j--){
+			newGrid.fichesFOuvertes[j].close();
+		}
+		newGrid.fichesFOuvertes = [];
+		newGrid.idParcellesFOuvertes = [];
+	}
+	//récupère l'index de la ligne d'une parcelle dans le tableau
 	indexRowParcelle = function (idParcelle){	
 		var rowIndex = newGrid.getStore().find('parcelle', idParcelle);
 		// var rowIndex = tabs.activeTab.store.find('parcelle', idParcelle);
@@ -263,9 +302,11 @@ Ext.namespace("GEOR")
 				{name: 'surface', mapping: 'surface'}
 		]);			
 	var geojson_format = new OpenLayers.Format.JSON();
+	//affiche le tabelau de résultat ou le met à jour
 	showTabSelection = function (parcelsIds,selectRows) {
 
 		if(parcelsIds.length > 0) {
+		// paramètres pour le getPArcelle
 			var params = {"code" : parcelsIds[0]};
 			params.details = 1;
 			var cityCode = params.code;
@@ -294,17 +335,19 @@ Ext.namespace("GEOR")
 						newGrid.on('viewready', function(view,firstRow,lastRow){
 							if (selectRows ) {
 								for(var i=0; i < data.length; i++){
-									rowIndex = indexRowParcelle(data[i].parcelle);
+									id = data[i].parcelle;
+									rowIndex = indexRowParcelle(id);
 									newGrid.getSelectionModel().selectRow(rowIndex,true);
-									newGrid.detailParcelles.push( //affichage de la fenêtre cadastrale
-										onClickDisplayFIUC(data[i].parcelle)
-									);
+									// newGrid.detailParcelles.push( //affichage de la fenêtre cadastrale
+										// onClickDisplayFIUC(data[i].parcelle)
+									// );
+									openFoncierOrCadastre(id,newGrid);
 									
 								}
 							}
 						}); 
 					}
-					else {
+					else { // si la fenêtre est ouverte on ajoute les lignes
 						var ccoinsee ="";
 						for(var i=0; i < data.length; i++){
 							if (indexRowParcelle(data[i].parcelle) == -1) {
@@ -329,17 +372,19 @@ Ext.namespace("GEOR")
 							
 							}
 						}
-						if (selectRows  ) {
+						if (selectRows  ) { // si les lignes doivent être selectionnées
 							for(var i=0; i < data.length; i++){
-								rowIndex = indexRowParcelle(data[i].parcelle);
+								id = data[i].parcelle;
+								rowIndex = indexRowParcelle(id);
 								newGrid.getSelectionModel().selectRow(rowIndex,true);
-								newGrid.detailParcelles.push( //affichage de la fenêtre cadastrale
-									onClickDisplayFIUC(data[i].parcelle)
-								);
+								// newGrid.detailParcelles.push( //affichage de la fenêtre cadastrale
+									// onClickDisplayFIUC(data[i].parcelle)
+								// );
+								openFoncierOrCadastre(id,newGrid); 
 							}
 						}
 					}
-					newGrid.getSelectionModel().mode ="MULTI";
+					//newGrid.getSelectionModel().mode ="MULTI";
 					// newGrid.getSelectionModel().allowDeselect =false;
 					
 				},
@@ -351,6 +396,7 @@ Ext.namespace("GEOR")
 			
 		}
 	}
+	//récupère l'index de l'entité selectionnée dans la couche selection
 	indexFeatureSelected =function(feature){
 		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
 		var idField = WFSLayerSetting.nameFieldIdParcelle;
@@ -365,7 +411,7 @@ Ext.namespace("GEOR")
 		}
 		return -1;
 	}
-	
+	//envoie une requete selon un filtre attributaire 
 	getFeaturesWFSAttribute = function (idParcelle) {
 		var filter;
 		var WFSLayerSetting = GEOR.custom.WFSLayerSetting
@@ -404,7 +450,7 @@ Ext.namespace("GEOR")
 	}
 	
 
-	
+	// retourne une entité en prenant son id
 	getFeatureById = function (idParcelle) {
 		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
 		var idField = WFSLayerSetting.nameFieldIdParcelle;
@@ -414,12 +460,12 @@ Ext.namespace("GEOR")
 		}
 		return null;
 	}
-	
+	//change l'etat sur la carte et mis à jour le dessin
 	setState = function (feature, state) {
 		feature.state = state;
 		selectLayer.drawFeature(feature);
 	}
-
+	// en fonction de type d'appel elle gère le changement d'état 
 	changeStateFeature = function (feature, index, typeSelector) {
 		var state = null;
 		switch(typeSelector) {
@@ -458,11 +504,12 @@ Ext.namespace("GEOR")
 		
 		// console.dir(selectedFeatures);
 	}
-	// rechange le style et vide le tableau des entités selectionnées
+	// vide le tableau des entités selectionnées
 	clearLayerSelection=function () {
 		selectedFeatures = [];
 		selectLayer.removeAllFeatures();	
 	}
+	// gère l'intersection quand on déssine avec les outils de dessin 
 	selectFeatureIntersection=	function (feature) {
 		var typeGeom = feature.geometry.id.split('_')[2];
 		var coords = "";
@@ -482,13 +529,13 @@ Ext.namespace("GEOR")
 		
 
     }
-	
+	//retourne la couche en prenant le nom
 	getLayerByName=function(layerName){
 		var map=GeoExt.MapPanel.guess().map;
 		var layer=map.getLayersByName(layerName)[0];
 		return layer;
 	}
-
+	// zoom sur les entités selectionnées etat 1 ou 2 
 	zoomToSelectedFeatures =function() { // zoom sur les entités selectionnées etat 2 
 
 		 if (selectedFeatures.length>0){ 
