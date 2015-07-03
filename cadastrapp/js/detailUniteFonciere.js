@@ -11,54 +11,60 @@ Ext.namespace("GEOR")
 onClickDisplayFIUF = function(parcelleId) {
     var windowFIUF, parcelleGrid;
 
-    var FiufGlobalInfosData = [ [ 'Surface DGFIP', "1420" ],
-            [ 'Surface SIG', "1423" ], [ 'Surface batie', "200" ] ];
+ //   var FiufGlobalInfosData = [ [ 'Surface DGFIP', "1420" ],
+ //           [ 'Surface SIG', "1423" ], [ 'Surface batie', "200" ] ];
+ 
+    var FiufGlobalInfosData = 	[];
 
     var FiufProprietaireData = [ [ 'Proprietaire 1' ], [ 'Proprietaire 2' ] ];
     var FiufParcelleListData = [ [ '38852 2225 22', '255','201',"1 Rue louis 1"], 
                                  [ '38852 2225 22', '255','201',"1 Rue louis 1"],
                                  [ '38852 2225 22', '255','201',"1 Rue louis 1"] ];
-//    Ext.define('Parcelle', {
-//        extend: 'Ext.data.Model',
-//        fields: [
-//            {name: 'parcelle', type: 'string'},
-//            {name: 'libcom',   type: 'string'},
-//            {name: 'ccodep',   type: 'string'},
-//            {name: 'ccodir',   type: 'string'},
-//            {name: 'ccocom',   type: 'string'},
-//            {name: 'ccopre',   type: 'string'},
-//            {name: 'ccosec',   type: 'string'},
-//            {name: 'dnupla',   type: 'string'},
-//            {name: 'ccopre',   type: 'string'},
-//            {name: 'ccosec',   type: 'string'},
-//            {name: 'dnupla',   type: 'string'},
-//            
-//        ],
-//        hasMany: {model: 'adressecadastrale', name: 'adressecadastrale'},
-//    });
-    
-//    Ext.define("adressecadastrale", {
-//        extend: 'Ext.data.Model',
-//        fields: [
-//                {name: 'dnvoiri',           type: 'string'},
-//                {name: 'dindic',             type: 'string'},
-//                {name: 'cconvo',   type: 'string'},
-//                {name: 'dvoilib',         type: 'string'},
-//        ],
-//
-//        belongsTo: 'Parcelle'
-//    });
+								 
+	var surfaceDGFiP ='';
+	var surfaceSIG ='';
+	var surfaceBatie ='';
 
-    
-    var FiufGlobalInfosStore = new Ext.data.ArrayStore({
-        fields : [ {
-            name : 'uniteFonciere'
-        }, {
-            name : 'surface',
-            type : 'float'
-        }, ],
-        data : FiufGlobalInfosData
-    });
+	
+	var FiufGlobalInfosStore =new Ext.data.ArrayStore({
+			fields : [ {
+				name : 'uniteFonciere'
+			}, {
+				name : 'surface',
+				type : 'float'
+			}, ],
+			data : FiufGlobalInfosData
+         });
+					
+		 Ext.Ajax.request({
+        url: getWebappURL() + 'getFIUF?parcelle='+parcelleId+"&detail=1",
+        method: 'GET',   
+        //params: params,
+        success: function(response) {
+            //console.log(response.responseText);
+            var result = eval(response.responseText);
+            surfaceDGFiP = result[0].dcntpa_sum;
+			
+            surfaceSIG = result[0].sigcal_sum;
+			
+            surfaceBatie = result[0].batical_sum;
+			
+ 
+            //console.log(commune);
+           
+            FiufGlobalInfosData = [[ 'Unite Fonciere', surfaceDGFiP ],
+                                 [ ' Surface SIG', surfaceSIG ],
+                                 [ 'Surface Batie', surfaceBatie ],
+								];
+            FiufGlobalInfosStore.loadData(FiufGlobalInfosData,false);
+			
+            data : FiufGlobalInfosData;
+			 
+			//titre de la fenetre
+			//titleFIUC =result[0].ccodep + result[0].ccodir + result[0].ccocom + '-'+result[0].ccopre + result[0].ccosec+'-'+result[0].dnupla;
+            console.log(titleFIUC);         
+        }
+    }); 
 
     var FiufProprietaireStore = new Ext.data.ArrayStore({
         fields : [ {
