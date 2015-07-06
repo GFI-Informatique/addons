@@ -17,7 +17,12 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
             map: this.map,
             popupOptions: {unpinnable: false, draggable: true}
         });
-
+		this.map.allOverlays=false;
+		//***************
+		// ajout de la couche wms
+		addWMSLayer(cadastrapp.map); 	
+		createSelectionControl(this.map);
+		//******************		
         this.window = new Ext.Window({
             title: OpenLayers.i18n('cadastrapp.cadastre_tools'),
             width: 540,

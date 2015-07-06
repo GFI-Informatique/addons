@@ -5,7 +5,7 @@
 	*/
 Ext.namespace("GEOR")
 	// créer le control de selection et la couche des parcelle à partir du wfs et appliquer le control à la couche
-	createSelectionControl = function (map){
+	createSelectionControl = function (map){				
 		// style à appliquer sur la couche cadastre
 		var style=GEOR.custom.defautStyleParcelle;
 		var selectedStyle =GEOR.custom.selectedStyle;
@@ -55,6 +55,7 @@ Ext.namespace("GEOR")
 			}));
 		
 		selectLayer = new OpenLayers.Layer.Vector("selection"); // création de la couche des entités selectionnées 
+		//selectLayer.displayInLayerSwitcher=false;
 		selectLayer.styleMap=styleFeatures;
 		var state; // l'état de selection de chaque entité : null=non séléctionnée, 1=sélection jaune, 2 = sélection bleue
 		map.addLayer(selectLayer); // ajout de la couche à la carte
@@ -163,6 +164,8 @@ Ext.namespace("GEOR")
 			map.addControl(infoControls["hover"]); 
 			infoControls["hover"].activate();
 	}
+
+
 	// envoie une requete au geoserveur pour faire une intersection de la couche wms avec la géométrie donnée en paramètres
 	getFeaturesWFSSpatial=	function (typeGeom, coords, typeSelector) {
 		var filter; 
@@ -192,14 +195,31 @@ Ext.namespace("GEOR")
 		  success: function (response) {
 				var WFSLayerSetting = GEOR.custom.WFSLayerSetting; 
 				var idField = WFSLayerSetting.nameFieldIdParcelle; // champ identifiant de parcelle dans geoserver
+				var getIndex=function(result, str){
+					exist=false;
+				   for (j=0; j < result.length && !exist; j++){
+						 // if(selectedFeatures[j].attributes.geo_parcelle == feature.attributes.geo_parcelle) { //renvoie des cas errronnées psk la géométrie est dupliquer pour quelques parcelles
+						if(result[j].attributes[idField] == str) { // remplacer par cette ligne
+							exist = true;
+							if (exist)
+								return j;			
+						}
+					}
+					return -1;
+				}
 				featureJson = response.responseText;
 				var geojson_format = new OpenLayers.Format.GeoJSON();
-				var resultSelection = geojson_format.read(featureJson);
+				var result = geojson_format.read(featureJson);
+				var resultSelection=result.filter(function(itm,i,result){
+					return i==getIndex(result, itm.attributes[idField]);
+				});
+
 				var feature, state;
 				var parcelsIds = [], codComm = null;
 				
 				for(var i=0; i<resultSelection.length; i++) {
-					feature = geojson_format.read(featureJson)[i];
+					// feature = geojson_format.read(featureJson)[i];
+					feature = resultSelection[i];
 					if(feature) {
 						var exist = false;
 						var j = -1;
@@ -214,7 +234,7 @@ Ext.namespace("GEOR")
 								}
 						}
 						// on l'ajoute à la selection si elle n'est pas trouvée
-						if(!exist) {
+						if(!exist ) {
 							selectLayer.addFeatures(feature);
 							selectedFeatures.push(feature);
 						}
@@ -247,6 +267,21 @@ Ext.namespace("GEOR")
 				console.log("Error ",response.responseText);
 			}
 		 });
+	}
+	//récupère l'index de l'entité selectionnée dans la couche selection
+	indexFeatureSelected =function(feature){
+		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
+		var idField = WFSLayerSetting.nameFieldIdParcelle;
+		var exist = false;
+		for (j=0; j < selectedFeatures.length && !exist; j++){
+			 // if(selectedFeatures[j].attributes.geo_parcelle == feature.attributes.geo_parcelle) { //renvoie des cas errronnées psk la géométrie est dupliquer pour quelques parcelles
+			if(selectedFeatures[j].attributes[idField] == feature.attributes[idField]) { // remplacer par cette ligne
+				exist = true;
+				if (exist)
+					return j;			
+			}
+		}
+		return -1;
 	}
 	//ferme la fenetre de fiche cadastrale
 	closeWindowFIUC = function (idParcelle,grid){	
@@ -284,6 +319,7 @@ Ext.namespace("GEOR")
 		// var rowIndex = tabs.activeTab.store.find('parcelle', idParcelle);
 		return 	rowIndex;
 	}
+	//structure de l'enregistrement pour ajouter des lignes dans un tableau de résultats
 	var TopicRecord = Ext.data.Record.create([
 				{name: 'adresse', mapping: 'adresse'},
 				{name: 'ccocom', mapping: 'ccocom'},
@@ -338,9 +374,6 @@ Ext.namespace("GEOR")
 									id = data[i].parcelle;
 									rowIndex = indexRowParcelle(id);
 									newGrid.getSelectionModel().selectRow(rowIndex,true);
-									// newGrid.detailParcelles.push( //affichage de la fenêtre cadastrale
-										// onClickDisplayFIUC(data[i].parcelle)
-									// );
 									openFoncierOrCadastre(id,newGrid);
 									
 								}
@@ -352,6 +385,7 @@ Ext.namespace("GEOR")
 						for(var i=0; i < data.length; i++){
 							if (indexRowParcelle(data[i].parcelle) == -1) {
 								ccoinsee = data[i].ccodep+data[i].ccodir+data[i].ccocom;
+								//création de l'enregistrement
 								newRecord = new TopicRecord({
 									adresse	:	(data[i].adresse)?data[i].adresse:data[i].dvoilib,
 									ccocom	:	data[i].ccocom,
@@ -368,6 +402,7 @@ Ext.namespace("GEOR")
 									parcelle:	data[i].parcelle,
 									surface	:	data[i].surface,
 								});
+								//ajout de la ligne
 								tabs.activeTab.store.add(newRecord);
 							
 							}
@@ -396,21 +431,7 @@ Ext.namespace("GEOR")
 			
 		}
 	}
-	//récupère l'index de l'entité selectionnée dans la couche selection
-	indexFeatureSelected =function(feature){
-		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
-		var idField = WFSLayerSetting.nameFieldIdParcelle;
-		var exist = false;
-		for (j=0; j < selectedFeatures.length && !exist; j++){
-			 // if(selectedFeatures[j].attributes.geo_parcelle == feature.attributes.geo_parcelle) { //renvoie des cas errronnées psk la géométrie est dupliquer pour quelques parcelles
-			if(selectedFeatures[j].attributes[idField] == feature.attributes[idField]) { // remplacer par cette ligne
-				exist = true;
-				if (exist)
-					return j;			
-			}
-		}
-		return -1;
-	}
+
 	//envoie une requete selon un filtre attributaire 
 	getFeaturesWFSAttribute = function (idParcelle) {
 		var filter;
@@ -469,6 +490,7 @@ Ext.namespace("GEOR")
 	changeStateFeature = function (feature, index, typeSelector) {
 		var state = null;
 		switch(typeSelector) {
+				// le cas le plus fréquent ou la fonction est appelé par un click simple sur la carte
 				case  "clickSelector":
 										if (feature.state == "1"){
 											state = "2";	
@@ -509,7 +531,7 @@ Ext.namespace("GEOR")
 		selectedFeatures = [];
 		selectLayer.removeAllFeatures();	
 	}
-	// gère l'intersection quand on déssine avec les outils de dessin 
+	// récupère les coordonnées et la géométrie de l'entité dessinée et envoie une requête au serveur
 	selectFeatureIntersection=	function (feature) {
 		var typeGeom = feature.geometry.id.split('_')[2];
 		var coords = "";
@@ -544,6 +566,7 @@ Ext.namespace("GEOR")
 			maxRight=selectedFeatures[0].geometry.bounds.right;
 			minBottom=selectedFeatures[0].geometry.bounds.bottom;
 			maxTop=selectedFeatures[0].geometry.bounds.top;
+			// on calcule l'enveloppe maximale des entités de la couche slection
 			 for (i = 0; i < selectedFeatures.length; i++) {
 				minLeft=Math.min(minLeft,selectedFeatures[i].geometry.bounds.left)
 				maxRight=Math.max(maxRight,selectedFeatures[i].geometry.bounds.right)
@@ -554,4 +577,23 @@ Ext.namespace("GEOR")
 			 map.zoomToExtent([minLeft,minBottom,maxRight,maxTop]); //zoom sur l'enveloppe
 		 }else 
 				console.log("pas d'entité selectionnée");
+	}
+	// ajout de la couche WMS à la carte 
+	addWMSLayer=function(map){
+		var wmsSetting = GEOR.custom.wmsLayer; 
+		var cadastre = new OpenLayers.Layer.WMS(
+			wmsSetting.layerNameInPanel,wmsSetting.url, {
+			LAYERS: wmsSetting.layerNameGeoserver,
+			transparent: wmsSetting.transparent,
+			format: wmsSetting.format,
+			}, {
+				isBaseLayer: false,
+				//singleTile: true,
+				queryable:true
+				}
+		);
+		layer1 =map.getLayersByName(wmsSetting.layerNameInPanel)[0];	
+		if (layer1) 
+			map.removeLayer(layer1)	
+		map.addLayer(cadastre); // ajout de la couche à la carte	*/
 	}

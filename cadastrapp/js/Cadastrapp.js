@@ -247,8 +247,8 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         this.layer = layer;
         this.map.addLayer(layer);
 
-		//*********************************************************************
-			createSelectionControl(this.map);	
+		//*********************************************************************	
+
 			addPopupOnhover(this.map);
 		//*********************************************************************
 
@@ -294,7 +294,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         if (!this.toggleGroup) {
             this.toggleGroup = this.map.id;
         }
-
     },
 
    /** private: method[initZoomControls]
@@ -733,9 +732,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         // this.featureControl.activate();		
 		selctedFeatures = selectFeatureIntersection(feature);
 		feature.layer.removeAllFeatures();
-		// modifyStyle("20146300830000A0696","2");
-        // var control = this.featureControl;
-        // control.selectFeature.defer(1, control, [feature]);
 		//**************************
     },
 

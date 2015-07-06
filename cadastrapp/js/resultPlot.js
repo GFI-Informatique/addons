@@ -40,6 +40,7 @@ Ext.namespace("GEOR")
 		resultParcelleWindow.show();
 		tabs = resultParcelleWindow.items.items[0];
 		//**********
+		// lors du changement des onglets 
 			tabs.addListener('beforetabchange',function(tab, newTab, currentTab ){
 				var store;
 				if (currentTab) { // cad la table de resultats est ouverte et on navigue entre les onglets,  sinon toute selection en bleue sur la carte va redevenir jaune
@@ -96,7 +97,7 @@ Ext.namespace("GEOR")
 						var index = tabs.items.findIndex('id', grid.id);
 						tabs.setActiveTab((index==0) ? 1 : (index-1));
 						//*************
-						// quand on ferme l'onglet on deselectionne toutes les parcelles
+						// quand on ferme l'onglet on vire toutes les parcelles dependantes 
 						store =grid.store.data.items;
 						changeStateParcelleOfTab(store,"reset");
 						//*************
@@ -107,10 +108,11 @@ Ext.namespace("GEOR")
 		
 		});
 		newGrid.addListener("rowclick",function(grid, rowIndex, e) {
-			// on parcourant le tableau de façon générique on gérera les cas de selection simple et multiple pour tout les cliques sue les lignes
+			// on parcourant le tableau de façon générique on gérera les cas de selection/deselection  simple/multiple pour tout les cliques sue les lignes
 			var selection  = grid.getSelectionModel();
 			var id,index,feature;
-			for(var i=0; i<grid.store.getCount(); i++) { // on parcour tout le tableau
+			// on parcour toutes les lignes
+			for(var i=0; i<grid.store.getCount(); i++) { 
 				id =grid.store.getAt(i).data.parcelle;
 				feature = getFeatureById(id);
 				if(selection.isSelected(i)){ // si ligne selectionnée
@@ -128,7 +130,7 @@ Ext.namespace("GEOR")
 
 		});
 
-
+		// lors d'une recherche de parcelle on envoie une requête attributtaire pour selectionner les parcelle
 		var parcelle;
 		for(var i=0; i<newGrid.getStore().totalLength; i++) {
 			parcelle = newGrid.getStore().getAt(i);
@@ -138,8 +140,8 @@ Ext.namespace("GEOR")
 		tabs.insert(0, newGrid);
 		tabs.setActiveTab(0);
 	}
-	
-	changeStateParcelleOfTab = function(store,typeSelector){ // met à jour l'état des parcelles en fonction de l'évènement sur l'onglet
+	 // met à jour l'état des parcelles en fonction de l'évènement sur l'onglet
+	changeStateParcelleOfTab = function(store,typeSelector){
 		var  id,index,feature;
 		for(var i=0; i<store.length  ; i++) { //selection
 							id=store[i].data.parcelle ;
@@ -151,6 +153,7 @@ Ext.namespace("GEOR")
 		}
 	
 	}
+	// en fonction des cases à cocher on ouvre la fenêtre cadastrale et/ou foncière
     openFoncierOrCadastre = function(id,grid) {
 		cadastreExiste = (grid.idParcellesCOuvertes.indexOf(id) != -1)
 		foncierExiste = (grid.idParcellesFOuvertes.indexOf(id) != -1)
@@ -172,6 +175,7 @@ Ext.namespace("GEOR")
 					}
 		return "0"	;								
 	}
+	//fermeture d'une fenêtre cadastre et foncière donnée par un id
     closeFoncierAndCadastre = function(idParcelle,grid) {
 		cadastreExiste = (grid.idParcellesCOuvertes.indexOf(idParcelle) != -1)
 		foncierExiste = (grid.idParcellesFOuvertes.indexOf(idParcelle) != -1)
@@ -202,8 +206,9 @@ Ext.namespace("GEOR")
 				close: function(window) {
 					
 					//*********************
-					// remettre le style de la couche à zero
+					// supprime tous les entités de la couche selection
 					clearLayerSelection();
+					//ferme les fenêtres cadastrales et foncières
 					closeAllWindowFIUC();
 					closeAllWindowFIUF();
 					//*********************
