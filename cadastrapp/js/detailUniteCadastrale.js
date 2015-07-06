@@ -82,14 +82,14 @@ onClickDisplayFIUC = function(parcelleId) {
 			//la variable contenanceDGFiP represente la "Contenance DGFIP"					
             contenanceDGFiP = result[0].dcntpa;			
 
-			//la variable contenancecalculee represente la "Surface SIG calculée en m2"					
-            contenancecalculee = result[0].supf;			
+			//la variable contenanceCalculee represente la "Surface SIG calculée en m2"					
+            contenanceCalculee = result[0].supf;			
 
-			//la variable parcellebatie represente le champ "Parcelle bâtie"					
-            parcellebatie = result[0].gparbat ;			
+			//la variable parcelleBatie represente le champ "Parcelle bâtie"					
+            parcelleBatie = result[0].gparbat ;			
 
-			//la variable secteururbain represente le champ "Secteur urbain"					
-            secteururbain = result[0].gurbpa;
+			//la variable secteurUrbain represente le champ "Secteur urbain"					
+            secteurUrbain = result[0].gurbpa;
 			
 			// Remplissage du tableau de données
 			//TODO: remplacer les libellés par les i18n correspondants
@@ -100,9 +100,9 @@ onClickDisplayFIUC = function(parcelleId) {
 				[ 'Voie (Code fantoir)', voie ] ,
 				[ 'Adresse', adresse ] ,
 				[ 'Contenance DGFiP', contenanceDGFiP ] ,
-				[ 'Contenance calculée', contenancecalculee ] ,
-				[ 'Parcelle bâtie', parcellebatie ] ,
-				[ 'Secteur urbain', secteururbain ] 
+				[ 'Contenance calculée', contenanceCalculee ] ,
+				[ 'Parcelle bâtie', parcelleBatie ] ,
+				[ 'Secteur urbain', secteurUrbain ] 
 			];
 			
 			// Chargement du tableau de données relative à la parcelle dans le modèle de données correspondant à la parcelle
@@ -300,15 +300,12 @@ onClickDisplayFIUC = function(parcelleId) {
 					dataIndex : 'ccodro_lib'
 			} ]
         }),
-
     });
 	
 	
     // ---------- FIN ONGLET Propriétaire ------------------------------		
 	//
-	// 
-
-	
+	// 	
     // ---------- ONGLET Batiment ------------------------------		
 	//
 	// Modèle de donnée pour l'onglet batiment
@@ -599,7 +596,6 @@ onClickDisplayFIUC = function(parcelleId) {
         resizable : true,
         draggable : true,
         constrainHeader : true,
-
         border : false,
         labelWidth : 400,
         width : 850,
@@ -615,6 +611,7 @@ onClickDisplayFIUC = function(parcelleId) {
 				// deselection de la ligne
 				var rowIndex = indexRowParcelle(parcelleId);
 				newGrid.getSelectionModel().deselectRow(rowIndex);
+				
 				// mise à jour des tableau de fenêtres ouvertes
 				var index =newGrid.idParcellesCOuvertes.indexOf(parcelleId);
 				newGrid.idParcellesCOuvertes.splice(index,1);
@@ -622,7 +619,10 @@ onClickDisplayFIUC = function(parcelleId) {
 				var feature = getFeatureById(parcelleId);
 				if (feature)
 					changeStateFeature(feature, -1, "yellow");
-				closeWindowFIUF(parcelleId,newGrid);	// on ferme la fenêtre foncière si ouverte
+				
+				// on ferme la fenêtre foncière si ouverte				
+				closeWindowFIUF(parcelleId,newGrid);
+
 				// FIN AJOUT	
                 windowFIUC = null;
             }
