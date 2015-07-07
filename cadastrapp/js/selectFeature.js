@@ -257,26 +257,9 @@ Ext.namespace("GEOR")
 							var map=GeoExt.MapPanel.guess().map;
 							var idParcelle = resultSelection[0].attributes[idField];
 							var lonlat = new OpenLayers.LonLat(coords.split(",")[0],coords.split(",")[1])
-							popup = new GeoExt.Popup({
-								map:map,
-								anchored: true,
-								title: "My Popup",
-								location: lonlat,
-								width: 200,
-								html: "<div>"+idParcelle+"</div>",
-								collapsible: true
-							});
-							popup.show();
-							onClickDisplayInfoBulle(idParcelle);
-							document.body.onmousemove = function(e) {
-							//quand on bouge on supprime le popup
-								popup.destroy()
-							}
+							displayInfoBulle(map, idParcelle, lonlat);
 						}
-
-				} 
-				
-				
+				} 			
 			},
 			failure: function (response) {
 				console.log("Error ",response.responseText);

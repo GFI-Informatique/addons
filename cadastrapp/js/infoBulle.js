@@ -6,43 +6,65 @@
 Ext.namespace("GEOR")
 
 /**
- *  Information to be display in infobulle
+ *  Display an infobulle when waiting on a parcelle
  *  
- * @param parcelleId parameter will be use to call webapp and get additional information
+ * @param map OpenLayers map where popup should be displayed
+ * @param idParcelle parameter will be use to call webapp and get additional information
+ * @param lonlatt position where popup should be displayed
  */    
-onClickDisplayInfoBulle = function(parcelleId) {
+displayInfoBulle = function(map, idParcelle, lonlat) {
 
     // webapp request using parcelleid
     Ext.Ajax.request({
-        url : getWebappURL() + 'getInfoBulle?parcelle=' + parcelleId,
+        url : getWebappURL() + 'getInfoBulle?parcelle=' + idParcelle,
         failure : function() {
         	//TODO change i18n
             alert("Erreur lors de la requete 'getInfoBulle' ");
         },
         method : "GET",
         success : function(response, opts) {
-            var obj = Ext.decode(response.responseText);
-            
-            //TODO set console only to debug
-            console.log(obj);
-            
-            libcom = obj[0].libcom;
-            dcntpa = obj[0].dcntpa;
-			//TODO add when available in webapp dcntpa_sum = obj[0].dcntpa_sum;
-            dnvoiri = obj[0].dnvoiri;
-            dindic = obj[0].dindic;
-            dvoilib = obj[0].dvoilib;
-            dnupro = obj[0].dnupro;
-            dnomlp = obj[0].dnomlp;
-            comptecommunal = obj[0].comptecommunal;
-            //TODO add when available in webapp dcntpa_sum = obj[0].dcntpa_sum;
-            //TODO add when available in webapp sigcal_sum = obj[0].sigcal_sum;
-            //TODO add when available in webapp batical = obj[0].batical;
-           
-            //TODO check how to display information in GeoExt probably return html
-        }
+          
+        	// result from requestion JSON
+        	var result = Ext.decode(response.responseText);
 
+			//TODO add when available in webapp dcntpa_sum = result[0].dcntpa_sum;
+            //TODO add when available in webapp dcntpa_sum = result[0].dcntpa_sum;
+            //TODO add when available in webapp sigcal_sum = result[0].sigcal_sum;
+            //TODO add when available in webapp batical = result[0].batical;
+            
+        	// TODO add 5 first dnupro and dnomlp
+            popup = new GeoExt.Popup({
+				map:map,
+				location: lonlat,
+				width: 200,
+				html: "<div>"+result[0].libcom+"</div>" +
+						"<div>"+result[0].dnvoiri+"</div>" +
+						"<div>"+result[0].dindic+"</div>" +
+						"<div>"+result[0].dvoilib+"</div>" +
+						"<div>DGDFIP : "+result[0].dcntpa+" m²</div>" +
+						"<div>SGI : m²</div>" +
+						"<div>"+result[0].comptecommunal+"</div>" +
+						"<div>"+result[0].dnupro+"</div>" +
+						"<div>"+result[0].dnomlp+"</div>" +
+						"<div>"+idParcelle+"</div>",
+				listeners: {
+                    close: function() {
+                        // closing a popup destroys it, but our reference is truthy
+                        popup = null;
+                    }
+                }
+			});
+			popup.show();
+			
+			// check to avoid erase too quickly
+			document.body.onmousemove = function(e) {
+				//destroy popup on move
+				popup.destroy()
+			}
+           
+        }
     });	
+    
 				
 }
 
