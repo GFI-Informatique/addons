@@ -14,7 +14,7 @@ onClickDisplayInfoBulle = function(parcelleId) {
 
     // webapp request using parcelleid
     Ext.Ajax.request({
-        url : getWebappURL() + 'getInfoBulle?parcelle=' + parcelle,
+        url : getWebappURL() + 'getInfoBulle?parcelle=' + parcelleId,
         failure : function() {
         	//TODO change i18n
             alert("Erreur lors de la requete 'getInfoBulle' ");

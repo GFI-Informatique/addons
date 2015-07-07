@@ -113,7 +113,7 @@ onClickDisplayFIUC = function(parcelleId) {
 			// "Code département","Code Direction" et "Code commune", suivi d'un tiret, ainsi que par  l'addition des champs suivants:
 			// "Préfixe de section", "Code section" et "Numéro de plan de la parcelle"
 			titleFIUC =result[0].ccodep + result[0].ccodir + result[0].ccocom + '-'+result[0].ccopre + result[0].ccosec+'-'+result[0].dnupla;
-            console.log(titleFIUC);         
+            // console.log(titleFIUC);         
         }
     });  			
 	

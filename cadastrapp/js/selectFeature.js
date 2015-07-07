@@ -127,22 +127,9 @@ Ext.namespace("GEOR")
 							popup.destroy();
 					// affichage si niveau de zoom convenable		
 					if (zoom > popupConfig.minZoom) {
-						lonlat = map.getLonLatFromPixel(evt.xy);
-						popup = new GeoExt.Popup({
-							map:map,
-							anchored: true,
-							title: "My Popup",
-							location: lonlat,
-							width: 200,
-							html: "<div>TODO TODO</div>",
-							collapsible: true
-						});
-						
-						popup.show();
-						document.body.onmousemove = function(e) {
-						//quand on bouge on supprime le popup
-							popup.destroy()
-						}
+							var lonlat = map.getLonLatFromPixel(evt.xy);
+							var coords = lonlat.lon+","+lonlat.lat;
+							getFeaturesWFSSpatial("Point", coords, "infoBulle");
 					}
                 },
                 onMove: function(evt) {
@@ -172,6 +159,7 @@ Ext.namespace("GEOR")
 		var selectRows=false; // ligne dans le resultat de recherche doit être selectionnée si etat =2
 		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
 		var polygoneElements="", endPolygoneElements="";
+		var resultSelection;
 		if(typeGeom == "Polygon") {
 			polygoneElements = "<gml:outerBoundaryIs><gml:LinearRing>";
 			endPolygoneElements = "</gml:LinearRing></gml:outerBoundaryIs>";
@@ -181,6 +169,7 @@ Ext.namespace("GEOR")
 		var wfsUrl = WFSLayerSetting.wfsUrl ;
 		var featureJson = "";
 		Ext.Ajax.request({
+		  async: false,
 		  url : wfsUrl,
 		  method: 'GET',
 		  headers: { 'Content-Type': 'application/json' },                     
@@ -209,65 +198,92 @@ Ext.namespace("GEOR")
 				}
 				featureJson = response.responseText;
 				var geojson_format = new OpenLayers.Format.GeoJSON();
-				var result = geojson_format.read(featureJson);
-				var resultSelection=result.filter(function(itm,i,result){
+				var result = geojson_format.read(featureJson); // dans cette variable on peut avoir plusieurs résultat pour la même parcelle
+				
+				// !!  récupère de façon unique les parcelles résultat
+				resultSelection=result.filter(function(itm,i,result){
 					return i==getIndex(result, itm.attributes[idField]);
 				});
-
-				var feature, state;
-				var parcelsIds = [], codComm = null;
-				
-				for(var i=0; i<resultSelection.length; i++) {
-					// feature = geojson_format.read(featureJson)[i];
-					feature = resultSelection[i];
-					if(feature) {
-						var exist = false;
-						var j = -1;
-						// on teste si l'entité est déja selectionnée
-						for (j=0; j < selectedFeatures.length && !exist; j++){
-							 // if(selectedFeatures[j].attributes.geo_parcelle == feature.attributes.geo_parcelle) { //renvoie des cas errronnées psk la géométrie est dupliquer pour quelques parcelles
-							 if(selectedFeatures[j].fid == feature.fid) { // remplacer par cette ligne
-									exist = true;
-									if (exist){
-										feature = selectedFeatures[j];
-									}		
-								}
+				if (typeSelector!="infoBulle"){
+					var feature, state;
+					var parcelsIds = [], codComm = null;
+					
+					for(var i=0; i<resultSelection.length; i++) {
+						// feature = geojson_format.read(featureJson)[i];
+						feature = resultSelection[i];
+						if(feature) {
+							var exist = false;
+							var j = -1;
+							// on teste si l'entité est déja selectionnée
+							for (j=0; j < selectedFeatures.length && !exist; j++){
+								 // if(selectedFeatures[j].attributes.geo_parcelle == feature.attributes.geo_parcelle) { //renvoie des cas errronnées psk la géométrie est dupliquer pour quelques parcelles
+								 if(selectedFeatures[j].fid == feature.fid) { // remplacer par cette ligne
+										exist = true;
+										if (exist){
+											feature = selectedFeatures[j];
+										}		
+									}
+							}
+							// on l'ajoute à la selection si elle n'est pas trouvée
+							if(!exist ) {
+								selectLayer.addFeatures(feature);
+								selectedFeatures.push(feature);
+							}
+							// on met à jour son état
+							state = changeStateFeature(feature, j-1, typeSelector);
+							var id=feature.attributes[idField];
+							// si la parcelle est selectionnée on récupère son id pour le getParcelle pour le tableau
+							if(state == "1" || state == "2") {
+								parcelsIds.push(id);
+							}else {
+							//sinon on la vire du tableau et on ferme les fenêtres de détail
+								// newGrid.getStore().removeAt(indexRowParcelle(id));
+								tabs.activeTab.store.removeAt(indexRowParcelle(id));
+								closeWindowFIUC(id,newGrid);
+								closeWindowFIUF(id,newGrid);
+							}
+								
 						}
-						// on l'ajoute à la selection si elle n'est pas trouvée
-						if(!exist ) {
-							selectLayer.addFeatures(feature);
-							selectedFeatures.push(feature);
-						}
-						// on met à jour son état
-						state = changeStateFeature(feature, j-1, typeSelector);
-						var id=feature.attributes[idField];
-						// si la parcelle est selectionnée on récupère son id pour le getParcelle pour le tableau
-						if(state == "1" || state == "2") {
-							parcelsIds.push(id);
-						}else {
-						//sinon on la vire du tableau et on ferme les fenêtres de détail
-							// newGrid.getStore().removeAt(indexRowParcelle(id));
-							tabs.activeTab.store.removeAt(indexRowParcelle(id));
-							closeWindowFIUC(id,newGrid);
-							closeWindowFIUF(id,newGrid);
-						}
-							
 					}
-				}
-				if (state == "2"){
-					selectRows=true;
-				}	
+					if (state == "2"){
+						selectRows=true;
+					}	
 
-				showTabSelection( parcelsIds,selectRows);
+					showTabSelection( parcelsIds,selectRows);
+					// si la méthoe est appelée pour afficher l'infobulle
+				}else { 
+					// si on survole la couche et pas le fond de carte pour avoir l'infobulle
+					 if (resultSelection.length>0) {
+							var map=GeoExt.MapPanel.guess().map;
+							var idParcelle = resultSelection[0].attributes[idField];
+							var lonlat = new OpenLayers.LonLat(coords.split(",")[0],coords.split(",")[1])
+							popup = new GeoExt.Popup({
+								map:map,
+								anchored: true,
+								title: "My Popup",
+								location: lonlat,
+								width: 200,
+								html: "<div>"+idParcelle+"</div>",
+								collapsible: true
+							});
+							popup.show();
+							onClickDisplayInfoBulle(idParcelle);
+							document.body.onmousemove = function(e) {
+							//quand on bouge on supprime le popup
+								popup.destroy()
+							}
+						}
+
+				} 
 				
-			},
-			callback : function() {
+				
 			},
 			failure: function (response) {
 				console.log("Error ",response.responseText);
 			}
 		 });
 	}
+
 	//récupère l'index de l'entité selectionnée dans la couche selection
 	indexFeatureSelected =function(feature){
 		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
@@ -533,6 +549,7 @@ Ext.namespace("GEOR")
 	}
 	// récupère les coordonnées et la géométrie de l'entité dessinée et envoie une requête au serveur
 	selectFeatureIntersection=	function (feature) {
+		// on récupère le type de la geomètrie dessinée 
 		var typeGeom = feature.geometry.id.split('_')[2];
 		var coords = "";
 		if(typeGeom == "Point") {
@@ -595,5 +612,7 @@ Ext.namespace("GEOR")
 		layer1 =map.getLayersByName(wmsSetting.layerNameInPanel)[0];	
 		if (layer1) 
 			map.removeLayer(layer1)	
+		this.layer = cadastre	;
 		map.addLayer(cadastre); // ajout de la couche à la carte	*/
+
 	}
