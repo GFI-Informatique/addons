@@ -14,9 +14,18 @@ Ext.namespace("GEOR")
  */    
 displayInfoBulle = function(map, idParcelle, lonlat) {
 
+	// Build url depending on check button Cadastre or Foncier
+	urlInfoBulleService =  getWebappURL()+ 'getInfoBulle?parcelle=' + idParcelle
+	
+	if (!isCadastre()){
+		urlInfoBulleService += "&infocadastrale=0";
+	}
+	if (!isFoncier()){
+		urlInfoBulleService += "&infouf=0";
+	}
     // webapp request using parcelleid
     Ext.Ajax.request({
-        url : getWebappURL() + 'getInfoBulle?parcelle=' + idParcelle,
+        url : urlInfoBulleService,
         failure : function() {
         	//TODO change i18n
             alert("Erreur lors de la requete 'getInfoBulle' ");
@@ -26,27 +35,35 @@ displayInfoBulle = function(map, idParcelle, lonlat) {
           
         	// result from requestion JSON
         	var result = Ext.decode(response.responseText);
-
-			//TODO add when available in webapp dcntpa_sum = result[0].dcntpa_sum;
-            //TODO add when available in webapp dcntpa_sum = result[0].dcntpa_sum;
-            //TODO add when available in webapp sigcal_sum = result[0].sigcal_sum;
-            //TODO add when available in webapp batical = result[0].batical;
-            
-        	// TODO add 5 first dnupro and dnomlp
+        	
+        	html = "";
+        	if (isCadastre()){
+        		html = "<div class=\"cadastrapp-infobulle-parcelle\"><div>"+result[0].libcom+"</div>" +
+        		"<div>"+idParcelle+"</div>" +
+        		"<div>"+result[0].dnvoiri+" "+result[0].dindic+" "+result[0].cconvo+" "+result[0].dvoilib+"</div>" +
+        		"<div>DGDFIP : "+result[0].dcntpa+" m²</div>" +
+    			"<div>SGI : m²</div>";
+        		if(isCNIL1() || isCNIL2()){
+        			//TODO add list or message if more than 5
+        			html += "<div>"+result[0].ddenom+"</div>";
+        		}
+        		html += "</div>"
+        	}
+        	if (isFoncier()){
+        		//TODO wait for data from view
+        		html += "<div class=\"cadastrapp-infobulle-unite-fonciere\"><div>"+result[0].comptecommunal+"</div>";
+        		//TODO add when available in webapp dcntpa_sum = result[0].dcntpa_sum;
+                //TODO add when available in webapp dcntpa_sum = result[0].dcntpa_sum;
+                //TODO add when available in webapp sigcal_sum = result[0].sigcal_sum;
+                //TODO add when available in webapp batical = result[0].batical;
+        		html += "</div>";
+        	}
+  	
             popup = new GeoExt.Popup({
 				map:map,
 				location: lonlat,
 				width: 200,
-				html: "<div>"+result[0].libcom+"</div>" +
-						"<div>"+result[0].dnvoiri+"</div>" +
-						"<div>"+result[0].dindic+"</div>" +
-						"<div>"+result[0].dvoilib+"</div>" +
-						"<div>DGDFIP : "+result[0].dcntpa+" m²</div>" +
-						"<div>SGI : m²</div>" +
-						"<div>"+result[0].comptecommunal+"</div>" +
-						"<div>"+result[0].dnupro+"</div>" +
-						"<div>"+result[0].dnomlp+"</div>" +
-						"<div>"+idParcelle+"</div>",
+				html: html,
 				listeners: {
                     close: function() {
                         // closing a popup destroys it, but our reference is truthy
