@@ -35,6 +35,7 @@ displayInfoBulle = function(map, idParcelle, lonlat) {
           
         	// result from requestion JSON
         	var result = Ext.decode(response.responseText);
+       	
         	
         	html = "";
         	if (isCadastre()){
@@ -43,9 +44,11 @@ displayInfoBulle = function(map, idParcelle, lonlat) {
         		"<div>"+result[0].dnvoiri+" "+result[0].dindic+" "+result[0].cconvo+" "+result[0].dvoilib+"</div>" +
         		"<div>DGDFIP : "+result[0].dcntpa+" m²</div>" +
     			"<div>SGI : m²</div>";
+        		
         		if(isCNIL1() || isCNIL2()){
-        			//TODO add list or message if more than 5
-        			html += "<div>"+result[0].ddenom+"</div>";
+        			for(i=0;i<result[0].proprietaires.length; i++){
+        				html = html + "<div>"+ result[0].proprietaires[i].ddenom +"</div>";
+        			}
         		}
         		html += "</div>"
         	}
@@ -74,10 +77,10 @@ displayInfoBulle = function(map, idParcelle, lonlat) {
 			popup.show();
 			
 			// check to avoid erase too quickly
-			document.body.onmousemove = function(e) {
+			//document.body.onmousemove = function(e) {
 				//destroy popup on move
-				popup.destroy()
-			}
+			//	popup.destroy()
+			//}
            
         }
     });	
