@@ -19,7 +19,7 @@
     ],
     
     "css": [
-        "resources/css/cadastrapp.css",
+        "css/cadastrapp.css",
         "../../../lib/externals/ext/examples/ux/fileuploadfield/css/fileuploadfield.css"
     ],
     "default_options": {},
