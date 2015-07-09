@@ -1,15 +1,17 @@
 Cadastrapp ADDON
 ==============  
 
-Cet addon est fait pour être intégré dans le visualisatieur MapfishApp de georchestra, et appel des services de la webapp cadastrapp disponible ici : 
+Cet add-on est fait pour être intégré dans le visualiseur MapfishApp de geOrchestra. Il appelle des services de la webapp cadastrapp disponible ici : 
 
 https://github.com/GFI-Informatique/cadastrapp
 
-pour activer l'add-on cadastrapp, il faut modifier le fichier javascript GEOR_custom.js et rajouter dans la partie ADDONS: [
+Les informations des services WMS et WFS sont à modifier en fonction du modèle utilisé (Qgis ou Arcopole).
 
-Les informations des services WMS et WFS sont à modifier en fonction d'une utilisation sur le modèle Qgis ou sur le modèle Arcopole
+Pour activer l'add-on cadastrapp, il faut modifier le fichier javascript GEOR_custom.js et rajouter dans la partie ADDONS: 
 
-	{
+
+
+	[{
 	"id": "cadastrapp_0", 
 	"name": "Cadastrapp", 
 	"title": { 
