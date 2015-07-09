@@ -44,7 +44,7 @@ onClickDisplayFIUF = function(parcelleId) {
     // parcelle
     // TODO requete getFIUF a completer
     Ext.Ajax.request({
-        url : getWebappURL() + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
+        url : cadastrappWebappUrl + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
         method : 'GET',
         // Evaluation de la reponse et memorisation des champs
         // params: response,
@@ -89,7 +89,7 @@ onClickDisplayFIUF = function(parcelleId) {
     var FiufParcelleListStore = new Ext.data.JsonStore({
 
         // Appel a la webapp
-        url : getWebappURL() + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
+        url : cadastrappWebappUrl + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
         autoLoad : true,
         fields : [ 'comptecommunal', 'dcntpa_sum', 'sigcal_sum', 'adressepostale' ],
 

@@ -49,7 +49,7 @@ onClickDisplayFIUC = function(parcelleId) {
     // la parcelle
     // Les informations affichées sont
     Ext.Ajax.request({
-        url : getWebappURL() + 'getFIC?parcelle=' + parcelleId + "&onglet=0",
+        url : cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=0",
         method : 'GET',
         success : function(response) {
 
@@ -128,7 +128,7 @@ onClickDisplayFIUC = function(parcelleId) {
                 // propriete
                 // see below funtion
                 Ext.Ajax.request({
-                    url : getWebappURL() + 'createBordereauParcellaire?parcelle=' + parcelleId,
+                    url : cadastrappWebappUrl + 'createBordereauParcellaire?parcelle=' + parcelleId,
                     failure : function() {
                         alert("erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'))
                     },
@@ -170,7 +170,7 @@ onClickDisplayFIUC = function(parcelleId) {
     var FiucProprietaireStore = new Ext.data.JsonStore({
 
         // Appel à la webapp
-        url : getWebappURL() + 'getFIC?parcelle=' + parcelleId + "&onglet=1",
+        url : cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=1",
         autoLoad : true,
 
         // Champs constituant l'onglet propîétaire
@@ -297,7 +297,7 @@ onClickDisplayFIUC = function(parcelleId) {
     // Modèle de donnée pour l'onglet batiment
     var FiucBatimentsStore = new Ext.data.JsonStore({
         // Appel à la webapp
-        url : getWebappURL() + 'getFIC?parcelle=' + parcelleId + "&onglet=2",
+        url : cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=2",
         // root : "",
         autoLoad : true,
 
@@ -451,7 +451,7 @@ onClickDisplayFIUC = function(parcelleId) {
     var FiucSubdivfiscStore = new Ext.data.JsonStore({
         autoLoad : true,
         // Appel à la webapp
-        url : getWebappURL() + 'getFIC?parcelle=' + parcelleId + "&onglet=3",
+        url : cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=3",
         method : 'GET',
         fields : [ 'ccosub', {
             name : 'contenance',
@@ -499,7 +499,7 @@ onClickDisplayFIUC = function(parcelleId) {
     // Modèle de données de l'onglet historique de mutation
     var FiucHistomutStore = new Ext.data.ArrayStore({
         autoLoad : true,
-        url : getWebappURL() + 'getFIC?parcelle=' + parcelleId + "&onglet=4",
+        url : cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=4",
         method : 'GET',
         fields : [ {
             name : 'date',

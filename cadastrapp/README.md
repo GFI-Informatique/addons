@@ -25,43 +25,50 @@ Pour activer l'add-on cadastrapp, il faut modifier le fichier javascript GEOR_cu
 		"en": "A series of tools to fully exploit the cadastral data DGFiP", 
 		"es": "Una serie de herramientas para aprovechar al máximo los datos catastrales DGFiP",
 		"de": "TODO" },
-	"options": { "target": "tbar_12" },
-	"preloaded": "true"
-	}],
-    //**************************************
-	// After addon information need for cadastrapp 
-	"wmsLayer":{
-		"layerNameInPanel":"geo_parcelle",
-		"url": "http://hostname/geoserver/qgis/wms",
-		"layerNameGeoserver": "qgis:geo_parcelle",
-		"transparent":true,
-		"format": "image/png"
-	},
-	"WFSLayerSetting": {
-		"wfsUrl":"http://hostname/geoserver/wfs?",
-		"request" : "getfeature",
-		"version" : "1.0.0",
-		"service" : "wfs",
-		"typename" : "qgis:geo_parcelle",
-		"outputFormat" : "application/json",
-		"nameFieldIdParcelle": "geo_parcelle",
-		"geometryField":"geom"
-	},
-	"defautStyleParcelle" :{
-            "strokeColor": "#000000",
+	"options": { 
+		"target": "tbar_12",
+		"webapp":{
+			"url" : "http://hostname/cadastrapp"
+		},
+		"CNIL":{
+			"cnil1RoleName" : "EL_CNIL1",
+			"cnil2RoleName" : "EL_CNIL2"
+		},
+		"WMSLayer":{
+			"layerNameInPanel":"geo_parcelle",
+			"url": "http://hostname/geoserver/qgis/wms",
+			"layerNameGeoserver": "qgis:geo_parcelle",
+			"transparent":true,
+			"format": "image/png"
+		},
+		"WFSLayerSetting": {
+			"wfsUrl":"http://hostname/geoserver/wfs?",
+			"request" : "getfeature",
+			"version" : "1.0.0",
+			"service" : "wfs",
+			"typename" : "qgis:geo_parcelle",
+			"outputFormat" : "application/json",
+			"nameFieldIdParcelle": "geo_parcelle",
+			"geometryField":"geom"
+		},
+		"defautStyleParcelle" :{
+			"strokeColor": "#000000",
 			"strokeWidth":"0.5",
-            "pointRadius": 6,
+           "pointRadius": 6,
 			"pointerEvents": "visiblePainted",
 			"fontSize": "10px" 
-	},
-	"selectedStyle" : {
-		"defautColor":"#AAAAAA",
-		"colorSelected1":"#FFFF00", //selection niveau 1
-		"colorSelected2":"#81BEF7", // selection niveau 2
-		"opacity":"0.4",
-		"strokeWidth":"3"
-	},
-	"popup" : {
-		"timeToShow": 5000,
-		"minZoom":14
-	},
+		},
+		"selectedStyle" : {
+			"defautColor":"#AAAAAA",
+			"colorSelected1":"#FFFF00", //selection niveau 1
+			"colorSelected2":"#81BEF7", // selection niveau 2
+			"opacity":"0.4",
+			"strokeWidth":"3"
+		},
+		"popup" : {
+			"timeToShow": 5000,
+			"minZoom":14
+		} 
+		},
+	"preloaded": "true"
+	}],

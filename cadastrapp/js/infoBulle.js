@@ -15,7 +15,7 @@ Ext.namespace("GEOR")
 displayInfoBulle = function(map, idParcelle, lonlat) {
 
 	// Build url depending on check button Cadastre or Foncier
-	urlInfoBulleService =  getWebappURL()+ 'getInfoBulle?parcelle=' + idParcelle
+	urlInfoBulleService =  cadastrappWebappUrl+ 'getInfoBulle?parcelle=' + idParcelle
 	
 	if (!isCadastre()){
 		urlInfoBulleService += "&infocadastrale=0";

@@ -32,7 +32,7 @@ Ext.namespace("GEOR")
 	getPartialCityStore = function() {
 		return new Ext.data.JsonStore({
 			proxy: new Ext.data.HttpProxy({
-                url: getWebappURL() + 'getCommune',
+                url: cadastrappWebappUrl + 'getCommune',
                 method: 'GET'
              }),
 			fields: ['ccoinsee', 'libcom', 'libcom_min', { 
@@ -47,7 +47,7 @@ Ext.namespace("GEOR")
 	getSectionStore = function(cityId) {
 		if (cityId!=null) {
 			return new Ext.data.JsonStore({
-				url: getWebappURL() + 'getSection?ccoinsee=' + cityId,
+				url: cadastrappWebappUrl + 'getSection?ccoinsee=' + cityId,
 				autoLoad: true,
 				fields: ['ccoinsee', 'ccopre', 'ccosec', 'geo_section',
 					{ 
@@ -67,7 +67,7 @@ Ext.namespace("GEOR")
 	getInitParcelleStore = function() {
 		return new Ext.data.JsonStore({
 			proxy: new Ext.data.HttpProxy({
-                url: getWebappURL() + 'getParcelle',
+                url: cadastrappWebappUrl + 'getParcelle',
                 method: 'GET'
              }),
 			fields : ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib','dcntpa']
@@ -97,7 +97,7 @@ Ext.namespace("GEOR")
 	getProprietaireStore = function(cityId) {		
 		if (cityId!=null) {
 			return new Ext.data.JsonStore({
-				url: getWebappURL() + 'getProprietaire?ccoinsee=' + cityId,
+				url: cadastrappWebappUrl + 'getProprietaire?ccoinsee=' + cityId,
 				autoLoad: true,
 				fields: ['ccoinsee', 'ccopre', 'ccosec', 'geo_section',
 					{ 
