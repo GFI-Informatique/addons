@@ -36,11 +36,12 @@ isCadastre = function() { return _isCadastre; }
 isFoncier = function() { return _isFoncier; }
 
 //roles
+// TODO put roles into GEOR_custom.js
 isCNIL1 = function() {
-	return (GEOR.config.ROLES.indexOf('CNIL1') != -1);
+	return (GEOR.config.ROLES.indexOf('EL_CNIL1') != -1);
 }
 isCNIL2 = function() {
-	return (GEOR.config.ROLES.indexOf('CNIL2') != -1);
+	return (GEOR.config.ROLES.indexOf('EL_CNIL2') != -1);
 }
 console.log('Droits : CNIL1 (' + isCNIL1() + ') ; CNIL2 (' + isCNIL2() + ')');
 
