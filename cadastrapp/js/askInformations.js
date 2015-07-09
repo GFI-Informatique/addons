@@ -6,184 +6,20 @@
 Ext.namespace("GEOR")
 
 /**
- * public: method[onClickAskInformations] :param layer: Create ...TODO
+ * public: method[onClickAskInformations] :param layer: Create ...TODO Cette
+ * methode est appell�e sur appui du bouton 'Demande' de la barre d'outil de
+ * cadastrapp Elle ouvre une fenetre composee d'informations sur le
+ * demandeur,ainsi que sur le ou les biens � consulter La demande d'information
+ * peut etre imprim�e
  */
 onClickAskInformations = function() {
 
-	var parcelleWindow;
+    //var parcelleWindow;
 
-    var parcBisStore, parcCityStore, parcCityCombo1, parcCityCombo2, parcelleGrid;
-    parcBisStore = getBisStore();
+    var parcBisStore = getBisStore();
 
-    parcCityStore = getPartialCityStore();
+    var parcCityStore = getPartialCityStore();
 
-		//combobox "villes"
-		parcCityCombo1 = new Ext.form.ComboBox({
-			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
-			hiddenName: 'ccoinsee',
-            allowBlank:false,
-			width: 300,
-			mode: 'local',
-			value: '',
-			forceSelection: true,
-			editable: true,
-			displayField: 'displayname',
-			valueField: 'ccoinsee',
-			store: getPartialCityStore(),
-			listeners: {
-			    beforequery: function(q){  
-			    	if (q.query) {
-		                var length = q.query.length;
-		                if (length >= getSearchStart() && q.combo.getStore().getCount() == 0) {
-		                	if (isNaN(q.query)) {
-		                		//recherche par nom de ville
-		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
-		                	} else {
-		                		//recherche par code insee
-		                		q.combo.getStore().load({params: {ccoinsee_partiel: q.query}});
-		                	}		                	
-		                } else if (length < getSearchStart()) {
-		                	q.combo.getStore().loadData([],false);
-		                }
-		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
-		                q.query.length = length;
-		            }
-			    },
-				change: function(combo, newValue, oldValue) {
-					//refaire le section store pour cette ville						
-					parcelleGrid.reconfigure(getVoidParcelleStore(), getParcelleColModel(newValue));
-					parcelleWindow.buttons[0].enable();
-				}
-			}
-		});
-		
-		parcCityCombo2 = new Ext.form.ComboBox({
-			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
-			hiddenName: 'ccoinsee',
-            allowBlank:false,
-			width: 300,
-			mode: 'local',
-			value: '',
-			forceSelection: true,
-			editable: true,
-			displayField: 'displayname',
-			valueField: 'ccoinsee',
-			store: getPartialCityStore(),
-			listeners: {
-			    beforequery: function(q){  
-			    	if (q.query) {
-		                var length = q.query.length;
-		                if (length >= getSearchStart() && q.combo.getStore().getCount() == 0) {
-		                	if (isNaN(q.query)) {
-		                		//recherche par nom de ville
-		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
-		                	} else {
-		                		//recherche par code insee
-		                		q.combo.getStore().load({params: {ccoinsee_partiel: q.query}});
-		                	}		                	
-		                } else if (length < getSearchStart()) {
-		                	q.combo.getStore().loadData([],false);
-		                }
-		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
-		                q.query.length = length;
-		            }
-			    },
-				change: function(combo, newValue, oldValue) {
-					parcelleWindow.buttons[0].enable();
-				}
-			}
-		});
-		parcCityCombo3 = new Ext.form.ComboBox({
-			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
-			hiddenName: 'ccoinsee',
-            allowBlank:false,
-			width: 300,
-			mode: 'local',
-			value: '',
-			forceSelection: true,
-			editable: true,
-			displayField: 'displayname',
-			valueField: 'ccoinsee',
-			store: getPartialCityStore(),
-			listeners: {
-			    beforequery: function(q){  
-			    	if (q.query) {
-		                var length = q.query.length;
-		                if (length >= getSearchStart() && q.combo.getStore().getCount() == 0) {
-		                	if (isNaN(q.query)) {
-		                		//recherche par nom de ville
-		                		q.combo.getStore().load({params: {libcom_partiel: q.query}});
-		                	} else {
-		                		//recherche par code insee
-		                		q.combo.getStore().load({params: {ccoinsee_partiel: q.query}});
-		                	}		                	
-		                } else if (length < getSearchStart()) {
-		                	q.combo.getStore().loadData([],false);
-		                }
-		                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
-		                q.query.length = length;
-		            }
-			    },
-				change: function(combo, newValue, oldValue) {
-					parcelleWindow.buttons[0].enable();
-				}
-			}
-		});		
-		//grille "références"
-		parcelleGrid = new Ext.grid.EditorGridPanel({
-			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.references'),
-			xtype: 'editorgrid',
-			clicksToEdit: 1,
-			ds: getVoidParcelleStore(),
-			cm: getParcelleColModel(null),
-			autoExpandColumn: 'parcelle',
-			height: 100,
-			width: 300,
-			border: true,
-			listeners: {
-				beforeedit: function(e) {
-					if (e.column == 0) {
-						//pas d'edition de section si aucune ville selectionnée
-						if (parcCityCombo1.value == '') return false;
-					}
-					if (e.column == 1) {
-						//pas d'edition de parcelle si aucune section selectionnée
-						if (e.record.data.section == '') return false;
-						
-						//on remplace le contenu du store des parcelles selon la section selectionnée
-						reloadParcelleStore(e.grid.getColumnModel().getColumnById(e.field).editor.getStore(), parcCityCombo1.value, e.record.data.section);
-					}
-				},
-				afteredit: function(e) {				
-					//on ajoute un champ vide, si le dernier champ est complet
-					var lastIndex = e.grid.store.getCount()-1;
-					var lastData = e.grid.store.getAt(e.grid.store.getCount()-1).data;
-					
-					if (lastData.section!='' && lastData.parcelle!='') {
-						var p = new e.grid.store.recordType({section:'', parcelle:''}); // create new record
-						e.grid.stopEditing();
-						e.grid.store.add(p); 	//insert a new record into the store (also see add)
-						this.startEditing(e.row, 1);
-					}
-				}
-			}
-		});
-    // formulaire Parcelles
-    // liste des compléments de numéro de rue : BIS, TER (à compléter ?)
-    // var bisStore = getBisStore();
-    var bisStore = new Ext.data.JsonStore({
-        fields : [ 'name', 'value' ],
-        data : [ {
-            name : '--',
-            value : '--'
-        }, {
-            name : 'bis',
-            value : 'bis'
-        }, {
-            name : 'ter',
-            value : 'ter'
-        } ]
-    });
 
     // liste des sections : TODO : charger dynamiquement selon la ville choisie
     // var sectionStore = getSectionStore();
@@ -200,6 +36,105 @@ onClickAskInformations = function() {
             value : 'sect3'
         } ]
     });
+
+    var parcCityCombo = new Ext.form.ComboBox({
+        fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.city'),
+        hiddenName : 'ccoinsee',
+        allowBlank : false,
+        width : 300,
+        mode : 'local',
+        value : '',
+        forceSelection : true,
+        editable : true,
+        displayField : 'displayname',
+        valueField : 'ccoinsee',
+        store : getPartialCityStore(),
+        listeners : {
+            beforequery : function(q) {
+                if (q.query) {
+                    var length = q.query.length;
+                    if (length >= getSearchStart()
+                            && q.combo.getStore().getCount() == 0) {
+                        if (isNaN(q.query)) {
+                            // recherche par nom de ville
+                            q.combo.getStore().load({
+                                params : {
+                                    libcom_partiel : q.query
+                                }
+                            });
+                        } else {
+                            // recherche par code insee
+                            q.combo.getStore().load({
+                                params : {
+                                    ccoinsee_partiel : q.query
+                                }
+                            });
+                        }
+                    } else if (length < getSearchStart()) {
+                        q.combo.getStore().loadData([], false);
+                    }
+                    q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+                    q.query.length = length;
+                }
+            },
+            change : function(combo, newValue, oldValue) {
+                parcelleWindow.buttons[0].enable();
+            }
+        }
+    });
+    // grille "références"
+    var parcelleGrid = new Ext.grid.EditorGridPanel(
+            {
+                fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.references'),
+                xtype : 'editorgrid',
+                clicksToEdit : 1,
+                ds : getVoidParcelleStore(),
+                cm : getParcelleColModel(null),
+                autoExpandColumn : 'parcelle',
+                height : 100,
+                width : 300,
+                border : true,
+                listeners : {
+                    beforeedit : function(e) {
+                        if (e.column == 0) {
+                            // pas d'edition de section si aucune ville
+                            // selectionnée
+                            if (parcCityCombo1.value == '')
+                                return false;
+                        }
+                        if (e.column == 1) {
+                            // pas d'edition de parcelle si aucune section
+                            // selectionnée
+                            if (e.record.data.section == '')
+                                return false;
+
+                            // on remplace le contenu du store des parcelles
+                            // selon la section selectionnée
+                            reloadParcelleStore(e.grid.getColumnModel()
+                                    .getColumnById(e.field).editor.getStore(),
+                                    parcCityCombo1.value, e.record.data.section);
+                        }
+                    },
+                    afteredit : function(e) {
+                        // on ajoute un champ vide, si le dernier champ est
+                        // complet
+                        var lastIndex = e.grid.store.getCount() - 1;
+                        var lastData = e.grid.store.getAt(e.grid.store
+                                .getCount() - 1).data;
+
+                        if (lastData.section != '' && lastData.parcelle != '') {
+                            var p = new e.grid.store.recordType({
+                                section : '',
+                                parcelle : ''
+                            }); // create new record
+                            e.grid.stopEditing();
+                            e.grid.store.add(p); // insert a new record into
+                                                    // the store (also see add)
+                            this.startEditing(e.row, 1);
+                        }
+                    }
+                }
+            });
 
     // liste des parcelles : TODO : charger dynamiquement selon la ville choisie
     // et la section choisie
@@ -241,7 +176,7 @@ onClickAskInformations = function() {
                     }); // create new record
                     parcelleGrid.stopEditing();
                     this.add(p); // insert a new record into the store (also
-                                    // see add)
+                    // see add)
                     parcelleGrid.startEditing(lastIndex + 1, 0); //
                 }
             }
@@ -282,45 +217,59 @@ onClickAskInformations = function() {
     } ]);
 
     // grille "parcellle"
-		//grille "références"
-		parcelleGrid = new Ext.grid.EditorGridPanel({
-			fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.references'),
-			xtype: 'editorgrid',
-			clicksToEdit: 1,
-			ds: getVoidParcelleStore(),
-			cm: getParcelleColModel(null),
-			autoExpandColumn: 'parcelle',
-			height: 100,
-			width: 405,
-			border: true,
-			listeners: {
-				beforeedit: function(e) {
-					if (e.column == 0) {
-						//pas d'edition de section si aucune ville selectionnée
-						if (parcCityCombo1.value == '') return false;
-					}
-					if (e.column == 1) {
-						//pas d'edition de parcelle si aucune section selectionnée
-						if (e.record.data.section == '') return false;
-						
-						//on remplace le contenu du store des parcelles selon la section selectionnée
-						reloadParcelleStore(e.grid.getColumnModel().getColumnById(e.field).editor.getStore(), parcCityCombo1.value, e.record.data.section);
-					}
-				},
-				afteredit: function(e) {				
-					//on ajoute un champ vide, si le dernier champ est complet
-					var lastIndex = e.grid.store.getCount()-1;
-					var lastData = e.grid.store.getAt(e.grid.store.getCount()-1).data;
-					
-					if (lastData.section!='' && lastData.parcelle!='') {
-						var p = new e.grid.store.recordType({section:'', parcelle:''}); // create new record
-						e.grid.stopEditing();
-						e.grid.store.add(p); 	//insert a new record into the store (also see add)
-						this.startEditing(e.row, 1);
-					}
-				}
-			}
-		});
+    // grille "références"
+    parcelleGrid = new Ext.grid.EditorGridPanel(
+            {
+                fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.references'),
+                xtype : 'editorgrid',
+                clicksToEdit : 1,
+                ds : getVoidParcelleStore(),
+                cm : getParcelleColModel(null),
+                autoExpandColumn : 'parcelle',
+                height : 100,
+                width : 405,
+                border : true,
+                listeners : {
+                    beforeedit : function(e) {
+                        if (e.column == 0) {
+                            // pas d'edition de section si aucune ville
+                            // selectionnée
+                            if (parcCityCombo.value == '')
+                                return false;
+                        }
+                        if (e.column == 1) {
+                            // pas d'edition de parcelle si aucune section
+                            // selectionnée
+                            if (e.record.data.section == '')
+                                return false;
+
+                            // on remplace le contenu du store des parcelles
+                            // selon la section selectionnée
+                            reloadParcelleStore(e.grid.getColumnModel()
+                                    .getColumnById(e.field).editor.getStore(),
+                                    parcCityCombo1.value, e.record.data.section);
+                        }
+                    },
+                    afteredit : function(e) {
+                        // on ajoute un champ vide, si le dernier champ est
+                        // complet
+                        var lastIndex = e.grid.store.getCount() - 1;
+                        var lastData = e.grid.store.getAt(e.grid.store
+                                .getCount() - 1).data;
+
+                        if (lastData.section != '' && lastData.parcelle != '') {
+                            var p = new e.grid.store.recordType({
+                                section : '',
+                                parcelle : ''
+                            }); // create new record
+                            e.grid.stopEditing();
+                            e.grid.store.add(p); // insert a new record into
+                                                    // the store (also see add)
+                            this.startEditing(e.row, 1);
+                        }
+                    }
+                }
+            });
 
     // modele la la grille des "adresses"
     var coladresseModel = new Ext.grid.ColumnModel([ {
@@ -353,8 +302,7 @@ onClickAskInformations = function() {
         border : true
     });
 
-    var askInformationsWindow;
-    askInformationsWindow = new Ext.Window(
+    var askInformationsWindow = new Ext.Window(
             {
                 title : 'Demande Informations Foncieres',
                 frame : true,
@@ -373,7 +321,7 @@ onClickAskInformations = function() {
                 },
                 items : [
                         {
-                            xtype : 'fieldset',
+                            xtype : 'form',
                             title : 'Informations sur le demandeur',
                             labelWidth : 120,
                             defaultType : 'textfield',
@@ -389,7 +337,7 @@ onClickAskInformations = function() {
                                                 .i18n('cadastrapp.demandeinformation.prenom'),
                                         name : 'prenom',
                                         width : 280
-                                    },									
+                                    },
                                     {
                                         fieldLabel : OpenLayers
                                                 .i18n('cadastrapp.parcelle.city'),
@@ -415,7 +363,7 @@ onClickAskInformations = function() {
                                             width : 190
                                         } ]
                                     },
-                                     {
+                                    {
                                         fieldLabel : OpenLayers
                                                 .i18n('cadastrapp.demandeinformation.lieudit'),
                                         name : 'lieudit',
@@ -435,8 +383,8 @@ onClickAskInformations = function() {
                             defaultType : 'textfield',
                             labelWidth : 120,
                             items : [
-                                    
- 									parcCityCombo3,		//combobox "villes"
+
+                                    parcCityCombo, // combobox "villes"
                                     {
                                         xtype : 'tabpanel',
                                         height : 160,
@@ -455,7 +403,7 @@ onClickAskInformations = function() {
 
                                             items : [
                                                     parcelleGrid, // grille
-                                                                    // "parcelle"
+                                                    // "parcelle"
                                                     {
                                                         fieldClass : 'displayfieldCenter'
                                                     } ]
@@ -477,7 +425,7 @@ onClickAskInformations = function() {
 
                                             items : [
                                                     adresseGrid, // grille
-                                                                    // "adresse"
+                                                    // "adresse"
                                                     {
                                                         fieldClass : 'displayfieldCenter'
                                                     } ]
@@ -502,9 +450,9 @@ onClickAskInformations = function() {
                                     .i18n('cadastrapp.demandeinformation.imprimer'),
                             listeners : {
                                 click : function(b, e) {
-									onClickDisplayInfoBulle();
+                                    onClickDisplayInfoBulle();
                                     askInformationsWindow.close();
-									
+
                                 }
                             }
                         } ]
