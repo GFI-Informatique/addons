@@ -25,7 +25,6 @@ Ext.namespace("GEOR");
 //***************
 
 var selectedFeatures = [];
-var styleFeatures;
 var selectLayer;
 var newGrid,tabs;
 var click;
@@ -248,8 +247,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         this.map.addLayer(layer);
 
 		//*********************************************************************	
-
-
 		//*********************************************************************
 
         layer.events.on({
@@ -275,6 +272,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         this.initDemandeControl(layer);
 
         GEOR.Cadastrapp.superclass.constructor.apply(this, arguments);
+
     },
 
 
@@ -294,6 +292,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         if (!this.toggleGroup) {
             this.toggleGroup = this.map.id;
         }
+
     },
 
    /** private: method[initZoomControls]
