@@ -11,7 +11,7 @@ Ext.namespace("GEOR")
  * propriétaire. En sortie, le lancement de la recherche affiche une fenetre
  * listant les propriétaires correspondants
  */
-    var proprietaireWindow;
+var proprietaireWindow;
 // Déclaration de la fonction de recherche par nom
 onClickRechercheProprietaire1 = function() {
 
@@ -49,6 +49,8 @@ initRechercheProprietaire = function() {
         displayField : 'displayname',
         valueField : 'ccoinsee',
         store : getPartialCityStore(),
+
+        // Recherche de la ville demandée avec gestion de l'autocomplétion
         listeners : {
             beforequery : function(q) {
                 if (q.query) {
@@ -94,6 +96,7 @@ initRechercheProprietaire = function() {
         displayField : 'displayname',
         valueField : 'ccoinsee',
         store : getPartialCityStore(),
+        // Recherche de la ville demandée avec gestion de l'autocomplétion
         listeners : {
             beforequery : function(q) {
                 if (q.query) {
@@ -203,7 +206,7 @@ initRechercheProprietaire = function() {
 
             items : [ {
 
-                // ONGLET 1
+                // ONGLET "Nom Usage ou Naissance"
                 id : 'propFirstForm',
                 xtype : 'form',
                 title : OpenLayers.i18n('cadastrapp.proprietaire.title.tab1'),
@@ -233,7 +236,7 @@ initRechercheProprietaire = function() {
                 } ]
             }, {
 
-                // ONGLET 2
+                // ONGLET "Compte proprietaire"
                 id : 'propSecondForm',
                 xtype : 'form',
                 title : OpenLayers.i18n('cadastrapp.proprietaire.title.tab2'),
