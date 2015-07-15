@@ -9,10 +9,10 @@ Ext.namespace("GEOR")
  * onClickdisplayFIUF
  * 
  * @param layer:
- *            parcelleId Cette methode construit la fiche d'information fonci�re
- *            pour une parcelle donn�e dont d'identifiant est parcelleId Elle
- *            permet �galement l'export au format pdf de la fiche d'information
- *            fonci�re
+ *            parcelleId Cette methode construit la fiche d'information foncière
+ *            pour une parcelle donnée dont d'identifiant est parcelleId Elle
+ *            permet également l'export au format pdf de la fiche d'information
+ *            foncière
  * @return Test
  */
 onClickDisplayFIUF = function(parcelleId) {
@@ -44,7 +44,7 @@ onClickDisplayFIUF = function(parcelleId) {
     // parcelle
     // TODO requete getFIUF a completer
     Ext.Ajax.request({
-        url : getWebappURL() + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
+        url : cadastrappWebappUrl + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
         method : 'GET',
         // Evaluation de la reponse et memorisation des champs
         // params: response,
@@ -67,7 +67,7 @@ onClickDisplayFIUF = function(parcelleId) {
         }
     });
 
-    // Modele de donnes relatif � la liste des coproprietaires
+    // Modele de donnes relatif à la liste des coproprietaires
     // TODO a modifier
     var FiufProprietaireStore = new Ext.data.ArrayStore({
         fields : [ {
@@ -89,7 +89,7 @@ onClickDisplayFIUF = function(parcelleId) {
     var FiufParcelleListStore = new Ext.data.JsonStore({
 
         // Appel a la webapp
-        url : getWebappURL() + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
+        url : cadastrappWebappUrl + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
         autoLoad : true,
         fields : [ 'comptecommunal', 'dcntpa_sum', 'sigcal_sum', 'adressepostale' ],
 
@@ -97,7 +97,7 @@ onClickDisplayFIUF = function(parcelleId) {
     });
     // Declaration et construction du tableau informations globales de la
     // parcelle
-    // Tableau compos� des colonnes 'unit� fonci�re' et 'surface'
+    // Tableau composé des colonnes 'unité foncière' et 'surface'
     var FiufGlobalInfosGrid = new Ext.grid.GridPanel({
         store : FiufGlobalInfosStore,
         stateful : true,
@@ -124,7 +124,7 @@ onClickDisplayFIUF = function(parcelleId) {
     });
 
     // Declaration et construction du tableau des coproprietaires
-    // Compos� d'une seule colonne: co-proprietaires
+    // Composé d'une seule colonne: co-proprietaires
     var FiufProprietaireGrid = new Ext.grid.GridPanel({
         store : FiufProprietaireStore,
         stateful : true,

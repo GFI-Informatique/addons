@@ -89,7 +89,7 @@ var printBordereauParcellaireWindow;
 						
 						//PARAMS
 						var params = printBordereauParcellaireWindow.items.items[0].getForm().getValues();
-						var url = getWebappURL() + 'getParcelle/toFile?' + Ext.urlEncode(params);
+						var url = cadastrappWebappUrl + 'getParcelle/toFile?' + Ext.urlEncode(params);
 						
 						//téléchargement du fichier						
 						Ext.DomHelper.append(document.body, {

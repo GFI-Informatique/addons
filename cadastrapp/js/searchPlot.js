@@ -317,7 +317,7 @@ Ext.namespace("GEOR")
 									
 									//soumet la form (pour envoyer le fichier)
 									currentForm.getForm().submit({
-										url: getWebappURL() + 'getParcelle/fromParcellesFile',
+										url: cadastrappWebappUrl + 'getParcelle/fromParcellesFile',
 										params: {details: 1},
 										success: function(form, action) {
 											addNewResultParcelle(resultTitle, getResultParcelleStore(action.response.responseText, true));
@@ -348,7 +348,7 @@ Ext.namespace("GEOR")
 									//envoi la liste de resultat
 									Ext.Ajax.request({
 										method: 'GET',
-										url: getWebappURL() + 'getParcelle',
+										url: cadastrappWebappUrl + 'getParcelle',
 										params: params,
 										success: function(result) {
 											addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
@@ -379,7 +379,7 @@ Ext.namespace("GEOR")
 								//envoi des données d'une form
 								Ext.Ajax.request({
 									method: 'GET',
-									url: getWebappURL() + 'getParcelle',
+									url: cadastrappWebappUrl + 'getParcelle',
 									params: params,
 									success: function(result) {
 										addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
@@ -415,7 +415,7 @@ Ext.namespace("GEOR")
 								//envoi des données d'une form
 								Ext.Ajax.request({
 									method: 'GET',
-									url: getWebappURL() + 'getParcelle?parcelle='+parcelleId+"&details=1",
+									url: cadastrappWebappUrl + 'getParcelle?parcelle='+parcelleId+"&details=1",
 									//params: params,
 									success: function(result) {
 										addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));

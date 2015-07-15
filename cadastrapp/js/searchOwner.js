@@ -285,7 +285,7 @@ initRechercheProprietaire = function() {
                             // envoi des données d'une form
                             Ext.Ajax.request({
                                 method : 'GET',
-                                url : getWebappURL() + 'getParcelle',
+                                url : cadastrappWebappUrl + 'getParcelle',
                                 params : params,
                                 success : function(result) {
                                     addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
@@ -307,7 +307,7 @@ initRechercheProprietaire = function() {
                                 // soumet la form (pour envoyer le fichier)
                                 currentForm.getForm().submit({
                                     method : 'POST',
-                                    url : getWebappURL() + 'getParcelle/fromProprietairesFile',
+                                    url : cadastrappWebappUrl + 'getParcelle/fromProprietairesFile',
                                     params : {
                                         details : 1
                                     },
@@ -339,7 +339,7 @@ initRechercheProprietaire = function() {
                                 // envoi des données d'une form
                                 Ext.Ajax.request({
                                     method : 'GET',
-                                    url : getWebappURL() + 'getParcelle',
+                                    url : cadastrappWebappUrl + 'getParcelle',
                                     params : params,
                                     success : function(result) {
                                         addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));

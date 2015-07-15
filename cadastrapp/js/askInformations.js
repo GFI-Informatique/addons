@@ -6,11 +6,13 @@
 Ext.namespace("GEOR")
 
 /**
- * public: method[onClickAskInformations] :param layer: Create ...TODO Cette
- * methode est appell�e sur appui du bouton 'Demande' de la barre d'outil de
+ * public: method[onClickAskInformations] :
+ * 
+ * 
+ * Cette méthode est appellée sur appui du bouton 'Demande' de la barre d'outil de
  * cadastrapp Elle ouvre une fenetre composee d'informations sur le
- * demandeur,ainsi que sur le ou les biens � consulter La demande d'information
- * peut etre imprim�e
+ * demandeur,ainsi que sur le ou les biens à consulter La demande d'information
+ * peut etre imprimée
  */
 onClickAskInformations = function() {
 

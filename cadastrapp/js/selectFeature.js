@@ -22,12 +22,12 @@ Ext.namespace("GEOR")
 				{name: 'parcelle', mapping: 'parcelle'},
 				{name: 'surface', mapping: 'surface'}
 		]);		
+   
+
     // créer le control de selection et la couche des parcelle à partir du wfs et appliquer le control à la couche
-    createSelectionControl = function (){	
+    createSelectionControl = function (style, selectedStyle){	
 		var map=layer.map;
-		// style à appliquer sur la couche cadastre
-		var style=GEOR.custom.defautStyleParcelle;
-		var selectedStyle =GEOR.custom.selectedStyle;
+
 		var styleFeatures = new OpenLayers.StyleMap(new OpenLayers.Style({ // param config
 					fillColor:"${getFillColor}", // style des entités en fonction de l'état
 					strokeColor: "${getStrokeColor}", 
@@ -117,9 +117,9 @@ Ext.namespace("GEOR")
 	}
 
 	//créer un popup quand on survole la map
-	addPopupOnhover=function(){
+	addPopupOnhover=function(popupConfig){
 		var map=layer.map;
-		var popupConfig =GEOR.custom.popup;
+
 		//comme pour le clique , on crée la classe du controleur hover
 		OpenLayers.Control.Hover = OpenLayers.Class(OpenLayers.Control, {                
 			defaultHandlerOptions: {
@@ -173,9 +173,9 @@ Ext.namespace("GEOR")
 	getFeaturesWFSSpatial=	function (typeGeom, coords, typeSelector) {
 		var filter; 
 		var selectRows=false; // ligne dans le resultat de recherche doit être selectionnée si etat =2
-		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
+	
 		var polygoneElements="", endPolygoneElements="";
-		var wfsUrl = WFSLayerSetting.wfsUrl ;
+
 		var featureJson = "";
 		if(typeGeom == "Polygon") {
 			polygoneElements = "<gml:outerBoundaryIs><gml:LinearRing>";
@@ -196,7 +196,7 @@ Ext.namespace("GEOR")
 				"filter": filter
 			},
 			success: function (response) {
-				var WFSLayerSetting = GEOR.custom.WFSLayerSetting; 
+
 				var idField = WFSLayerSetting.nameFieldIdParcelle; // champ identifiant de parcelle dans geoserver
 				var result,resultSelection,geojson_format;
 				var getIndex=function(result, str){
@@ -281,7 +281,7 @@ Ext.namespace("GEOR")
 	}
 	//récupère l'index de l'entité selectionnée dans la couche selection
 	indexFeatureSelected =function(feature){
-		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
+
 		var idField = WFSLayerSetting.nameFieldIdParcelle;
 		var exist = false;
 		for (j=0; j < selectedFeatures.length && !exist; j++){
@@ -351,7 +351,7 @@ Ext.namespace("GEOR")
 			//envoi la liste de resultat
 			Ext.Ajax.request({
 				method: 'GET',
-				url: getWebappURL() + 'getParcelle',
+				url: cadastrappWebappUrl + 'getParcelle',
 				params: params,
 				username : "testadmin",
 				password : "testadmin",
@@ -419,7 +419,7 @@ Ext.namespace("GEOR")
 
 	//envoie une requete selon un filtre attributaire 
 	getFeaturesWFSAttribute = function (idParcelle) {
-		var WFSLayerSetting = GEOR.custom.WFSLayerSetting
+
 		var filter = ""+WFSLayerSetting.nameFieldIdParcelle+"='"+idParcelle+"'";
 		var wfsUrl = WFSLayerSetting.wfsUrl ;
 		var featureJson = "";
@@ -456,8 +456,8 @@ Ext.namespace("GEOR")
 
 	// retourne une entité en prenant son id
 	getFeatureById = function (idParcelle) {
-		var WFSLayerSetting = GEOR.custom.WFSLayerSetting;
-		var idField = WFSLayerSetting.nameFieldIdParcelle;
+
+	    var idField = WFSLayerSetting.nameFieldIdParcelle;
 		for (var i=0; i < selectedFeatures.length; i++) { 
 			if(selectedFeatures[i].attributes[idField] == idParcelle)
 				return selectedFeatures[i];
@@ -556,9 +556,11 @@ Ext.namespace("GEOR")
 		}else 
 			console.log("pas d'entité selectionnée pour zoomer dessus");
 	}
+	
+	
 	// ajout de la couche WMS à la carte 
-	addWMSLayer=function(){
-		var wmsSetting = GEOR.custom.wmsLayer; 
+	addWMSLayer=function(wmsSetting){
+
 		var cadastre = new OpenLayers.Layer.WMS(
 			// paramètres de la requête wms
 				wmsSetting.layerNameInPanel,wmsSetting.url, {
