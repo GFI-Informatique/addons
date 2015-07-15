@@ -38,51 +38,60 @@ displayInfoBulle = function(map, idParcelle, lonlat) {
        	
         	
         	html = "";
-        	if (isCadastre()){
-        		html = "<div class=\"cadastrapp-infobulle-parcelle\"><div>"+result[0].libcom+"</div>" +
-        		"<div>"+idParcelle+"</div>" +
-        		"<div>"+result[0].dnvoiri+" "+result[0].dindic+" "+result[0].cconvo+" "+result[0].dvoilib+"</div>" +
-        		"<div>DGDFIP : "+result[0].dcntpa+" m²</div>" +
-    			"<div>SGI : m²</div>";
-        		
-        		if(isCNIL1() || isCNIL2()){
-        			for(i=0;i<result[0].proprietaires.length; i++){
-        				html = html + "<div>"+ result[0].proprietaires[i].ddenom +"</div>";
-        			}
-        		}
-        		html += "</div>"
-        	}
-        	if (isFoncier()){
-        		//TODO wait for data from view
-        		html += "<div class=\"cadastrapp-infobulle-unite-fonciere\"><div>"+result[0].comptecommunal+"</div>";
-        		//TODO add when available in webapp dcntpa_sum = result[0].dcntpa_sum;
-                //TODO add when available in webapp dcntpa_sum = result[0].dcntpa_sum;
-                //TODO add when available in webapp sigcal_sum = result[0].sigcal_sum;
-                //TODO add when available in webapp batical = result[0].batical;
-        		html += "</div>";
-        	}
+        	if (typeof(result) != "undefined"){
+        	
+            	if (isCadastre()){
+            		html = "<div class=\"cadastrapp-infobulle-parcelle\"><div>"+result.libcom+"</div>" +
+            		"<div>"+idParcelle+"</div>" +
+            		"<div>"+result.dnvoiri+" "+result.dindic+" "+result.cconvo+" "+result.dvoilib+"</div>" +
+            		"<div>DGFiP : "+result.dcntpa.toLocaleString()+" m²</div>" +
+        			"<div>SIG : "+result.surfc.toLocaleString()+" m²</div>";
+            		
+            		if(isCNIL1() || isCNIL2()){
+            			if (typeof(result.proprietaires) != "undefined"){
+                    		for(i=0;i<result.proprietaires.length; i++){
+                    		    if(i=4){
+                    		        html = html + "<div>...  </div>";
+                    		    }else{
+                    		        html = html + "<div>"+ result.proprietaires[i].ddenom +"</div>";
+                    		    }    			    
+                    		}
+                    	}
+            		}
+            		html += "</div>"
+            	}
+            	if (isFoncier()){
+            		//TODO wait for data from view
+            		html += "<div class=\"cadastrapp-infobulle-unite-fonciere\">" +
+            				"<div>"+result.comptecommunal +"</div>" +
+            		        "<div>"+result.dcntpa_sum.toLocaleString()+" m²</div>" +
+            		        "<div>"+result.sigcal_sum.toLocaleString()+" m²</div>";
+                    //TODO add when available in webapp batical = result[0].batical;
+            		html += "</div>";
+            	}
   	
-            popup = new GeoExt.Popup({
-				map:map,
-				location: lonlat,
-				width: 200,
-				html: html,
-				listeners: {
-                    close: function() {
-                        // closing a popup destroys it, but our reference is truthy
-                        popup = null;
+                popup = new GeoExt.Popup({
+    				map:map,
+    				location: lonlat,
+    				width: 200,
+    				html: html,
+    				listeners: {
+                        close: function() {
+                            // closing a popup destroys it, but our reference is truthy
+                            popup = null;
+                        }
                     }
-                }
-			});
-			popup.show();
+    			});
+                
+    			popup.show();
 			
-			// check to avoid erase too quickly
-			//document.body.onmousemove = function(e) {
-				//destroy popup on move
-			//	popup.destroy()
-			//}
-           
-        }
+    			// TODO check to avoid erase too quickly
+    			document.body.onmousemove = function(e) {
+    			    //destroy popup on move
+    			    popup.destroy()
+    			}
+        	}
+       	}
     });	
     
 				
