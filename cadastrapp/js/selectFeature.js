@@ -175,7 +175,7 @@ Ext.namespace("GEOR")
 		var selectRows=false; // ligne dans le resultat de recherche doit être selectionnée si etat =2
 	
 		var polygoneElements="", endPolygoneElements="";
-
+		var wfsUrl = WFSLayerSetting.wfsUrl ;
 		var featureJson = "";
 		if(typeGeom == "Polygon") {
 			polygoneElements = "<gml:outerBoundaryIs><gml:LinearRing>";
