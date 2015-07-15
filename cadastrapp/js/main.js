@@ -13,9 +13,13 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
      */
     init : function(record) {
         
+        // get information for addons options
         WFSLayerSetting = this.options.WFSLayerSetting;
         
         cadastrappWebappUrl = this.options.webapp.url;
+        
+        groupeNameCNILLevel1 = this.options.CNIL.cnil1RoleName;
+        groupeNameCNILLevel2 = this.options.CNIL.cnil2RoleName;
                 
         var cadastrapp = new GEOR.Cadastrapp({
             map : this.map,
