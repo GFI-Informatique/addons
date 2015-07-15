@@ -17,10 +17,18 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         WFSLayerSetting = this.options.WFSLayerSetting;
         
         cadastrappWebappUrl = this.options.webapp.url;
+        cnil1RoleName = this.options.CNIL.cnil1RoleName;
+        cnil2RoleName = this.options.CNIL.cnil2RoleName
         
-        groupeNameCNILLevel1 = this.options.CNIL.cnil1RoleName;
-        groupeNameCNILLevel2 = this.options.CNIL.cnil2RoleName;
-                
+        // TODO remove this and place it into good namespace
+        isCNIL1 = function() {
+            return (GEOR.config.ROLES.indexOf(cnil1RoleName) != -1);
+        };
+        
+        isCNIL2 = function() {
+            return (GEOR.config.ROLES.indexOf(cnil2RoleName) != -1);
+        };
+       
         var cadastrapp = new GEOR.Cadastrapp({
             map : this.map,
             popupOptions : {
@@ -107,4 +115,5 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
 
         GEOR.Addons.Base.prototype.destroy.call(this);
     }
+
 });

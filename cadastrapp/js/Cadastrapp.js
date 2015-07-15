@@ -35,21 +35,10 @@ var _isFoncier = false;
 isCadastre = function() { return _isCadastre; }
 isFoncier = function() { return _isFoncier; }
 
-//roles
-isCNIL1 = function() {
-	return (GEOR.config.ROLES.indexOf(groupeNameCNILLevel1) != -1);
-}
-isCNIL2 = function() {
-	return (GEOR.config.ROLES.indexOf(groupeNameCNILLevel2) != -1);
-}
-console.log('Droits : CNIL1 (' + isCNIL1() + ') ; CNIL2 (' + isCNIL2() + ')');
-
 //autocompletion
 getSearchStart = function() {
 	return 3;
 }
-
-
 
 /** api: constructor
  *  .. class:: Cadastrappj(config)
