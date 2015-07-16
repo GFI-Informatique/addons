@@ -64,8 +64,8 @@ displayInfoBulle = function(map, idParcelle, lonlat) {
             		//TODO wait for data from view
             		html += "<div class=\"cadastrapp-infobulle-unite-fonciere\">" +
             				"<div>"+result.comptecommunal +"</div>" +
-            		        "<div>"+result.dcntpa_sum.toLocaleString()+" m²</div>" +
-            		        "<div>"+result.sigcal_sum.toLocaleString()+" m²</div>";
+            		        "<div>DGFiP UF : "+result.dcntpa_sum.toLocaleString()+" m²</div>" +
+            		        "<div>SIG UF :"+result.sigcal_sum.toLocaleString()+" m²</div>";
                     //TODO add when available in webapp batical = result[0].batical;
             		html += "</div>";
             	}
