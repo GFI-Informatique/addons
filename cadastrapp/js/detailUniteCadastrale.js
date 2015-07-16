@@ -3,7 +3,7 @@
  * `Ext.util.Observable
  * <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
  */
-Ext.namespace("GEOR")
+Ext.namespace("GEOR.Addons.Cadastre");
 
 /**
  * public: method[onClickDisplayFIUC] :param parcelleId
@@ -19,7 +19,7 @@ Ext.namespace("GEOR")
  * 
  * Description le résultat: La fiche d'information cadastrale est affichée
  */
-onClickDisplayFIUC = function(parcelleId) {
+GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
 
     // Titre de la fiche d'information cadastrale
     var titleFIUC = parcelleId;
@@ -49,7 +49,7 @@ onClickDisplayFIUC = function(parcelleId) {
     // la parcelle
     // Les informations affichées sont
     Ext.Ajax.request({
-        url : cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=0",
+        url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=0",
         method : 'GET',
         success : function(response) {
 
@@ -128,7 +128,7 @@ onClickDisplayFIUC = function(parcelleId) {
                 // propriete
                 // see below funtion
                 Ext.Ajax.request({
-                    url : cadastrappWebappUrl + 'createBordereauParcellaire?parcelle=' + parcelleId,
+                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createBordereauParcellaire?parcelle=' + parcelleId,
                     failure : function() {
                         alert("erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'))
                     },
@@ -170,7 +170,7 @@ onClickDisplayFIUC = function(parcelleId) {
     var FiucProprietaireStore = new Ext.data.JsonStore({
 
         // Appel à la webapp
-        url : cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=1",
+        url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=1",
         autoLoad : true,
 
         // Champs constituant l'onglet propîétaire
@@ -297,7 +297,7 @@ onClickDisplayFIUC = function(parcelleId) {
     // Modèle de donnée pour l'onglet batiment
     var FiucBatimentsStore = new Ext.data.JsonStore({
         // Appel à la webapp
-        url : cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=2",
+        url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=2",
         // root : "",
         autoLoad : true,
 
@@ -451,7 +451,7 @@ onClickDisplayFIUC = function(parcelleId) {
     var FiucSubdivfiscStore = new Ext.data.JsonStore({
         autoLoad : true,
         // Appel à la webapp
-        url : cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=3",
+        url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=3",
         method : 'GET',
         fields : [ 'ccosub', {
             name : 'contenance',
@@ -499,7 +499,7 @@ onClickDisplayFIUC = function(parcelleId) {
     // Modèle de données de l'onglet historique de mutation
     var FiucHistomutStore = new Ext.data.ArrayStore({
         autoLoad : true,
-        url : cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=4",
+        url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=4",
         method : 'GET',
         fields : [ {
             name : 'date',
@@ -580,19 +580,20 @@ onClickDisplayFIUC = function(parcelleId) {
             close : function(window) {
                 // AJOUT HAMZA
                 // deselection de la ligne
-                var rowIndex = indexRowParcelle(parcelleId);
+                var rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(parcelleId);
                 newGrid.getSelectionModel().deselectRow(rowIndex);
 
                 // mise à jour des tableau de fenêtres ouvertes
                 var index = newGrid.idParcellesCOuvertes.indexOf(parcelleId);
                 newGrid.idParcellesCOuvertes.splice(index, 1);
                 newGrid.fichesCOuvertes.splice(index, 1);
-                var feature = getFeatureById(parcelleId);
-                if (feature)
-                    changeStateFeature(feature, -1, "yellow");
+                var feature = GEOR.Addons.Cadastre.getFeatureById(parcelleId);
+                if (feature){
+                    GEOR.Addons.Cadastre.changeStateFeature(feature, -1, "yellow");
+                }
 
                 // on ferme la fenêtre foncière si ouverte
-                closeWindowFIUF(parcelleId, newGrid);
+                GEOR.Addons.Cadastre.closeWindowFIUF(parcelleId, newGrid);
 
                 // FIN AJOUT
                 windowFIUC = null;
@@ -643,24 +644,30 @@ onClickDisplayFIUC = function(parcelleId) {
     windowFIUC.show();
     newGrid.fichesCOuvertes.push(windowFIUC);
     newGrid.idParcellesCOuvertes.push(parcelleId);
-    // window=FiucParcelleGrid.findParentByType("window");
-    // console.log("displayFIUC onClick")
+
 }
 
-// return checked rows on proprietaie grid
+/**
+ *  return checked rows on proprietaie grid
+ *  
+ */
 function getSelectedProprietaire() {
     var proprietaireSelected = grid.getSelectionModel().getSelections();
     console.log(proprietaireSelected);
-
 }
-// return checked rows on batiment grid
+
+// 
+/**
+ * return checked rows on batiment grid
+ */
 function getSelectedBatiment() {
     var batimentSelected = grid.getSelectionModel().getSelections();
     console.log(proprietaireSelected);
 
 }
-// TODO mettre ca sur utils
 
+
+//TODO Remove when service available
 function reloadBatimentStore(bat) {
     // console.log( bat);
     var FiucBatiments1Data = [ [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ],
@@ -681,6 +688,9 @@ function reloadBatimentStore(bat) {
     // FiucBatimentsStore.loadData(Data);
 }
 
+/**
+ * 
+ */
 function loadbordereauParcellaire() {
 
     // console.log("download bordereau function");

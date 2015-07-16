@@ -3,7 +3,7 @@
  * `Ext.util.Observable
  * <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
  */
-Ext.namespace("GEOR")
+Ext.namespace("GEOR.Addons.Cadastre");
 
 /**
  *  Display an infobulle when waiting on a parcelle
@@ -12,15 +12,15 @@ Ext.namespace("GEOR")
  * @param idParcelle parameter will be use to call webapp and get additional information
  * @param lonlatt position where popup should be displayed
  */    
-displayInfoBulle = function(map, idParcelle, lonlat) {
+GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
 
 	// Build url depending on check button Cadastre or Foncier
-	urlInfoBulleService =  cadastrappWebappUrl+ 'getInfoBulle?parcelle=' + idParcelle
+	urlInfoBulleService =  GEOR.Addons.Cadastre.cadastrappWebappUrl+ 'getInfoBulle?parcelle=' + idParcelle
 	
-	if (!isCadastre()){
+	if (!GEOR.Addons.Cadastre.isCadastre()){
 		urlInfoBulleService += "&infocadastrale=0";
 	}
-	if (!isFoncier()){
+	if (!GEOR.Addons.Cadastre.isFoncier()){
 		urlInfoBulleService += "&infouf=0";
 	}
     // webapp request using parcelleid
@@ -35,19 +35,18 @@ displayInfoBulle = function(map, idParcelle, lonlat) {
           
         	// result from requestion JSON
         	var result = Ext.decode(response.responseText);
-       	
-        	
+       	   	
         	html = "";
         	if (typeof(result) != "undefined"){
         	
-            	if (isCadastre()){
+            	if (GEOR.Addons.Cadastre.isCadastre()){
             		html = "<div class=\"cadastrapp-infobulle-parcelle\"><div>"+result.libcom+"</div>" +
             		"<div>"+idParcelle+"</div>" +
             		"<div>"+result.dnvoiri+" "+result.dindic+" "+result.cconvo+" "+result.dvoilib+"</div>" +
             		"<div>DGFiP : "+result.dcntpa.toLocaleString()+" m²</div>" +
         			"<div>SIG : "+result.surfc.toLocaleString()+" m²</div>";
             		
-            		if(isCNIL1() || isCNIL2()){
+            		if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
             			if (typeof(result.proprietaires) != "undefined"){
                     		for(i=0;i<result.proprietaires.length; i++){
                     		    if(i=4){
@@ -60,7 +59,7 @@ displayInfoBulle = function(map, idParcelle, lonlat) {
             		}
             		html += "</div>"
             	}
-            	if (isFoncier()){
+            	if (GEOR.Addons.Cadastre.isFoncier()){
             		//TODO wait for data from view
             		html += "<div class=\"cadastrapp-infobulle-unite-fonciere\">" +
             				"<div>"+result.comptecommunal +"</div>" +

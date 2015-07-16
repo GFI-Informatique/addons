@@ -3,7 +3,7 @@
  * `Ext.util.Observable
  * <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
  */
-Ext.namespace("GEOR")
+Ext.namespace("GEOR.Addons.Cadastre");
 
 /**
  * onClickdisplayFIUF
@@ -15,7 +15,7 @@ Ext.namespace("GEOR")
  *            foncière
  * @return Test
  */
-onClickDisplayFIUF = function(parcelleId) {
+GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
     var windowFIUF, parcelleGrid;
 
     // TODO: Attente des services suivants: getFIUF, getCoProprietaire
@@ -44,7 +44,7 @@ onClickDisplayFIUF = function(parcelleId) {
     // parcelle
     // TODO requete getFIUF a completer
     Ext.Ajax.request({
-        url : cadastrappWebappUrl + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
+        url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
         method : 'GET',
         // Evaluation de la reponse et memorisation des champs
         // params: response,
@@ -89,7 +89,7 @@ onClickDisplayFIUF = function(parcelleId) {
     var FiufParcelleListStore = new Ext.data.JsonStore({
 
         // Appel a la webapp
-        url : cadastrappWebappUrl + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
+        url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
         autoLoad : true,
         fields : [ 'comptecommunal', 'dcntpa_sum', 'sigcal_sum', 'adressepostale' ],
 

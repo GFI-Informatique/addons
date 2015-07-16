@@ -1,9 +1,5 @@
-/** api: (define)
- *  module = GEOR
- *  class = Cadastrapp
- *  base_link = `Ext.util.Observable <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
- */
-Ext.namespace("GEOR");
+
+Ext.namespace("GEOR.Addons.Cadastre");
 
 /**
  * @include OpenLayers/Control/DrawFeature.js
@@ -28,24 +24,20 @@ var selectedFeatures = [];
 var selectLayer;
 var newGrid,tabs;
 var click;
+
 //***************
 //checkboxes : cadatre et foncier
 var _isCadastre = true;
 var _isFoncier = false;
-isCadastre = function() { return _isCadastre; }
-isFoncier = function() { return _isFoncier; }
-
-//autocompletion
-getSearchStart = function() {
-	return 3;
-}
+GEOR.Addons.Cadastre.isCadastre = function() { return _isCadastre; }
+GEOR.Addons.Cadastre.isFoncier = function() { return _isFoncier; }
 
 /** api: constructor
- *  .. class:: Cadastrappj(config)
+ *  .. class:: Cadastrapp(config)
  *
- *      Create a FeatureEditing main controler.
+ *      Create a menu main controler for cadastrapp
  */
-GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
+GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
 
     /** api: property[map]
      *  ``OpenLayers.Map``  A configured map object.
@@ -190,7 +182,6 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
     /** private: method[constructor]
      *  Private constructor override.
      */
-	
     constructor: function(config) {
         Ext.apply(this, config);
 
@@ -249,8 +240,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
         this.actions.push('-');
         this.initDemandeControl(layer);
 
-        GEOR.Cadastrapp.superclass.constructor.apply(this, arguments);
-
+        GEOR.Addons.Cadastre.Menu.superclass.constructor.apply(this, arguments);
     },
 
 
@@ -298,7 +288,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                 // check item options
                 group: this.toggleGroup,
                 checked: false,
-				handler:zoomToSelectedFeatures	
+				handler:GEOR.Addons.Cadastre.zoomToSelectedFeatures	
             };
 
             action = new Ext.Button(actionOptions);
@@ -314,9 +304,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
                 options, action, iconCls, actionOptions, tooltip;
 
 
-        geometryTypes = [
-          "Point", "LineString", "Polygon"
-        ];
+        geometryTypes = ["Point", "LineString", "Polygon"];
 
         for (var i = 0; i < geometryTypes.length; i++) {
             options = {
@@ -448,7 +436,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             iconCls: "gx-featureediting-cadastrapp-parcelle",
             iconAlign: 'top',
             text: OpenLayers.i18n("cadastrapp.parcelle"),
-			handler: onClickRechercheParcelle1
+			handler: GEOR.Addons.Cadastre.onClickRechercheParcelle1
         };	
         this.actions.push(new Ext.Button(configRechercheParcelle));
 		
@@ -477,21 +465,21 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 					tooltip: OpenLayers.i18n("cadastrapp.parcelle.refer"),
 					text: OpenLayers.i18n("cadastrapp.parcelle.refer")
 				});
-				buttonRechercheParcelleIdentifiant.on('click', onClickRechercheParcelle1);
+				buttonRechercheParcelleIdentifiant.on('click', GEOR.Addons.Cadastre.onClickRechercheParcelle1);
 			
 				//sous-sous-menu : recherche parcelle - par adresse
 				var buttonRechercheParcelleAdresse = scrollMenuRechercheParcelle.add({
 					tooltip: OpenLayers.i18n("cadastrapp.parcelle.adresse"),
 					text: OpenLayers.i18n("cadastrapp.parcelle.adresse")
 				});
-				buttonRechercheParcelleAdresse.on('click', onClickRechercheParcelle2);
+				buttonRechercheParcelleAdresse.on('click', GEOR.Addons.Cadastre.onClickRechercheParcelle2);
 				
 				//sous-sous-menu : recherche parcelle - par identifiant cadastral
 				var buttonRechercheParcelleAdresse = scrollMenuRechercheParcelle.add({
 					tooltip: OpenLayers.i18n("cadastrapp.parcelle.identifiant"),
 					text: OpenLayers.i18n("cadastrapp.parcelle.identifiant")
 				});
-				buttonRechercheParcelleAdresse.on('click', onClickRechercheParcelle3);					
+				buttonRechercheParcelleAdresse.on('click', GEOR.Addons.Cadastre.onClickRechercheParcelle3);					
 			
 			//sous-menu : recherche proprietaire
 			var scrollMenuRechercheProprietaire = new Ext.menu.Menu();
@@ -505,13 +493,13 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
 					tooltip: OpenLayers.i18n("cadastrapp.proprietaire.nom"),
 					text: OpenLayers.i18n("cadastrapp.proprietaire.nom")
 				});
-				buttonRechercheProprietaireNom.on('click', onClickRechercheProprietaire1);
+				buttonRechercheProprietaireNom.on('click', GEOR.Addons.Cadastre.onClickRechercheProprietaire1);
 				//sous-sous-menu : recherche proprietaire - par compte
 				var buttonRechercheProprietaireCompte = scrollMenuRechercheProprietaire.add({
 					tooltip: OpenLayers.i18n("cadastrapp.proprietaire.compte"),
 					text: OpenLayers.i18n("cadastrapp.proprietaire.compte")
 				});
-				buttonRechercheProprietaireCompte.on('click', onClickRechercheProprietaire2);			
+				buttonRechercheProprietaireCompte.on('click', GEOR.Addons.Cadastre.onClickRechercheProprietaire2);			
 			
 			
 			//sous-menu : recherche copropriété
@@ -603,7 +591,7 @@ GEOR.Cadastrapp = Ext.extend(Ext.util.Observable, {
             iconCls: "gx-featureediting-cadastrapp-demande",
             iconAlign: 'top',
             text: OpenLayers.i18n("cadastrapp.demande"),
-			handler: onClickAskInformations
+			handler: GEOR.Addons.Cadastre.onClickAskInformations
         };
         button = new Ext.Button(config);
 		

@@ -3,7 +3,7 @@
  * `Ext.util.Observable
  * <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
  */
-Ext.namespace("GEOR")
+Ext.namespace("GEOR.Addons.Cadastre");
 
 /**
  * public: method[onClickAskInformations] :
@@ -14,13 +14,13 @@ Ext.namespace("GEOR")
  * demandeur,ainsi que sur le ou les biens à consulter La demande d'information
  * peut etre imprimée
  */
-onClickAskInformations = function() {
+GEOR.Addons.Cadastre.onClickAskInformations = function() {
 
     //var parcelleWindow;
 
-    var parcBisStore = getBisStore();
+    var parcBisStore = GEOR.Addons.Cadastre.getBisStore();
 
-    var parcCityStore = getPartialCityStore();
+    var parcCityStore = GEOR.Addons.Cadastre.getPartialCityStore();
 
 
     // liste des sections : TODO : charger dynamiquement selon la ville choisie
@@ -50,12 +50,12 @@ onClickAskInformations = function() {
         editable : true,
         displayField : 'displayname',
         valueField : 'ccoinsee',
-        store : getPartialCityStore(),
+        store : GEOR.Addons.Cadastre.getPartialCityStore(),
         listeners : {
             beforequery : function(q) {
                 if (q.query) {
                     var length = q.query.length;
-                    if (length >= getSearchStart()
+                    if (length >= GEOR.Addons.Cadastre.minCharToSearch
                             && q.combo.getStore().getCount() == 0) {
                         if (isNaN(q.query)) {
                             // recherche par nom de ville
@@ -72,7 +72,7 @@ onClickAskInformations = function() {
                                 }
                             });
                         }
-                    } else if (length < getSearchStart()) {
+                    } else if (length < GEOR.Addons.Cadastre.minCharToSearch) {
                         q.combo.getStore().loadData([], false);
                     }
                     q.query = new RegExp(Ext.escapeRe(q.query), 'i');
@@ -90,8 +90,8 @@ onClickAskInformations = function() {
                 fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.references'),
                 xtype : 'editorgrid',
                 clicksToEdit : 1,
-                ds : getVoidParcelleStore(),
-                cm : getParcelleColModel(null),
+                ds : GEOR.Addons.Cadastre.getVoidParcelleStore(),
+                cm : GEOR.Addons.Cadastre.getParcelleColModel(null),
                 autoExpandColumn : 'parcelle',
                 height : 100,
                 width : 300,
@@ -112,7 +112,7 @@ onClickAskInformations = function() {
 
                             // on remplace le contenu du store des parcelles
                             // selon la section selectionnée
-                            reloadParcelleStore(e.grid.getColumnModel()
+                            GEOR.Addons.Cadastre.reloadParcelleStore(e.grid.getColumnModel()
                                     .getColumnById(e.field).editor.getStore(),
                                     parcCityCombo1.value, e.record.data.section);
                         }
@@ -121,8 +121,7 @@ onClickAskInformations = function() {
                         // on ajoute un champ vide, si le dernier champ est
                         // complet
                         var lastIndex = e.grid.store.getCount() - 1;
-                        var lastData = e.grid.store.getAt(e.grid.store
-                                .getCount() - 1).data;
+                        var lastData = e.grid.store.getAt(e.grid.store.getCount() - 1).data;
 
                         if (lastData.section != '' && lastData.parcelle != '') {
                             var p = new e.grid.store.recordType({
@@ -225,8 +224,8 @@ onClickAskInformations = function() {
                 fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.references'),
                 xtype : 'editorgrid',
                 clicksToEdit : 1,
-                ds : getVoidParcelleStore(),
-                cm : getParcelleColModel(null),
+                ds : GEOR.Addons.Cadastre.getVoidParcelleStore(),
+                cm : GEOR.Addons.Cadastre.getParcelleColModel(null),
                 autoExpandColumn : 'parcelle',
                 height : 100,
                 width : 405,
@@ -247,7 +246,7 @@ onClickAskInformations = function() {
 
                             // on remplace le contenu du store des parcelles
                             // selon la section selectionnée
-                            reloadParcelleStore(e.grid.getColumnModel()
+                            GEOR.Addons.Cadastre.reloadParcelleStore(e.grid.getColumnModel()
                                     .getColumnById(e.field).editor.getStore(),
                                     parcCityCombo1.value, e.record.data.section);
                         }

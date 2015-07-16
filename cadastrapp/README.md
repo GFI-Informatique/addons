@@ -31,8 +31,8 @@ Pour activer l'add-on cadastrapp, il faut modifier le fichier javascript GEOR_cu
 			"url" : "http://hostname/cadastrapp"
 		},
 		"CNIL":{
-			"cnil1RoleName" : "EL_CNIL1",
-			"cnil2RoleName" : "EL_CNIL2"
+			"cnil1RoleName" : "EL_CAD_CNIL1",
+			"cnil2RoleName" : "EL_CAD_CNIL2"
 		},
 		"WMSLayer":{
 			"layerNameInPanel":"geo_parcelle",

@@ -10,9 +10,10 @@
 		"js/detailUniteFonciere.js",
 		"js/detailUniteCadastrale.js",
 		"js/infoBulle.js",
-        "js/Cadastrapp.js",
+        "js/menu.js",
         "js/FeaturePanel.js",
         "js/main.js",
+      	"js/cadastrappUtil.js",
         "../../../lib/externals/ext/examples/ux/Spinner.js",
         "../../../lib/externals/ext/examples/ux/SpinnerField.js",
         "../../../lib/externals/ext/examples/ux/fileuploadfield/FileUploadField.js"
@@ -25,7 +26,7 @@
     "default_options": {},
     "i18n": {
         "en": {
-            "cadastrapp.cadastre_tools": "Outils Cadastre",
+            "cadastrapp.cadastre_tools": "Cadastre tools",
             "cadastrapp.delete_feature": "Delete feature",
             "cadastrapp.delete": "Delete",
             "cadastrapp.export_as_kml": "Export",

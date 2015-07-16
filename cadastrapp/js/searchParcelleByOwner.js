@@ -1,9 +1,4 @@
-/**
- * api: (define) module = GEOR class = Cadastrapp base_link =
- * `Ext.util.Observable
- * <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
- */
-Ext.namespace("GEOR")
+Ext.namespace("GEOR.Addons.Cadastre");
 
 /**
  * public: method[onClickRechercheProprietaire] Appelée sur click sur le bouton
@@ -12,29 +7,32 @@ Ext.namespace("GEOR")
  * listant les propriétaires correspondants
  */
 var proprietaireWindow;
+
 // Déclaration de la fonction de recherche par nom
-onClickRechercheProprietaire1 = function() {
+GEOR.Addons.Cadastre.onClickRechercheProprietaire1 = function() {
 
     if (proprietaireWindow == null) {
-        initRechercheProprietaire();
+        GEOR.Addons.Cadastre.initRechercheProprietaire();
     }
     proprietaireWindow.show();
     proprietaireWindow.items.items[0].setActiveTab(0);
 }
+
 // Déclaration de la fonction de recherche par compte propriétaire
-onClickRechercheProprietaire2 = function() {
+GEOR.Addons.Cadastre.onClickRechercheProprietaire2 = function() {
     if (proprietaireWindow == null) {
-        initRechercheProprietaire();
+        GEOR.Addons.Cadastre.initRechercheProprietaire();
     }
     proprietaireWindow.show();
     proprietaireWindow.items.items[0].setActiveTab(1);
 }
+
 // Déclaration de la fonction d'initialisation de recherche de propriétaire
 // Comprend une combobox "villes" par onglet, permettant la gestion de
 // l'autocomplétion
 // ainsi qu'un tableau permettant de rechercher un ou plusieurs comptes
 // propriétaires
-initRechercheProprietaire = function() {
+GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
 
     // comboboxe "villes" de l'onglet "Nom usage ou Naissance"
     var propCityCombo1 = new Ext.form.ComboBox({
@@ -48,14 +46,14 @@ initRechercheProprietaire = function() {
         editable : true,
         displayField : 'displayname',
         valueField : 'ccoinsee',
-        store : getPartialCityStore(),
+        store : GEOR.Addons.Cadastre.getPartialCityStore(),
 
         // Recherche de la ville demandée avec gestion de l'autocomplétion
         listeners : {
             beforequery : function(q) {
                 if (q.query) {
                     var length = q.query.length;
-                    if (length >= getSearchStart() && q.combo.getStore().getCount() == 0) {
+                    if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
                         if (isNaN(q.query)) {
                             // recherche par nom de ville
                             q.combo.getStore().load({
@@ -71,7 +69,7 @@ initRechercheProprietaire = function() {
                                 }
                             });
                         }
-                    } else if (length < getSearchStart()) {
+                    } else if (length < GEOR.Addons.Cadastre.minCharToSearch) {
                         q.combo.getStore().loadData([], false);
                     }
                     q.query = new RegExp(Ext.escapeRe(q.query), 'i');
@@ -95,13 +93,13 @@ initRechercheProprietaire = function() {
         editable : true,
         displayField : 'displayname',
         valueField : 'ccoinsee',
-        store : getPartialCityStore(),
+        store : GEOR.Addons.Cadastre.getPartialCityStore(),
         // Recherche de la ville demandée avec gestion de l'autocomplétion
         listeners : {
             beforequery : function(q) {
                 if (q.query) {
                     var length = q.query.length;
-                    if (length >= getSearchStart() && q.combo.getStore().getCount() == 0) {
+                    if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
                         if (isNaN(q.query)) {
                             // recherche par nom de ville
                             q.combo.getStore().load({
@@ -117,7 +115,7 @@ initRechercheProprietaire = function() {
                                 }
                             });
                         }
-                    } else if (length < getSearchStart()) {
+                    } else if (length < GEOR.Addons.Cadastre.minCharToSearch) {
                         q.combo.getStore().loadData([], false);
                     }
                     q.query = new RegExp(Ext.escapeRe(q.query), 'i');
@@ -139,8 +137,8 @@ initRechercheProprietaire = function() {
         name : 'proprietaires',
         xtype : 'editorgrid',
         clicksToEdit : 1,
-        ds : getVoidProprietaireStore(),
-        cm : getProprietaireColModel(''),
+        ds : GEOR.Addons.Cadastre.getVoidProprietaireStore(),
+        cm : GEOR.Addons.Cadastre.getProprietaireColModel(''),
         autoExpandColumn : 'proprietaire',
         height : 100,
         width : 300,
@@ -285,10 +283,10 @@ initRechercheProprietaire = function() {
                             // envoi des données d'une form
                             Ext.Ajax.request({
                                 method : 'GET',
-                                url : cadastrappWebappUrl + 'getParcelle',
+                                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
                                 params : params,
                                 success : function(result) {
-                                    addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
+                                    GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
                                 },
                                 failure : function(result) {
                                     alert('ERROR');
@@ -307,12 +305,12 @@ initRechercheProprietaire = function() {
                                 // soumet la form (pour envoyer le fichier)
                                 currentForm.getForm().submit({
                                     method : 'POST',
-                                    url : cadastrappWebappUrl + 'getParcelle/fromProprietairesFile',
+                                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle/fromProprietairesFile',
                                     params : {
                                         details : 1
                                     },
                                     success : function(form, action) {
-                                        addNewResultParcelle(resultTitle, getResultParcelleStore(action.response.responseText, true));
+                                        GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, getResultParcelleStore(action.response.responseText, true));
                                     },
                                     failure : function(form, action) {
                                         alert('ERROR');
@@ -339,10 +337,10 @@ initRechercheProprietaire = function() {
                                 // envoi des données d'une form
                                 Ext.Ajax.request({
                                     method : 'GET',
-                                    url : cadastrappWebappUrl + 'getParcelle',
+                                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
                                     params : params,
                                     success : function(result) {
-                                        addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
+                                        GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
                                     },
                                     failure : function(result) {
                                         alert('ERROR');

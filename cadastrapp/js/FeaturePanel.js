@@ -5,7 +5,7 @@
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
  * of the license.
  */
-Ext.namespace("GEOR");
+Ext.namespace("GEOR.Addons.Cadastre");
 
 /** api: (define)
  *  module = GEOR

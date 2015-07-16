@@ -1,4 +1,4 @@
-Ext.namespace("GEOR.Addons");
+Ext.namespace("GEOR.Addons.Cadastre");
 
 GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
 
@@ -9,27 +9,20 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
     /**
      * Method: init
      * 
-     * Parameters: record - {Ext.data.record} a record with the addon parameters
+     * @param: record - {Ext.data.record} a record with the addon parameters
      */
     init : function(record) {
         
         // get information for addons options
-        WFSLayerSetting = this.options.WFSLayerSetting;
+        GEOR.Addons.Cadastre.WFSLayerSetting = this.options.WFSLayerSetting;
         
-        cadastrappWebappUrl = this.options.webapp.url;
-        cnil1RoleName = this.options.CNIL.cnil1RoleName;
-        cnil2RoleName = this.options.CNIL.cnil2RoleName
+        GEOR.Addons.Cadastre.cadastrappWebappUrl = this.options.webapp.url;
+        GEOR.Addons.Cadastre.cnil1RoleName = this.options.CNIL.cnil1RoleName;
+        GEOR.Addons.Cadastre.cnil2RoleName = this.options.CNIL.cnil2RoleName;
         
-        // TODO remove this and place it into good namespace
-        isCNIL1 = function() {
-            return (GEOR.config.ROLES.indexOf(cnil1RoleName) != -1);
-        };
+        GEOR.Addons.Cadastre.minCharToSearch=3;
         
-        isCNIL2 = function() {
-            return (GEOR.config.ROLES.indexOf(cnil2RoleName) != -1);
-        };
-       
-        var cadastrapp = new GEOR.Cadastrapp({
+        var cadastrapp = new GEOR.Addons.Cadastre.Menu({
             map : this.map,
             popupOptions : {
                 unpinnable : false,
@@ -39,9 +32,9 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
 
         this.map.allOverlays = false;
 
-        addWMSLayer(this.options.WMSLayer);
-        createSelectionControl(this.options.defautStyleParcelle , this.options.selectedStyle);
-        addPopupOnhover(this.options.popup);
+        GEOR.Addons.Cadastre.addWMSLayer(this.options.WMSLayer);
+        GEOR.Addons.Cadastre.createSelectionControl(this.options.defautStyleParcelle , this.options.selectedStyle);
+        GEOR.Addons.Cadastre.addPopupOnhover(this.options.popup);
 
         this.window = new Ext.Window({
             title : OpenLayers.i18n('cadastrapp.cadastre_tools'),

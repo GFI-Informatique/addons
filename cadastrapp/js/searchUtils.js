@@ -1,14 +1,8 @@
-
-	/** api: (define)
-	*  module = GEOR
-	*  class = Cadastrapp
-	*  base_link = `Ext.util.Observable <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
-	*/
-Ext.namespace("GEOR")
+Ext.namespace("GEOR.Addons.Cadastre");
 
 	//liste des compléments de numéro de rue : BIS, TER (à compléter ?)
 	//statique
-	getBisStore = function() {
+GEOR.Addons.Cadastre.getBisStore = function() {
 		return new Ext.data.JsonStore({
 			fields : ['name', 'value'],
 			data   : [
@@ -29,10 +23,10 @@ Ext.namespace("GEOR")
 	}
 		
 	//liste des villes
-	getPartialCityStore = function() {
+GEOR.Addons.Cadastre.getPartialCityStore = function() {
 		return new Ext.data.JsonStore({
 			proxy: new Ext.data.HttpProxy({
-                url: cadastrappWebappUrl + 'getCommune',
+                url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getCommune',
                 method: 'GET'
              }),
 			fields: ['ccoinsee', 'libcom', 'libcom_min', { 
@@ -44,10 +38,10 @@ Ext.namespace("GEOR")
 	
 		
 	//liste des sections	
-	getSectionStore = function(cityId) {
+GEOR.Addons.Cadastre.getSectionStore = function(cityId) {
 		if (cityId!=null) {
 			return new Ext.data.JsonStore({
-				url: cadastrappWebappUrl + 'getSection?ccoinsee=' + cityId,
+				url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getSection?ccoinsee=' + cityId,
 				autoLoad: true,
 				fields: ['ccoinsee', 'ccopre', 'ccosec', 'geo_section',
 					{ 
@@ -64,16 +58,17 @@ Ext.namespace("GEOR")
 	}
 	
 	//liste des parcelles
-	getInitParcelleStore = function() {
+GEOR.Addons.Cadastre.getInitParcelleStore = function() {
 		return new Ext.data.JsonStore({
 			proxy: new Ext.data.HttpProxy({
-                url: cadastrappWebappUrl + 'getParcelle',
+                url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
                 method: 'GET'
              }),
 			fields : ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib','dcntpa']
 		});
 	}
-	reloadParcelleStore = function(parcelleStore, cityId, sectionId) {
+
+GEOR.Addons.Cadastre.reloadParcelleStore = function(parcelleStore, cityId, sectionId) {
 		if (parcelleStore!=null && cityId!=null && sectionId!=null) {
 			var prefix = sectionId.substring(0, sectionId.length-2);
 			var section = sectionId.substring(sectionId.length-2, sectionId.length);
@@ -89,15 +84,13 @@ Ext.namespace("GEOR")
 		}
 	}
 	
-	
-	
 		
 	//liste des propriétaires d'une ville
 	//TODO : charger dynamiquement selon la ville choisie
-	getProprietaireStore = function(cityId) {		
+GEOR.Addons.Cadastre.getProprietaireStore = function(cityId) {		
 		if (cityId!=null) {
 			return new Ext.data.JsonStore({
-				url: cadastrappWebappUrl + 'getProprietaire?ccoinsee=' + cityId,
+				url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire?ccoinsee=' + cityId,
 				autoLoad: true,
 				fields: ['ccoinsee', 'ccopre', 'ccosec', 'geo_section',
 					{ 
@@ -117,7 +110,7 @@ Ext.namespace("GEOR")
 	//initialement vide
 	//ajoute automatique une ligne vide quand la dernière ligne est complètement remplie
 	//actuellement, on ne peut pas supprimer une ligne
-	getVoidParcelleStore = function() {
+GEOR.Addons.Cadastre.getVoidParcelleStore = function() {
 		return new Ext.data.JsonStore({
 			fields : ['section', 'parcelle'],
 			data   : [{section : '',   parcelle: ''}]
@@ -126,7 +119,7 @@ Ext.namespace("GEOR")
 	
 	//listes des "propriétaires" saisis
 	//initialement vide
-	getVoidProprietaireStore = function() {
+GEOR.Addons.Cadastre.getVoidProprietaireStore = function() {
 		return new Ext.data.JsonStore({
 			fields : ['proprietaire'],
 			data   : [{proprietaire : ''}]
@@ -134,7 +127,7 @@ Ext.namespace("GEOR")
 	}
 	
 	//design et editor des colonnes de la grille "référence"
-	getParcelleColModel = function(cityId) {
+GEOR.Addons.Cadastre.getParcelleColModel = function(cityId) {
 		return new Ext.grid.ColumnModel([
 			{
 				id:'section',
@@ -149,7 +142,7 @@ Ext.namespace("GEOR")
 					editable:       true,
 					displayField:   'fullccosec',
 					valueField:     'fullccosec',
-					store: getSectionStore(cityId),
+					store: GEOR.Addons.Cadastre.getSectionStore(cityId),
 					listeners: {
 					    beforequery: function(q){  
 					    	if (q.query) {
@@ -178,7 +171,7 @@ Ext.namespace("GEOR")
 					editable:       true,
 					displayField:   'dnupla',			//on affiche dans les choix le numéro du plan (4 dernier chiffres de l'id de la parcelle)
 					valueField:     'parcelle',			//on conservec comme valeur l'id entier de la parcelle
-					store: getInitParcelleStore(),
+					store: GEOR.Addons.Cadastre.getInitParcelleStore(),
 					listeners: {
 					    beforequery: function(q){  
 					    	if (q.query) {
@@ -195,7 +188,7 @@ Ext.namespace("GEOR")
 	
 	
 	//design de la grille "resultats de recherche de parcelles"
-	getResultParcelleColModel = function() {
+GEOR.Addons.Cadastre.getResultParcelleColModel = function() {
 		return new Ext.grid.ColumnModel([
 			{
 				id:'ccoinsee',
@@ -231,7 +224,7 @@ Ext.namespace("GEOR")
 	
 	
 	//design et editor des colonnes de la grille "propriétaires"
-	getProprietaireColModel = function(cityId) {
+GEOR.Addons.Cadastre.getProprietaireColModel = function(cityId) {
 		return new Ext.grid.ColumnModel([
 			{
 				id:'proprietaire',
@@ -245,7 +238,7 @@ Ext.namespace("GEOR")
 	}
 	
 	
-	getResultParcelleStore = function (result, fromForm) {
+GEOR.Addons.Cadastre.getResultParcelleStore = function (result, fromForm) {
 		return new Ext.data.JsonStore({
 			fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'cconvo', 'dvoilib', 'dcntpa',
 			         { 
