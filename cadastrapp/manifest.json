@@ -2,10 +2,10 @@
     "js": [
     	"js/printBordereauParcellaire.js",
 		"js/selectFeature.js",
-		"js/resultPlot.js",
+		"js/resultParcelle.js",
 		"js/searchUtils.js",
-		"js/searchOwner.js",
-		"js/searchPlot.js",
+		"js/searchParcelleByAddress.js",
+		"js/searchParcelleByAddress.js",
 		"js/askInformations.js",
 		"js/detailUniteFonciere.js",
 		"js/detailUniteCadastrale.js",
