@@ -6,25 +6,16 @@ Ext.namespace("GEOR.Addons.Cadastre");
  * propriétaire. En sortie, le lancement de la recherche affiche une fenetre
  * listant les propriétaires correspondants
  */
-var proprietaireWindow;
+GEOR.Addons.Cadastre.proprietaireWindow;
 
 // Déclaration de la fonction de recherche par nom
-GEOR.Addons.Cadastre.onClickRechercheProprietaire1 = function() {
+GEOR.Addons.Cadastre.onClickRechercheProprietaire = function(tab) {
 
-    if (proprietaireWindow == null) {
+    if (GEOR.Addons.Cadastre.proprietaireWindow == null) {
         GEOR.Addons.Cadastre.initRechercheProprietaire();
     }
-    proprietaireWindow.show();
-    proprietaireWindow.items.items[0].setActiveTab(0);
-}
-
-// Déclaration de la fonction de recherche par compte propriétaire
-GEOR.Addons.Cadastre.onClickRechercheProprietaire2 = function() {
-    if (proprietaireWindow == null) {
-        GEOR.Addons.Cadastre.initRechercheProprietaire();
-    }
-    proprietaireWindow.show();
-    proprietaireWindow.items.items[0].setActiveTab(1);
+    GEOR.Addons.Cadastre.proprietaireWindow.show();
+    GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].setActiveTab(tab);
 }
 
 // Déclaration de la fonction d'initialisation de recherche de propriétaire
@@ -77,7 +68,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                 }
             },
             change : function(combo, newValue, oldValue) {
-                proprietaireWindow.buttons[0].enable();
+                GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
             }
         }
     });
@@ -126,7 +117,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                 // refaire le section store pour cette ville
                 // proprietaireGrid.reconfigure(getVoidProprietaireStore(),
                 // getProprietaireColModel(newValue));
-                proprietaireWindow.buttons[0].enable();
+                GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
             }
         }
     });
@@ -173,7 +164,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
     // constituée de deux onglets et des boutons d'ouverture de fichier .csv, de
     // recherche
     // et de fermeture de la fenetre
-    proprietaireWindow = new Ext.Window({
+    GEOR.Addons.Cadastre.proprietaireWindow = new Ext.Window({
         title : OpenLayers.i18n('cadastrapp.proprietaire.title'),
         frame : true,
         autoScroll : true,
@@ -194,7 +185,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
 
         listeners : {
             close : function(window) {
-                proprietaireWindow = null;
+                GEOR.Addons.Cadastre.proprietaireWindow = null;
             }
         },
 
@@ -266,7 +257,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
             // disabled: true,
             listeners : {
                 click : function(b, e) {
-                    var currentForm = proprietaireWindow.items.items[0].getActiveTab();
+                    var currentForm = GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].getActiveTab();
                     if (currentForm.id == 'propFirstForm') {
                         if (currentForm.getForm().isValid()) {
                             // TITRE de l'onglet resultat
@@ -355,7 +346,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
             text : OpenLayers.i18n('cadastrapp.close'),
             listeners : {
                 click : function(b, e) {
-                    proprietaireWindow.close();
+                    GEOR.Addons.Cadastre.proprietaireWindow.close();
                 }
             }
         } ]

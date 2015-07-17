@@ -1,45 +1,32 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
-// TODO change Scope
-var parcelleWindow;
+// Parcelle windows with three tabs
+// Ref ; Adresse cadastrale, Ref cadastrale
+GEOR.Addons.Cadastre.rechercheParcelleWindow;
 
 /**
+ * Init windows if it does not exist, and select firt tab
  * 
+ * @param: tab 0, 1 or 2 
+ *      0 -> tab search by ref
+ *      1 -> tab search by adresse
+ *      2 -> tab search by ref cadastrale
  */
-GEOR.Addons.Cadastre.onClickRechercheParcelle1 = function() {
-    if (parcelleWindow == null) {
+GEOR.Addons.Cadastre.onClickRechercheParcelle = function(tab) {
+    
+    // Check if windows already exists.
+    if (GEOR.Addons.Cadastre.rechercheParcelleWindow == null) {
         GEOR.Addons.Cadastre.initRechercheParcelle();
     }
-    parcelleWindow.show();
-    parcelleWindow.items.items[0].setActiveTab(0);
+    GEOR.Addons.Cadastre.rechercheParcelleWindow.show();
+    GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].setActiveTab(tab);
 }
 
 /**
- * 
- */
-GEOR.Addons.Cadastre.onClickRechercheParcelle2 = function() {
-    if (parcelleWindow == null) {
-        GEOR.Addons.Cadastre.initRechercheParcelle();
-    }
-    parcelleWindow.show();
-    parcelleWindow.items.items[0].setActiveTab(1);
-}
-
-/**
- * 
- */
-GEOR.Addons.Cadastre.onClickRechercheParcelle3 = function() {
-    if (parcelleWindow == null) {
-        GEOR.Addons.Cadastre.initRechercheParcelle();
-    }
-    parcelleWindow.show();
-    parcelleWindow.items.items[0].setActiveTab(2);
-}
-
-/**
- * 
+ *  Create search windows
  */
 GEOR.Addons.Cadastre.initRechercheParcelle = function() {
+    
     var parcBisStore, parcCityCombo1, parcCityCombo2, parcelleGrid;
 
     parcBisStore = GEOR.Addons.Cadastre.getBisStore();
@@ -87,7 +74,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
             change : function(combo, newValue, oldValue) {
                 // refaire le section store pour cette ville
                 parcelleGrid.reconfigure(GEOR.Addons.Cadastre.getVoidParcelleStore(), GEOR.Addons.Cadastre.getParcelleColModel(newValue));
-                parcelleWindow.buttons[0].enable();
+                GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
             }
         }
     });
@@ -132,7 +119,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 }
             },
             change : function(combo, newValue, oldValue) {
-                parcelleWindow.buttons[0].enable();
+                GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
             }
         }
     });
@@ -185,7 +172,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
     });
 
     // fenêtre principale
-    parcelleWindow = new Ext.Window({
+    GEOR.Addons.Cadastre.rechercheParcelleWindow = new Ext.Window({
         title : OpenLayers.i18n('cadastrapp.parcelle.title'),
         frame : true,
         autoScroll : true,
@@ -206,7 +193,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
 
         listeners : {
             close : function(window) {
-                parcelleWindow = null;
+                GEOR.Addons.Cadastre.rechercheParcelleWindow = null;
             }
         },
 
@@ -320,7 +307,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
             disabled : false,
             listeners : {
                 click : function(b, e) {
-                    var currentForm = parcelleWindow.items.items[0].getActiveTab();
+                    var currentForm = GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].getActiveTab();
 
                     if (currentForm.id == 'parcFirstForm') {
                         if (currentForm.getForm().isValid()) {
@@ -447,7 +434,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
             text : OpenLayers.i18n('cadastrapp.close'),
             listeners : {
                 click : function(b, e) {
-                    parcelleWindow.close();
+                    GEOR.Addons.Cadastre.rechercheParcelleWindow.close();
                 }
             }
         } ]
