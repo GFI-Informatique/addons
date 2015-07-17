@@ -218,7 +218,7 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
         listeners : {
             close : function(window) {
                 // deselection de la ligne
-                var rowIndex = indexRowParcelle(parcelleId);
+                var rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(parcelleId);
                 newGrid.getSelectionModel().deselectRow(rowIndex);
                 // mise à jour des tableau de fenêtres ouvertes
                 var index = newGrid.idParcellesFOuvertes.indexOf(parcelleId);
