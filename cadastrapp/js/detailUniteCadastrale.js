@@ -581,19 +581,19 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
                 // AJOUT HAMZA
                 // deselection de la ligne
                 var rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(parcelleId);
-                newGrid.getSelectionModel().deselectRow(rowIndex);
+                GEOR.Addons.Cadastre.newGrid.getSelectionModel().deselectRow(rowIndex);
 
                 // mise à jour des tableau de fenêtres ouvertes
-                var index = newGrid.idParcellesCOuvertes.indexOf(parcelleId);
-                newGrid.idParcellesCOuvertes.splice(index, 1);
-                newGrid.fichesCOuvertes.splice(index, 1);
+                var index = GEOR.Addons.Cadastre.newGrid.idParcellesCOuvertes.indexOf(parcelleId);
+                GEOR.Addons.Cadastre.newGrid.idParcellesCOuvertes.splice(index, 1);
+                GEOR.Addons.Cadastre.newGrid.fichesCOuvertes.splice(index, 1);
                 var feature = GEOR.Addons.Cadastre.getFeatureById(parcelleId);
                 if (feature){
                     GEOR.Addons.Cadastre.changeStateFeature(feature, -1, "yellow");
                 }
 
                 // on ferme la fenêtre foncière si ouverte
-                GEOR.Addons.Cadastre.closeWindowFIUF(parcelleId, newGrid);
+                GEOR.Addons.Cadastre.closeWindowFIUF(parcelleId, GEOR.Addons.Cadastre.newGrid);
 
                 // FIN AJOUT
                 windowFIUC = null;
@@ -642,8 +642,8 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
 
     });
     windowFIUC.show();
-    newGrid.fichesCOuvertes.push(windowFIUC);
-    newGrid.idParcellesCOuvertes.push(parcelleId);
+    GEOR.Addons.Cadastre.newGrid.fichesCOuvertes.push(windowFIUC);
+    GEOR.Addons.Cadastre.newGrid.idParcellesCOuvertes.push(parcelleId);
 
 }
 

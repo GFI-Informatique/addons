@@ -41,10 +41,10 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
     }
 
     resultParcelleWindow.show();
-    tabs = resultParcelleWindow.items.items[0];
+    GEOR.Addons.Cadastre.tabs = resultParcelleWindow.items.items[0];
     // **********
     // lors du changement des onglets
-    tabs.addListener('beforetabchange', function(tab, newTab, currentTab) {
+    GEOR.Addons.Cadastre.tabs.addListener('beforetabchange', function(tab, newTab, currentTab) {
         var store;
         if (currentTab) { // cad la table de resultats est
             // ouverte et on navigue entre les
@@ -76,7 +76,7 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
     var tabCounter = 1;
     tabCounter = tabCounter + 1;
 
-    newGrid = new GEOR.Addons.Cadastre.ResultParcelleGrid({
+    GEOR.Addons.Cadastre.newGrid = new GEOR.Addons.Cadastre.ResultParcelleGrid({
         title : title,
         id : 'resultParcelleWindowTab' + tabCounter,
         height : 300,
@@ -101,7 +101,7 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
                     }
                 }
                 // on ferme la fenetre si c'est le dernier onglet
-                if (tabs.items.length == 2) {
+                if (GEOR.Addons.Cadastre.tabs.items.length == 2) {
                     // si il ne reste que cet onglet et l'onglet '+',
                     // fermer la fenetre
                     resultParcelleWindow.close();
@@ -110,8 +110,8 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
                     // activer, pour eviter de tomber sur le '+' (qui va
                     // tenter de refaire un onglet et ça va faire
                     // nimporte quoi)
-                    var index = tabs.items.findIndex('id', grid.id);
-                    tabs.setActiveTab((index == 0) ? 1 : (index - 1));
+                    var index = GEOR.Addons.Cadastre.tabs.items.findIndex('id', grid.id);
+                    GEOR.Addons.Cadastre.tabs.setActiveTab((index == 0) ? 1 : (index - 1));
                     // *************
                     // quand on ferme l'onglet on vire toutes les
                     // parcelles dependantes
@@ -124,7 +124,7 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
         }
 
     });
-    newGrid.addListener("rowclick", function(grid, rowIndex, e) {
+    GEOR.Addons.Cadastre.newGrid.addListener("rowclick", function(grid, rowIndex, e) {
         // on parcourant le tableau de façon générique on gérera les cas de
         // selection/deselection simple/multiple pour tout les cliques sue les
         // lignes
@@ -154,13 +154,13 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
     // lors d'une recherche de parcelle on envoie une requête attributtaire
     // pour selectionner les parcelle
     var parcelle;
-    for (var i = 0; i < newGrid.getStore().totalLength; i++) {
-        parcelle = newGrid.getStore().getAt(i);
+    for (var i = 0; i < GEOR.Addons.Cadastre.newGrid.getStore().totalLength; i++) {
+        parcelle = GEOR.Addons.Cadastre.newGrid.getStore().getAt(i);
         GEOR.Addons.Cadastre.getFeaturesWFSAttribute(parcelle.data.parcelle);
     }
 
-    tabs.insert(0, newGrid);
-    tabs.setActiveTab(0);
+    GEOR.Addons.Cadastre.tabs.insert(0, GEOR.Addons.Cadastre.newGrid);
+    GEOR.Addons.Cadastre.tabs.setActiveTab(0);
 }
 
 /** 

@@ -16,15 +16,6 @@ Ext.namespace("GEOR.Addons.Cadastre");
  * @include GeoExt/widgets/Popup.js
  */
 
-
-//VARIABLES GLOBALES
-//***************
-
-var selectedFeatures = [];
-var selectLayer;
-var newGrid,tabs;
-var click;
-
 //***************
 //checkboxes : cadatre et foncier
 var _isCadastre = true;

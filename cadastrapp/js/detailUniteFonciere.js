@@ -219,15 +219,15 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
             close : function(window) {
                 // deselection de la ligne
                 var rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(parcelleId);
-                newGrid.getSelectionModel().deselectRow(rowIndex);
+                GEOR.Addons.Cadastre.newGrid.getSelectionModel().deselectRow(rowIndex);
                 // mise à jour des tableau de fenêtres ouvertes
-                var index = newGrid.idParcellesFOuvertes.indexOf(parcelleId);
-                newGrid.idParcellesFOuvertes.splice(index, 1);
-                newGrid.fichesFOuvertes.splice(index, 1);
+                var index = GEOR.Addons.Cadastre.newGrid.idParcellesFOuvertes.indexOf(parcelleId);
+                GEOR.Addons.Cadastre.newGrid.idParcellesFOuvertes.splice(index, 1);
+                GEOR.Addons.Cadastre.newGrid.fichesFOuvertes.splice(index, 1);
                 var feature = getFeatureById(parcelleId);
                 if (feature)
                     changeStateFeature(feature, -1, "yellow");
-                closeWindowFIUC(parcelleId, newGrid); // on ferme la fenêtre
+                closeWindowFIUC(parcelleId, GEOR.Addons.Cadastre.newGrid); // on ferme la fenêtre
                 // cadastrale si ouverte
 
                 windowFIUF = null;
@@ -244,8 +244,8 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
         } ]
 
     });
-    newGrid.fichesFOuvertes.push(windowFIUF);
-    newGrid.idParcellesFOuvertes.push(parcelleId);
+    GEOR.Addons.Cadastre.newGrid.fichesFOuvertes.push(windowFIUF);
+    GEOR.Addons.Cadastre.newGrid.idParcellesFOuvertes.push(parcelleId);
     windowFIUF.show();
     // console.log("displayFIUF onClick")
 };

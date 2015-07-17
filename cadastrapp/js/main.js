@@ -20,7 +20,13 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         GEOR.Addons.Cadastre.cnil1RoleName = this.options.CNIL.cnil1RoleName;
         GEOR.Addons.Cadastre.cnil2RoleName = this.options.CNIL.cnil2RoleName;
         
+        // Init gobal variables
         GEOR.Addons.Cadastre.minCharToSearch=3;
+        GEOR.Addons.Cadastre.selectedFeatures = [];
+        GEOR.Addons.Cadastre.selectLayer;
+        GEOR.Addons.Cadastre.newGrid,tabs;
+        // TODO check why click on global
+        GEOR.Addons.Cadastre.click;
         
         var cadastrapp = new GEOR.Addons.Cadastre.Menu({
             map : this.map,
