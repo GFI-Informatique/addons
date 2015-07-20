@@ -4,8 +4,8 @@
 		"js/selectFeature.js",
 		"js/resultParcelle.js",
 		"js/searchUtils.js",
-		"js/searchParcelleByAddress.js",
-		"js/searchParcelleByAddress.js",
+		"js/searchParcelleByOwner.js",
+		"js/searchParcelleByRef.js",
 		"js/askInformations.js",
 		"js/detailUniteFonciere.js",
 		"js/detailUniteCadastrale.js",
@@ -235,14 +235,14 @@
 			"cadastrapp.duc.batiment_type" : "Type",
 			"cadastrapp.duc.batiment_date" : "Date",
 			"cadastrapp.duc.batiment_revenu" : "Revenu",
-			"cadastrapp.duc.batiment_descriptif " : "Descriptif",
+			"cadastrapp.duc.batiment_descriptif" : "Descriptif",
 
 			
 			
 			"cadastrapp.duc.lettreindic" : "Lettre indicative",
 			"cadastrapp.duc.contenance " : "Contenance",
-			"cadastrapp.duc.terrain " : "Nature de culture",
-			"cadastrapp.duc. revenu " : "Revenu au 01-01",
+			"cadastrapp.duc.terrain" : "Nature de culture",
+			"cadastrapp.duc.revenu" : "Revenu au 01-01",
 
 			
 			"cadastrapp.duc.dateacte" : "Date acte",
@@ -539,7 +539,7 @@
 			"cadastrapp.parcelle.or": "ou",
 			"cadastrapp.parcelle.city": "Ville, Commune",
 			"cadastrapp.parcelle.city.exemple": "ex. Rennes, Cesson-Sévigné",
-			"cadastrapp.parcelle.file.path": "Path",
+			"cadastrapp.parcelle.file.path": "Chemin",
 			"cadastrapp.parcelle.file.open": "Ouvrir fichier",
 			"cadastrapp.parcelle.file.exemple": "Charger un fichier au format .csv",
 			"cadastrapp.parcelle.street": "N de voirie et rue",
