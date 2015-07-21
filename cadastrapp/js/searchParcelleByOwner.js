@@ -277,7 +277,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                 url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
                                 params : params,
                                 success : function(result) {
-                                    GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
+                                    GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
                                 },
                                 failure : function(result) {
                                     alert('ERROR');
@@ -301,7 +301,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                         details : 1
                                     },
                                     success : function(form, action) {
-                                        GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, getResultParcelleStore(action.response.responseText, true));
+                                        GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(action.response.responseText, true));
                                     },
                                     failure : function(form, action) {
                                         alert('ERROR');
@@ -331,7 +331,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                     url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
                                     params : params,
                                     success : function(result) {
-                                        GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, getResultParcelleStore(result.responseText, false));
+                                        GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
                                     },
                                     failure : function(result) {
                                         alert('ERROR');

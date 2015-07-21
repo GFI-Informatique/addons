@@ -16,8 +16,6 @@ Ext.namespace("GEOR.Addons.Cadastre");
  */
 GEOR.Addons.Cadastre.onClickAskInformations = function() {
 
-    //var parcelleWindow;
-
     var parcBisStore = GEOR.Addons.Cadastre.getBisStore();
 
     var parcCityStore = GEOR.Addons.Cadastre.getPartialCityStore();

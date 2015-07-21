@@ -43,8 +43,8 @@ GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
             		html = "<div class=\"cadastrapp-infobulle-parcelle\"><div>"+result.libcom+"</div>" +
             		"<div>"+idParcelle+"</div>" +
             		"<div>"+result.dnvoiri+" "+result.dindic+" "+result.cconvo+" "+result.dvoilib+"</div>" +
-            		"<div>DGFiP : "+result.dcntpa.toLocaleString()+" m²</div>" +
-        			"<div>SIG : "+result.surfc.toLocaleString()+" m²</div>";
+            		"<div>"+OpenLayers.i18n('cadastrapp.contenancedgfipDGFiP') +" : "+result.dcntpa.toLocaleString()+" m²</div>" +
+        			"<div>"+OpenLayers.i18n('cadastrapp.sig') +" : "+result.surfc.toLocaleString()+" m²</div>";
             		
             		if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
             			if (typeof(result.proprietaires) != "undefined"){
@@ -63,8 +63,8 @@ GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
             		//TODO wait for data from view
             		html += "<div class=\"cadastrapp-infobulle-unite-fonciere\">" +
             				"<div>"+result.comptecommunal +"</div>" +
-            		        "<div>DGFiP UF : "+result.dcntpa_sum.toLocaleString()+" m²</div>" +
-            		        "<div>SIG UF :"+result.sigcal_sum.toLocaleString()+" m²</div>";
+            		        "<div>"+ OpenLayers.i18n('cadastrapp.contenancedgfipDGFiP') +" UF : "+result.dcntpa_sum.toLocaleString()+" m²</div>" +
+            		        "<div>"+ OpenLayers.i18n('cadastrapp.sig') +" UF :"+result.sigcal_sum.toLocaleString()+" m²</div>";
                     //TODO add when available in webapp batical = result[0].batical;
             		html += "</div>";
             	}

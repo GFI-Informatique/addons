@@ -50,6 +50,16 @@
     width:48px!important; height:48px!important;
 }
 
+.small-pdf-button {
+    background-image: url(../img/silk/pdf_icon.png) !important;
+    width:20px!important; height:20px!important;
+}
+
+.house-button {
+    background-image: url(../img/silk/house.png) !important;
+    width:20px!important; height:20px!important;
+}
+
 .cadastrapp-infobulle-parcelle{
      color: black;
 }

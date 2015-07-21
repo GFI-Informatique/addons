@@ -671,7 +671,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         }
         // **************************
         // this.featureControl.activate();
-        selctedFeatures = selectFeatureIntersection(feature);
+        selctedFeatures = GEOR.Addons.Cadastre.selectFeatureIntersection(feature);
         feature.layer.removeAllFeatures();
         // **************************
     },

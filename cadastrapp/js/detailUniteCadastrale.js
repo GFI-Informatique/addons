@@ -6,7 +6,9 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
 /**
- * public: method[onClickDisplayFIUC] :param parcelleId
+ * public: method[onClickDisplayFIUC] 
+ * 
+ * @param parcelleId
  * 
  * Cette methode construit la fiche d'information cadastralle pour une parcelle
  * donnée (parcelleId) Cette fiche comprend les onglets Parcelle, Propriétaire,
@@ -105,40 +107,8 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
             // "Préfixe de section", "Code section" et "Numéro de plan de la
             // parcelle"
             titleFIUC = result[0].ccodep + result[0].ccodir + result[0].ccocom + '-' + result[0].ccopre + result[0].ccosec + '-' + result[0].dnupla;
-            // console.log(titleFIUC);
-        }
-    });
 
-    // La variable parcelleDownloadPdfButton est consititué d'un objet bouton
-    // Sur appui sur celui-ci l'appel à la fonction permettant la création du
-    // bordereau parcellaire est effectué
-    //	
-    var parcelleDownloadPdfButton = new Ext.ButtonGroup({
-        bodyBorder : false,
-        border : false,
-        hideBorders : true,
-        frame : false,
-        items : [ {
-            xtype : 'button',
-            scale : 'small',
-            name : 'proprietaireDownloadPdfButton',
-            iconCls : "pdf-button",
-            handler : function() {
-                // TODO : call PDF function with selected
-                // propriete
-                // see below funtion
-                Ext.Ajax.request({
-                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createBordereauParcellaire?parcelle=' + parcelleId,
-                    failure : function() {
-                        alert("erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'))
-                    },
-                    params : {}
-                });
-            }
-        }, {
-            xtype : 'label',
-            text : OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'),
-        } ]
+        }
     });
 
     // La variable FiucParcelleGrid est consititué d'un objet grid.GridPanel
@@ -146,22 +116,38 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
     var FiucParcelleGrid = new Ext.grid.GridPanel({
         store : FiucParcelleStore,
         stateful : true,
-        height : 500,
-        title : 'Bordereau parcellaire',
+        autoHeight : true,
+        hideHeaders: true,
         name : 'Fiuc_Parcelle',
         xtype : 'editorgrid',
-
         columns : [ {
             header : "Description",
-            dataIndex : 'designation'
+            dataIndex : 'designation',
+            width: 150
         }, {
             header : "Valeur",
-            dataIndex : 'valeur'
-        } ]
-
+            dataIndex : 'valeur',
+            width: 150
+        } ],
+        // inline toolbars
+        tbar:[{
+            text:OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'),
+            tooltip:'Création du bordereau parcellaire',
+            iconCls:'small-pdf-button',
+            handler : function() {
+                Ext.Ajax.request({
+                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createBordereauParcellaire?parcelle=' + parcelleId,
+                    failure : function() {
+                        alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'))
+                    },
+                    params : {}
+                });
+            }
+        }]
     });
     // ---------- FIN ONGLET Parcelle ------------------------------
 
+    
     // ---------- ONGLET Propriétaire ------------------------------
     //
     // 
@@ -184,31 +170,8 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
         }, 'jdatnss', 'dldnss', 'ccodro_lib' ],
     });
 
-    // Déclaration du bouton permettant la création du relevé de propriété
-    // (fichier pdf)
-    var proprietaireDownloadPdfButton = new Ext.ButtonGroup({
-        // setSize: {width: 16px, height: 16px},
-        bodyBorder : false,
-        border : false,
-        hideBorders : true,
-        frame : false,
-        items : [ {
-            xtype : 'button',
-            scale : 'small',
-            name : 'proprietaireDownloadPdfButton',
-            iconCls : "pdf-button",
-            handler : function() {
-                // TODO: action sur le bouton relevé de proriété
-                // createReleveDePropriete();
-                // see below funtion
-            }
-        }, {
-            xtype : 'label',
-            text : OpenLayers.i18n('cadastrapp.duc.releve.depropriete'),
-        }, ]
-    });
 
-    // TODO: sm A� revoir (probleme de compatibite)
+    // TODO: sm à revoir (probleme de compatibite)
     var sm = new Ext.grid.CheckboxSelectionModel();
 
     // Déclaration de la bottom bar (25 propiétaires par page)
@@ -239,12 +202,10 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
     FiucProprietairesGrid = new Ext.grid.GridPanel({
         store : FiucProprietaireStore,
         stateful : true,
-        height : 500,
-        title : 'Relevé de propriété',
+        hideHeaders: true,
+        autoHeight : true,
         name : 'Fiuc_Proprietaire',
         xtype : 'editorgrid',
-
-        // TODO Revoir sm, problème de compatibilité
         selModel : sm,
         bbar : bbar,
         colModel : new Ext.grid.ColumnModel({
@@ -287,20 +248,33 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
                 dataIndex : 'ccodro_lib'
             } ]
         }),
+        // inline toolbars
+        tbar:[{
+            text:OpenLayers.i18n('cadastrapp.duc.releve.depropriete'),
+            tooltip:'Création du releve de propriete',
+            iconCls:'small-pdf-button',
+            handler : function() {
+                Ext.Ajax.request({
+                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createRelevePropriete?parcelle=' + parcelleId,
+                    failure : function() {
+                        alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.releve.depropriete'))
+                    },
+                    params : {}
+                });
+            }
+        }]
     });
 
     // ---------- FIN ONGLET Propriétaire ------------------------------
-    //
-    // 	
+
+    
     // ---------- ONGLET Batiment ------------------------------
     //
     // Modèle de donnée pour l'onglet batiment
     var FiucBatimentsStore = new Ext.data.JsonStore({
         // Appel à la webapp
         url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=2",
-        // root : "",
         autoLoad : true,
-
         fields : [ 'dniv', 'dpor', 'cconlc_lib', 'dvlrt', 'jdatat', 'dnupro', 'ddenom', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp' ],
 
     });
@@ -315,7 +289,7 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
 
     // Création des boutons correspondants
     for (var i = 0; i < batimentsList.length; i++) {
-        // console.log('batiment : ' + batimentsList[i]);
+
         var buttonBatiment = new Ext.Button({
             id : batimentsList[i],
             text : batimentsList[i],
@@ -328,71 +302,19 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
 
     }
 
-    // Déclaration du boution de création du décriptif d'habitation
-    var descriptifHabitationDetailsButton = new Ext.ButtonGroup({
-        bodyBorder : false,
-        border : false,
-        hideBorders : true,
-        frame : false,
-        items : [ {
-            xtype : 'button',
-            name : 'descriptifHabitationDetailsButton',
-            scale : 'small',
-            iconCls : "house",
-            handler : function() {
-                // createReleveDePropriete();
-                // see below funtion
-            }
-        }, {
-            xtype : 'label',
-            text : OpenLayers.i18n('cadastrapp.duc.batiment_descriptif'),
-        }, ]
-    });
-
     // Déclaration du tableau
     var FiucBatimentsGrid = new Ext.grid.GridPanel({
         store : FiucBatimentsStore,
         stateful : true,
-        height : 500,
-        title : 'batiment(s)',
+        hideHeaders: true,
         name : 'Fiuc_Batiments',
         xtype : 'editorgrid',
         selModel : sm,
         bbar : bbar,
-
-        items : [ {
-            // bouton de création de rélévé de propriété
-            xtype : 'button',
-            scale : 'small',
-            name : 'proprietaireDownloadPdfButton',
-            iconCls : "pdf-button",
-            margins : '0 10 0 10',
-            handler : function() {
-                // createReleveDePropriete();
-                // see below funtion
-            }
-        }, {
-            xtype : 'label',
-            text : OpenLayers.i18n('cadastrapp.duc.releve.depropriete'),
-        }, {
-            // Bouton ouvrant le déscriptif détaillé de l'habitation
-            xtype : 'button',
-            scale : 'small',
-            name : 'descriptifHabitationDetailsButton',
-            iconCls : "house",
-            handler : function() {
-                // descriptifHabitationDetails();
-                // see below funtion
-            }
-        }, {
-            xtype : 'label',
-            text : 'Descriptif',
-        }, ],
         colModel : new Ext.grid.ColumnModel({
             defaults : {
                 sortable : true,
             },
-            // TODO Revoir sm: pb compatibilité
             columns : [ sm, {
                 header : OpenLayers.i18n('cadastrapp.duc.batiment_niveau'),
                 dataIndex : 'dniv',
@@ -438,7 +360,36 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
             }, {
                 bbar : bbar,
             } ]
-        })
+        }),
+        // inline toolbars
+        tbar:[{
+            text:OpenLayers.i18n('cadastrapp.duc.releve.depropriete'),
+            tooltip:'Création du releve de propriete',
+            iconCls:'small-pdf-button',
+            handler : function() {
+                Ext.Ajax.request({
+                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createRelevePropriete?parcelle=' + parcelleId,
+                    failure : function() {
+                        alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.releve.depropriete'))
+                    },
+                    params : {}
+                });
+            }
+            }, '-', {
+            text:OpenLayers.i18n('cadastrapp.duc.batiment_descriptif'),
+            tooltip:'Création du releve de propriete',
+            iconCls:'house-button',
+            handler : function() {
+                Ext.Ajax.request({
+                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createRelevePropriete?parcelle=' + parcelleId,
+                    failure : function() {
+                        alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.batiment_descriptif'))
+                    },
+                    params : {}
+                });
+            }
+         }],
+         autoHeight : true
     });
 
     // ---------- FIN ONGLET Batiment ------------------------------
@@ -465,7 +416,7 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
     var FiucSubdivfiscGrid = new Ext.grid.GridPanel({
         store : FiucSubdivfiscStore,
         stateful : true,
-        height : 500,
+        autoHeight : true,
         title : 'Subdivisions fiscales',
         name : 'Fiuc_Subdivisions_fiscales',
         xtype : 'editorgrid',
@@ -523,7 +474,7 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
     var FiucHistomutGrid = new Ext.grid.GridPanel({
         store : FiucHistomutStore,
         stateful : true,
-        height : 500,
+        autoHeight : true,
         name : 'Fiuc_Historique_Mutation',
         xtype : 'editorgrid',
         colModel : new Ext.grid.ColumnModel({
@@ -544,22 +495,9 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
 
     });
 
-    // FiucReleveCadastralPdfButton = new Ext.Button({
-    // name : 'FiucReleveCadastralPdfButton',
-    // cls : "pdf_button"
-    //        
-    // });
-    // 
-    // FiucReleveDeProprietePdfButton = new Ext.Button({
-    // name : 'FiucReleveDeProprietePdfButton',
-    // cls : "pdf_button",
-    // text : OpenLayers.i18n("cadastrapp.duc.releve.depropriete")
-    // });
-
     // Construction de la fenêtre principale
     var windowFIUC = new Ext.Window({
-        // TODO: titre de la fenetre à afficher
-        title : 'titleFIUC',
+        title : titleFIUC,
         frame : true,
         autoScroll : true,
         minimizable : false,
@@ -570,15 +508,14 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
         border : false,
         labelWidth : 400,
         width : 850,
+        autoHeight : true,
         defaults : {
-            autoHeight : true,
             bodyStyle : 'padding:10px',
             flex : 1
         },
 
         listeners : {
             close : function(window) {
-                // AJOUT HAMZA
                 // deselection de la ligne
                 var rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(parcelleId);
                 GEOR.Addons.Cadastre.newGrid.getSelectionModel().deselectRow(rowIndex);
@@ -594,8 +531,6 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
 
                 // on ferme la fenêtre foncière si ouverte
                 GEOR.Addons.Cadastre.closeWindowFIUF(parcelleId, GEOR.Addons.Cadastre.newGrid);
-
-                // FIN AJOUT
                 windowFIUC = null;
             }
         },
@@ -603,20 +538,19 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
             // autoHeight : true,
             xtype : 'tabpanel',
             width : 800,
-            height : 800,
-            activeTab : 0,
+            height : 275,
+            defaults:{autoScroll: true},
             items : [ {
-
                 // ONGLET 1: Parcelle
                 title : OpenLayers.i18n('cadastrapp.duc.parcelle'),
                 xtype : 'form',
-                items : [ parcelleDownloadPdfButton, FiucParcelleGrid ]
+                items : [FiucParcelleGrid ]
             }, {
 
                 // ONGLET 2: Propriétaire
                 title : OpenLayers.i18n('cadastrapp.duc.propietaire'),
                 xtype : 'form',
-                items : [ proprietaireDownloadPdfButton, FiucProprietairesGrid ]
+                items : [FiucProprietairesGrid ]
             }, {
 
                 // ONGLET 3: Batiment
@@ -624,6 +558,7 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
                 xtype : 'form',
                 items : [ {
                     xtype : 'buttongroup',
+                    title: 'Batiment(s)',
                     frame : false,
                     items : buttonBatimentList
                 }, FiucBatimentsGrid ]
@@ -637,14 +572,15 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
                 title : OpenLayers.i18n('cadastrapp.duc.histomut'),
                 xtype : 'form',
                 items : [ FiucHistomutGrid ]
-            } ]
+            } ],
+            activeTab : 0,
         } ]
 
     });
-    windowFIUC.show();
+    
     GEOR.Addons.Cadastre.newGrid.fichesCOuvertes.push(windowFIUC);
     GEOR.Addons.Cadastre.newGrid.idParcellesCOuvertes.push(parcelleId);
-
+    windowFIUC.show();
 }
 
 /**

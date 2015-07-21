@@ -247,6 +247,5 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
     GEOR.Addons.Cadastre.newGrid.fichesFOuvertes.push(windowFIUF);
     GEOR.Addons.Cadastre.newGrid.idParcellesFOuvertes.push(parcelleId);
     windowFIUF.show();
-    // console.log("displayFIUF onClick")
 };
 ;
