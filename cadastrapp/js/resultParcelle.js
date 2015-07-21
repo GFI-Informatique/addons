@@ -14,7 +14,7 @@ GEOR.Addons.Cadastre.resultParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
 });
 
 /**
- * public: method[onClickRechercheProprietaire] :param layer: Create ...TODO
+ * public: method[addNewResultParcelle] 
  * 
  * @param: title
  * @param: result
@@ -24,13 +24,15 @@ GEOR.Addons.Cadastre.addNewResultParcelle = function(title, result) {
 }
 
 /**
- * 
+ *  public: method[addVoidResultParcelle] 
  */
 GEOR.Addons.Cadastre.addVoidResultParcelle = function() {
     GEOR.Addons.Cadastre.addNewResult(OpenLayers.i18n('cadastrapp.parcelle.result.selection.title'), null, OpenLayers.i18n('cadastrapp.parcelle.result.selection.content'));
 }
 
 /**
+ *  public: method[addNewResult] 
+ *  
  * @param: title
  * @param: result
  * @param: message
@@ -52,20 +54,18 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
             // jaune
             if (currentTab.store) {
                 store = currentTab.store.data.items;
-                GEOR.Addons.Cadastre.changeStateParcelleOfTab(store, "tmp"); // deselection
-                // des
-                // parcelles
+                // deselection des parcelles
+                GEOR.Addons.Cadastre.changeStateParcelleOfTab(store, "tmp"); 
             }
 
             if (newTab) {
                 if (newTab.store) {
                     store = newTab.store.data.items;
-                    GEOR.Addons.Cadastre.changeStateParcelleOfTab(store, "yellow"); // selection
-                    // en
-                    // jaune
+                 // selection en jaune
+                    GEOR.Addons.Cadastre.changeStateParcelleOfTab(store, "yellow"); 
                     var selectedRows = newTab.getSelectionModel().selections.items;
-                    GEOR.Addons.Cadastre.changeStateParcelleOfTab(selectedRows, "blue"); // selection
-                    // en bleue
+                    // selection en bleue
+                    GEOR.Addons.Cadastre.changeStateParcelleOfTab(selectedRows, "blue"); 
                 }
             }
         }
@@ -249,7 +249,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
         draggable : true,
         constrainHeader : true,
         border : false,
-        width : 600,
+        width : 500,
         autoHeight : true,
         listeners : {
             close : function(window) {
