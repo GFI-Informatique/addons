@@ -139,16 +139,19 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
             beforeedit : function(e) {
                 if (e.column == 0) {
                     // pas d'edition de section si aucune ville selectionnée
-                    if (parcCityCombo1.value == '')
+                    if (parcCityCombo1.value == ''){
+                        console.log("La ville doit être choisie d'abord")
                         return false;
+                    }
                 }
                 if (e.column == 1) {
                     // pas d'edition de parcelle si aucune section selectionnée
-                    if (e.record.data.section == '')
+                    if (e.record.data.section == ''){
+                        console.log("La section et pre-section doit être choisie d'abord")
                         return false;
-
-                    // on remplace le contenu du store des parcelles selon la
-                    // section selectionnée
+                    }
+                    
+                    // on remplace le contenu du store des parcelles selon la section selectionnée
                     GEOR.Addons.Cadastre.reloadParcelleStore(e.grid.getColumnModel().getColumnById(e.field).editor.getStore(), parcCityCombo1.value, e.record.data.section);
                 }
             },
@@ -200,9 +203,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
         items : [ {
             xtype : 'tabpanel',
             activeTab : 0,
-
             items : [ {
-
                 // ONGLET 1
                 title : OpenLayers.i18n('cadastrapp.parcelle.title.tab1'),
                 xtype : 'form',
@@ -210,7 +211,6 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 id : 'parcFirstForm',
                 fileUpload : true,
                 height : 200,
-
                 items : [ parcCityCombo1, // combobox "villes"
                 {
                     value : OpenLayers.i18n('cadastrapp.parcelle.city.exemple'),
@@ -320,9 +320,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                 // soumet la form (pour envoyer le fichier)
                                 currentForm.getForm().submit({
                                     url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle/fromParcellesFile',
-                                    params : {
-                                        details : 1
-                                    },
+                                    params : {},
                                     success : function(form, action) {
                                         GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(action.response.responseText, true));
                                     },
@@ -336,18 +334,11 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
 
                                 // PARAMS
                                 var params = currentForm.getForm().getValues();
-                                params.details = 1;
-                                var cityCode = currentForm.getForm().findField('ccoinsee').value;
-                                params.ccodep = cityCode.substring(0, 2);
-                                params.ccodir = cityCode.substring(2, 3);
-                                params.ccocom = cityCode.substring(3, 6);
-
-                                //liste des parcelles
-                                //parcelle: Ext.util.JSON.encode(Ext.pluck(parcelleGrid.getStore().getRange(), 'data'))
                                 params.parcelle = new Array();
                                 parcelleGrid.getStore().each(function(record) {
                                     params.parcelle.push(record.data.parcelle);
                                 });
+                                params.ccoinsee = currentForm.getForm().findField('ccoinsee').value;
 
                                 //envoi la liste de resultat
                                 Ext.Ajax.request({
@@ -372,12 +363,8 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
 
                             //PARAMS
                             var params = currentForm.getForm().getValues();
-                            params.details = 1;
-                            var cityCode = currentForm.getForm().findField('ccoinsee').value;
-                            params.ccodep = cityCode.substring(0, 2);
-                            params.ccodir = cityCode.substring(2, 3);
-                            params.ccocom = cityCode.substring(3, 6);
-
+                            params.ccoinsee = currentForm.getForm().findField('ccoinsee').value;
+ 
                             //envoi des données d'une form
                             Ext.Ajax.request({
                                 method : 'GET',
@@ -400,24 +387,14 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                             var params = currentForm.getForm().getValues();
 
                             //TITRE de l'onglet resultat
-                            var resultTitle = currentForm.getForm().getValues().ident;
-
-                            var parcelleId = currentForm.getForm().getValues().ident;
-
-                            console.log(params);
-
-                            //liste des parcelles
-                            //parcelle: Ext.util.JSON.encode(Ext.pluck(parcelleGrid.getStore().getRange(), 'data'))
-                            params.parcelle = new Array();
-                            parcelleGrid.getStore().each(function(record) {
-                                params.parcelle.push(record.data.parcelle);
-                            });
+                            var resultTitle = "Recherche par id(s)";
+                            params.parcelle = currentForm.getForm().getValues().ident;
 
                             //envoi des données d'une form
                             Ext.Ajax.request({
                                 method : 'GET',
-                                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle?parcelle=' + parcelleId + "&details=1",
-                                //params: params,
+                                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+                                params: params,
                                 success : function(result) {
                                     GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
                                 },

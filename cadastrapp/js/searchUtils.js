@@ -1,7 +1,9 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
-	//liste des compléments de numéro de rue : BIS, TER (à compléter ?)
-	//statique
+
+/**
+ * liste des compléments de numéro de rue : BIS, TER (à compléter ?)
+ */
 GEOR.Addons.Cadastre.getBisStore = function() {
 		return new Ext.data.JsonStore({
 			fields : ['name', 'value'],
@@ -21,8 +23,11 @@ GEOR.Addons.Cadastre.getBisStore = function() {
 			]
 		});		
 	}
-		
-	//liste des villes
+	
+
+/**
+ * Liste de villes afficher sous la forme NomVille - (CodeCommune6Char)
+ */
 GEOR.Addons.Cadastre.getPartialCityStore = function() {
 		return new Ext.data.JsonStore({
 			proxy: new Ext.data.HttpProxy({
@@ -37,13 +42,16 @@ GEOR.Addons.Cadastre.getPartialCityStore = function() {
 	}
 	
 		
-	//liste des sections	
+/**
+ *  Appel pour récuperer la liste des sections
+ */		
 GEOR.Addons.Cadastre.getSectionStore = function(cityId) {
 		if (cityId!=null) {
 			return new Ext.data.JsonStore({
-				url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getSection?ccoinsee=' + cityId,
+				url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getSection',
+				params:{ccoinsee : cityId},
 				autoLoad: true,
-				fields: ['ccoinsee', 'ccopre', 'ccosec', 'geo_section',
+				fields: ['ccoinsee', 'ccopre', 'ccosec', 
 					{ 
 				       name: 'fullccosec', 
 				       convert: function(v, rec) { return rec.ccopre + rec.ccosec; }
@@ -52,84 +60,103 @@ GEOR.Addons.Cadastre.getSectionStore = function(cityId) {
 		} else {
 			return new Ext.data.JsonStore({
 				data: [],
-				fields: ['ccoinsee', 'ccopre', 'ccosec', 'geo_section', 'fullccosec']
+				fields: ['ccoinsee', 'ccopre', 'ccosec', 'fullccosec']
 			});
 		}
 	}
 	
-	//liste des parcelles
+/**
+ * Call webapp
+ */
 GEOR.Addons.Cadastre.getInitParcelleStore = function() {
-		return new Ext.data.JsonStore({
-			proxy: new Ext.data.HttpProxy({
-                url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
-                method: 'GET'
-             }),
-			fields : ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib','dcntpa']
-		});
-	}
+    return new Ext.data.JsonStore({
+        proxy: new Ext.data.HttpProxy({
+            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+            method: 'GET'
+        }),
+        fields : ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib','dcntpa']
+    });
+}
 
+
+/**
+ * ReloadParcelleStore 
+ * 
+ * @param : parcelleStore
+ * @param : cityId
+ * @param : sectionId
+ */
 GEOR.Addons.Cadastre.reloadParcelleStore = function(parcelleStore, cityId, sectionId) {
-		if (parcelleStore!=null && cityId!=null && sectionId!=null) {
-			var prefix = sectionId.substring(0, sectionId.length-2);
-			var section = sectionId.substring(sectionId.length-2, sectionId.length);
-			
-			parcelleStore.load({params: {
-				details: 1,
-				ccodep: cityId.substring(0,2),
-				ccodir: cityId.substring(2,3),
-				ccocom: cityId.substring(3,6),
-				ccopre: prefix,
-				ccosec: section,
-			}});
-		}
-	}
+    
+    console.log("reloadParcelleStore - cityId :" + cityId +" sectionId :" +sectionId); 
+    
+    if (parcelleStore!=null && cityId!=null && sectionId!=null) {
+        // parse sectionID to set params for request
+        var prefix = sectionId.substring(0, sectionId.length-2);
+        var section = sectionId.substring(sectionId.length-2, sectionId.length);
+			        
+        parcelleStore.load({params: {
+            ccoinsee: cityId,
+            ccopre: prefix,
+            ccosec: section,
+        }});
+    }
+}
 	
 		
-	//liste des propriétaires d'une ville
-	//TODO : charger dynamiquement selon la ville choisie
+/**
+ *  Appel à la webApp pour récupérer les propriétaires habitant dans une commune
+ * @param : cityId
+ */
 GEOR.Addons.Cadastre.getProprietaireStore = function(cityId) {		
-		if (cityId!=null) {
-			return new Ext.data.JsonStore({
-				url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire?ccoinsee=' + cityId,
-				autoLoad: true,
-				fields: ['ccoinsee', 'ccopre', 'ccosec', 'geo_section',
-					{ 
-				       name: 'fullccosec', 
-				       convert: function(v, rec) { return (rec.ccopre.trim().length>0) ? (rec.ccopre.trim() + '-' + rec.ccosec.trim()) : rec.ccosec.trim(); }
-				    }]
-			});
-		} else {
-			return new Ext.data.JsonStore({
-				data: [],
-				fields: ['ccoinsee', 'ccopre', 'ccosec', 'geo_section', 'fullccosec']
-			});
-		}
-	}
+    if (cityId!=null) {
+        return new Ext.data.JsonStore({
+            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire?ccoinsee=' + cityId,
+            autoLoad: true,
+            fields: ['ccoinsee', 'ccopre', 'ccosec', 
+                     { 
+                name: 'fullccosec', 
+                convert: function(v, rec) { return (rec.ccopre.trim().length>0) ? (rec.ccopre.trim() + '-' + rec.ccosec.trim()) : rec.ccosec.trim(); }
+                     }]
+        });
+    } else {
+        return new Ext.data.JsonStore({
+            data: [],
+            fields: ['ccoinsee', 'ccopre', 'ccosec', 'fullccosec']
+        });
+    }
+}
 		
-	//listes des section / parcelles saisies : "références"
-	//initialement vide
-	//ajoute automatique une ligne vide quand la dernière ligne est complètement remplie
-	//actuellement, on ne peut pas supprimer une ligne
+/**
+ * 
+ */
 GEOR.Addons.Cadastre.getVoidParcelleStore = function() {
-		return new Ext.data.JsonStore({
-			fields : ['section', 'parcelle'],
-			data   : [{section : '',   parcelle: ''}]
-		});		
-	}
-	
-	//listes des "propriétaires" saisis
-	//initialement vide
+    return new Ext.data.JsonStore({
+        fields : ['section', 'parcelle'],
+        data   : [{section : '',   parcelle: ''}]
+    });		
+}
+
+
+/**
+ * 
+ */
 GEOR.Addons.Cadastre.getVoidProprietaireStore = function() {
-		return new Ext.data.JsonStore({
-			fields : ['proprietaire'],
-			data   : [{proprietaire : ''}]
-		});		
-	}
+    return new Ext.data.JsonStore({
+        fields : ['proprietaire'],
+        data   : [{proprietaire : ''}]
+    });		
+}
 	
-	//design et editor des colonnes de la grille "référence"
+/**
+ * Creation des headers de colonnes de la grille "référence"
+ * 
+ * @param cityId -> ccodep + ccodir + ccocom
+ * 
+ */
 GEOR.Addons.Cadastre.getParcelleColModel = function(cityId) {
-		return new Ext.grid.ColumnModel([
-			{
+    return new Ext.grid.ColumnModel([
+                                     {
 				id:'section',
 				dataIndex: 'section',
 				header: OpenLayers.i18n('cadastrapp.parcelle.references.col1'),
@@ -170,7 +197,7 @@ GEOR.Addons.Cadastre.getParcelleColModel = function(cityId) {
 					forceSelection: false,
 					editable:       true,
 					displayField:   'dnupla',			//on affiche dans les choix le numéro du plan (4 dernier chiffres de l'id de la parcelle)
-					valueField:     'parcelle',			//on conservec comme valeur l'id entier de la parcelle
+					valueField:     'parcelle',			//on conserve comme valeur l'id entier de la parcelle
 					store: GEOR.Addons.Cadastre.getInitParcelleStore(),
 					listeners: {
 					    beforequery: function(q){  
@@ -183,47 +210,60 @@ GEOR.Addons.Cadastre.getParcelleColModel = function(cityId) {
 					}
 				})
 			}
-		]);		
-	}
-	
-	
-	//design de la grille "resultats de recherche de parcelles"
+			]);		
+}
+
+/**
+ * Création des colonnes et nom pour la GridPanel Parcelle
+ * 
+ * @return  ColumnModel - completed with all header names
+ */
 GEOR.Addons.Cadastre.getResultParcelleColModel = function() {
-		return new Ext.grid.ColumnModel([
-			{
-				id:'ccoinsee',
-				dataIndex: 'ccoinsee',
-				header: OpenLayers.i18n('cadastrapp.parcelle.result.commune'),
-				sortable: true
-			},
-			{
-				id:'ccosec',
-				dataIndex: 'ccosec',
-				header: OpenLayers.i18n('cadastrapp.parcelle.result.ccosec'),
-				sortable: true
-			},
-			{
-				id:'dnupla',
-				dataIndex: 'dnupla',
-				header: OpenLayers.i18n('cadastrapp.parcelle.result.dnupla'),
-				sortable: true
-			},
-			{
-				id:'adresse',
-				dataIndex: 'adresse',
-				header: OpenLayers.i18n('cadastrapp.parcelle.result.adresse'),
-				sortable: true
-			},
-			{
-				id:'dcntpa',
-				dataIndex: 'dcntpa',
-				header: OpenLayers.i18n('cadastrapp.parcelle.result.surface'),
-				sortable: true
-			}]);
-	}
+    return new Ext.grid.ColumnModel([
+        {
+            id:'ccoinsee',
+			dataIndex: 'ccoinsee',
+			header: OpenLayers.i18n('cadastrapp.parcelle.result.commune'),
+			sortable: true,
+			width: 60
+		},
+		{
+			id:'ccosec',
+			dataIndex: 'ccosec',
+			header: OpenLayers.i18n('cadastrapp.parcelle.result.ccosec'),
+			sortable: true,
+            width: 50
+		},
+		{
+			id:'dnupla',
+			dataIndex: 'dnupla',
+			header: OpenLayers.i18n('cadastrapp.parcelle.result.dnupla'),
+			sortable: true,
+            width: 60
+		},
+		{
+			id:'adresse',
+			dataIndex: 'adresse',
+			header: OpenLayers.i18n('cadastrapp.parcelle.result.adresse'),
+			sortable: true,
+            width: 190
+		},
+		{
+			id:'dcntpa',
+			dataIndex: 'dcntpa',
+			header: OpenLayers.i18n('cadastrapp.parcelle.result.surface'),
+			sortable: true,
+            width: 150
+	}]);
+}
 	
 	
-	//design et editor des colonnes de la grille "propriétaires"
+/**
+ * 
+ * @param cityId
+ * 
+ * @returb ColumnModel
+ */
 GEOR.Addons.Cadastre.getProprietaireColModel = function(cityId) {
 		return new Ext.grid.ColumnModel([
 			{
@@ -237,14 +277,12 @@ GEOR.Addons.Cadastre.getProprietaireColModel = function(cityId) {
 		]);		
 	}
 	
-	
+/**
+ * Parse JSon response from webApp from getParcelle with details=0
+ */	
 GEOR.Addons.Cadastre.getResultParcelleStore = function (result, fromForm) {
 		return new Ext.data.JsonStore({
-			fields: ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'cconvo', 'dvoilib', 'dcntpa',
-			         { 
-			       		name: 'ccoinsee', 
-			       		convert: function(v, rec) { return rec.ccodep + rec.ccodir + rec.ccocom; }
-			         },
+			fields: ['parcelle', 'ccoinsee', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'cconvo', 'dvoilib', 'dcntpa',
 			         { 
 			       		name: 'adresse', 
 			       		convert: function(v, rec) {

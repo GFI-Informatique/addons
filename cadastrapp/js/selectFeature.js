@@ -414,17 +414,7 @@ GEOR.Addons.Cadastre.indexRowParcelle = function(idParcelle) {
 GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
     if (parcelsIds.length > 0) {
         // paramètres pour le getParcelle
-        var params = {"code" : parcelsIds[0]};
-        params.details = 1;
-        var cityCode = params.code;
-        params.ccodep = cityCode.substring(0, 2);
-        params.ccodir = cityCode.substring(2, 3);
-        params.ccocom = cityCode.substring(3, 6);
-        params.ccopre = cityCode.substring(6, 9);
-        params.ccosec = cityCode.substring(9, 11);
-        params.dnupla = cityCode.substring(11, 15);
-
-        // liste des parcelles
+        var params = {};
         params.parcelle = new Array();
         for (var i = 0; i < parcelsIds.length; i++){
             params.parcelle.push(parcelsIds[i]);
@@ -434,8 +424,6 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
             method : 'GET',
             url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
             params : params,
-            username : "testadmin",
-            password : "testadmin",
             success : function(result, opt) {
                 // pour lire le format JSON : openlayers reader
                 var geojson_format = new OpenLayers.Format.JSON();
@@ -464,20 +452,13 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
                             ccoinsee = data[i].ccodep + data[i].ccodir + data[i].ccocom;
                             // création de l'enregistrement
                             newRecord = new TopicRecord({
-                                adresse : (data[i].adresse) ? data[i].adresse : data[i].dvoilib,
-                                ccocom : data[i].ccocom,
+                                parcelle : data[i].parcelle,
+                                adresse : (data[i].adresse) ? data[i].adresse : data[i].dnvoiri + data[i].dindic +' '+data[i].cconvo  +' ' + data[i].dvoilib,
                                 ccoinsee : ccoinsee,
-                                ccodep : data[i].ccodep,
-                                ccodir : data[i].ccodir,
-                                cconvo : data[i].cconvo,
                                 ccopre : data[i].ccopre,
                                 ccosec : data[i].ccosec,
-                                dindic : data[i].dindic,
-                                dnupla : data[i].dnupla,
-                                dnvoiri : data[i].dnvoiri,
-                                dvoilib : data[i].dvoilib,
-                                parcelle : data[i].parcelle,
-                                surface : data[i].surface,
+                                dnupla : data[i].dnupla,   
+                                surface : data[i].surfc,
                             });
                             // ajout de la ligne
                             GEOR.Addons.Cadastre.tabs.activeTab.store.add(newRecord);
