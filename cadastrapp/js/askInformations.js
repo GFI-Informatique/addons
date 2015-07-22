@@ -17,7 +17,6 @@ Ext.namespace("GEOR.Addons.Cadastre");
 GEOR.Addons.Cadastre.onClickAskInformations = function() {
 
     var parcBisStore = GEOR.Addons.Cadastre.getBisStore();
-
     var parcCityStore = GEOR.Addons.Cadastre.getPartialCityStore();
 
 
@@ -78,7 +77,7 @@ GEOR.Addons.Cadastre.onClickAskInformations = function() {
                 }
             },
             change : function(combo, newValue, oldValue) {
-                parcelleWindow.buttons[0].enable();
+                GEOR.Addons.Cadastre.parcelleWindow.buttons[0].enable();
             }
         }
     });
@@ -88,8 +87,8 @@ GEOR.Addons.Cadastre.onClickAskInformations = function() {
                 fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.references'),
                 xtype : 'editorgrid',
                 clicksToEdit : 1,
-                ds : GEOR.Addons.Cadastre.getVoidParcelleStore(),
-                cm : GEOR.Addons.Cadastre.getParcelleColModel(null),
+                ds : GEOR.Addons.Cadastre.getVoidRefStore(),
+                cm : GEOR.Addons.Cadastre.getRefColModel(null),
                 autoExpandColumn : 'parcelle',
                 height : 100,
                 width : 300,
@@ -105,12 +104,13 @@ GEOR.Addons.Cadastre.onClickAskInformations = function() {
                         if (e.column == 1) {
                             // pas d'edition de parcelle si aucune section
                             // selectionnée
-                            if (e.record.data.section == '')
+                            if (e.record.data.section == ''){
                                 return false;
+                            }
 
                             // on remplace le contenu du store des parcelles
                             // selon la section selectionnée
-                            GEOR.Addons.Cadastre.reloadParcelleStore(e.grid.getColumnModel()
+                            GEOR.Addons.Cadastre.loadParcelleStore(e.grid.getColumnModel()
                                     .getColumnById(e.field).editor.getStore(),
                                     parcCityCombo1.value, e.record.data.section);
                         }
@@ -222,8 +222,8 @@ GEOR.Addons.Cadastre.onClickAskInformations = function() {
                 fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.references'),
                 xtype : 'editorgrid',
                 clicksToEdit : 1,
-                ds : GEOR.Addons.Cadastre.getVoidParcelleStore(),
-                cm : GEOR.Addons.Cadastre.getParcelleColModel(null),
+                ds : GEOR.Addons.Cadastre.getVoidRefStore(),
+                cm : GEOR.Addons.Cadastre.getRefColModel(null),
                 autoExpandColumn : 'parcelle',
                 height : 100,
                 width : 405,
@@ -244,7 +244,7 @@ GEOR.Addons.Cadastre.onClickAskInformations = function() {
 
                             // on remplace le contenu du store des parcelles
                             // selon la section selectionnée
-                            GEOR.Addons.Cadastre.reloadParcelleStore(e.grid.getColumnModel()
+                            GEOR.Addons.Cadastre.loadParcelleStore(e.grid.getColumnModel()
                                     .getColumnById(e.field).editor.getStore(),
                                     parcCityCombo1.value, e.record.data.section);
                         }

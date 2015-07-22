@@ -73,7 +73,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
             },
             change : function(combo, newValue, oldValue) {
                 // refaire le section store pour cette ville
-                parcelleGrid.reconfigure(GEOR.Addons.Cadastre.getVoidParcelleStore(), GEOR.Addons.Cadastre.getParcelleColModel(newValue));
+                parcelleGrid.reconfigure(GEOR.Addons.Cadastre.getVoidRefStore(), GEOR.Addons.Cadastre.getRefColModel(newValue));
                 GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
             }
         }
@@ -129,14 +129,15 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
         fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.references'),
         xtype : 'editorgrid',
         clicksToEdit : 1,
-        ds : GEOR.Addons.Cadastre.getVoidParcelleStore(),
-        cm : GEOR.Addons.Cadastre.getParcelleColModel(null),
+        ds : GEOR.Addons.Cadastre.getVoidRefStore(),
+        cm : GEOR.Addons.Cadastre.getRefColModel(null),
         autoExpandColumn : 'parcelle',
         height : 100,
         width : 300,
         border : true,
         listeners : {
             beforeedit : function(e) {
+                console.log("Beforeedit What event is it");
                 if (e.column == 0) {
                     // pas d'edition de section si aucune ville selectionnée
                     if (parcCityCombo1.value == ''){
@@ -150,12 +151,13 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         console.log("La section et pre-section doit être choisie d'abord")
                         return false;
                     }
-                    
+                   
                     // on remplace le contenu du store des parcelles selon la section selectionnée
-                    GEOR.Addons.Cadastre.reloadParcelleStore(e.grid.getColumnModel().getColumnById(e.field).editor.getStore(), parcCityCombo1.value, e.record.data.section);
+                    GEOR.Addons.Cadastre.loadParcelleStore(e.grid.getColumnModel().getColumnById(e.field).editor.getStore(), parcCityCombo1.value, e.record.data.section);
                 }
             },
             afteredit : function(e) {
+                console.log("Afteredit What event is it");
                 // on ajoute un champ vide, si le dernier champ est complet
                 var lastIndex = e.grid.store.getCount() - 1;
                 var lastData = e.grid.store.getAt(e.grid.store.getCount() - 1).data;
@@ -166,8 +168,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         parcelle : ''
                     }); // create new record
                     e.grid.stopEditing();
-                    e.grid.store.add(p); // insert a new record into the
-                                            // store (also see add)
+                    e.grid.store.add(p); // insert a new record into the store (also see add)
                     this.startEditing(e.row, 1);
                 }
             }
@@ -330,29 +331,39 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                 });
 
                             } else {
-                                // PAR LISTE
-
                                 // PARAMS
-                                var params = currentForm.getForm().getValues();
-                                params.parcelle = new Array();
-                                parcelleGrid.getStore().each(function(record) {
-                                    params.parcelle.push(record.data.parcelle);
-                                });
+                                var params = {};
                                 params.ccoinsee = currentForm.getForm().findField('ccoinsee').value;
-
-                                //envoi la liste de resultat
-                                Ext.Ajax.request({
-                                    method : 'GET',
-                                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
-                                    params : params,
-                                    success : function(result) {
-                                        GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
-                                    },
-                                    failure : function(result) {
-                                        alert('ERROR');
-                                    }
+                                
+                                // init result windows without showing it
+                                GEOR.Addons.Cadastre.addNewResult(resultTitle, null, OpenLayers.i18n('cadastrapp.parcelle.result.nodata'));
+                                
+                                parcelleGrid.getStore().each(function(record) {
+                                    console.log("parcelleGrid each row");
+                                   
+                                    params.dnupla = record.data.parcelle;
+                                    params.ccopre = record.data.section.substring(0, record.data.section.length-2);
+                                    params.ccosec = record.data.section.substring(record.data.section.length-2, record.data.section.length);
+                                     
+                                    if(params.dnupla != undefined && params.ccosec != ' '){
+                                        
+                                        console.log("parcelleGrid each row - after test");
+                                        //envoi la liste de resultat
+                                        Ext.Ajax.request({
+                                            method : 'GET',
+                                            url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+                                            params : params,
+                                            success : function(result) {
+                                                var data = eval(result.responseText);
+                                                GEOR.Addons.Cadastre.addNewDataResultParcelle(data);
+                                            },
+                                            failure : function(result) {
+                                                alert('ERROR');
+                                            }
+                                        });
+                                    }       
                                 });
-                            }
+                             }
                         }
 
                     }

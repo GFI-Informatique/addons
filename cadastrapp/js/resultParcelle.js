@@ -31,6 +31,30 @@ GEOR.Addons.Cadastre.addVoidResultParcelle = function() {
 }
 
 /**
+ * @param result - Json result from ajax request
+ */
+GEOR.Addons.Cadastre.addNewDataResultParcelle = function(result) {
+    var newRecord;
+    for (var i = 0; i < result.length; i++) {
+        if (GEOR.Addons.Cadastre.indexRowParcelle(result[i].parcelle) == -1) {
+        
+            // création de l'enregistrement
+            newRecord = new TopicRecord({
+                parcelle : result[i].parcelle,
+                adresse : (result[i].adresse) ? result[i].adresse : result[i].dnvoiri + result[i].dindic +' '+result[i].cconvo  +' ' + result[i].dvoilib,
+                        ccoinsee : result[i].ccoinsee,
+                        ccopre : result[i].ccopre,
+                        ccosec : result[i].ccosec,
+                        dnupla : result[i].dnupla,   
+                        dcntpa : result[i].dcntpa
+            });
+            // ajout de la ligne
+            GEOR.Addons.Cadastre.tabs.activeTab.store.add(newRecord);
+        }
+    }
+}
+    
+/**
  *  public: method[addNewResult] 
  *  
  * @param: title
@@ -38,11 +62,13 @@ GEOR.Addons.Cadastre.addVoidResultParcelle = function() {
  * @param: message
  */
 GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
+
     if (GEOR.Addons.Cadastre.resultParcelleWindow == null) {
         GEOR.Addons.Cadastre.initResultParcelle();
     }
     
     GEOR.Addons.Cadastre.tabs = GEOR.Addons.Cadastre.resultParcelleWindow.items.items[0];
+   
     // **********
     // lors du changement des onglets
     GEOR.Addons.Cadastre.tabs.addListener('beforetabchange', function(tab, newTab, currentTab) {

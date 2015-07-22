@@ -412,28 +412,31 @@ GEOR.Addons.Cadastre.indexRowParcelle = function(idParcelle) {
  * @param: selectRows
  */
 GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
+    
+    // si il existe au moins une parcelle
     if (parcelsIds.length > 0) {
+        
         // paramètres pour le getParcelle
         var params = {};
         params.parcelle = new Array();
         for (var i = 0; i < parcelsIds.length; i++){
             params.parcelle.push(parcelsIds[i]);
         }
+        
         // envoi la liste de resultat
         Ext.Ajax.request({
             method : 'GET',
             url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
             params : params,
-            success : function(result, opt) {
-                // pour lire le format JSON : openlayers reader
-                var geojson_format = new OpenLayers.Format.JSON();
-                var data = geojson_format.read(result.responseText);
+            success : function(response) {
+                
+                var data = eval(response.responseText);
                 var id, rowIndex;
                 
                 // si la fenetre de recherche n'est pas ouverte
                 if (!GEOR.Addons.Cadastre.tabs || !GEOR.Addons.Cadastre.tabs.activeTab) { 
                    
-                    GEOR.Addons.Cadastre.addNewResultParcelle("result selection (" + parcelsIds.length + ")", GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
+                    GEOR.Addons.Cadastre.addNewResultParcelle("result selection (" + parcelsIds.length + ")", GEOR.Addons.Cadastre.getResultParcelleStore(response.responseText, false));
                     GEOR.Addons.Cadastre.newGrid.on('viewready', function(view, firstRow, lastRow) {
                         if (selectRows) {
                             for (var i = 0; i < data.length; i++) {
@@ -445,20 +448,21 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
                             }
                         }
                     });
-                } else { // si la fenêtre est ouverte on ajoute les lignes
-                    var ccoinsee = "", newRecord;
+                 // si la fenêtre est ouverte on ajoute les lignes
+                } else { 
+                    var newRecord;
                     for (var i = 0; i < data.length; i++) {
                         if (GEOR.Addons.Cadastre.indexRowParcelle(data[i].parcelle) == -1) {
-                            ccoinsee = data[i].ccodep + data[i].ccodir + data[i].ccocom;
+                            
                             // création de l'enregistrement
                             newRecord = new TopicRecord({
                                 parcelle : data[i].parcelle,
                                 adresse : (data[i].adresse) ? data[i].adresse : data[i].dnvoiri + data[i].dindic +' '+data[i].cconvo  +' ' + data[i].dvoilib,
-                                ccoinsee : ccoinsee,
+                                ccoinsee : data[i].ccoinsee,
                                 ccopre : data[i].ccopre,
                                 ccosec : data[i].ccosec,
                                 dnupla : data[i].dnupla,   
-                                surface : data[i].surfc,
+                                dcntpa : data[i].dcntpa,
                             });
                             // ajout de la ligne
                             GEOR.Addons.Cadastre.tabs.activeTab.store.add(newRecord);

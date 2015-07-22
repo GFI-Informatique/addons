@@ -44,11 +44,16 @@ GEOR.Addons.Cadastre.getPartialCityStore = function() {
 		
 /**
  *  Appel pour récuperer la liste des sections
+ *  
+ *  @param : cityId -> 6 chars corresponding to ccodep + ccodir + ccocom
  */		
 GEOR.Addons.Cadastre.getSectionStore = function(cityId) {
 		if (cityId!=null) {
 			return new Ext.data.JsonStore({
-				url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getSection',
+			    proxy: new Ext.data.HttpProxy({
+			        url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getSection',
+			        method: 'GET'
+			    }),
 				params:{ccoinsee : cityId},
 				autoLoad: true,
 				fields: ['ccoinsee', 'ccopre', 'ccosec', 
@@ -66,29 +71,30 @@ GEOR.Addons.Cadastre.getSectionStore = function(cityId) {
 	}
 	
 /**
- * Call webapp
+ * Init webapp call, without calling
+ *  Params will be set later after section has been choosen
  */
-GEOR.Addons.Cadastre.getInitParcelleStore = function() {
+GEOR.Addons.Cadastre.initParcelleStore = function() {
     return new Ext.data.JsonStore({
         proxy: new Ext.data.HttpProxy({
-            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
-            method: 'GET'
-        }),
-        fields : ['parcelle', 'ccodep', 'ccodir', 'ccocom', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'dvoilib','dcntpa']
+            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle/dnupla',
+            method: 'GET'}),
+        params:{},
+        fields: ['dnupla']
     });
 }
 
 
 /**
- * ReloadParcelleStore 
+ * loadParcelleStore update parcelleStore with input params that will be used in webapp call
  * 
  * @param : parcelleStore
  * @param : cityId
- * @param : sectionId
+ * @param : sectionId (contains ccopre 3 first characters, and ccosec after)
  */
-GEOR.Addons.Cadastre.reloadParcelleStore = function(parcelleStore, cityId, sectionId) {
-    
-    console.log("reloadParcelleStore - cityId :" + cityId +" sectionId :" +sectionId); 
+GEOR.Addons.Cadastre.loadParcelleStore = function(parcelleStore, cityId, sectionId) {
+        
+    console.log("loadParcelleStore : " + parcelleStore + ""+ cityId + ""+ sectionId);
     
     if (parcelleStore!=null && cityId!=null && sectionId!=null) {
         // parse sectionID to set params for request
@@ -130,7 +136,7 @@ GEOR.Addons.Cadastre.getProprietaireStore = function(cityId) {
 /**
  * 
  */
-GEOR.Addons.Cadastre.getVoidParcelleStore = function() {
+GEOR.Addons.Cadastre.getVoidRefStore = function() {
     return new Ext.data.JsonStore({
         fields : ['section', 'parcelle'],
         data   : [{section : '',   parcelle: ''}]
@@ -154,63 +160,51 @@ GEOR.Addons.Cadastre.getVoidProprietaireStore = function() {
  * @param cityId -> ccodep + ccodir + ccocom
  * 
  */
-GEOR.Addons.Cadastre.getParcelleColModel = function(cityId) {
+GEOR.Addons.Cadastre.getRefColModel = function(cityId) {
     return new Ext.grid.ColumnModel([
-                                     {
-				id:'section',
-				dataIndex: 'section',
-				header: OpenLayers.i18n('cadastrapp.parcelle.references.col1'),
-				width: 100,
-				sortable: false,
-				editor: new Ext.form.ComboBox({
-					mode: 'local',
-					value: '',
-					forceSelection: false,
-					editable:       true,
-					displayField:   'fullccosec',
-					valueField:     'fullccosec',
-					store: GEOR.Addons.Cadastre.getSectionStore(cityId),
-					listeners: {
-					    beforequery: function(q){  
-					    	if (q.query) {
-				                var length = q.query.length;
-				                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
-				                q.query.length = length;
-				            }
-					    }
-					}					
-				})
-			},
-			{
-				id: "parcelle",
-				dataIndex: 'parcelle',
-				header: OpenLayers.i18n('cadastrapp.parcelle.references.col2'),
-				width: 100,
-				sortable: false,
-				renderer: function(value, metadata, record, rowIndex, colIndex, store) {
-					//on affiche le numéro du plan depuis l'id de la parcelle
-					return (value!=undefined && value.length >= 4) ? (value.substring(value.length-4)) : null;
-				},				
-				editor: new Ext.form.ComboBox({
-					mode: 'local',
-					value: '',
-					forceSelection: false,
-					editable:       true,
-					displayField:   'dnupla',			//on affiche dans les choix le numéro du plan (4 dernier chiffres de l'id de la parcelle)
-					valueField:     'parcelle',			//on conserve comme valeur l'id entier de la parcelle
-					store: GEOR.Addons.Cadastre.getInitParcelleStore(),
-					listeners: {
-					    beforequery: function(q){  
-					    	if (q.query) {
-				                var length = q.query.length;
-				                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
-				                q.query.length = length;
-				            }
-					    }
-					}
-				})
-			}
-			]);		
+    {
+        id:'section',
+		dataIndex: 'section',
+		header: OpenLayers.i18n('cadastrapp.parcelle.references.col1'),
+		width: 100,
+		sortable: false,
+		editor: new Ext.form.ComboBox({
+		    mode: 'local',
+		    value: '',
+		    forceSelection: false,
+		    editable:       true,
+		    displayField:   'fullccosec',
+		    valueField:     'fullccosec',
+		    store: GEOR.Addons.Cadastre.getSectionStore(cityId)				
+		})
+    },
+    {
+        id: "parcelle",
+        dataIndex: 'parcelle',
+        header: OpenLayers.i18n('cadastrapp.parcelle.references.col2'),
+        width: 100,
+        sortable: false,	
+        editor: new Ext.form.ComboBox({
+            mode: 'local',
+            value: '',
+            forceSelection: false,
+            editable: true,
+            displayField: 'dnupla',
+            valueField: 'dnupla',
+            store: GEOR.Addons.Cadastre.initParcelleStore(),
+            listeners: {
+                beforequery: function(q){  
+                    console.log("Parcelle - beforequery :" + q.query);
+                    if (q.query) {
+                        var length = q.query.length;
+                        q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+                        q.query.length = length;
+                    }
+                }
+            }
+        })
+    }
+    ]);		
 }
 
 /**
