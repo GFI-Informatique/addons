@@ -173,7 +173,7 @@ GEOR.Addons.Cadastre.changeStateParcelleOfTab = function(store, typeSelector) {
     var id, index, feature;
     for (var i = 0; i < store.length; i++) { // selection
         id = store[i].data.parcelle;
-        feature = getFeatureById(id);
+        feature = GEOR.Addons.Cadastre.getFeatureById(id);
         if (feature) {
             index = GEOR.Addons.Cadastre.indexFeatureSelected(feature);
             GEOR.Addons.Cadastre.changeStateFeature(feature, index, typeSelector);
