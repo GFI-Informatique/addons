@@ -191,7 +191,6 @@ GEOR.Addons.Cadastre.getRefColModel = function(cityId) {
             store: GEOR.Addons.Cadastre.initParcelleStore(),
             listeners: {
                 beforequery: function(q){  
-                    console.log("Parcelle - beforequery :" + q.query);
                     if (q.query) {
                         var length = q.query.length;
                         q.query = new RegExp(Ext.escapeRe(q.query), 'i');
