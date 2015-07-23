@@ -50,11 +50,8 @@ GEOR.Addons.Cadastre.getPartialCityStore = function() {
 GEOR.Addons.Cadastre.getSectionStore = function(cityId) {
 		if (cityId!=null) {
 			return new Ext.data.JsonStore({
-			    proxy: new Ext.data.HttpProxy({
-			        url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getSection',
-			        method: 'GET'
-			    }),
-				params:{ccoinsee : cityId},
+			    url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getSection?ccoinsee='+cityId,
+			    method: 'GET',
 				autoLoad: true,
 				fields: ['ccoinsee', 'ccopre', 'ccosec', 
 					{ 
