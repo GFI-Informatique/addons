@@ -461,32 +461,34 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         });
         buttonRechercheParcelleAdresse.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheParcelle(2)});
 
-        // sous-menu : recherche proprietaire
-        var scrollMenuRechercheProprietaire = new Ext.menu.Menu();
-        var buttonRechercheProprietaire = scrollMenu.add({
-            tooltip : OpenLayers.i18n("cadastrapp.proprietaire"),
-            text : OpenLayers.i18n("cadastrapp.proprietaire"),
-            menu : scrollMenuRechercheProprietaire
-        });
-        // sous-sous-menu : recherche proprietaire - par nom
-        var buttonRechercheProprietaireNom = scrollMenuRechercheProprietaire.add({
-            tooltip : OpenLayers.i18n("cadastrapp.proprietaire.nom"),
-            text : OpenLayers.i18n("cadastrapp.proprietaire.nom")
-        });
-        buttonRechercheProprietaireNom.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheProprietaire(0)});
-        
-        // sous-sous-menu : recherche proprietaire - par compte
-        var buttonRechercheProprietaireCompte = scrollMenuRechercheProprietaire.add({
-            tooltip : OpenLayers.i18n("cadastrapp.proprietaire.compte"),
-            text : OpenLayers.i18n("cadastrapp.proprietaire.compte")
-        });
-        buttonRechercheProprietaireCompte.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheProprietaire(1)});
-
-        // sous-menu : recherche copropriété
-        var buttonRechercheCopropriete = scrollMenu.add({
-            tooltip : OpenLayers.i18n("cadastrapp.copropriete"),
-            text : OpenLayers.i18n("cadastrapp.copropriete")
-        });
+        if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
+            // sous-menu : recherche proprietaire
+            var scrollMenuRechercheProprietaire = new Ext.menu.Menu();
+            var buttonRechercheProprietaire = scrollMenu.add({
+                tooltip : OpenLayers.i18n("cadastrapp.proprietaire"),
+                text : OpenLayers.i18n("cadastrapp.proprietaire"),
+                menu : scrollMenuRechercheProprietaire
+            });
+            // sous-sous-menu : recherche proprietaire - par nom
+            var buttonRechercheProprietaireNom = scrollMenuRechercheProprietaire.add({
+                tooltip : OpenLayers.i18n("cadastrapp.proprietaire.nom"),
+                text : OpenLayers.i18n("cadastrapp.proprietaire.nom")
+            });
+            buttonRechercheProprietaireNom.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheProprietaire(0)});
+            
+            // sous-sous-menu : recherche proprietaire - par compte
+            var buttonRechercheProprietaireCompte = scrollMenuRechercheProprietaire.add({
+                tooltip : OpenLayers.i18n("cadastrapp.proprietaire.compte"),
+                text : OpenLayers.i18n("cadastrapp.proprietaire.compte")
+            });
+            buttonRechercheProprietaireCompte.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheProprietaire(1)});
+    
+            // sous-menu : recherche copropriété
+            var buttonRechercheCopropriete = scrollMenu.add({
+                tooltip : OpenLayers.i18n("cadastrapp.copropriete"),
+                text : OpenLayers.i18n("cadastrapp.copropriete")
+            });
+        }
 
         // sous-menu : traitement sélection
         var scrollMenuTraitementSelection = new Ext.menu.Menu();
@@ -520,25 +522,27 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
             text : OpenLayers.i18n("cadastrapp.selection.parcelles.plan")
         });
 
-        // sous-sous-menu : traitement sélection - proprietaires
-        var scrollMenuTraitementSelectionProprietaires = new Ext.menu.Menu();
-        var buttonTraitementSelectionProprietaires = scrollMenuTraitementSelection.add({
-            tooltip : OpenLayers.i18n("cadastrapp.selection.proprietaires"),
-            text : OpenLayers.i18n("cadastrapp.selection.proprietaires"),
-            menu : scrollMenuTraitementSelectionProprietaires
-        });
-        // sous-sous-sous-menu : traitement sélection - parcelles - export
-        var scrollMenuTraitementSelectionProprietairesExport = scrollMenuTraitementSelectionProprietaires.add({
-            tooltip : OpenLayers.i18n("cadastrapp.selection.proprietaires.export"),
-            text : OpenLayers.i18n("cadastrapp.selection.proprietaires.export")
-        });
+        if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
+            // sous-sous-menu : traitement sélection - proprietaires
+            var scrollMenuTraitementSelectionProprietaires = new Ext.menu.Menu();
+            var buttonTraitementSelectionProprietaires = scrollMenuTraitementSelection.add({
+                tooltip : OpenLayers.i18n("cadastrapp.selection.proprietaires"),
+                text : OpenLayers.i18n("cadastrapp.selection.proprietaires"),
+                menu : scrollMenuTraitementSelectionProprietaires
+            });
+            // sous-sous-sous-menu : traitement sélection - parcelles - export
+            var scrollMenuTraitementSelectionProprietairesExport = scrollMenuTraitementSelectionProprietaires.add({
+                tooltip : OpenLayers.i18n("cadastrapp.selection.proprietaires.export"),
+                text : OpenLayers.i18n("cadastrapp.selection.proprietaires.export")
+            });
+    
+            // sous-sous-sous-menu : traitement sélection - parcelles - edition
+            var scrollMenuTraitementSelectionProprietairesEdition = scrollMenuTraitementSelectionProprietaires.add({
+                tooltip : OpenLayers.i18n("cadastrapp.selection.proprietaires.edition"),
+                text : OpenLayers.i18n("cadastrapp.selection.proprietaires.edition")
+            });
 
-        // sous-sous-sous-menu : traitement sélection - parcelles - edition
-        var scrollMenuTraitementSelectionProprietairesEdition = scrollMenuTraitementSelectionProprietaires.add({
-            tooltip : OpenLayers.i18n("cadastrapp.selection.proprietaires.edition"),
-            text : OpenLayers.i18n("cadastrapp.selection.proprietaires.edition")
-        });
-
+        }
         // sous-sous-menu : traitement sélection - import
         var buttonTraitementSelectionImport = scrollMenuTraitementSelection.add({
             tooltip : OpenLayers.i18n("cadastrapp.selection.import"),
