@@ -263,10 +263,43 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         valueField : 'value',
                         store : parcBisStore
                     }, {
-                        name : 'dvoilib',
-                        xtype : 'textfield',
-                        width : 190
-                    } ]
+                        hiddenName :'dvoilib',
+                        xtype : 'combo',
+                        width: 190,
+                        mode: 'local',
+                        value: '',
+                        forceSelection: false,
+                        editable: true,
+                        displayField: 'dvoilib',
+                        valueField: 'dvoilib',
+                        store: new Ext.data.JsonStore({
+                            proxy: new Ext.data.HttpProxy({
+                                url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getVoie',
+                                method: 'GET',
+                                autoload: true
+                            }),
+                            fields: ['dvoilib']
+                        }),
+                        listeners : {
+                            beforequery : function(q) {
+                                if (q.query) {
+                                    var length = q.query.length;
+                                    if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
+                                        q.combo.getStore().load({
+                                            params : {
+                                                ccoinsee : GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].getActiveTab().getForm().findField('ccoinsee').value,
+                                                dvoilib_partiel : q.query
+                                            }
+                                        });
+                                    }
+                                } else if (length < GEOR.Addons.Cadastre.minCharToSearch) {
+                                    q.combo.getStore().loadData([], false);
+                                }
+                                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+                                q.query.length = length;
+                            }
+                        }
+                    }]
                 }, {
                     value : OpenLayers.i18n('cadastrapp.parcelle.street.exemple'),
                     fieldClass : 'displayfieldGray'
