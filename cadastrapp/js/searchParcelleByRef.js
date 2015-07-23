@@ -137,7 +137,6 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
         border : true,
         listeners : {
             beforeedit : function(e) {
-                console.log("Beforeedit What event is it");
                 if (e.column == 0) {
                     // pas d'edition de section si aucune ville selectionnée
                     if (parcCityCombo1.value == ''){
@@ -157,8 +156,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 }
             },
             afteredit : function(e) {
-                console.log("Afteredit What event is it");
-                // on ajoute un champ vide, si le dernier champ est complet
+                  // on ajoute un champ vide, si le dernier champ est complet
                 var lastIndex = e.grid.store.getCount() - 1;
                 var lastData = e.grid.store.getAt(e.grid.store.getCount() - 1).data;
 
@@ -340,14 +338,14 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                 
                                 parcelleGrid.getStore().each(function(record) {
                                     console.log("parcelleGrid each row");
-                                   
-                                    params.dnupla = record.data.parcelle;
-                                    params.ccopre = record.data.section.substring(0, record.data.section.length-2);
-                                    params.ccosec = record.data.section.substring(record.data.section.length-2, record.data.section.length);
-                                     
-                                    if(params.dnupla != undefined && params.ccosec != ' '){
+                                  
+                                    if(record.data.parcelle != undefined && record.data.parcelle.length>0 
+                                            && record.data.section != undefined && record.data.section.length>0){
                                         
-                                        console.log("parcelleGrid each row - after test");
+                                        params.dnupla = record.data.parcelle;
+                                        params.ccopre = record.data.section.substring(0, record.data.section.length-2);
+                                        params.ccosec = record.data.section.substring(record.data.section.length-2, record.data.section.length);
+                                      
                                         //envoi la liste de resultat
                                         Ext.Ajax.request({
                                             method : 'GET',
@@ -361,7 +359,10 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                                 alert('ERROR');
                                             }
                                         });
-                                    }       
+                                    }   
+                                    else{
+                                        console.log("Not enough data to call the webservice ");
+                                    }
                                 });
                              }
                         }
