@@ -74,7 +74,6 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
             change : function(combo, newValue, oldValue) {
                 // refaire le section store pour cette ville
                 parcelleGrid.reconfigure(GEOR.Addons.Cadastre.getVoidRefStore(), GEOR.Addons.Cadastre.getRefColModel(newValue));
-                GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
             }
         }
     });
@@ -117,9 +116,6 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                     q.query = new RegExp(Ext.escapeRe(q.query), 'i');
                     q.query.length = length;
                 }
-            },
-            change : function(combo, newValue, oldValue) {
-                GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
             }
         }
     });
@@ -169,6 +165,9 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                     e.grid.store.add(p); // insert a new record into the store (also see add)
                     this.startEditing(e.row, 1);
                 }
+            },
+            change : function(combo, newValue, oldValue) {
+                GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
             }
         }
     });
