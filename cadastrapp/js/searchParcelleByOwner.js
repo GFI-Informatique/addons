@@ -114,10 +114,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                 }
             },
             change : function(combo, newValue, oldValue) {
-                // refaire le section store pour cette ville
-                // proprietaireGrid.reconfigure(getVoidProprietaireStore(),
-                // getProprietaireColModel(newValue));
-                GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
+                 // TODO enable button only when at leastGEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
             }
         }
     });
@@ -206,11 +203,45 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
                     fieldClass : 'displayfieldGray'
                 }, {
-                    xtype : 'textfield',
+                    //TODO change with webservice call
+                    hiddenName :'dnomlp',
                     fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.lastname'),
-                    name : 'dnomlp',
+                    xtype : 'combo',
                     allowBlank : false,
-                    width : 300
+                    width : 300,
+                    mode: 'local',
+                    value: '',
+                    forceSelection: false,
+                    editable: true,
+                    displayField: 'dnomlp',
+                    valueField: 'dnomlp',
+                    store: new Ext.data.JsonStore({
+                        proxy: new Ext.data.HttpProxy({
+                            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire',
+                            method: 'GET',
+                            autoload: true
+                        }),
+                        fields: ['dnomlp', 'dprnlp']
+                    }),
+                    listeners : {
+                        beforequery : function(q) {
+                            if (q.query) {
+                                var length = q.query.length;
+                                if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
+                                    q.combo.getStore().load({
+                                        params : {
+                                            ccoinsee : GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].getActiveTab().getForm().findField('ccoinsee').value,
+                                            dnomlp : q.query
+                                        }
+                                    });
+                                }
+                            } else if (length < GEOR.Addons.Cadastre.minCharToSearch) {
+                                q.combo.getStore().loadData([], false);
+                            }
+                            q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+                            q.query.length = length;
+                        }
+                    }
                 }, {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.lastname.exemple'),
                     fieldClass : 'displayfieldGray'
@@ -263,24 +294,34 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                             // TITRE de l'onglet resultat
                             var resultTitle = currentForm.getForm().findField('ccoinsee').lastSelectionText;
 
-                            // PARAMS
+                            // PARAMS                      
                             var params = currentForm.getForm().getValues();
-                            params.details = 1;
-                            var cityCode = currentForm.getForm().findField('ccoinsee').value;
-                            params.ccodep = cityCode.substring(0, 2);
-                            params.ccodir = cityCode.substring(2, 3);
-                            params.ccocom = cityCode.substring(3, 6);
-
+                            params.details = 2;
+  
                             // envoi des données d'une form
                             Ext.Ajax.request({
                                 method : 'GET',
-                                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+                                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire',
                                 params : params,
                                 success : function(result) {
-                                    GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
+                                    var paramsGetParcelle = {};
+                                    paramsGetParcelle.comptecommunal= result.responseText;
+                                    
+                                    // envoi des données d'une form
+                                    Ext.Ajax.request({
+                                        method : 'GET',
+                                        url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+                                        params : paramsGetParcelle,
+                                        success : function(result) {
+                                            GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
+                                        },
+                                        failure : function(result) {
+                                            console.log('Error when getting parcelle information, check server side');
+                                        }
+                                    });
                                 },
                                 failure : function(result) {
-                                    alert('ERROR');
+                                    alert('Error when getting proprietaire information, check server side');
                                 }
                             });
                         }
@@ -314,10 +355,6 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                 // PARAMS
                                 var params = currentForm.getForm().getValues();
                                 params.details = 1;
-                                var cityCode = currentForm.getForm().findField('ccoinsee').value;
-                                params.ccodep = cityCode.substring(0, 2);
-                                params.ccodir = cityCode.substring(2, 3);
-                                params.ccocom = cityCode.substring(3, 6);
 
                                 // liste des proprietaires
                                 params.dnupro = new Array();
