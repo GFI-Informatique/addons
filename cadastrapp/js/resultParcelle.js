@@ -223,12 +223,12 @@ GEOR.Addons.Cadastre.openFoncierOrCadastre = function(id, grid) {
             grid.detailParcelles.push(GEOR.Addons.Cadastre.onClickDisplayFIUF(id));
         }
         if (!cadastreExiste) {
-            grid.detailParcelles.push(GEOR.Addons.Cadastre.onClickDisplayFIUC(id));
+            grid.detailParcelles.push(GEOR.Addons.Cadastre.displayFIUC(id));
         }
         return "2";
     } else if (GEOR.Addons.Cadastre.isCadastre()) {
         if (!cadastreExiste) {
-            grid.detailParcelles.push(GEOR.Addons.Cadastre.onClickDisplayFIUC(id));
+            grid.detailParcelles.push(GEOR.Addons.Cadastre.displayFIUC(id));
         }
         return "F";
     } else if (GEOR.Addons.Cadastre.isFoncier()) {
