@@ -203,7 +203,6 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
                     fieldClass : 'displayfieldGray'
                 }, {
-                    //TODO change with webservice call
                     hiddenName :'dnomlp',
                     fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.lastname'),
                     xtype : 'combo',
@@ -303,10 +302,14 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                 method : 'GET',
                                 url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire',
                                 params : params,
-                                success : function(result) {
+                                success : function(response) {
                                     var paramsGetParcelle = {};
-                                    paramsGetParcelle.comptecommunal= result.responseText;
-                                    
+                                    var comptecommunalArray = [];
+                                    var result = eval(response.responseText);
+                                    for(var i=0; i<result.length; i++){
+                                        comptecommunalArray.push(result[i].comptecommunal);
+                                    }
+                                    paramsGetParcelle.comptecommunal=comptecommunalArray;
                                     // envoi des données d'une form
                                     Ext.Ajax.request({
                                         method : 'GET',
