@@ -83,7 +83,7 @@ GEOR.Addons.Cadastre.onClickDisplayFIUC = function(parcelleId) {
 
             // la variable contenanceCalculee represente la "Surface SIG
             // calculée en m2"
-            var contenanceCalculee = result[0].supf;
+            var contenanceCalculee = result[0].surfc;
 
             // la variable parcelleBatie represente le champ "Parcelle bâtie"
             var parcelleBatie = result[0].gparbat;
