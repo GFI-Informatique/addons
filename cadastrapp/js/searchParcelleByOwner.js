@@ -353,28 +353,46 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                 });
 
                             } else {
-                                // PAR LISTE
-
+                                
                                 // PARAMS
                                 var params = currentForm.getForm().getValues();
-                                params.details = 1;
+                                params.details = 2;
 
                                 // liste des proprietaires
-                                params.dnupro = new Array();
+                                var dnuproList = new Array();
                                 proprietaireGrid.getStore().each(function(record) {
-                                    params.dnupro.push(record.data.proprietaire);
+                                    dnuproList.push(record.data.proprietaire);
                                 });
-
+                                params.dnupro=dnuproList;
+                                // PAR LISTE                                
                                 // envoi des données d'une form
                                 Ext.Ajax.request({
                                     method : 'GET',
-                                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+                                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire',
                                     params : params,
-                                    success : function(result) {
-                                        GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
+                                    success : function(response) {
+                                        var paramsGetParcelle = {};
+                                        var comptecommunalArray = [];
+                                        var result = eval(response.responseText);
+                                        for(var i=0; i<result.length; i++){
+                                            comptecommunalArray.push(result[i].comptecommunal);
+                                        }
+                                        paramsGetParcelle.comptecommunal=comptecommunalArray;
+                                        // envoi des données d'une form
+                                        Ext.Ajax.request({
+                                            method : 'GET',
+                                            url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+                                            params : paramsGetParcelle,
+                                            success : function(result) {
+                                                GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
+                                            },
+                                            failure : function(result) {
+                                                console.log('Error when getting parcelle information, check server side');
+                                            }
+                                        });
                                     },
                                     failure : function(result) {
-                                        alert('ERROR');
+                                        alert('Error when getting proprietaire information, check server side');
                                     }
                                 });
                             }
