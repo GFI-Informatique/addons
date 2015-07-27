@@ -114,6 +114,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             // Chargement des données
             FiucParcelleStore.loadData(FiucParcelleData);
             data: FiucParcelleData;
+            cadastreTabPanel.activate(0);
         }
     });
 
@@ -148,25 +149,23 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     params : {}
                 });
             }
-        }]
+        }],
+        
     });
     
     cadastreTabPanel.add({
-     // ONGLET 1: Parcelle
-        title : OpenLayers.i18n('cadastrapp.duc.parcelle'),
-        xtype : 'form',
-        items : [FiucParcelleGrid ],
-        layout:'fit'
-    });
-    cadastreTabPanel.doLayout();
-    windowFIUC.doLayout();
+        // ONGLET 1: Parcelle
+           title : OpenLayers.i18n('cadastrapp.duc.parcelle'),
+           xtype : 'form',
+           items : [FiucParcelleGrid ],
+           layout:'fit'
+       });
     // ---------- FIN ONGLET Parcelle ------------------------------
 
     // ---------- ONGLET Propriétaire ------------------------------
     //Seulement pour Cnil1 et Cnil2 
     if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){ 
-        //
-        // 
+
         // Déclaration du modèle de données pour l'onglet Propriétaire.
         // réalise l'appel à la webapp
         var FiucProprietaireStore = new Ext.data.JsonStore({
@@ -177,8 +176,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
     
             // Champs constituant l'onglet propîétaire
             fields : [ 'ccodro', 'dnupro', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp', {
-                // Le champ adress est l'addition des champs dlign3,dlign4,
-                // dlign5, dlign6
+                // Le champ adress est l'addition des champs dlign3,dlign4,dlign5, dlign6
                 name : 'adress',
                 convert : function(v, rec) {
                     return rec.dlign3 + rec.dlign4 + rec.dlign5 + rec.dlign6
@@ -283,7 +281,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             items : [FiucProprietairesGrid ],
             layout:'fit'
            });
-        windowFIUC.doLayout();
+
     // ---------- FIN ONGLET Propriétaire ------------------------------
     }
     
@@ -423,7 +421,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 }, FiucBatimentsGrid ],
             layout:'fit'
            });
-        windowFIUC.doLayout();
+
         // ---------- FIN ONGLET Batiment ------------------------------
 
         // ---------- ONGLET Subdivision fiscale ------------------------------
@@ -479,7 +477,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             items : [ FiucSubdivfiscGrid ],
             layout:'fit'
            });
-        windowFIUC.doLayout();
+
         // ---------- FIN ONGLET Subdivision fiscale ------------------------------
 
         // ---------- ONGLET historique de mutation ------------------------------
@@ -497,7 +495,20 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             }, {
                 name : 'referenceparcelle',
                 convert : function(v, rec) {
-                    return rec.ccocomm + ' ' + rec.ccoprem + ' ' + rec.ccosecm + ' ' + rec.dnuplam
+                    reference = '';
+                    if(rec.ccomm != undefined){
+                        reference = reference + ' ' + rec.ccomm;
+                    }
+                    if(rec.rec.ccoprem != undefined){
+                        reference = reference + ' ' + rec.rec.ccoprem;
+                    }
+                    if(rec.ccosecm != undefined){
+                        reference = reference + ' ' + rec.ccosecm;
+                    }
+                    if(rec.dnuplam != undefined){
+                        reference = reference + ' ' + rec.dnuplam;
+                    }
+                    return reference;
                 }
             }, {
                 name : 'filiation',
@@ -520,13 +531,16 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 },
                 columns : [ {
                     header : OpenLayers.i18n('cadastrapp.duc.dateacte'),
-                    dataIndex : 'date'
+                    dataIndex : 'date',
+                    width: 90
                 }, {
                     header : "Référence de la parcelle mère",
-                    dataIndex : 'referenceparcelle'
+                    dataIndex : 'referenceparcelle', 
+                    width:300
                 }, {
                     header : "Type de mutation",
-                    dataIndex : 'filiation'
+                    dataIndex : 'filiation',
+                    width:150
                 } ]
             }),
     
@@ -539,8 +553,6 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             items : [ FiucHistomutGrid ],
             layout:'fit'
            });
-        cadastreTabPanel.doLayout();
-        windowFIUC.doLayout();
     }
     
     // add windows in manager and show it
