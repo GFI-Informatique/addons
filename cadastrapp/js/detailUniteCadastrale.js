@@ -77,18 +77,18 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
 
 
     // Declaration des data pour le modèle de données pour l'onglet Parcelle
-    var FiucParcelleData = [];
+    var fiucParcelleData = [];
 
     // ---------- ONGLET Parcelle ------------------------------
 
     // Déclaration du modèle de données pour l'onglet Parcelle.
-    var FiucParcelleStore = new Ext.data.ArrayStore({
+    var fiucParcelleStore = new Ext.data.ArrayStore({
         fields : [ {
             name : 'designation'
         }, {
             name : 'valeur'
         }, ],
-        data : FiucParcelleData
+        data : fiucParcelleData
     });
 
     // Requete Ajax pour aller chercher dans la webapp les données relatives à
@@ -101,7 +101,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             var result = eval(response.responseText);
             // Remplissage du tableau de données
             // TODO: remplacer les libellés par les i18n correspondants
-            FiucParcelleData = [ [ 'Commune', result[0].ccodep + result[0].ccodir + result[0].ccocom ], 
+            fiucParcelleData = [ [ 'Commune', result[0].ccodep + result[0].ccodir + result[0].ccocom ], 
                                  [ 'Section', result[0].ccopre + result[0].ccosec ],
                                  [ 'Parcelle', result[0].dnupla ], 
                                  [ 'Voie (Code fantoir)', result[0].dnvoiri + result[0].dindic ], 
@@ -112,16 +112,16 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                                  [ 'Secteur urbain', result[0].gurbpa ] ];
 
             // Chargement des données
-            FiucParcelleStore.loadData(FiucParcelleData);
-            data: FiucParcelleData;
+            fiucParcelleStore.loadData(fiucParcelleData);
+            data: fiucParcelleData;
             cadastreTabPanel.activate(0);
         }
     });
 
     // La variable FiucParcelleGrid est consititué d'un objet grid.GridPanel
     // Elle constitue de tableau de données à afficher pour l'onglet parcelle
-    var FiucParcelleGrid = new Ext.grid.GridPanel({
-        store : FiucParcelleStore,
+    var fiucParcelleGrid = new Ext.grid.GridPanel({
+        store : fiucParcelleStore,
         stateful : true,
         autoHeight : true,
         name : 'Fiuc_Parcelle',
@@ -157,7 +157,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
         // ONGLET 1: Parcelle
            title : OpenLayers.i18n('cadastrapp.duc.parcelle'),
            xtype : 'form',
-           items : [FiucParcelleGrid ],
+           items : [fiucParcelleGrid ],
            layout:'fit'
        });
     // ---------- FIN ONGLET Parcelle ------------------------------
@@ -168,7 +168,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
 
         // Déclaration du modèle de données pour l'onglet Propriétaire.
         // réalise l'appel à la webapp
-        var FiucProprietaireStore = new Ext.data.JsonStore({
+        var fiucProprietaireStore = new Ext.data.JsonStore({
     
             // Appel à la webapp
             url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=1",
@@ -187,7 +187,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
         // Déclaration de la bottom bar (25 propiétaires par page)
         var bbar = new Ext.PagingToolbar({
             pageSize : 25,
-            store : FiucProprietaireStore,
+            store : fiucProprietaireStore,
             displayInfo : true,
             displayMsg : 'Affichage {0} - {1} of {2}',
             emptyMsg : "Pas de propriétaire a afficher",
@@ -198,8 +198,8 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
         // du complément",
         // "Nom complement", "Prénom complément","adresse", "date","Libellé -
         // Code du droit réel"
-        FiucProprietairesGrid = new Ext.grid.GridPanel({
-            store : FiucProprietaireStore,
+        fiucProprietairesGrid = new Ext.grid.GridPanel({
+            store : fiucProprietaireStore,
             stateful : true,
             name : 'Fiuc_Proprietaire',
             xtype : 'editorgrid',
@@ -278,7 +278,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             // ONGLET 2: Propriétaire
             title : OpenLayers.i18n('cadastrapp.duc.propietaire'),
             xtype : 'form',
-            items : [FiucProprietairesGrid ],
+            items : [fiucProprietairesGrid ],
             layout:'fit'
            });
 
@@ -287,42 +287,69 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
     
     // ---------- ONGLET Batiment ------------------------------
     if(GEOR.Addons.Cadastre.isCNIL2()){ 
-   
+        
+        var buttonBatimentList = [];
+        
         // Modèle de donnée pour l'onglet batiment
-        var FiucBatimentsStore = new Ext.data.JsonStore({
+        var fiucBatimentsStore = new Ext.data.JsonStore({
+            proxy: new Ext.data.HttpProxy({
+                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getBatiments',
+                autoLoad : false,
+                method: 'GET'
+            }),
             // Appel à la webapp
-            url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=2",
-            autoLoad : true,
+           
             fields : [ 'dniv', 'dpor', 'cconlc_lib', 'dvlrt', 'jdatat', 'dnupro', 'ddenom', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp' ],
     
         });
-    
-        // Déclaration des boutons "lA1, A2, A3"
-        var batimentsList = [];
-        for (var i = 1; i <= 3; i++) {
-            batimentsList.push("A" + i);
-        }
-    
-        var buttonBatimentList = [];
-    
-        // Création des boutons correspondants
-        for (var i = 0; i < batimentsList.length; i++) {
-    
-            var buttonBatiment = new Ext.Button({
-                id : batimentsList[i],
-                text : batimentsList[i],
-                margins : '0 10 0 10',
-                handler : function(e) {
-                    reloadBatimentStore(e.text);
-                }
-            });
-            buttonBatimentList.push(buttonBatiment);
-    
-        }
-    
+       
+        // Récupère la liste des batiments de la parcelle
+        Ext.Ajax.request({
+            url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=2",
+            method : 'GET',
+            success : function(response) {
+                var result = eval(response.responseText);
+
+                Ext.each(result, function(element, index) {
+                    
+                    if(element.dnubat != undefined && element.dnubat!=null && element.dnubat.length>0 ){
+                        
+                        // load first batiment information
+                        if(index==0){
+                            console.log("Chargement du premier batiment " + element.dnubat);
+                            fiucBatimentsStore.load({
+                                params : {
+                                    'dnubat': element.dnubat, 'parcelle': parcelleId
+                                }
+                            });
+                        }
+                        
+                        var buttonBatiment = new Ext.Button({
+                            id : element.dnubat,
+                            text : element.dnubat,
+                            margins : '0 10 0 10',
+                            handler : function(e) {
+                                 fiucBatimentsStore.load({
+                                    params : {
+                                        'dnubat': e.text, 'parcelle': parcelleId
+                                    }
+                                });
+                            }
+                        });
+                        buttonBatimentList.push(buttonBatiment);
+                    }
+                    else{
+                        console.log("Pas de batiments sur la parcelle");
+                    }
+                });       
+            }
+        });
+
+        //TODO check buttonBatiementList size to display message NO BAT !
+        
         // Déclaration du tableau
-        var FiucBatimentsGrid = new Ext.grid.GridPanel({
-            store : FiucBatimentsStore,
+        var fiucBatimentsGrid = new Ext.grid.GridPanel({
+            store : fiucBatimentsStore,
             stateful : true,
             hideHeaders: true,
             name : 'Fiuc_Batiments',
@@ -337,12 +364,11 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     dataIndex : 'dniv',
                 }, {
                     // TODO: mettre les i18n correspondants
-                    // numéro de porte
                     header : "Porte",
                     dataIndex : 'dpor',
                 }, {
                     header : "Type",
-                    dataIndex : 'cconlc_lib',
+                    dataIndex : 'ccoaff_lib',
                 }, {
                     header : "Date",
                     dataIndex : 'jdatat',
@@ -413,12 +439,13 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             // ONGLET 3: Batiment
             title : OpenLayers.i18n('cadastrapp.duc.batiment'),
             xtype : 'form',
-            items : [ {
+            items : [{
                 xtype : 'buttongroup',
                 title: 'Batiment(s)',
                 frame : false,
                 items : buttonBatimentList
-                }, FiucBatimentsGrid ],
+                }, 
+                fiucBatimentsGrid ],
             layout:'fit'
            });
 
@@ -427,7 +454,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
         // ---------- ONGLET Subdivision fiscale ------------------------------
         //
         // Modèle de données pour l'onglet subdivision fiscale
-        var FiucSubdivfiscStore = new Ext.data.JsonStore({
+        var fiucSubdivfiscStore = new Ext.data.JsonStore({
             autoLoad : true,
             // Appel à la webapp
             url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=3",
@@ -441,8 +468,8 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
         });
     
         // Déclaration du tableau pour l'onglet subdivision fiscale
-        var FiucSubdivfiscGrid = new Ext.grid.GridPanel({
-            store : FiucSubdivfiscStore,
+        var fiucSubdivfiscGrid = new Ext.grid.GridPanel({
+            store : fiucSubdivfiscStore,
             stateful : true,
             autoHeight : true,
             title : 'Subdivisions fiscales',
@@ -474,7 +501,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             // ONGLET 4: Subivision fiscale
             title : OpenLayers.i18n('cadastrapp.duc.subdiv'),
             xtype : 'form',
-            items : [ FiucSubdivfiscGrid ],
+            items : [ fiucSubdivfiscGrid ],
             layout:'fit'
            });
 
@@ -483,7 +510,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
         // ---------- ONGLET historique de mutation ------------------------------
 
         // Modèle de données de l'onglet historique de mutation
-        var FiucHistomutStore = new Ext.data.ArrayStore({
+        var fiucHistomutStore = new Ext.data.ArrayStore({
             autoLoad : true,
             url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=4",
             method : 'GET',
@@ -496,11 +523,11 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 name : 'referenceparcelle',
                 convert : function(v, rec) {
                     reference = '';
-                    if(rec.ccomm != undefined){
-                        reference = reference + ' ' + rec.ccomm;
+                    if(rec.ccocom != undefined){
+                        reference = reference + ' ' + rec.ccocom;
                     }
-                    if(rec.rec.ccoprem != undefined){
-                        reference = reference + ' ' + rec.rec.ccoprem;
+                    if(rec.ccoprem != undefined){
+                        reference = reference + ' ' + rec.ccoprem;
                     }
                     if(rec.ccosecm != undefined){
                         reference = reference + ' ' + rec.ccosecm;
@@ -519,8 +546,8 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
         });
     
         // Tableau des données de l'historique de mutation
-        var FiucHistomutGrid = new Ext.grid.GridPanel({
-            store : FiucHistomutStore,
+        var fiucHistomutGrid = new Ext.grid.GridPanel({
+            store : fiucHistomutStore,
             stateful : true,
             autoHeight : true,
             name : 'Fiuc_Historique_Mutation',
@@ -532,15 +559,15 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 columns : [ {
                     header : OpenLayers.i18n('cadastrapp.duc.dateacte'),
                     dataIndex : 'date',
-                    width: 90
+                    width: 75
                 }, {
                     header : "Référence de la parcelle mère",
                     dataIndex : 'referenceparcelle', 
-                    width:300
+                    width:170
                 }, {
                     header : "Type de mutation",
                     dataIndex : 'filiation',
-                    width:150
+                    width:100
                 } ]
             }),
     
@@ -550,7 +577,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
          // ONGLET 5: Historique de mutation
             title : OpenLayers.i18n('cadastrapp.duc.histomut'),
             xtype : 'form',
-            items : [ FiucHistomutGrid ],
+            items : [ fiucHistomutGrid ],
             layout:'fit'
            });
     }
@@ -581,27 +608,6 @@ function getSelectedBatiment() {
 
 }
 
-
-//TODO Remove when service available
-function reloadBatimentStore(bat) {
-    // console.log( bat);
-    var FiucBatiments1Data = [ [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ],
-            [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '1', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ] ];
-    var FiucBatiments2Data = [ [ '2', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '2', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '2', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '2', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '2', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ],
-            [ '2', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '2', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ] ];
-    var FiucBatiments3Data = [ [ '3', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '3', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '3', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '3', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '3', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ],
-            [ '3', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ], [ '3', 'APP', '01/01/2014', '852', 'R0026', 'DUPOND', 'PRENOM' ] ];
-
-    var Data = [];
-    if (bat == "A1") {
-        Data = FiucBatiments1Data;
-    } else if (bat == "A2") {
-        Data = FiucBatiments2Data;
-    } else if (bat == "A3") {
-        Data = FiucBatiments3Data;
-    }
-    // FiucBatimentsStore.loadData(Data);
-}
 
 /**
  * 
