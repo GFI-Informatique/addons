@@ -240,14 +240,14 @@
 			
 			
 			"cadastrapp.duc.lettreindic" : "Lettre indicative",
-			"cadastrapp.duc.contenance " : "Contenance",
+			"cadastrapp.duc.contenance" : "Contenance",
 			"cadastrapp.duc.terrain" : "Nature de culture",
 			"cadastrapp.duc.revenu" : "Revenu au 01-01",
 
 			
 			"cadastrapp.duc.dateacte" : "Date acte",
-			"cadastrapp.duc.reference_parcelle " : "Référence de la parcelle mère",
-			"cadastrapp.duc.type_mutation " : "Type de mutation",		
+			"cadastrapp.duc.reference_parcelle" : "Référence de la parcelle mère",
+			"cadastrapp.duc.type_mutation" : "Type de mutation",		
 			
 			"cadastrapp.duc.batiment" : "Bâtiment",
 			"cadastrapp.duc.subdiv" : "Subdivisions fiscales",
@@ -468,23 +468,22 @@
 			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
 
 			"cadastrapp.duc.batiment_niveau" : "Niveau",
-			"cadastrapp.duc.batiment_porte " : "Porte",
-			"cadastrapp.duc.batiment_type " : "Type",
-			"cadastrapp.duc.batiment_date " : "Date",
-			"cadastrapp.duc.batiment_revenu " : "Revenu",
-			"cadastrapp.duc.batiment_descriptif " : "Descriptif",
-
-			
+			"cadastrapp.duc.batiment_porte" : "Porte",
+			"cadastrapp.duc.batiment_type" : "Type",
+			"cadastrapp.duc.batiment_date" : "Date",
+			"cadastrapp.duc.batiment_revenu" : "Revenu",
+			"cadastrapp.duc.batiment_descriptif" : "Descriptif",
+		
 			
 			"cadastrapp.duc.lettreindic" : "Lettre indicative",
-			"cadastrapp.duc.contenance " : "Contenance",
-			"cadastrapp.duc.terrain " : "Nature de culture",
-			"cadastrapp.duc. revenu " : "Revenu au 01-01",
+			"cadastrapp.duc.contenance" : "Contenance",
+			"cadastrapp.duc.terrain" : "Nature de culture",
+			"cadastrapp.duc.revenu" : "Revenu au 01-01",
 
 			
 			"cadastrapp.duc.dateacte" : "Date acte",
-			"cadastrapp.duc.reference_parcelle " : "Référence de la parcelle mère",
-			"cadastrapp.duc.type_mutation " : "Type de mutation",		
+			"cadastrapp.duc.reference_parcelle" : "Référence de la parcelle mère",
+			"cadastrapp.duc.type_mutation" : "Type de mutation",		
 	
 			"cadastrapp.duc.batiments" : "Batiment(s)",
 			"cadastrapp.duc.parcelle" : "Parcelle",
@@ -711,23 +710,23 @@
 			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
 
 			"cadastrapp.duc.batiment_niveau" : "Niveau",
-			"cadastrapp.duc.batiment_porte " : "Porte",
-			"cadastrapp.duc.batiment_type " : "Type",
-			"cadastrapp.duc.batiment_date " : "Date",
-			"cadastrapp.duc.batiment_revenu " : "Revenu",
-			"cadastrapp.duc.batiment_descriptif " : "Descriptif",
+			"cadastrapp.duc.batiment_porte" : "Porte",
+			"cadastrapp.duc.batiment_type" : "Type",
+			"cadastrapp.duc.batiment_date" : "Date",
+			"cadastrapp.duc.batiment_revenu" : "Revenu",
+			"cadastrapp.duc.batiment_descriptif" : "Descriptif",
 
 			
 			
 			"cadastrapp.duc.lettreindic" : "Lettre indicative",
-			"cadastrapp.duc.contenance " : "Contenance",
-			"cadastrapp.duc.terrain " : "Nature de culture",
-			"cadastrapp.duc. revenu " : "Revenu au 01-01",
+			"cadastrapp.duc.contenance" : "Contenance",
+			"cadastrapp.duc.terrain" : "Nature de culture",
+			"cadastrapp.duc. revenu" : "Revenu au 01-01",
 
 			
 			"cadastrapp.duc.dateacte" : "Date acte",
 			"cadastrapp.duc.reference_parcelle " : "Référence de la parcelle mère",
-			"cadastrapp.duc.type_mutation " : "Type de mutation",		
+			"cadastrapp.duc.type_mutation" : "Type de mutation",		
 	
             "cadastrapp.duc.designation" : "Designation",
             "cadastrapp.duc.valeur" : "Valeur",
@@ -954,20 +953,20 @@
 			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
 
 			"cadastrapp.duc.batiment_niveau" : "Niveau",
-			"cadastrapp.duc.batiment_porte " : "Porte",
-			"cadastrapp.duc.batiment_type " : "Type",
-			"cadastrapp.duc.batiment_date " : "Date",
-			"cadastrapp.duc.batiment_revenu " : "Revenu",
-			"cadastrapp.duc.batiment_descriptif " : "Descriptif",
+			"cadastrapp.duc.batiment_porte" : "Porte",
+			"cadastrapp.duc.batiment_type" : "Type",
+			"cadastrapp.duc.batiment_date" : "Date",
+			"cadastrapp.duc.batiment_revenu" : "Revenu",
+			"cadastrapp.duc.batiment_descriptif" : "Descriptif",
 			
 			"cadastrapp.duc.lettreindic" : "Lettre indicative",
-			"cadastrapp.duc.contenance " : "Contenance",
-			"cadastrapp.duc.terrain " : "Nature de culture",
-			"cadastrapp.duc. revenu " : "Revenu au 01-01",
+			"cadastrapp.duc.contenance" : "Contenance",
+			"cadastrapp.duc.terrain" : "Nature de culture",
+			"cadastrapp.duc. revenu" : "Revenu au 01-01",
 
 			
 			"cadastrapp.duc.dateacte" : "Date acte",
-			"cadastrapp.duc.reference_parcelle " : "Référence de la parcelle mère",
+			"cadastrapp.duc.reference_parcelle" : "Référence de la parcelle mère",
 			"cadastrapp.duc.type_mutation " : "Type de mutation",		
 				
 				
