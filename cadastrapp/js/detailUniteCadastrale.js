@@ -299,10 +299,27 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 Ext.each(result, function(element, index) {
                     
                     if(element.dnubat != undefined && element.dnubat!=null && element.dnubat.length>0 ){
+                                             
+                        var buttonBatiment = new Ext.Button({
+                            id: element.dnubat,
+                            text: element.dnubat,
+                            margins: '0 10 0 10',
+                            toogleGroup: 'batButToggleGroup',
+                            handler: function(e) {
+                                if(!(e.pressed)){
+                                    fiucBatimentsStore.load({
+                                    params: {
+                                        'dnubat': e.text, 'parcelle': parcelleId
+                                    }
+                                    });
+                                    e.toggle();
+                                }
+                            }
+                        });
                         
                         // load first batiment information
                         if(index==0){
-                            console.log("Chargement du premier batiment " + element.dnubat);
+                            buttonBatiment.toggle();
                             fiucBatimentsStore.load({
                                 params: {
                                     'dnubat': element.dnubat, 'parcelle': parcelleId
@@ -310,18 +327,6 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                             });
                         }
                         
-                        var buttonBatiment = new Ext.Button({
-                            id: element.dnubat,
-                            text: element.dnubat,
-                            margins: '0 10 0 10',
-                            handler: function(e) {
-                                 fiucBatimentsStore.load({
-                                    params: {
-                                        'dnubat': e.text, 'parcelle': parcelleId
-                                    }
-                                });
-                            }
-                        });
                         buttonToolBar.add(buttonBatiment);
                         buttonToolBar.doLayout();
                     }
@@ -332,7 +337,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             }
         });
 
-        //TODO check buttonBatiementList size to display message NO BAT !
+        //TODO check buttonBatimentList size to display message NO BAT !
         
         // Déclaration du tableau
         var fiucBatimentsGrid = new Ext.grid.GridPanel({
