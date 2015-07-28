@@ -1,20 +1,21 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
 /**
+ * Test if user as ROLE_"cnil1Role" in his role list
  * 
- * @returns {Boolean}
+ * @return {Boolean}
  */
 GEOR.Addons.Cadastre.isCNIL1 = function() {
-    console.log("Test cnil level1");
-    return (GEOR.config.ROLES.indexOf(GEOR.Addons.Cadastre.cnil1RoleName) != -1);
+    return (GEOR.config.ROLES.indexOf("ROLE_"+GEOR.Addons.Cadastre.cnil1RoleName) != -1);
 };
   
 /**
  * 
- * @returns {Boolean}
+ * Test if user as ROLE_"cnil2Role" in his role list
+ * 
+ * @return {Boolean} 
  */
 GEOR.Addons.Cadastre.isCNIL2 = function() {
-    console.log("Test cnil level2");
-    return (GEOR.config.ROLES.indexOf(GEOR.Addons.Cadastre.cnil2RoleName) != -1);
+    return (GEOR.config.ROLES.indexOf("ROLE_"+GEOR.Addons.Cadastre.cnil2RoleName) != -1);
 };
 
