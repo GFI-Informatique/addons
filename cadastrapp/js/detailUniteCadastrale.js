@@ -288,19 +288,19 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
     // ---------- ONGLET Batiment ------------------------------
     if(GEOR.Addons.Cadastre.isCNIL2()){ 
         
-        var buttonBatimentList = [];
+        // Ext.Buttons Arrays
+        var buttonBatimentGroup = new Ext.ButtonGroup({
+            title: 'Batiment(s)'
+        });
         
         // Modèle de donnée pour l'onglet batiment
         var fiucBatimentsStore = new Ext.data.JsonStore({
             proxy: new Ext.data.HttpProxy({
-                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getBatiments',
+                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC/batiments',
                 autoLoad : false,
                 method: 'GET'
             }),
-            // Appel à la webapp
-           
-            fields : [ 'dniv', 'dpor', 'cconlc_lib', 'dvlrt', 'jdatat', 'dnupro', 'ddenom', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp' ],
-    
+            fields : ['dniv', 'dpor', 'ccoaff_lib', 'annee', 'dnupro', 'ddenom', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp']   
         });
        
         // Récupère la liste des batiments de la parcelle
@@ -336,7 +336,9 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                                 });
                             }
                         });
-                        buttonBatimentList.push(buttonBatiment);
+                        console.log("Ajout du bouton : " + element.dnubat);
+                        buttonBatimentGroup.add(buttonBatiment);
+                        buttonBatimentGroup.doLayout();
                     }
                     else{
                         console.log("Pas de batiments sur la parcelle");
@@ -351,10 +353,9 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
         var fiucBatimentsGrid = new Ext.grid.GridPanel({
             store : fiucBatimentsStore,
             stateful : true,
-            hideHeaders: true,
+            hideHeaders: false,
             name : 'Fiuc_Batiments',
             xtype : 'editorgrid',
-            bbar : bbar,
             colModel : new Ext.grid.ColumnModel({
                 defaults : {
                     sortable : true,
@@ -362,47 +363,52 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 columns : [ {
                     header : OpenLayers.i18n('cadastrapp.duc.batiment_niveau'),
                     dataIndex : 'dniv',
+                    width: 30
                 }, {
-                    // TODO: mettre les i18n correspondants
                     header : "Porte",
                     dataIndex : 'dpor',
+                    width: 30
                 }, {
                     header : "Type",
                     dataIndex : 'ccoaff_lib',
+                    width: 60
                 }, {
                     header : "Date",
-                    dataIndex : 'jdatat',
+                    dataIndex : 'annee',
+                    width: 30
                 }, {
                     header : "Revenu",
                     dataIndex : 'dvlrt',
+                    width: 50
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.compte'),
-                    dataIndex : 'dnupro'
+                    dataIndex : 'dnupro',
+                    width: 50
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.denomination'),
-                    dataIndex : 'ddenom'
+                    dataIndex : 'ddenom',
+                    width: 150
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.nom'),
-                    dataIndex : 'dnomlp'
+                    dataIndex : 'dnomlp',
+                    width: 150                        
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.prenom'),
-                    dataIndex : 'dprnlp'
-    
+                    dataIndex : 'dprnlp',
+                    width: 100           
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.mentioncpl'),
-                    dataIndex : 'epxnee'
-    
+                    dataIndex : 'epxnee',
+                    width: 100           
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.nomcpl'),
-                    dataIndex : 'dnomcp'
-    
+                    dataIndex : 'dnomcp',
+                    width: 150           
                 }, {
-                    header : OpenLayers.i18n('cadastrapp.duc.prenomcp'),
-                    dataIndex : 'dprncp'
-    
-                }, {
-                    bbar : bbar,
-                } ]
+                    header : OpenLayers.i18n('cadastrapp.duc.prenomcpl'),
+                    dataIndex : 'dprncp',
+                    width: 100           
+                }]
             }),
             // inline toolbars
             tbar:[{
@@ -422,7 +428,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 text:OpenLayers.i18n('cadastrapp.duc.batiment_descriptif'),
                 tooltip:'Création du releve de propriete',
                 iconCls:'house-button',
-                handler : function() {
+                handler: function() {
                     Ext.Ajax.request({
                         url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createRelevePropriete?parcelle=' + parcelleId,
                         failure : function() {
@@ -431,22 +437,15 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                         params : {}
                     });
                 }
-             }],
-             autoHeight : true
+             }]
         });
 
         cadastreTabPanel.add({
             // ONGLET 3: Batiment
-            title : OpenLayers.i18n('cadastrapp.duc.batiment'),
-            xtype : 'form',
-            items : [{
-                xtype : 'buttongroup',
-                title: 'Batiment(s)',
-                frame : false,
-                items : buttonBatimentList
-                }, 
-                fiucBatimentsGrid ],
-            layout:'fit'
+            title: OpenLayers.i18n('cadastrapp.duc.batiment'),
+            xtype: 'form',
+            items: [buttonBatimentGroup, fiucBatimentsGrid ],
+            layout: 'anchor'
            });
 
         // ---------- FIN ONGLET Batiment ------------------------------
