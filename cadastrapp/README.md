@@ -9,7 +9,13 @@ Les informations des services WMS et WFS sont à modifier en fonction du modèle
 
 Pour activer l'add-on cadastrapp, il faut modifier le fichier javascript GEOR_custom.js et rajouter dans la partie ADDONS: 
 
-
+Attention pour la partie 
+```
+"options": { 
+		"CNIL":{
+			"cnil1RoleName" : 
+```
+Il faut rajouter ```ROLE_``` devant le nom du groupe ldap. Par exemple si votre groupe ldap CNIL1 est EL_CAD_CNIL1 alors la valeur de cnil1RoleName sera ROLE_EL_CAD_CNIL1
 
 	[{
 	"id": "cadastrapp_0", 
@@ -31,8 +37,8 @@ Pour activer l'add-on cadastrapp, il faut modifier le fichier javascript GEOR_cu
 			"url" : "http://hostname/cadastrapp"
 		},
 		"CNIL":{
-			"cnil1RoleName" : "EL_CAD_CNIL1",
-			"cnil2RoleName" : "EL_CAD_CNIL2"
+			"cnil1RoleName" : "ROLE_EL_CAD_CNIL1",
+			"cnil2RoleName" : "ROLE_EL_CAD_CNIL2"
 		},
 		"WMSLayer":{
 			"layerNameInPanel":"geo_parcelle",
