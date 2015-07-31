@@ -89,7 +89,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             var result = eval(response.responseText);
             // Remplissage du tableau de données
             // TODO: remplacer les libellés par les i18n correspondants
-            fiucParcelleData = [ [ 'Commune', result[0].ccodep + result[0].ccodir + result[0].ccocom ], 
+            fiucParcelleData = [ [ 'Commune', result[0].cgocommune ], 
                                  [ 'Section', result[0].ccopre + result[0].ccosec ],
                                  [ 'Parcelle', result[0].dnupla ], 
                                  [ 'Voie (Code fantoir)', result[0].dnvoiri + result[0].dindic ], 
@@ -514,8 +514,8 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 name: 'referenceparcelle',
                 convert: function(v, rec) {
                     reference = '';
-                    if(rec.ccocom != undefined){
-                        reference = reference + ' ' + rec.ccocom;
+                    if(rec.ccocomm != undefined){
+                        reference = reference + ' ' + rec.ccocomm;
                     }
                     if(rec.ccoprem != undefined){
                         reference = reference + ' ' + rec.ccoprem;
