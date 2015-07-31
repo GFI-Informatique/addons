@@ -38,7 +38,7 @@ GEOR.Addons.Cadastre.onClickAskInformations = function() {
 
     var parcCityCombo = new Ext.form.ComboBox({
         fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.city'),
-        hiddenName : 'ccoinsee',
+        hiddenName : 'cgocommune',
         allowBlank : false,
         width : 300,
         mode : 'local',
@@ -46,7 +46,7 @@ GEOR.Addons.Cadastre.onClickAskInformations = function() {
         forceSelection : true,
         editable : true,
         displayField : 'displayname',
-        valueField : 'ccoinsee',
+        valueField : 'cgocommune',
         store : GEOR.Addons.Cadastre.getPartialCityStore(),
         listeners : {
             beforequery : function(q) {
@@ -58,14 +58,14 @@ GEOR.Addons.Cadastre.onClickAskInformations = function() {
                             // recherche par nom de ville
                             q.combo.getStore().load({
                                 params : {
-                                    libcom_partiel : q.query
+                                    libcom : q.query
                                 }
                             });
                         } else {
                             // recherche par code insee
                             q.combo.getStore().load({
                                 params : {
-                                    ccoinsee_partiel : q.query
+                                    cgocommune : q.query
                                 }
                             });
                         }

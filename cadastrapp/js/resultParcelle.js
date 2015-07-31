@@ -42,7 +42,7 @@ GEOR.Addons.Cadastre.addNewDataResultParcelle = function(result) {
             newRecord = new TopicRecord({
                 parcelle : result[i].parcelle,
                 adresse : (result[i].adresse) ? result[i].adresse : result[i].dnvoiri + result[i].dindic +' '+result[i].cconvo  +' ' + result[i].dvoilib,
-                        ccoinsee : result[i].ccoinsee,
+                        cgocommune : result[i].cgocommune,
                         ccopre : result[i].ccopre,
                         ccosec : result[i].ccosec,
                         dnupla : result[i].dnupla,   

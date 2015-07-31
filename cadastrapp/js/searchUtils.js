@@ -34,9 +34,9 @@ GEOR.Addons.Cadastre.getPartialCityStore = function() {
                 url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getCommune',
                 method: 'GET'
              }),
-			fields: ['ccoinsee', 'libcom', 'libcom_min', { 
+			fields: ['cgocommune', 'libcom', 'libcom_min', { 
 		       name: 'displayname', 
-		       convert: function(v, rec) { return rec.libcom_min.trim() + ' (' + rec.ccoinsee.trim() + ')'}
+		       convert: function(v, rec) { return rec.libcom_min.trim() + ' (' + rec.cgocommune.trim() + ')'}
 		    }]
 		});
 	}
@@ -45,15 +45,15 @@ GEOR.Addons.Cadastre.getPartialCityStore = function() {
 /**
  *  Appel pour récuperer la liste des sections
  *  
- *  @param : cityId -> 6 chars corresponding to ccodep + ccodir + ccocom
+ *  @param : cgocommune -> 6 chars corresponding to ccodep + ccodir + ccocom
  */		
-GEOR.Addons.Cadastre.getSectionStore = function(cityId) {
-		if (cityId!=null) {
+GEOR.Addons.Cadastre.getSectionStore = function(cgocommune) {
+		if (cgocommune!=null) {
 			return new Ext.data.JsonStore({
-			    url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getSection?ccoinsee='+cityId,
+			    url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getSection?cgocommune='+cgocommune,
 			    method: 'GET',
 				autoLoad: true,
-				fields: ['ccoinsee', 'ccopre', 'ccosec', 
+				fields: ['cgocommune', 'ccopre', 'ccosec', 
 					{ 
 				       name: 'fullccosec', 
 				       convert: function(v, rec) { return rec.ccopre + rec.ccosec; }
@@ -62,7 +62,7 @@ GEOR.Addons.Cadastre.getSectionStore = function(cityId) {
 		} else {
 			return new Ext.data.JsonStore({
 				data: [],
-				fields: ['ccoinsee', 'ccopre', 'ccosec', 'fullccosec']
+				fields: ['cgocommune', 'ccopre', 'ccosec', 'fullccosec']
 			});
 		}
 	}
@@ -89,17 +89,17 @@ GEOR.Addons.Cadastre.initParcelleStore = function() {
  * @param : cityId
  * @param : sectionId (contains ccopre 3 first characters, and ccosec after)
  */
-GEOR.Addons.Cadastre.loadParcelleStore = function(parcelleStore, cityId, sectionId) {
+GEOR.Addons.Cadastre.loadParcelleStore = function(parcelleStore, cgocommune, sectionId) {
         
-    console.log("loadParcelleStore : " + parcelleStore + ""+ cityId + ""+ sectionId);
+    console.log("loadParcelleStore : " + parcelleStore + ""+ cgocommune + ""+ sectionId);
     
-    if (parcelleStore!=null && cityId!=null && sectionId!=null) {
+    if (parcelleStore!=null && cgocommune!=null && sectionId!=null) {
         // parse sectionID to set params for request
         var prefix = sectionId.substring(0, sectionId.length-2);
         var section = sectionId.substring(sectionId.length-2, sectionId.length);
 			        
         parcelleStore.load({params: {
-            ccoinsee: cityId,
+            cgocommune: cgocommune,
             ccopre: prefix,
             ccosec: section,
         }});
@@ -111,12 +111,12 @@ GEOR.Addons.Cadastre.loadParcelleStore = function(parcelleStore, cityId, section
  *  Appel à la webApp pour récupérer les propriétaires habitant dans une commune
  * @param : cityId
  */
-GEOR.Addons.Cadastre.getProprietaireStore = function(cityId) {		
+GEOR.Addons.Cadastre.getProprietaireStore = function(cgocommune) {		
     if (cityId!=null) {
         return new Ext.data.JsonStore({
-            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire?ccoinsee=' + cityId,
+            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire?cgocommune=' + cgocommune,
             autoLoad: true,
-            fields: ['ccoinsee', 'ccopre', 'ccosec', 
+            fields: ['cgocommune', 'ccopre', 'ccosec', 
                      { 
                 name: 'fullccosec', 
                 convert: function(v, rec) { return (rec.ccopre.trim().length>0) ? (rec.ccopre.trim() + '-' + rec.ccosec.trim()) : rec.ccosec.trim(); }
@@ -125,7 +125,7 @@ GEOR.Addons.Cadastre.getProprietaireStore = function(cityId) {
     } else {
         return new Ext.data.JsonStore({
             data: [],
-            fields: ['ccoinsee', 'ccopre', 'ccosec', 'fullccosec']
+            fields: ['cgocommune', 'ccopre', 'ccosec', 'fullccosec']
         });
     }
 }
@@ -154,10 +154,10 @@ GEOR.Addons.Cadastre.getVoidProprietaireStore = function() {
 /**
  * Creation des headers de colonnes de la grille "référence"
  * 
- * @param cityId -> ccodep + ccodir + ccocom
+ * @param cgocommune -> ccodep + ccodir + ccocom
  * 
  */
-GEOR.Addons.Cadastre.getRefColModel = function(cityId) {
+GEOR.Addons.Cadastre.getRefColModel = function(cgocommune) {
     return new Ext.grid.ColumnModel([
     {
         id:'section',
@@ -172,7 +172,7 @@ GEOR.Addons.Cadastre.getRefColModel = function(cityId) {
 		    editable:       true,
 		    displayField:   'fullccosec',
 		    valueField:     'fullccosec',
-		    store: GEOR.Addons.Cadastre.getSectionStore(cityId)				
+		    store: GEOR.Addons.Cadastre.getSectionStore(cgocommune)				
 		})
     },
     {
@@ -211,8 +211,8 @@ GEOR.Addons.Cadastre.getRefColModel = function(cityId) {
 GEOR.Addons.Cadastre.getResultParcelleColModel = function() {
     return new Ext.grid.ColumnModel([
         {
-            id:'ccoinsee',
-			dataIndex: 'ccoinsee',
+            id:'cgocommune',
+			dataIndex: 'cgocommune',
 			header: OpenLayers.i18n('cadastrapp.parcelle.result.commune'),
 			sortable: true,
 			width: 60
@@ -272,7 +272,7 @@ GEOR.Addons.Cadastre.getProprietaireColModel = function(cityId) {
  */	
 GEOR.Addons.Cadastre.getResultParcelleStore = function (result, fromForm) {
 		return new Ext.data.JsonStore({
-			fields: ['parcelle', 'ccoinsee', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'cconvo', 'dvoilib', 'dcntpa',
+			fields: ['parcelle', 'cgocommune', 'ccopre', 'ccosec', 'dnupla', 'dnvoiri', 'dindic', 'cconvo', 'dvoilib', 'dcntpa',
 			         { 
 			       		name: 'adresse', 
 			       		convert: function(v, rec) {

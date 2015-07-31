@@ -28,7 +28,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
     // comboboxe "villes" de l'onglet "Nom usage ou Naissance"
     var propCityCombo1 = new Ext.form.ComboBox({
         fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.city'),
-        hiddenName : 'ccoinsee',
+        hiddenName : 'cgocommune',
         allowBlank : false,
         width : 300,
         mode : 'local',
@@ -36,7 +36,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
         forceSelection : true,
         editable : true,
         displayField : 'displayname',
-        valueField : 'ccoinsee',
+        valueField : 'cgocommune',
         store : GEOR.Addons.Cadastre.getPartialCityStore(),
 
         // Recherche de la ville demandée avec gestion de l'autocomplétion
@@ -49,14 +49,14 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                             // recherche par nom de ville
                             q.combo.getStore().load({
                                 params : {
-                                    libcom_partiel : q.query
+                                    libcom : q.query
                                 }
                             });
                         } else {
                             // recherche par code insee
                             q.combo.getStore().load({
                                 params : {
-                                    ccoinsee_partiel : q.query
+                                    cgocommune : q.query
                                 }
                             });
                         }
@@ -75,7 +75,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
     // Combobox "Villes" de l'onglet "Compte propriétaire"
     var propCityCombo2 = new Ext.form.ComboBox({
         fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.city'),
-        hiddenName : 'ccoinsee',
+        hiddenName : 'cgocommune',
         allowBlank : false,
         width : 300,
         mode : 'local',
@@ -83,7 +83,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
         forceSelection : true,
         editable : true,
         displayField : 'displayname',
-        valueField : 'ccoinsee',
+        valueField : 'cgocommune',
         store : GEOR.Addons.Cadastre.getPartialCityStore(),
         // Recherche de la ville demandée avec gestion de l'autocomplétion
         listeners : {
@@ -95,14 +95,14 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                             // recherche par nom de ville
                             q.combo.getStore().load({
                                 params : {
-                                    libcom_partiel : q.query
+                                    libcom : q.query
                                 }
                             });
                         } else {
                             // recherche par code insee
                             q.combo.getStore().load({
                                 params : {
-                                    ccoinsee_partiel : q.query
+                                    cgocommune : q.query
                                 }
                             });
                         }
@@ -229,7 +229,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                 if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
                                     q.combo.getStore().load({
                                         params : {
-                                            ccoinsee : GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].getActiveTab().getForm().findField('ccoinsee').value,
+                                            cgocommune : GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].getActiveTab().getForm().findField('cgocommune').value,
                                             dnomlp : q.query
                                         }
                                     });
@@ -291,7 +291,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     if (currentForm.id == 'propFirstForm') {
                         if (currentForm.getForm().isValid()) {
                             // TITRE de l'onglet resultat
-                            var resultTitle = currentForm.getForm().findField('ccoinsee').lastSelectionText;
+                            var resultTitle = currentForm.getForm().findField('cgocommune').lastSelectionText;
 
                             // PARAMS                      
                             var params = currentForm.getForm().getValues();
@@ -332,7 +332,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     } else {
                         if (currentForm.getForm().isValid()) {
                             // TITRE de l'onglet resultat
-                            var resultTitle = currentForm.getForm().findField('ccoinsee').lastSelectionText;
+                            var resultTitle = currentForm.getForm().findField('cgocommune').lastSelectionText;
 
                             if (currentForm.getForm().findField('filePath').value != undefined) {
                                 // PAR FICHIER

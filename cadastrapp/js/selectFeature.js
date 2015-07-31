@@ -3,11 +3,7 @@ Ext.namespace("GEOR.Addons.Cadastre");
 //structure de l'enregistrement pour ajouter des lignes dans un tableau de résultats
 var TopicRecord = Ext.data.Record.create([
             {name: 'adresse', mapping: 'adresse'},
-            {name: 'ccocom', mapping: 'ccocom'},
-            {name: 'ccoinsee', mapping: 'ccoinsee'},
-            {name: 'ccodep', mapping: 'ccodep'},
-            {name: 'ccodir', mapping: 'ccodir'},
-            {name: 'ccoinsee', mapping: 'ccoinsee'},
+            {name: 'cgocommune', mapping: 'cgocommune'},
             {name: 'cconvo', mapping: 'cconvo'},
             {name: 'ccopre', mapping: 'ccopre'},
             {name: 'ccosec', mapping: 'ccosec'},
@@ -458,7 +454,7 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
                             newRecord = new TopicRecord({
                                 parcelle : data[i].parcelle,
                                 adresse : (data[i].adresse) ? data[i].adresse : data[i].dnvoiri + data[i].dindic +' '+data[i].cconvo  +' ' + data[i].dvoilib,
-                                ccoinsee : data[i].ccoinsee,
+                                cgocommune : data[i].cgocommune,
                                 ccopre : data[i].ccopre,
                                 ccosec : data[i].ccosec,
                                 dnupla : data[i].dnupla,   

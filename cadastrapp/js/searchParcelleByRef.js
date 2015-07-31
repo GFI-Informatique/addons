@@ -34,7 +34,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
     // combobox "villes"
     parcCityCombo1 = new Ext.form.ComboBox({
         fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.city'),
-        hiddenName : 'ccoinsee',
+        hiddenName : 'cgocommune',
         allowBlank : false,
         width : 300,
         mode : 'local',
@@ -42,7 +42,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
         forceSelection : true,
         editable : true,
         displayField : 'displayname',
-        valueField : 'ccoinsee',
+        valueField : 'cgocommune',
         store : GEOR.Addons.Cadastre.getPartialCityStore(),
         listeners : {
             beforequery : function(q) {
@@ -53,14 +53,14 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                             // recherche par nom de ville
                             q.combo.getStore().load({
                                 params : {
-                                    libcom_partiel : q.query
+                                    libcom : q.query
                                 }
                             });
                         } else {
                             // recherche par code insee
                             q.combo.getStore().load({
                                 params : {
-                                    ccoinsee_partiel : q.query
+                                    cgocommune : q.query
                                 }
                             });
                         }
@@ -80,7 +80,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
 
     parcCityCombo2 = new Ext.form.ComboBox({
         fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.city'),
-        hiddenName : 'ccoinsee',
+        hiddenName : 'cgocommune',
         allowBlank : false,
         width : 300,
         mode : 'local',
@@ -88,7 +88,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
         forceSelection : true,
         editable : true,
         displayField : 'displayname',
-        valueField : 'ccoinsee',
+        valueField : 'cgocommune',
         store : GEOR.Addons.Cadastre.getPartialCityStore(),
         listeners : {
             beforequery : function(q) {
@@ -99,14 +99,14 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                             // recherche par nom de ville
                             q.combo.getStore().load({
                                 params : {
-                                    libcom_partiel : q.query
+                                    libcom : q.query
                                 }
                             });
                         } else {
                             // recherche par code insee
                             q.combo.getStore().load({
                                 params : {
-                                    ccoinsee_partiel : q.query
+                                    cgocommune : q.query
                                 }
                             });
                         }
@@ -287,8 +287,8 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                     if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
                                         q.combo.getStore().load({
                                             params : {
-                                                ccoinsee : GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].getActiveTab().getForm().findField('ccoinsee').value,
-                                                dvoilib_partiel : q.query
+                                                cgocommune : GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].getActiveTab().getForm().findField('cgocommune').value,
+                                                dvoilib : q.query
                                             }
                                         });
                                     }
@@ -343,7 +343,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                     if (currentForm.id == 'parcFirstForm') {
                         if (currentForm.getForm().isValid()) {
                             // TITRE de l'onglet resultat
-                            var resultTitle = currentForm.getForm().findField('ccoinsee').lastSelectionText;
+                            var resultTitle = currentForm.getForm().findField('cgocommune').lastSelectionText;
 
                             if (currentForm.getForm().findField('filePath').value != undefined) {
                                 // PAR FICHIER
@@ -363,7 +363,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                             } else {
                                 // PARAMS
                                 var params = {};
-                                params.ccoinsee = currentForm.getForm().findField('ccoinsee').value;
+                                params.cgocommune = currentForm.getForm().findField('cgocommune').value;
                                 
                                 // init result windows without showing it
                                 GEOR.Addons.Cadastre.addNewResult(resultTitle, null, OpenLayers.i18n('cadastrapp.parcelle.result.nodata'));
@@ -403,11 +403,11 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                     if (currentForm.id == 'parcSecondForm') {
                         if (currentForm.getForm().isValid()) {
                             //TITRE de l'onglet resultat
-                            var resultTitle = currentForm.getForm().findField('ccoinsee').lastSelectionText;
+                            var resultTitle = currentForm.getForm().findField('cgocommune').lastSelectionText;
 
                             //PARAMS
                             var params = currentForm.getForm().getValues();
-                            params.ccoinsee = currentForm.getForm().findField('ccoinsee').value;
+                            params.cgocommune = currentForm.getForm().findField('cgocommune').value;
  
                             //envoi des données d'une form
                             Ext.Ajax.request({
