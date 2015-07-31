@@ -74,7 +74,7 @@ GEOR.Addons.Cadastre.getSectionStore = function(cgocommune) {
 GEOR.Addons.Cadastre.initParcelleStore = function() {
     return new Ext.data.JsonStore({
         proxy: new Ext.data.HttpProxy({
-            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle/dnupla',
+            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + '/getDnuplaList',
             method: 'GET'}),
         params:{},
         fields: ['dnupla']
@@ -250,11 +250,11 @@ GEOR.Addons.Cadastre.getResultParcelleColModel = function() {
 	
 /**
  * 
- * @param cityId
  * 
- * @returb ColumnModel
+ * 
+ * @return ColumnModel
  */
-GEOR.Addons.Cadastre.getProprietaireColModel = function(cityId) {
+GEOR.Addons.Cadastre.getProprietaireColModel = function() {
 		return new Ext.grid.ColumnModel([
 			{
 				id:'proprietaire',

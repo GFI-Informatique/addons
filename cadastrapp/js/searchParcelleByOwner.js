@@ -126,7 +126,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
         xtype : 'editorgrid',
         clicksToEdit : 1,
         ds : GEOR.Addons.Cadastre.getVoidProprietaireStore(),
-        cm : GEOR.Addons.Cadastre.getProprietaireColModel(''),
+        cm : GEOR.Addons.Cadastre.getProprietaireColModel(),
         autoExpandColumn : 'proprietaire',
         height : 100,
         width : 300,
