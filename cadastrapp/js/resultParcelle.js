@@ -42,11 +42,11 @@ GEOR.Addons.Cadastre.addNewDataResultParcelle = function(result) {
             newRecord = new TopicRecord({
                 parcelle : result[i].parcelle,
                 adresse : (result[i].adresse) ? result[i].adresse : result[i].dnvoiri + result[i].dindic +' '+result[i].cconvo  +' ' + result[i].dvoilib,
-                        cgocommune : result[i].cgocommune,
-                        ccopre : result[i].ccopre,
-                        ccosec : result[i].ccosec,
-                        dnupla : result[i].dnupla,   
-                        dcntpa : result[i].dcntpa
+                cgocommune : result[i].cgocommune,
+                ccopre : result[i].ccopre,
+                ccosec : result[i].ccosec,
+                dnupla : result[i].dnupla,   
+                dcntpa : result[i].dcntpa
             });
             // ajout de la ligne
             GEOR.Addons.Cadastre.tabs.activeTab.store.add(newRecord);
