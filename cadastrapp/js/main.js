@@ -13,18 +13,22 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
      */
     init : function(record) {
         
-        // get information for addons options
+        // Get information for addons options
         GEOR.Addons.Cadastre.WFSLayerSetting = this.options.WFSLayerSetting;
         
         GEOR.Addons.Cadastre.cadastrappWebappUrl = this.options.webapp.url;
+        GEOR.Addons.Cadastre.minCharToSearch = this.options.webapp.minCharToSearch;
+        
         GEOR.Addons.Cadastre.cnil1RoleName = this.options.CNIL.cnil1RoleName;
         GEOR.Addons.Cadastre.cnil2RoleName = this.options.CNIL.cnil2RoleName;
         
         // Init gobal variables
-        GEOR.Addons.Cadastre.minCharToSearch=3;
+        
+        
         GEOR.Addons.Cadastre.selectedFeatures = [];
         GEOR.Addons.Cadastre.selectLayer;
         GEOR.Addons.Cadastre.newGrid,tabs;
+       
         // TODO check why click on global
         GEOR.Addons.Cadastre.click;
         

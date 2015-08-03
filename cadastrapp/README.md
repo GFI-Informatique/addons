@@ -34,7 +34,8 @@ Il faut rajouter ```ROLE_``` devant le nom du groupe ldap. Par exemple si votre 
 	"options": { 
 		"target": "tbar_12",
 		"webapp":{
-			"url" : "http://hostname/cadastrapp"
+			"url" : "http://hostname/cadastrapp",
+			"minCharToSearch" : 3
 		},
 		"CNIL":{
 			"cnil1RoleName" : "ROLE_EL_CAD_CNIL1",
