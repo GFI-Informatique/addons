@@ -16,7 +16,6 @@ Ext.namespace("GEOR.Addons.Cadastre");
  */
 
 // ***************
-// TODO move this checkboxes : cadatre et foncier
 var _isCadastre = true;
 var _isFoncier = false;
 
