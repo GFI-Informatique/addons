@@ -263,6 +263,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         valueField : 'value',
                         store : parcBisStore
                     }, {
+                        // Add auto completion on dvoilib using getVoie service
                         hiddenName :'dvoilib',
                         xtype : 'combo',
                         width: 190,
