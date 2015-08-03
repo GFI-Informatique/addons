@@ -1,222 +1,206 @@
-/**
- * api: (define) module = GEOR class = Cadastrapp base_link =
- * `Ext.util.Observable
- * <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
- */
 Ext.namespace("GEOR.Addons.Cadastre");
 
 /**
- * onClickdisplayFIUF
+ * public: method[onClickdisplayFIUF]
  * 
- * @param layer:
- *            parcelleId Cette methode construit la fiche d'information foncière
- *            pour une parcelle donnée dont d'identifiant est parcelleId Elle
- *            permet également l'export au format pdf de la fiche d'information
- *            foncière
- * @return Test
+ * @param parcelleId Identifiant de parcelle ex :20148301032610C0012
+ * 
+ * 
+ *  Cette methode construit la fiche d'information foncière pour une parcelle donnée dont d'identifiant est parcelleId
+ *   Elle  permet également l'export au format pdf de la fiche d'information foncière
+ *
  */
 GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
+    
     var windowFIUF, parcelleGrid;
 
     // TODO: Attente des services suivants: getFIUF, getCoProprietaire
-    // Declaration des donnees globales
-    var FiufGlobalInfosData = [];
-
-    // TODO: Attente des services suivants: getFIUF, getCoProprietaire
     // Declaration des donnees propprietaires
-    var FiufProprietaireData = [ [ 'Proprietaire 1' ], [ 'Proprietaire 2' ] ];
-
-    // Declaration des donnees de liste de parcelles
-    var FiufParcelleListData = [ [ '38852 2225 22', '255', '201', "1 Rue louis 1" ], [ '38852 2225 22', '255', '201', "1 Rue louis 1" ], [ '38852 2225 22', '255', '201', "1 Rue louis 1" ] ];
-
-    // Modele de donnees informations globales de la parcelle
-    var FiufGlobalInfosStore = new Ext.data.ArrayStore({
-        fields : [ {
-            name : 'uniteFonciere'
-        }, {
-            name : 'surface',
-            type : 'float'
-        }, ],
-        data : FiufGlobalInfosData
+    var fiufProprietaireData = [ [ 'Proprietaire 1' ], [ 'Proprietaire 2' ] ];
+    
+    
+    // Store contenant les informations des différentes parcelles
+    var fiufParcelleListStore = new Ext.data.JsonStore({
+        proxy: new Ext.data.HttpProxy({
+            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+            autoLoad: false,
+            method: 'GET'
+        }),
+        fields: [ 'parcelle', 'dcntpa', 'surfc', {
+            name: 'adresse',
+            convert: function(v, rec) {
+                return rec.dnvoiri + rec.dindic + rec.cconvo + rec.dvoilib
+            } }]
     });
 
-    // Requete Ajax pour chercher dans la webapp les donnees relative � la
-    // parcelle
-    // TODO requete getFIUF a completer
-    Ext.Ajax.request({
-        url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
-        method : 'GET',
-        // Evaluation de la reponse et memorisation des champs
-        // params: response,
-        success : function(response) {
-            // console.log(response.responseText);
-            var result = eval(response.responseText);
+    // ArrayStore to display information on vertical panel
+    var fiufGlobalInfosStore = new Ext.data.ArrayStore({
+        fields: [ {
+            name: 'uniteFonciere'
+        }, {
+            name: 'surface',
+            type: 'float'
+        }, ]
+    });
 
-            // Les champs retourn�s par la webapp sont mis dans
-            // les variables correspondantes
-            var surfaceDGFiP = result[0].dcntpa_sum;
-            var surfaceSIG = result[0].sigcal_sum;
-            var surfaceBatie = result[0].batical_sum;
+    
+    // Requete Ajax pour chercher dans la webapp les donnees relative a la parcelle
+    Ext.Ajax.request({
+        url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getInfoUniteFonciere?parcelle=' + parcelleId,
+        method: 'GET',
+        success: function(response) {
+            
+            var result = Ext.decode(response.responseText);
+           
+            //TODO get Batical information
+            var surfaceBatie = 0;
 
             // Preparation du tableau de donnees
-            FiufGlobalInfosData = [ [ 'Unite Fonciere', surfaceDGFiP ], [ ' Surface SIG', surfaceSIG ], [ 'Surface Batie', surfaceBatie ], ];
+            var fiufGlobalInfosData = [ 
+                   [ 'Surface DGFiP', result.dcntpa_sum ], 
+                   [ 'Surface SIG', result.sigcal_sum ], 
+                   [ 'Surface Batie', surfaceBatie ] ];
+            
             // Chargement dans le store correspondant
-            FiufGlobalInfosStore.loadData(FiufGlobalInfosData, false);
-            data: FiufGlobalInfosData;
-
+            fiufGlobalInfosStore.loadData(fiufGlobalInfosData, false);
+           
+            // Load information about parcelle
+            fiufParcelleListStore.load({
+                params: {
+                    'comptecommunal': result.comptecommunal
+                }
+            });
         }
     });
 
     // Modele de donnes relatif à la liste des coproprietaires
-    // TODO a modifier
-    var FiufProprietaireStore = new Ext.data.ArrayStore({
-        fields : [ {
-            name : 'proprietaire'
+    var fiufProprietaireStore = new Ext.data.ArrayStore({
+        fields: [ {
+            name: 'proprietaire'
         } ],
-        data : FiufProprietaireData
+        data: fiufProprietaireData
     });
-
-    /*
-     * // // TODO Modele de donnes relatif aux listes de parcelles var
-     * FiufParcelleListStore = new Ext.data.ArrayStore({ fields : [ { name :
-     * 'parcelle', type : 'string', }, { name : 'surfacedgfip', type : 'string' }, {
-     * name : 'surfacesig', type : 'string' }, { name : 'adresse', type :
-     * 'string' },],
-     * 
-     * data : FiufParcelleListData });
-     */
-    // Modele de donnes relatif aux listes de parcelles
-    var FiufParcelleListStore = new Ext.data.JsonStore({
-
-        // Appel a la webapp
-        url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIUF?parcelle=' + parcelleId + "&detail=1",
-        autoLoad : true,
-        fields : [ 'comptecommunal', 'dcntpa_sum', 'sigcal_sum', 'adressepostale' ],
-
-        data : FiufParcelleListData
-    });
+ 
+    
     // Declaration et construction du tableau informations globales de la
     // parcelle
     // Tableau composé des colonnes 'unité foncière' et 'surface'
-    var FiufGlobalInfosGrid = new Ext.grid.GridPanel({
-        store : FiufGlobalInfosStore,
-        stateful : true,
-        name : 'FIUF_globalInformations',
-        xtype : 'editorgrid',
-        colModel : new Ext.grid.ColumnModel({
-            defaults : {
-                sortable : false,
+    var fiufGlobalInfosGrid = new Ext.grid.GridPanel({
+        store: fiufGlobalInfosStore,
+        stateful: true,
+        name: 'FIUF_globalInformations',
+        xtype: 'editorgrid',
+        colModel: new Ext.grid.ColumnModel({
+            defaults: {
+                sortable: false,
             },
-            columns : [ {
-                header : OpenLayers.i18n('cadastrapp.uniteFonciere'),
-                width : 100,
-                dataIndex : 'uniteFonciere'
+            columns: [ {
+                header: OpenLayers.i18n('cadastrapp.uniteFonciere'),
+                width: 100,
+                dataIndex: 'uniteFonciere'
             }, {
-                header : OpenLayers.i18n('cadastrapp.surface'),
-                width : 100,
-                renderer : Ext.util.Format.numberRenderer('0,000.00 m'),
-                dataIndex : 'surface'
+                header: OpenLayers.i18n('cadastrapp.surface'),
+                width: 100,
+                renderer: Ext.util.Format.numberRenderer('0,000.00 m²'),
+                dataIndex: 'surface'
             }, ],
         }),
-        height : 100,
-        width : 200,
-        border : true,
+        height: 110,
+        width: 200,
+        border: true,
     });
 
     // Declaration et construction du tableau des coproprietaires
     // Composé d'une seule colonne: co-proprietaires
-    var FiufProprietaireGrid = new Ext.grid.GridPanel({
-        store : FiufProprietaireStore,
-        stateful : true,
-        name : 'Fiuf_Proprietaire',
-        xtype : 'editorgrid',
-        colModel : new Ext.grid.ColumnModel({
-            defaults : {
-                width : 100,
-                sortable : false,
+    var fiufProprietaireGrid = new Ext.grid.GridPanel({
+        store: fiufProprietaireStore,
+        stateful: true,
+        name: 'Fiuf_Proprietaire',
+        xtype: 'editorgrid',
+        colModel: new Ext.grid.ColumnModel({
+            defaults: {
+                width: 100,
+                sortable: false,
             },
-            columns : [ {
-                header : OpenLayers.i18n('cadastrapp.CoProprietaire'),
-                width : 150,
-                dataIndex : 'proprietaire'
+            columns: [ {
+                header: OpenLayers.i18n('cadastrapp.CoProprietaire'),
+                width: 150,
+                dataIndex: 'proprietaire'
             }, ],
         }),
-        height : 100,
-        width : 150,
-        border : true,
+        height: 110,
+        width: 150,
+        border: true,
     });
 
     // Declaration et construction du tableau de liste de parcelles
     // Comprend les colonnes 'parcelle', 'surface DGFiP','Surface SIG' et
     // 'Adresse postale'
-    var FiufParcelleListGrid = new Ext.grid.GridPanel({
-        store : FiufParcelleListStore,
-        stateful : true,
-        name : 'Fiuf_ParcelleList',
-        xtype : 'editorgrid',
-        colModel : new Ext.grid.ColumnModel({
-            defaults : {
-                width : 100,
-                sortable : false,
+    var fiufParcelleListGrid = new Ext.grid.GridPanel({
+        store: fiufParcelleListStore,
+        stateful: true,
+        name: 'Fiuf_ParcelleList',
+        xtype: 'editorgrid',
+        colModel: new Ext.grid.ColumnModel({
+            defaults: {
+                width: 100,
+                sortable: false,
             },
-            columns : [ {
+            columns: [ {
                 // colonne parcelle
-                header : OpenLayers.i18n('cadastrapp.parcelle'),
-                width : 100,
-                dataIndex : 'comptecommunal'
+                header: OpenLayers.i18n('cadastrapp.parcelle'),
+                width: 150,
+                dataIndex: 'parcelle'
             }, {
                 // colonne surface DGFiP
-                header : OpenLayers.i18n('cadastrapp.surface') + " " + OpenLayers.i18n('cadastrapp.parcelle.DGFiP'),
-                width : 50,
-                dataIndex : 'dcntpa_sum'
+                header: OpenLayers.i18n('cadastrapp.surface') + " " + OpenLayers.i18n('cadastrapp.contenancedgfip'),
+                width: 70,
+                dataIndex: 'dcntpa'
             }, {
                 // colonne surface SIG
-                header : OpenLayers.i18n('cadastrapp.surface') + " " + OpenLayers.i18n('cadastrapp.parcelle.SIG'),
-                width : 50,
-                dataIndex : 'sigcal_sum'
+                header: OpenLayers.i18n('cadastrapp.surface') + " " + OpenLayers.i18n('cadastrapp.SIG'),
+                width: 70,
+                dataIndex: 'surfc'
             }, {
                 // colonne adresse postale
-                header : OpenLayers.i18n('cadastrapp.adresse_postale'),
-                width : 200,
-                dataIndex : 'adressepostale'
+                header: OpenLayers.i18n('cadastrapp.parcelle.adresse.postale'),
+                width: 300,
+                dataIndex: 'adresse'
             } ],
         }),
-        height : 100,
-        width : 450,
-        border : true,
+        height: 100,
+        width: 570,
+        border: true,
     });
 
     // Declaration et creation de la fenetre principale
     // Comprend les tableaux 'unite fonciere', 'coproprietaires' et 'liste des
     // parcelles
     windowFIUF = new Ext.Window({
-        title : parcelleId,
-        frame : true,
-        bodyPadding : 10,
-        autoScroll : true,
-        width : 600,
-        closable : true,
-        resizable : true,
-        draggable : true,
-        constrainHeader : true,
+        title: parcelleId,
+        frame: true,
+        bodyPadding: 10,
+        autoScroll: true,
+        width: 600,
+        closable: true,
+        resizable: true,
+        draggable: true,
+        constrainHeader: true,
 
-        items : [ {
-            xtype : 'compositefield',
-            margins : {
-                right : 10,
-                left : 10
+        items: [ {
+            xtype: 'compositefield',
+            margins: {
+                right: 10,
+                left: 10
             },
-
-            items : [ [ FiufGlobalInfosGrid, FiufProprietaireGrid,
-
+            items: [ [ fiufGlobalInfosGrid, fiufProprietaireGrid,
             ],
             // TODO: A modifier: provoque une erreur
             // [ exportPdfFiufButton ]
             ]
-        }, FiufParcelleListGrid ],
-        // AJOUT HAMZA
-        listeners : {
-            close : function(window) {
+        }, fiufParcelleListGrid ],
+        listeners: {
+            close: function(window) {
                 // deselection de la ligne
                 var rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(parcelleId);
                 GEOR.Addons.Cadastre.newGrid.getSelectionModel().deselectRow(rowIndex);
@@ -225,19 +209,18 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
                 GEOR.Addons.Cadastre.newGrid.idParcellesFOuvertes.splice(index, 1);
                 GEOR.Addons.Cadastre.newGrid.fichesFOuvertes.splice(index, 1);
                 var feature = getFeatureById(parcelleId);
-                if (feature)
+                if (feature){
                     changeStateFeature(feature, -1, "yellow");
+                } 
                 closeWindowFIUC(parcelleId, GEOR.Addons.Cadastre.newGrid); // on ferme la fenêtre
                 // cadastrale si ouverte
-
                 windowFIUF = null;
             }
         },
-        // FIN AJOUT
-        buttons : [ {
-            text : "Seletionner toutes les parcelles",
-            listeners : {
-                click : function(b, e) {
+        buttons: [ {
+            text: "Seletionner toutes les parcelles",
+            listeners: {
+                click: function(b, e) {
                     windowFIUF.close();
                 }
             }
