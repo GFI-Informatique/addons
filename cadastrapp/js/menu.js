@@ -336,7 +336,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 map : this.map,
                 // button options
                 toggleGroup : this.toggleGroup,
-                allowDepress : false,
+                allowDepress : true,
                 pressed : false,
                 tooltip : tooltip,
                 iconCls : iconCls,
