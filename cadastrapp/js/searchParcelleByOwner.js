@@ -305,7 +305,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                 success : function(response) {
                                     var paramsGetParcelle = {};
                                     var comptecommunalArray = [];
-                                    var result = eval(response.responseText);
+                                    var result = Ext.decode(response.responseText);
                                     for(var i=0; i<result.length; i++){
                                         comptecommunalArray.push(result[i].comptecommunal);
                                     }
@@ -373,7 +373,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                     success : function(response) {
                                         var paramsGetParcelle = {};
                                         var comptecommunalArray = [];
-                                        var result = eval(response.responseText);
+                                        var result = Ext.decode(response.responseText);
                                         for(var i=0; i<result.length; i++){
                                             comptecommunalArray.push(result[i].comptecommunal);
                                         }

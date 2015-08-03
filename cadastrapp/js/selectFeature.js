@@ -426,7 +426,7 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
             params : params,
             success : function(response) {
                 
-                var data = eval(response.responseText);
+                var data = Ext.decode(response.responseText);
                 var id, rowIndex;
                 
                 // si la fenetre de recherche n'est pas ouverte

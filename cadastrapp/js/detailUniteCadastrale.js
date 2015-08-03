@@ -86,7 +86,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
         url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=0",
         method : 'GET',
         success : function(response) {
-            var result = eval(response.responseText);
+            var result = Ext.decode(response.responseText);
             // Remplissage du tableau de données
             // TODO: remplacer les libellés par les i18n correspondants
             fiucParcelleData = [ [ 'Commune', result[0].cgocommune ], 
@@ -101,7 +101,6 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
 
             // Chargement des données
             fiucParcelleStore.loadData(fiucParcelleData);
-            data: fiucParcelleData;
             cadastreTabPanel.activate(0);
         }
     });
@@ -294,7 +293,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC?parcelle=' + parcelleId + "&onglet=2",
             method: 'GET',
             success: function(response) {
-                var result = eval(response.responseText);
+                var result = Ext.decode(response.responseText);
 
                 Ext.each(result, function(element, index) {
                     

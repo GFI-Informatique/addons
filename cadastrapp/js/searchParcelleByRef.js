@@ -385,7 +385,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                             url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
                                             params : params,
                                             success : function(result) {
-                                                var data = eval(result.responseText);
+                                                var data = Ext.decode(result.responseText);
                                                 GEOR.Addons.Cadastre.addNewDataResultParcelle(data);
                                             },
                                             failure : function(result) {
