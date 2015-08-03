@@ -464,8 +464,7 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
                             GEOR.Addons.Cadastre.tabs.activeTab.store.add(newRecord);
                         }
                     }
-                    if (selectRows) { // si les lignes doivent être
-                                        // selectionnées
+                    if (selectRows) { // si les lignes doivent être selectionnées
                         for (var i = 0; i < data.length; i++) {
                             id = data[i].parcelle;
                             rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(id);
