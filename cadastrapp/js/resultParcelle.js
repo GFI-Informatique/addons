@@ -34,24 +34,24 @@ GEOR.Addons.Cadastre.addVoidResultParcelle = function() {
  * @param result - Json result from ajax request
  */
 GEOR.Addons.Cadastre.addNewDataResultParcelle = function(result) {
-    var newRecord;
-    for (var i = 0; i < result.length; i++) {
-        if (GEOR.Addons.Cadastre.indexRowParcelle(result[i].parcelle) == -1) {
-        
-            // création de l'enregistrement
-            newRecord = new TopicRecord({
-                parcelle : result[i].parcelle,
-                adresse : (result[i].adresse) ? result[i].adresse : result[i].dnvoiri + result[i].dindic +' '+result[i].cconvo  +' ' + result[i].dvoilib,
-                cgocommune : result[i].cgocommune,
-                ccopre : result[i].ccopre,
-                ccosec : result[i].ccosec,
-                dnupla : result[i].dnupla,   
-                dcntpa : result[i].dcntpa
+    Ext.each(result, function(element, index) {
+        if (GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle) == -1) {
+           
+            var newRecord = new TopicRecord({
+                parcelle : element.parcelle,
+                adresse : (element.adresse) ? element.adresse : element.dnvoiri + element.dindic +' '+element.cconvo  +' ' + element.dvoilib,
+                cgocommune : element.cgocommune,
+                ccopre : element.ccopre,
+                ccosec : element.ccosec,
+                dnupla : element.dnupla,   
+                dcntpa : element.dcntpa
             });
             // ajout de la ligne
             GEOR.Addons.Cadastre.tabs.activeTab.store.add(newRecord);
+            // Ajout de la parcelle à la liste de feature sélectionner pour le zoom
+            GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.parcelle);
         }
-    }
+    });
 }
     
 /**
@@ -73,11 +73,8 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
     // lors du changement des onglets
     GEOR.Addons.Cadastre.tabs.addListener('beforetabchange', function(tab, newTab, currentTab) {
         var store;
-        if (currentTab) { // cad la table de resultats est
-            // ouverte et on navigue entre les
-            // onglets, sinon toute selection en
-            // bleue sur la carte va redevenir
-            // jaune
+        if (currentTab) { // cad la table de resultats est ouverte et on navigue entre les
+            // onglets, sinon toute selection en bleue sur la carte va redevenir jaune
             if (currentTab.store) {
                 store = currentTab.store.data.items;
                 // deselection des parcelles
@@ -125,8 +122,7 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
                 }
                 // on ferme la fenetre si c'est le dernier onglet
                 if (GEOR.Addons.Cadastre.tabs.items.length == 2) {
-                    // si il ne reste que cet onglet et l'onglet '+',
-                    // fermer la fenetre
+                    // si il ne reste que cet onglet et l'onglet '+', fermer la fenetre
                     GEOR.Addons.Cadastre.resultParcelleWindow.close();
                 } else {
                     // on selectionne manuellement le nouvel onglet à
