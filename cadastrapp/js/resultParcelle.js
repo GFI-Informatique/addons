@@ -31,6 +31,10 @@ GEOR.Addons.Cadastre.addVoidResultParcelle = function() {
 }
 
 /**
+ * public: method[addNewDataResultParcelle] 
+ * 
+ * Add result for webservice to resultParcelle Panel and to selected feature list
+ * 
  * @param result - Json result from ajax request
  */
 GEOR.Addons.Cadastre.addNewDataResultParcelle = function(result) {
