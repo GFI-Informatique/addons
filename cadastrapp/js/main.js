@@ -2,16 +2,16 @@ Ext.namespace("GEOR.Addons.Cadastre");
 
 GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
 
-    control : null,
+    control: null,
 
-    window : null,
+    window: null,
 
     /**
      * Method: init
      * 
      * @param: record - {Ext.data.record} a record with the addon parameters
      */
-    init : function(record) {
+    init: function(record) {
         
         // Get information for addons options
         GEOR.Addons.Cadastre.WFSLayerSetting = this.options.WFSLayerSetting;
@@ -22,9 +22,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         GEOR.Addons.Cadastre.cnil1RoleName = this.options.CNIL.cnil1RoleName;
         GEOR.Addons.Cadastre.cnil2RoleName = this.options.CNIL.cnil2RoleName;
         
-        // Init gobal variables
-        
-        
+        // Init gobal variables   
         GEOR.Addons.Cadastre.selectedFeatures = [];
         GEOR.Addons.Cadastre.selectLayer;
         GEOR.Addons.Cadastre.newGrid,tabs;
@@ -33,10 +31,10 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         GEOR.Addons.Cadastre.click;
         
         var cadastrapp = new GEOR.Addons.Cadastre.Menu({
-            map : this.map,
-            popupOptions : {
-                unpinnable : false,
-                draggable : true
+            map: this.map,
+            popupOptions: {
+                unpinnable: false,
+                draggable: true
             }
         });
 
@@ -47,60 +45,57 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         GEOR.Addons.Cadastre.addPopupOnhover(this.options.popup);
 
         this.window = new Ext.Window({
-            title : OpenLayers.i18n('cadastrapp.cadastre_tools'),
-            width : 540,
-            closable : true,
-            closeAction : "hide",
-            resizable : false,
-            border : false,
-            constrainHeader : true,
-
-            cls : 'cadastrapp',
-            items : [ {
-                xtype : 'toolbar',
-                border : false,
-                items : cadastrapp.actions
+            title: OpenLayers.i18n('cadastrapp.cadastre_tools'),
+            width: 540,
+            closable: true,
+            closeAction: "hide",
+            resizable: false,
+            border: false,
+            constrainHeader: true,
+            cls: 'cadastrapp',
+            items: [ {
+                xtype: 'toolbar',
+                border: false,
+                items: cadastrapp.actions
             } ],
-            listeners : {
-                "hide" : function() {
+            listeners: {
+                "hide": function() {
                     this.item && this.item.setChecked(false);
                     this.components && this.components.toggle(false);
                 },
-                scope : this
+                scope: this
             }
         });
-
 
         if (this.target) {
             // create a button to be inserted in toolbar:
             this.components = this.target.insertButton(this.position, {
-                xtype : 'button',
-                tooltip : this.getTooltip(record),
-                iconCls : "addon-cadastrapp",
-                handler : this._onCheckchange,
-                scope : this
+                xtype: 'button',
+                tooltip: this.getTooltip(record),
+                iconCls: "addon-cadastrapp",
+                handler: this._onCheckchange,
+                scope: this
             });
             this.target.doLayout();
         } else {
             // create a menu item for the "tools" menu:
             this.item = new Ext.menu.CheckItem({
-                text : this.getText(record),
-                qtip : this.getQtip(record),
-                iconCls : "addon-cadastrapp",
-                checked : false,
-                listeners : {
-                    "checkchange" : this._onCheckchange,
-                    scope : this
+                text: this.getText(record),
+                qtip: this.getQtip(record),
+                iconCls: "addon-cadastrapp",
+                checked: false,
+                listeners: {
+                    "checkchange": this._onCheckchange,
+                    scope: this
                 }
             });
         }
-
     },
 
     /**
      * Method: _onCheckchange Callback on checkbox state changed
      */
-    _onCheckchange : function(item, checked) {
+    _onCheckchange: function(item, checked) {
         if (checked) {
             this.window.show();
             this.window.alignTo(Ext.get(this.map.div), "t-t", [ 0, 5 ], true);
@@ -112,11 +107,10 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
     /**
      * Method: destroy Called by GEOR_tools when deselecting this addon
      */
-    destroy : function() {
+    destroy: function() {
         this.window.hide();
         this.control = null;
-
         GEOR.Addons.Base.prototype.destroy.call(this);
     }
-
+    
 });
