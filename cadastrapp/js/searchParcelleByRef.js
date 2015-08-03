@@ -264,8 +264,8 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         store : parcBisStore
                     }, {
                         // Add auto completion on dvoilib using getVoie service
-                        hiddenName :'dvoilib',
-                        xtype : 'combo',
+                        hiddenName:'dvoilib',
+                        xtype: 'combo',
                         width: 190,
                         mode: 'local',
                         value: '',
@@ -281,15 +281,15 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                             }),
                             fields: ['dvoilib']
                         }),
-                        listeners : {
-                            beforequery : function(q) {
+                        listeners: {
+                            beforequery: function(q) {
                                 if (q.query) {
                                     var length = q.query.length;
                                     if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
                                         q.combo.getStore().load({
-                                            params : {
-                                                cgocommune : GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].getActiveTab().getForm().findField('cgocommune').value,
-                                                dvoilib : q.query
+                                            params: {
+                                                cgocommune: GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].getActiveTab().getForm().findField('cgocommune').value,
+                                                dvoilib: q.query
                                             }
                                         });
                                     }
@@ -302,16 +302,16 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         }
                     }]
                 }, {
-                    value : OpenLayers.i18n('cadastrapp.parcelle.street.exemple'),
+                    value: OpenLayers.i18n('cadastrapp.parcelle.street.exemple'),
                     fieldClass : 'displayfieldGray'
                 }, {
-                    xtype : 'textfield',
-                    fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.town'),
-                    name : 'town',
-                    width : 300
+                    xtype: 'textfield',
+                    fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.town'),
+                    name: 'town',
+                    width: 300
                 }, {
-                    value : OpenLayers.i18n('cadastrapp.parcelle.town.exemple'),
-                    fieldClass : 'displayfieldGray'
+                    value: OpenLayers.i18n('cadastrapp.parcelle.town.exemple'),
+                    fieldClass: 'displayfieldGray'
                 } ]
             }, {
 
