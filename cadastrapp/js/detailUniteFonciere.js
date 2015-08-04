@@ -30,7 +30,13 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
             name: 'adresse',
             convert: function(v, rec) {
                 return rec.dnvoiri + rec.dindic + rec.cconvo + rec.dvoilib
-            } }]
+            } }],
+        listeners : {
+            'beforeload': function(){
+                Ext.getCmp('selectParcelleButton').enable();
+            }
+        }
+           
     });
 
     // ArrayStore to display information on vertical panel
@@ -208,20 +214,25 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
                 var index = GEOR.Addons.Cadastre.newGrid.idParcellesFOuvertes.indexOf(parcelleId);
                 GEOR.Addons.Cadastre.newGrid.idParcellesFOuvertes.splice(index, 1);
                 GEOR.Addons.Cadastre.newGrid.fichesFOuvertes.splice(index, 1);
-                var feature = getFeatureById(parcelleId);
+                var feature = GEOR.Addons.Cadastre.getFeatureById(parcelleId);
                 if (feature){
-                    changeStateFeature(feature, -1, "yellow");
+                    GEOR.Addons.Cadastre.changeStateFeature(feature, -1, "yellow");
                 } 
-                closeWindowFIUC(parcelleId, GEOR.Addons.Cadastre.newGrid); // on ferme la fenêtre
+                GEOR.Addons.Cadastre.closeWindowFIUC(parcelleId, GEOR.Addons.Cadastre.newGrid); // on ferme la fenêtre
                 // cadastrale si ouverte
                 windowFIUF = null;
             }
         },
         buttons: [ {
+            id: "selectParcelleButton",
             text: "Seletionner toutes les parcelles",
+            disabled: true,
             listeners: {
-                click: function(b, e) {
-                    windowFIUF.close();
+                click: function(b, e) {                   
+                    fiufParcelleListStore.each(function(record) {
+                        GEOR.Addons.Cadastre.getFeaturesWFSAttribute(record.data.parcelle);
+                    });
+                    GEOR.Addons.Cadastre.zoomToSelectedFeatures();
                 }
             }
         } ]
