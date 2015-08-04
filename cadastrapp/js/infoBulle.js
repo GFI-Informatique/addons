@@ -52,7 +52,7 @@ GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
                                 if(currentIndex==4){
                                     html = html + "<div>...  </div>";
                                 }else{
-                                    html = html + "<div>"+ result.proprietaires[i].ddenom +"</div>";
+                                    html = html + "<div>"+ proprietaire.ddenom +"</div>";
                                 }                   
                             });
                         }
