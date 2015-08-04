@@ -281,7 +281,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
         // Modèle de donnée pour l'onglet batiment
         var fiucBatimentsStore = new Ext.data.JsonStore({
             proxy: new Ext.data.HttpProxy({
-                url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getFIC/batiments',
+                url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getBatiments',
                 autoLoad: false,
                 method: 'GET'
             }),
