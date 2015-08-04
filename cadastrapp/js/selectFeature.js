@@ -1,5 +1,10 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
+
+GEOR.Addons.Cadastre.selection=[];
+GEOR.Addons.Cadastre.selection.state1 = "yellow";
+GEOR.Addons.Cadastre.selection.state2 = "blue";
+
 //structure de l'enregistrement pour ajouter des lignes dans un tableau de résultats
 // TODO change scope probably namespace
 var TopicRecord = Ext.data.Record.create([
@@ -219,7 +224,6 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
             var idField = GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle; 
             var resultSelection;
            
-            // TODO remove this
             var getIndex = function(result, str) {
                 var index = -1;
                 Ext.each(result, function(element, currentIndex){
@@ -404,7 +408,7 @@ GEOR.Addons.Cadastre.indexRowParcelle = function(idParcelle) {
 /**
  * Method: showTabSelection
  * 
- * Affiche le tabelau de résultat ou le met à jour
+ * Affiche le tableau de résultat ou le met à jour
  * 
  * @param: parcelsIds
  * @param: selectRows
@@ -435,6 +439,7 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
                 if (!GEOR.Addons.Cadastre.tabs || !GEOR.Addons.Cadastre.tabs.activeTab) { 
                    
                     GEOR.Addons.Cadastre.addNewResultParcelle("result selection (" + parcelsIds.length + ")", GEOR.Addons.Cadastre.getResultParcelleStore(response.responseText, false));
+                    
                     GEOR.Addons.Cadastre.newGrid.on('viewready', function(view, firstRow, lastRow) {
                         if (selectRows) {
                             Ext.each(result, function(element, currentIndex){
@@ -447,12 +452,11 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
                     });
                  // si la fenêtre est ouverte on ajoute les lignes
                 } else { 
-                    var newRecord;
                     Ext.each(result, function(element, currentIndex){
                         if (GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle) == -1) {
                             
                             // création de l'enregistrement
-                            newRecord = new TopicRecord({
+                           var newRecord = new TopicRecord({
                                 parcelle : element.parcelle,
                                 adresse : (element.adresse) ? element.adresse : element.dnvoiri + element.dindic +' '+element.cconvo  +' ' + element.dvoilib,
                                 cgocommune : element.cgocommune,
@@ -463,6 +467,8 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
                             });
                             // ajout de la ligne
                             GEOR.Addons.Cadastre.tabs.activeTab.store.add(newRecord);
+                            // Ajout à la selection
+                            GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.parcelle);
                         }
                     });
                     if (selectRows) { // si les lignes doivent être selectionnées
@@ -535,16 +541,19 @@ GEOR.Addons.Cadastre.getFeaturesWFSAttribute = function(idParcelle) {
  * @return feature with id parcell = idParcelle
  */
 GEOR.Addons.Cadastre.getFeatureById = function(idParcelle) {
-
+  
     var idField = GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle;
-    
+    var feature;
+
     Ext.each(GEOR.Addons.Cadastre.selectedFeatures, function(selectedFeature, currentIndex){
         if (selectedFeature.attributes[idField] == idParcelle){
-            return selectedFeature;
+            feature= selectedFeature;
+            return false;
         }
     });
-    return null;
+    return feature;
 }
+
 
 
 /**
@@ -586,11 +595,11 @@ GEOR.Addons.Cadastre.changeStateFeature = function(feature, index, typeSelector)
             state = "1";
         }
         break;
-    case "blue":
+    case GEOR.Addons.Cadastre.selection.state2:
         state = "2";
         GEOR.Addons.Cadastre.click.activate();
         break;
-    case "yellow":
+    case GEOR.Addons.Cadastre.selection.state1:
     case "searchSelector":
         state = "1";
         break;
@@ -646,7 +655,7 @@ GEOR.Addons.Cadastre.selectFeatureIntersection = function(feature) {
             coords += " " + component.x + "," + component.y;
         });
     }
-    GEOR.Addons.Cadastre.getFeaturesWFSSpatial(typeGeom, coords, "blue");
+    GEOR.Addons.Cadastre.getFeaturesWFSSpatial(typeGeom, coords, GEOR.Addons.Cadastre.selection.state2);
 }
 
 

@@ -216,7 +216,7 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
                 GEOR.Addons.Cadastre.newGrid.fichesFOuvertes.splice(index, 1);
                 var feature = GEOR.Addons.Cadastre.getFeatureById(parcelleId);
                 if (feature){
-                    GEOR.Addons.Cadastre.changeStateFeature(feature, -1, "yellow");
+                    GEOR.Addons.Cadastre.changeStateFeature(feature, -1, GEOR.Addons.Cadastre.selection.state1);
                 } 
                 GEOR.Addons.Cadastre.closeWindowFIUC(parcelleId, GEOR.Addons.Cadastre.newGrid); // on ferme la fenêtre
                 // cadastrale si ouverte

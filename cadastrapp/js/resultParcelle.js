@@ -52,7 +52,8 @@ GEOR.Addons.Cadastre.addNewDataResultParcelle = function(result) {
             });
             // ajout de la ligne
             GEOR.Addons.Cadastre.tabs.activeTab.store.add(newRecord);
-            // Ajout de la parcelle à la liste de feature sélectionner pour le zoom
+           
+            // Ajout de la parcelle à la liste de feature sélectionner pour le zoom et la sélection en jaune
             GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.parcelle);
         }
     });
@@ -89,10 +90,10 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
                 if (newTab.store) {
                     store = newTab.store.data.items;
                  // selection en jaune
-                    GEOR.Addons.Cadastre.changeStateParcelleOfTab(store, "yellow"); 
+                    GEOR.Addons.Cadastre.changeStateParcelleOfTab(store, GEOR.Addons.Cadastre.selection.state1); 
                     var selectedRows = newTab.getSelectionModel().selections.items;
                     // selection en bleue
-                    GEOR.Addons.Cadastre.changeStateParcelleOfTab(selectedRows, "blue"); 
+                    GEOR.Addons.Cadastre.changeStateParcelleOfTab(selectedRows, GEOR.Addons.Cadastre.selection.state2); 
                 }
             }
         }
@@ -115,15 +116,16 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
             deferEmptyText : false,
             emptyText : message
         },
-
         listeners : {
             close : function(grid) {
                 // on ferme toutes les fenetres filles : detail parcelle
-                for (var index = 0; index < grid.detailParcelles.length; index++) {
-                    if (grid.detailParcelles[index] != undefined) {
-                        grid.detailParcelles[index].close();
+                Ext.each(grid.detailParcelles, function(element, currentIndex)
+                {
+                    if(element){
+                        element.close()
                     }
-                }
+                });
+                 
                 // on ferme la fenetre si c'est le dernier onglet
                 if (GEOR.Addons.Cadastre.tabs.items.length == 2) {
                     // si il ne reste que cet onglet et l'onglet '+', fermer la fenetre
@@ -142,46 +144,39 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
                     GEOR.Addons.Cadastre.changeStateParcelleOfTab(store, "reset");
                     // *************
                 }
-
             },
         }
-
     });
     
+    // Listener sur les lignes de la newGrid
     GEOR.Addons.Cadastre.newGrid.addListener("rowclick", function(grid, rowIndex, e) {
-        // on parcourant le tableau de façon générique on gérera les cas de
-        // selection/deselection simple/multiple pour tout les cliques sue les
-        // lignes
+       
         var selection = grid.getSelectionModel();
-        var id, index, feature;
-        // on parcour toutes les lignes
-        for (var i = 0; i < grid.store.getCount(); i++) {
-            id = grid.store.getAt(i).data.parcelle;
-            feature = GEOR.Addons.Cadastre.getFeatureById(id);
-            if (selection.isSelected(i)) { // si ligne selectionnée
-                GEOR.Addons.Cadastre.openFoncierOrCadastre(id, grid);
-                if (feature) {
-                    GEOR.Addons.Cadastre.changeStateFeature(feature, -1, "blue");
-                }
-            } else {
-                GEOR.Addons.Cadastre.closeFoncierAndCadastre(id, grid);
-                if (feature) {
-                    GEOR.Addons.Cadastre.changeStateFeature(feature, -1, "yellow");
-                }
-
-            }
-
+        var parcelleId = grid.store.getAt(rowIndex).data.parcelle;
+        var feature = GEOR.Addons.Cadastre.getFeatureById(parcelleId);
+        var state = GEOR.Addons.Cadastre.selection.state1;
+        
+        // Si la fenêtre details cadastre ou foncier est déjà ouverte
+        if( grid.idParcellesCOuvertes.indexOf(parcelleId) != -1
+            || grid.idParcellesFOuvertes.indexOf(parcelleId) != -1){
+            GEOR.Addons.Cadastre.closeFoncierAndCadastre(parcelleId, grid);
         }
-
+        else{
+            GEOR.Addons.Cadastre.openFoncierOrCadastre(parcelleId, grid);
+            state = GEOR.Addons.Cadastre.selection.state2;
+        }
+        
+        // change selection color on map depending on state
+        if (feature) {
+            GEOR.Addons.Cadastre.changeStateFeature(feature, -1, state);
+        }
     });
 
     // lors d'une recherche de parcelle on envoie une requête attributtaire
-    // pour selectionner les parcelle
-    var parcelle;
-    for (var i = 0; i < GEOR.Addons.Cadastre.newGrid.getStore().totalLength; i++) {
-        parcelle = GEOR.Addons.Cadastre.newGrid.getStore().getAt(i);
-        GEOR.Addons.Cadastre.getFeaturesWFSAttribute(parcelle.data.parcelle);
-    }
+    // pour selectionner les parcelles
+    Ext.each(GEOR.Addons.Cadastre.newGrid.getStore(), function(element, currentIndex){
+        GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.data.parcelle);
+    });
 
     GEOR.Addons.Cadastre.tabs.insert(0, GEOR.Addons.Cadastre.newGrid);
     GEOR.Addons.Cadastre.tabs.setActiveTab(0);
@@ -196,16 +191,15 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
  * 
  */
 GEOR.Addons.Cadastre.changeStateParcelleOfTab = function(store, typeSelector) {
-    var id, index, feature;
-    for (var i = 0; i < store.length; i++) { // selection
-        id = store[i].data.parcelle;
-        feature = GEOR.Addons.Cadastre.getFeatureById(id);
+   
+    Ext.each(store, function(element, currentIndex){
+        var id = element.data.parcelle;
+        var feature = GEOR.Addons.Cadastre.getFeatureById(id);
         if (feature) {
-            index = GEOR.Addons.Cadastre.indexFeatureSelected(feature);
+            var index = GEOR.Addons.Cadastre.indexFeatureSelected(feature);
             GEOR.Addons.Cadastre.changeStateFeature(feature, index, typeSelector);
         }
-    }
-
+    });
 }
 
 /** en fonction des cases à cocher on ouvre la fenêtre cadastrale et/ou
@@ -216,8 +210,10 @@ GEOR.Addons.Cadastre.changeStateParcelleOfTab = function(store, typeSelector) {
  * 
  */
 GEOR.Addons.Cadastre.openFoncierOrCadastre = function(id, grid) {
+    
     cadastreExiste = (grid.idParcellesCOuvertes.indexOf(id) != -1)
     foncierExiste = (grid.idParcellesFOuvertes.indexOf(id) != -1)
+    
     if (GEOR.Addons.Cadastre.isFoncier() && GEOR.Addons.Cadastre.isCadastre()) {
         if (!foncierExiste) {
             grid.detailParcelles.push(GEOR.Addons.Cadastre.onClickDisplayFIUF(id));
