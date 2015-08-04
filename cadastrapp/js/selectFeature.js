@@ -1,6 +1,7 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
 //structure de l'enregistrement pour ajouter des lignes dans un tableau de résultats
+// TODO change scope probably namespace
 var TopicRecord = Ext.data.Record.create([
             {name: 'adresse', mapping: 'adresse'},
             {name: 'cgocommune', mapping: 'cgocommune'},
@@ -40,32 +41,39 @@ GEOR.Addons.Cadastre.createSelectionControl = function(style, selectedStyle) {
         context : {
             getFillColor : function(feature) {
                 var fill = selectedStyle.defautColor;
-                if (feature.state == "1")
+                if (feature.state == "1"){
                     fill = selectedStyle.colorSelected1;
-                if (feature.state == "2")
+                }
+                if (feature.state == "2"){
                     fill = selectedStyle.colorSelected2;
+                }
                 return fill;
             },
             getFillOpacity : function(feature) {
                 var opacity = 1;
-                if (!feature.state)
+                if (!feature.state){
                     opacity = 0;
-                if (feature.state == "1" || feature.state == "2")
+                }
+                if (feature.state == "1" || feature.state == "2"){
                     opacity = selectedStyle.opacity;
+                }
                 return opacity;
             },
             getStrokeColor : function(feature) {
                 var color = style.strokeColor;
-                if (feature.state == "1")
+                if (feature.state == "1"){
                     color = selectedStyle.colorSelected1;
-                if (feature.state == "2")
+                }
+                if (feature.state == "2"){
                     color = selectedStyle.colorSelected2;
+                }
                 return color;
             },
             getstrokeWidth : function(feature) {
                 var width = style.strokeWidth;
-                if (feature.state == "1" || feature.state == "2")
+                if (feature.state == "1" || feature.state == "2"){
                     width = selectedStyle.strokeWidth;
+                }
                 return width;
             },
         }
@@ -74,9 +82,7 @@ GEOR.Addons.Cadastre.createSelectionControl = function(style, selectedStyle) {
     // création de la couche des entités selectionnées
     GEOR.Addons.Cadastre.selectLayer = new OpenLayers.Layer.Vector("selection");
     GEOR.Addons.Cadastre.selectLayer.styleMap = styleFeatures;
-    // l'état de selection de chaque entité : null=non séléctionnée, 1=sélection
-    // jaune, 2 = sélection bleue
-    var state;
+   
     // ajout de la couche à la carte
     map.addLayer(GEOR.Addons.Cadastre.selectLayer);
     GEOR.Addons.Cadastre.selectLayer.setZIndex(1001);
@@ -102,7 +108,6 @@ GEOR.Addons.Cadastre.createSelectionControl = function(style, selectedStyle) {
             lonlat = map.getLonLatFromPixel(e.xy);
             GEOR.Addons.Cadastre.getFeaturesWFSSpatial("Point", lonlat.lon + "," + lonlat.lat, "clickSelector");
         }
-
     });
     
     // TODO check this part
@@ -183,9 +188,8 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
     
     var filter;
     var selectRows = false; // ligne dans le resultat de recherche doit être sélectionnée si etat =2
-    var polygoneElements = "", endPolygoneElements = "";
-    var wfsUrl = GEOR.Addons.Cadastre.WFSLayerSetting.wfsUrl;
-    var featureJson = "";
+    var polygoneElements = "";
+    var endPolygoneElements = "";
 
     if (typeGeom == "Polygon") {
         polygoneElements = "<gml:outerBoundaryIs><gml:LinearRing>";
@@ -195,42 +199,42 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
     filter = '<Filter xmlns:gml="http://www.opengis.net/gml"><Intersects><PropertyName>' + GEOR.Addons.Cadastre.WFSLayerSetting.geometryField + '</PropertyName><gml:' + typeGeom + '>' + polygoneElements + '<gml:coordinates>' + coords + '</gml:coordinates>' + endPolygoneElements + '</gml:' + typeGeom + '></Intersects></Filter>';
    
     Ext.Ajax.request({
-        async : false,
-        url : wfsUrl,
-        method : 'GET',
-        headers : {
+        async: false,
+        url: GEOR.Addons.Cadastre.WFSLayerSetting.wfsUrl,
+        method: 'GET',
+        headers: {
             'Content-Type' : 'application/json'
         },
         params : {
-            "request" : GEOR.Addons.Cadastre.WFSLayerSetting.request,
-            "version" : GEOR.Addons.Cadastre.WFSLayerSetting.version,
-            "service" : GEOR.Addons.Cadastre.WFSLayerSetting.service,
-            "typename" : GEOR.Addons.Cadastre.WFSLayerSetting.typename,
-            "outputFormat" : GEOR.Addons.Cadastre.WFSLayerSetting.outputFormat,
-            "filter" : filter
+            "request": GEOR.Addons.Cadastre.WFSLayerSetting.request,
+            "version": GEOR.Addons.Cadastre.WFSLayerSetting.version,
+            "service": GEOR.Addons.Cadastre.WFSLayerSetting.service,
+            "typename": GEOR.Addons.Cadastre.WFSLayerSetting.typename,
+            "outputFormat": GEOR.Addons.Cadastre.WFSLayerSetting.outputFormat,
+            "filter": filter
         },
-        success : function(response) {
+        success: function(response) {
 
             // champ identifiant de parcelle dans geoserver
             var idField = GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle; 
-            var result, resultSelection, geojson_format;
-            
+            var resultSelection;
+           
+            // TODO remove this
             var getIndex = function(result, str) {
-                var exist = false;
-                for (j = 0; j < result.length && !exist; j++) {
-                    if (result[j].attributes[idField] == str) {
-                        exist = true;
-                        if (exist)
-                            return j;
+                var index = -1;
+                Ext.each(result, function(element, currentIndex){
+                    if (element.attributes[idField] == str){
+                        index = currentIndex;
+                        return false;  // this breaks out of the 'each' loop
                     }
-                }
-                return -1;
+                });           
+                return index;
             }
-            featureJson = response.responseText;
-            geojson_format = new OpenLayers.Format.GeoJSON();
+            
+            var geojson_format = new OpenLayers.Format.GeoJSON();
            
             // dans cette variable on peut avoir plusieurs résultat pour la même parcelle
-            result = geojson_format.read(featureJson);
+            var result = geojson_format.read(response.responseText);
            
             // !! récupère de façon unique les parcelles résultat
             resultSelection = result.filter(function(itm, i, result) {
@@ -242,29 +246,29 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                 var feature, state;
                 var parcelsIds = [], codComm = null;
                 
-                for (var i = 0; i < resultSelection.length; i++) {
-                    feature = resultSelection[i];
+                Ext.each(resultSelection, function(feature, currentIndexI){
                     if (feature) {
                         var exist = false;
-                        var j = -1;
+                        index = -1;
 
                         // on teste si l'entité est déja selectionnée
-                        for (j = 0; j < GEOR.Addons.Cadastre.selectedFeatures.length && !exist; j++) {
-
-                            if (GEOR.Addons.Cadastre.selectedFeatures[j].fid == feature.fid) { 
+                        Ext.each(GEOR.Addons.Cadastre.selectedFeatures, function(selectedFeature, currentIndexJ){
+                            if (selectedFeature.fid == feature.fid) { 
                                 exist = true;
-                                if (exist) {
-                                    feature = GEOR.Addons.Cadastre.selectedFeatures[j];
-                                }
+                                feature = selectedFeature;
+                                index = currentIndexJ;
+                                return false;  // this breaks out of the 'each' loop
                             }
-                        }
+                        });
+                        
                         // on l'ajoute à la selection si elle n'est pas trouvée
                         if (!exist) {
                             GEOR.Addons.Cadastre.selectLayer.addFeatures(feature);
                             GEOR.Addons.Cadastre.selectedFeatures.push(feature);
                         }
+                        
                         // on met à jour son état
-                        state = GEOR.Addons.Cadastre.changeStateFeature(feature, j - 1, typeSelector);
+                        state = GEOR.Addons.Cadastre.changeStateFeature(feature, index - 1, typeSelector);
                         var id = feature.attributes[idField];
                         
                         // si la parcelle est selectionnée on récupère son id
@@ -278,7 +282,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                             GEOR.Addons.Cadastre.closeWindowFIUF(id, GEOR.Addons.Cadastre.newGrid);
                         }
                     }
-                }
+                });
                 if (state == "2") {
                     selectRows = true;
                 }
@@ -312,19 +316,16 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
 GEOR.Addons.Cadastre.indexFeatureSelected = function(feature) {
 
     var idField = GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle;
-    var exist = false;
+    var index = -1;
     
-    for (j = 0; j < GEOR.Addons.Cadastre.selectedFeatures.length && !exist; j++) {
-        if (GEOR.Addons.Cadastre.selectedFeatures[j].attributes[idField] == feature.attributes[idField]) {
-            exist = true;
-            if (exist){
-                return j;
-            }
+    Ext.each(GEOR.Addons.Cadastre.selectedFeatures, function(selectedFeature, currentIndex){
+        if (selectedFeature.attributes[idField] == feature.attributes[idField]){
+            index = currentIndex;
+            return false;  // this breaks out of the 'each' loop
         }
-    }
-    return -1;
+    });
+    return index;
 }
-
 
 
 /**
@@ -354,8 +355,9 @@ GEOR.Addons.Cadastre.closeWindowFIUC = function(idParcelle, grid) {
 GEOR.Addons.Cadastre.closeWindowFIUF = function(idParcelle, grid) {
     var index = grid.idParcellesFOuvertes.indexOf(idParcelle);
     var ficheCourante = grid.fichesFOuvertes[index];
-    if (ficheCourante)
+    if (ficheCourante){
         ficheCourante.close();
+    }
 }
 
 /**
@@ -365,9 +367,9 @@ GEOR.Addons.Cadastre.closeWindowFIUF = function(idParcelle, grid) {
  * 
  */
 GEOR.Addons.Cadastre.closeAllWindowFIUC = function() {
-    for (var j = GEOR.Addons.Cadastre.newGrid.fichesCOuvertes.length - 1; j >= 0; j--) {
-        GEOR.Addons.Cadastre.newGrid.fichesCOuvertes[j].close();
-    }
+    Ext.each(GEOR.Addons.Cadastre.newGrid.fichesCOuvertes, function(ficheCadastreOuverte, currentIndex){
+        ficheCadastreOuverte.close();
+    });
     GEOR.Addons.Cadastre.newGrid.fichesCOuvertes = [];
     GEOR.Addons.Cadastre.newGrid.idParcellesCOuvertes = [];
 }
@@ -379,9 +381,9 @@ GEOR.Addons.Cadastre.closeAllWindowFIUC = function() {
  * 
  */
 GEOR.Addons.Cadastre.closeAllWindowFIUF = function() {
-    for (var j = GEOR.Addons.Cadastre.newGrid.fichesFOuvertes.length - 1; j >= 0; j--) {
-        GEOR.Addons.Cadastre.newGrid.fichesFOuvertes[j].close();
-    }
+    Ext.each(GEOR.Addons.Cadastre.newGrid.fichesFOuvertes, function(fichesFOuverte, currentIndex){
+        fichesFOuverte.close();
+    });
     GEOR.Addons.Cadastre.newGrid.fichesFOuvertes = [];
     GEOR.Addons.Cadastre.newGrid.idParcellesFOuvertes = [];
 }
@@ -415,9 +417,9 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
         // paramètres pour le getParcelle
         var params = {};
         params.parcelle = new Array();
-        for (var i = 0; i < parcelsIds.length; i++){
-            params.parcelle.push(parcelsIds[i]);
-        }
+        Ext.each(parcelsIds, function(parcelleId, currentIndex){
+            params.parcelle.push(parcelleId);
+        });
         
         // envoi la liste de resultat
         Ext.Ajax.request({
@@ -426,8 +428,8 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
             params : params,
             success : function(response) {
                 
-                var data = Ext.decode(response.responseText);
-                var id, rowIndex;
+                var result = Ext.decode(response.responseText);
+                var rowIndex;
                 
                 // si la fenetre de recherche n'est pas ouverte
                 if (!GEOR.Addons.Cadastre.tabs || !GEOR.Addons.Cadastre.tabs.activeTab) { 
@@ -435,42 +437,40 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
                     GEOR.Addons.Cadastre.addNewResultParcelle("result selection (" + parcelsIds.length + ")", GEOR.Addons.Cadastre.getResultParcelleStore(response.responseText, false));
                     GEOR.Addons.Cadastre.newGrid.on('viewready', function(view, firstRow, lastRow) {
                         if (selectRows) {
-                            for (var i = 0; i < data.length; i++) {
-                                id = data[i].parcelle;
-                                rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(id);
+                            Ext.each(result, function(element, currentIndex){
+                                rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle);
                                 GEOR.Addons.Cadastre.newGrid.getSelectionModel().selectRow(rowIndex, true);
-                                GEOR.Addons.Cadastre.openFoncierOrCadastre(id, GEOR.Addons.Cadastre.newGrid);
+                                GEOR.Addons.Cadastre.openFoncierOrCadastre(element.parcelle, GEOR.Addons.Cadastre.newGrid);
 
-                            }
+                            });
                         }
                     });
                  // si la fenêtre est ouverte on ajoute les lignes
                 } else { 
                     var newRecord;
-                    for (var i = 0; i < data.length; i++) {
-                        if (GEOR.Addons.Cadastre.indexRowParcelle(data[i].parcelle) == -1) {
+                    Ext.each(result, function(element, currentIndex){
+                        if (GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle) == -1) {
                             
                             // création de l'enregistrement
                             newRecord = new TopicRecord({
-                                parcelle : data[i].parcelle,
-                                adresse : (data[i].adresse) ? data[i].adresse : data[i].dnvoiri + data[i].dindic +' '+data[i].cconvo  +' ' + data[i].dvoilib,
-                                cgocommune : data[i].cgocommune,
-                                ccopre : data[i].ccopre,
-                                ccosec : data[i].ccosec,
-                                dnupla : data[i].dnupla,   
-                                dcntpa : data[i].dcntpa,
+                                parcelle : element.parcelle,
+                                adresse : (element.adresse) ? element.adresse : element.dnvoiri + element.dindic +' '+element.cconvo  +' ' + element.dvoilib,
+                                cgocommune : element.cgocommune,
+                                ccopre : element.ccopre,
+                                ccosec : element.ccosec,
+                                dnupla : element.dnupla,   
+                                dcntpa : element.dcntpa,
                             });
                             // ajout de la ligne
                             GEOR.Addons.Cadastre.tabs.activeTab.store.add(newRecord);
                         }
-                    }
+                    });
                     if (selectRows) { // si les lignes doivent être selectionnées
-                        for (var i = 0; i < data.length; i++) {
-                            id = data[i].parcelle;
-                            rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(id);
+                        Ext.each(result, function(element, currentIndex){
+                            rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle);
                             GEOR.Addons.Cadastre.newGrid.getSelectionModel().selectRow(rowIndex, true);
-                            GEOR.Addons.Cadastre.openFoncierOrCadastre(id, GEOR.Addons.Cadastre.newGrid);
-                        }
+                            GEOR.Addons.Cadastre.openFoncierOrCadastre(element.parcelle, GEOR.Addons.Cadastre.newGrid);
+                        });
                     }
                 }
             },
@@ -491,11 +491,10 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
 GEOR.Addons.Cadastre.getFeaturesWFSAttribute = function(idParcelle) {
 
     var filter = "" + GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle + "='" + idParcelle + "'";
-    var wfsUrl = GEOR.Addons.Cadastre.WFSLayerSetting.wfsUrl;
     var featureJson = "";
     
     Ext.Ajax.request({
-        url : wfsUrl,
+        url : GEOR.Addons.Cadastre.WFSLayerSetting.wfsUrl,
         method : 'GET',
         headers : {
             'Content-Type' : 'application/json'
@@ -539,11 +538,11 @@ GEOR.Addons.Cadastre.getFeatureById = function(idParcelle) {
 
     var idField = GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle;
     
-    for (var i = 0; i < GEOR.Addons.Cadastre.selectedFeatures.length; i++) {
-        if (GEOR.Addons.Cadastre.selectedFeatures[i].attributes[idField] == idParcelle){
-            return GEOR.Addons.Cadastre.selectedFeatures[i];
+    Ext.each(GEOR.Addons.Cadastre.selectedFeatures, function(selectedFeature, currentIndex){
+        if (selectedFeature.attributes[idField] == idParcelle){
+            return selectedFeature;
         }
-    }
+    });
     return null;
 }
 
@@ -643,9 +642,9 @@ GEOR.Addons.Cadastre.selectFeatureIntersection = function(feature) {
         if (typeGeom == "Polygon")
             components = components[0].components;
         coords = components[0].x + "," + components[0].y;
-        for (var i = 1; i < components.length; i++) {
-            coords += " " + components[i].x + "," + components[i].y;
-        }
+        Ext.each(components, function(component, currentIndex){
+            coords += " " + component.x + "," + component.y;
+        });
     }
     GEOR.Addons.Cadastre.getFeaturesWFSSpatial(typeGeom, coords, "blue");
 }
@@ -680,12 +679,12 @@ GEOR.Addons.Cadastre.zoomToSelectedFeatures = function() {
         var minBottom = GEOR.Addons.Cadastre.selectedFeatures[0].geometry.bounds.bottom;
         var maxTop = GEOR.Addons.Cadastre.selectedFeatures[0].geometry.bounds.top;
         // on calcule l'enveloppe maximale des entités de la couche slection
-        for (i = 0; i < GEOR.Addons.Cadastre.selectedFeatures.length; i++) {
-            minLeft = Math.min(minLeft, GEOR.Addons.Cadastre.selectedFeatures[i].geometry.bounds.left)
-            maxRight = Math.max(maxRight, GEOR.Addons.Cadastre.selectedFeatures[i].geometry.bounds.right)
-            minBottom = Math.min(minBottom, GEOR.Addons.Cadastre.selectedFeatures[i].geometry.bounds.bottom)
-            maxTop = Math.max(maxTop, GEOR.Addons.Cadastre.selectedFeatures[i].geometry.bounds.top)
-        }
+        Ext.each(GEOR.Addons.Cadastre.selectedFeatures, function(selectedFeature, currentIndex){
+            minLeft = Math.min(minLeft, selectedFeature.geometry.bounds.left)
+            maxRight = Math.max(maxRight, selectedFeature.geometry.bounds.right)
+            minBottom = Math.min(minBottom, selectedFeature.geometry.bounds.bottom)
+            maxTop = Math.max(maxTop, selectedFeature.geometry.bounds.top)
+        });
         var map = GeoExt.MapPanel.guess().map;
         map.zoomToExtent([ minLeft, minBottom, maxRight, maxTop ]); //zoom sur l'emprise
     } else{
