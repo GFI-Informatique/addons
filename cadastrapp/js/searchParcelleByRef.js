@@ -177,7 +177,6 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         parcelle: ''
                     }); // create new record
                     e.grid.store.add(p); 
-                    e.grid.startEditing(e.row+1, 0);
                 }
             },
             change : function(combo, newValue, oldValue) {
