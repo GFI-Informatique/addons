@@ -238,14 +238,11 @@
 			"cadastrapp.duc.batiment_revenu" : "Revenu",
 			"cadastrapp.duc.batiment_descriptif" : "Descriptif",
 
-			
-			
 			"cadastrapp.duc.lettreindic" : "Lettre indicative",
 			"cadastrapp.duc.contenance" : "Contenance",
 			"cadastrapp.duc.terrain" : "Nature de culture",
 			"cadastrapp.duc.revenu" : "Revenu au 01-01",
 
-			
 			"cadastrapp.duc.dateacte" : "Date acte",
 			"cadastrapp.duc.reference_parcelle" : "Référence de la parcelle mère",
 			"cadastrapp.duc.type_mutation" : "Type de mutation",		
