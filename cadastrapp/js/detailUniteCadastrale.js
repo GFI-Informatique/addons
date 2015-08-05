@@ -123,20 +123,34 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             width: 300
         } ],
         // inline toolbars
-        tbar:[{
-            text:OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'),
-            tooltip:'Création du bordereau parcellaire',
-            iconCls:'small-pdf-button',
-            handler: function() {
-                Ext.Ajax.request({
-                    url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createBordereauParcellaire?parcelle=' + parcelleId,
-                    failure : function() {
-                        alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'))
-                    },
-                    params: {}
-                });
-            }
-        }],       
+        tbar: new Ext.Toolbar({
+                items: [
+                {
+                    xtype:'button',
+                    width: 30,
+                    iconCls:'small-pdf-button',
+                    handler: function() {
+                        Ext.Ajax.request({
+                            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createBordereauParcellaire?parcelle=' + parcelleId,
+                            failure : function() {
+                                alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'))
+                            },
+                            params: {}
+                        });
+                    }
+                },{
+                    text:OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'),   
+                    handler: function() {
+                        Ext.Ajax.request({
+                            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createBordereauParcellaire?parcelle=' + parcelleId,
+                            failure : function() {
+                                alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'))
+                            },
+                            params: {}
+                        });
+                     }
+                }]
+            })  
     });
     
     cadastreTabPanel.add({
@@ -220,8 +234,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 }, {
                     header: OpenLayers.i18n('cadastrapp.duc.prenomcpl'),
                     dataIndex: 'dprncp',
-                    width: 100
-                        
+                    width: 100                   
                 }, {
                     header: OpenLayers.i18n('cadastrapp.duc.adresse'),
                     dataIndex: 'adress',
@@ -242,19 +255,19 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             }),
             // inline toolbars
             tbar:[{
-                text:OpenLayers.i18n('cadastrapp.duc.releve.depropriete'),
-                tooltip:'Création du releve de propriete',
-                iconCls:'small-pdf-button',
-                handler: function() {
-                    Ext.Ajax.request({
-                        url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createRelevePropriete?parcelle=' + parcelleId,
-                        failure: function() {
-                            alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.releve.depropriete'))
-                        },
-                        params: {}
-                    });
-                }
-            }]
+                    iconCls:'small-pdf-button',
+                    handler: function() {
+                        Ext.Ajax.request({
+                            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createRelevePropriete?parcelle=' + parcelleId,
+                            failure: function() {
+                                alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.releve.depropriete'))
+                            },
+                            params: {}
+                        });
+                    }
+                }, {
+                    text:OpenLayers.i18n('cadastrapp.duc.releve.depropriete')                 
+                }]
         });
 
         cadastreTabPanel.add({
