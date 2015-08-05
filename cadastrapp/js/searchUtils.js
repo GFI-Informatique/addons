@@ -140,7 +140,6 @@ GEOR.Addons.Cadastre.getVoidRefStore = function() {
     });		
 }
 
-
 /**
  * 
  */
