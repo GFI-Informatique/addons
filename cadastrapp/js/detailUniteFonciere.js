@@ -237,7 +237,7 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
             border: true,
         });
         
-        upCompositeField.add(fiufProprietaireGrid);
+        upCompositeField.items.add(fiufProprietaireGrid);
     }
     
     GEOR.Addons.Cadastre.newGrid.fichesFOuvertes.push(windowFIUF);
