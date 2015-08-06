@@ -130,24 +130,12 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     width: 30,
                     iconCls:'small-pdf-button',
                     handler: function() {
-                        Ext.Ajax.request({
-                            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createBordereauParcellaire?parcelle=' + parcelleId,
-                            failure : function() {
-                                alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'))
-                            },
-                            params: {}
-                        });
+                        loadbordereauParcellaire();
                     }
                 },{
                     text:OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'),   
                     handler: function() {
-                        Ext.Ajax.request({
-                            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createBordereauParcellaire?parcelle=' + parcelleId,
-                            failure : function() {
-                                alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'))
-                            },
-                            params: {}
-                        });
+                        loadbordereauParcellaire();
                      }
                 }]
             })  
@@ -337,8 +325,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                                     'dnubat': element.dnubat, 'parcelle': parcelleId
                                 }
                             });
-                        }
-                        
+                        }                       
                         buttonToolBar.add(buttonBatiment);
                         buttonToolBar.doLayout();
                     }
@@ -348,15 +335,13 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 });       
             }
         });
-
-        //TODO check buttonBatimentList size to display message NO BAT !
-        
+       
         // Déclaration du tableau
         var fiucBatimentsGrid = new Ext.grid.GridPanel({
             store: fiucBatimentsStore,
             stateful: true,
             name: 'Fiuc_Batiments',
-            xtype: 'editorgrid',
+            xtype: 'gridview',
             autoExpandMax:825,
             height: 280,
             autoScroll: true,
@@ -416,32 +401,25 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             }),
             // inline toolbars
             tbar:[{
-                text:OpenLayers.i18n('cadastrapp.duc.releve.depropriete'),
-                tooltip:'Création du releve de propriete',
                 iconCls:'small-pdf-button',
                 handler: function() {
-                    Ext.Ajax.request({
-                        url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createRelevePropriete?parcelle=' + parcelleId,
-                        failure: function() {
-                            alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.releve.depropriete'))
-                        },
-                        params: {}
-                    });
+                    loadRelevePropriete(parcelleId);
                 }
-                }, '-', {
-                text: OpenLayers.i18n('cadastrapp.duc.batiment_descriptif'),
-                tooltip: 'Détails',
+            }, {
+                text:OpenLayers.i18n('cadastrapp.duc.releve.depropriete'),
+                handler: function() {
+                    loadRelevePropriete(parcelleId);
+                }
+            }, {
                 iconCls: 'house-button',
                 handler: function() {
-                    //TODO change this by a new panel creation
-                    Ext.Ajax.request({
-                        url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getHabitationDetails?invar=' + invar,
-                        failure: function() {
-                            alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.batiment_descriptif'))
-                        },
-                        params: {}
-                    });
+                    GEOR.Addons.Cadastre.showHabitationDetails('A', '01', '01001', '2004', '1030295808');
                 }
+             },{
+                 text: OpenLayers.i18n('cadastrapp.duc.batiment_descriptif'),
+                 handler: function() {
+                     GEOR.Addons.Cadastre.showHabitationDetails('A', '01', '01001', '2004', '1030295808');
+                 }
              }]
         });
 
@@ -616,8 +594,20 @@ function getSelectedBatiment() {
  * 
  */
 function loadbordereauParcellaire() {
+    console.log("download bordereau function");
+}
 
-    // console.log("download bordereau function");
-    // TODO
-    // onClickPrintBordereauParcellaireWindow(parcelleId);
+/**
+ * 
+ */
+function loadRelevePropriete(parcelleId) {
+    console.log("download bordereau function");
+    
+//    Ext.Ajax.request({
+//        url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createRelevePropriete?parcelle=' + parcelleId,
+//        failure: function() {
+//            alert("Erreur lors de la création du " + OpenLayers.i18n('cadastrapp.duc.releve.depropriete'))
+//        },
+//        params: {}
+//    });
 }

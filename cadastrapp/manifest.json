@@ -8,6 +8,7 @@
 		"js/searchParcelleByRef.js",
 		"js/askInformations.js",
 		"js/detailUniteFonciere.js",
+		"js/habitationDetails.js",
 		"js/detailUniteCadastrale.js",
 		"js/infoBulle.js",
         "js/menu.js",
