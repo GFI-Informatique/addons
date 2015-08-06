@@ -16,7 +16,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         // Get information for addons options
         GEOR.Addons.Cadastre.WFSLayerSetting = this.options.WFSLayerSetting;
         
-        GEOR.Addons.Cadastre.cadastrappWebappUrl = this.options.webapp.url;
+        GEOR.Addons.Cadastre.cadastrappWebappUrl = this.options.webapp.url+"services/";
         GEOR.Addons.Cadastre.minCharToSearch = this.options.webapp.minCharToSearch;
         
         GEOR.Addons.Cadastre.cnil1RoleName = this.options.CNIL.cnil1RoleName;
