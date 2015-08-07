@@ -14,7 +14,27 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
     
     var windowFIUF, parcelleGrid;
     
-    // ---------- For All user
+   
+    // ArrayStore to display information on vertical panel
+    var fiufGlobalInfosStore = new Ext.data.ArrayStore({
+        fields: [ {
+            name: 'uniteFonciere'
+        }, {
+            name: 'surface',
+            type: 'float'
+        }, ]
+    });
+
+    // Store contenant les co propriétaires de la parcelle et de l'unité foncière
+    var fiufProprietaireStore = new Ext.data.JsonStore({
+        proxy: new Ext.data.HttpProxy({
+            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire',        
+            method: 'GET',
+            autoLoad: false
+        }),
+        fields: ['comptecommunal', 'ddenom']           
+    });
+    
     
     // Store contenant les informations des différentes parcelles
     var fiufParcelleListStore = new Ext.data.JsonStore({
@@ -36,16 +56,6 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
            
     });
     
-    // ArrayStore to display information on vertical panel
-    var fiufGlobalInfosStore = new Ext.data.ArrayStore({
-        fields: [ {
-            name: 'uniteFonciere'
-        }, {
-            name: 'surface',
-            type: 'float'
-        }, ]
-    });
-
     
     // Requete Ajax pour chercher dans la webapp les donnees relative a la parcelle
     Ext.Ajax.request({
@@ -70,9 +80,19 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
             // Load information about parcelle
             fiufParcelleListStore.load({
                 params: {
-                    'comptecommunal': result.comptecommunal
+                    'unitefonciere': result.uf
                 }
             });
+            
+            // Load proprietaire information only if CNIL Level is ok
+            if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){ 
+                fiufProprietaireStore.load({
+                    params: {
+                        'comptecommunal': result.comptecommunal,
+                        'details': 2
+                    }
+                });
+            }
         }
     });
     
@@ -105,6 +125,28 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
         border: true,
     });
 
+    // Declaration et construction du tableau des coproprietaires
+    // Composé d'une seule colonne: co-proprietaires
+    var fiufProprietaireGrid = new Ext.grid.GridPanel({
+        store: fiufProprietaireStore,
+        name: 'Fiuf_Proprietaire',
+        xtype: 'editorgrid ',
+        colModel: new Ext.grid.ColumnModel({
+            columns: [ {
+                header: 'Id propriétaire',
+                width: 120,
+                dataIndex: 'comptecommunal'
+            }, 
+            {
+                header: 'Nom',
+                width: 170,
+                dataIndex: 'ddenom'
+            },],
+        }),
+        height: 110,
+        width: 300,
+        border: true,
+    });
 
     // Declaration et construction du tableau de liste de parcelles
     // Comprend les colonnes 'parcelle', 'surface DGFiP','Surface SIG' et
@@ -121,37 +163,39 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
             columns: [ {
                 // colonne parcelle
                 header: OpenLayers.i18n('cadastrapp.parcelle'),
-                width: 150,
+                width: 130,
                 dataIndex: 'parcelle'
             }, {
                 // colonne surface DGFiP
                 header: OpenLayers.i18n('cadastrapp.surface') + " " + OpenLayers.i18n('cadastrapp.contenancedgfip'),
-                width: 70,
-                dataIndex: 'dcntpa'
+                width: 90,
+                dataIndex: 'dcntpa',
+                renderer: Ext.util.Format.numberRenderer('0,000.00 m²'),
             }, {
                 // colonne surface SIG
                 header: OpenLayers.i18n('cadastrapp.surface') + " " + OpenLayers.i18n('cadastrapp.sig'),
-                width: 70,
-                dataIndex: 'surfc'
+                width: 90,
+                dataIndex: 'surfc',
+                renderer: Ext.util.Format.numberRenderer('0,000.00 m²'),
             }, {
                 // colonne adresse postale
                 header: OpenLayers.i18n('cadastrapp.parcelle.adresse.postale'),
-                width: 300,
+                width: 200,
                 dataIndex: 'adresse'
             } ],
         }),
         height: 100,
-        width: 570,
         border: true,
     });
     
     
     var upCompositeField = new Ext.form.CompositeField({
+        id:"cadastrappUfComposite",
         margins: {
             right: 10,
             left: 10
         },
-        items: [[ fiufGlobalInfosGrid]]
+        items: [fiufGlobalInfosGrid, fiufProprietaireGrid]
     })
     
     // Declaration et creation de la fenetre principale
@@ -202,43 +246,6 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
         } ]
 
     });
-    
-    // ---------- For CNIL 1 user
-    if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){ 
-        
-        // Store contenant les co propriétaires de la parcelle et de l'unité foncière
-        var fiufProprietaireStore = new Ext.data.JsonStore({
-            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getCoProprietaire?parcelle='+parcelleId,        
-            method: 'GET',
-            autoLoad: true,
-            fields: [ 'comptecommunal', 'ddenom' ]           
-        });
-        
-        // Declaration et construction du tableau des coproprietaires
-        // Composé d'une seule colonne: co-proprietaires
-        var fiufProprietaireGrid = new Ext.grid.GridPanel({
-            store: fiufProprietaireStore,
-            name: 'Fiuf_Proprietaire',
-            xtype: 'editorgrid',
-            colModel: new Ext.grid.ColumnModel({
-                columns: [ {
-                    header: 'Id propriétaire',
-                    width: 100,
-                    dataIndex: 'comptecommunal'
-                }, 
-                {
-                    header: 'Nom',
-                    width: 150,
-                    dataIndex: 'ddenom'
-                },],
-            }),
-            height: 110,
-            width: 250,
-            border: true,
-        });
-        
-        upCompositeField.items.add(fiufProprietaireGrid);
-    }
     
     GEOR.Addons.Cadastre.newGrid.fichesFOuvertes.push(windowFIUF);
     GEOR.Addons.Cadastre.newGrid.idParcellesFOuvertes.push(parcelleId);
