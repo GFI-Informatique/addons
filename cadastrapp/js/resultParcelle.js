@@ -170,6 +170,8 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
         if (feature) {
             GEOR.Addons.Cadastre.changeStateFeature(feature, -1, state);
         }
+        
+        GEOR.Addons.Cadastre.zoomToSelectedFeatures();
     });
 
     // lors d'une recherche de parcelle on envoie une requête attributtaire
@@ -181,8 +183,6 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
     GEOR.Addons.Cadastre.tabs.insert(0, GEOR.Addons.Cadastre.newGrid);
     GEOR.Addons.Cadastre.tabs.setActiveTab(0);
     GEOR.Addons.Cadastre.resultParcelleWindow.show();
-    
-    GEOR.Addons.Cadastre.zoomToSelectedFeatures();
 }
 
 /** 
