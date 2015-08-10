@@ -274,10 +274,14 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
         
         // Ext.Buttons Arrays to be fill when service returns values
         var buttonToolBar = new Ext.Toolbar({
-         items:[{
-             text:'Batiment(s) : '
-         }]      
+            xtype: 'buttongroup',
+            items:[{
+                text:'Batiment(s) : '
+            }]      
         });
+        
+        // Workaround toogleGroup not working
+        var buttonList = [];
         
         // Modèle de donnée pour l'onglet batiment
         var fiucBatimentsStore = new Ext.data.JsonStore({
@@ -305,38 +309,45 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                             text: element.dnubat,
                             margins: '0 10 0 10',
                             toogleGroup: 'batButToggleGroup',
-                            handler: function(e) {
-                                if(!(e.pressed)){
+                            enableToggle: true,
+                            toggleHandler: function(btn, pressed){
+                                console.log('toggle', btn.text, pressed);
+                                if(pressed){
                                     fiucBatimentsStore.load({
-                                    params: {
-                                        'dnubat': e.text, 'parcelle': parcelleId
-                                    }
+                                        params: {
+                                            'dnubat': btn.text, 'parcelle': parcelleId
+                                        }
                                     });
-                                    e.toggle();
+                                    console.log('Pressed');
                                 }
+                                // Workaround toogleGroup not working
+                                Ext.each(buttonList, function(button, index){
+                                   if (button && button.text != btn.text){
+                                       button.toggle(false, true);
+                                       console.log(button.text + ' Toggle false');
+                                   } 
+                                });
                             }
+                       
                         });
                         
                         // load first batiment information
                         if(index==0){
                             buttonBatiment.toggle();
-                            fiucBatimentsStore.load({
-                                params: {
-                                    'dnubat': element.dnubat, 'parcelle': parcelleId
-                                }
-                            });
-                        }                       
-                        buttonToolBar.add(buttonBatiment);
-                        buttonToolBar.doLayout();
+                        }
+                        buttonList.push(buttonBatiment);
                     }
                     else{
                         console.log("Pas de batiments sur la parcelle");
                     }
-                });       
+                }); 
+                buttonToolBar.add(buttonList);
+                buttonToolBar.doLayout();
             }
         });
        
         // Déclaration du tableau
+        
         var fiucBatimentsGrid = new Ext.grid.GridPanel({
             store: fiucBatimentsStore,
             stateful: true,
@@ -413,12 +424,12 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             }, {
                 iconCls: 'house-button',
                 handler: function() {
-                    GEOR.Addons.Cadastre.showHabitationDetails('A', '01', '01001', '2004', '1030295808');
+                    GEOR.Addons.Cadastre.showHabitationDetails('A', '01', '01001', '2014', '1030295808');
                 }
              },{
                  text: OpenLayers.i18n('cadastrapp.duc.batiment_descriptif'),
                  handler: function() {
-                     GEOR.Addons.Cadastre.showHabitationDetails('A', '01', '01001', '2004', '1030295808');
+                     GEOR.Addons.Cadastre.showHabitationDetails('A', '01', '01001', '2014', '1030295808');
                  }
              }]
         });
