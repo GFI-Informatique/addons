@@ -290,7 +290,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 autoLoad: false,
                 method: 'GET'
             }),
-            fields : ['dniv', 'dpor', 'ccoaff_lib', 'annee', 'dnupro', 'ddenom', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp']   
+            fields : ['dniv', 'dpor', 'ccoaff_lib', 'annee', 'dnupro', 'ddenom', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp', 'invar']   
         });
        
         // Récupère la liste des batiments de la parcelle
@@ -356,6 +356,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             autoExpandMax:825,
             height: 280,
             autoScroll: true,
+            sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
             colModel: new Ext.grid.ColumnModel({
                 defaults: {
                     sortable: true,
@@ -408,6 +409,10 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     header: OpenLayers.i18n('cadastrapp.duc.prenomcpl'),
                     dataIndex: 'dprncp',
                     width: 150         
+                }, {
+                    header: 'Invar',
+                    dataIndex: 'invar',
+                    width: 150         
                 }]
             }),
             // inline toolbars
@@ -424,12 +429,24 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             }, {
                 iconCls: 'house-button',
                 handler: function() {
-                    GEOR.Addons.Cadastre.showHabitationDetails('A', '01', '01001', '2014', '1030295808');
+                    var selectedRecordsArray = fiucBatimentsGrid.getSelectionModel().getSelected();
+                       
+                    if(selectedRecordsArray){
+                        GEOR.Addons.Cadastre.showHabitationDetails('A', selectedRecordsArray.data.dniv, selectedRecordsArray.data.dpor , selectedRecordsArray.data.annee, selectedRecordsArray.data.invar);
+                    }else{
+                        Ext.Msg.alert('Vous devez d\'abord sélectionner un batiment');
+                    }
                 }
              },{
                  text: OpenLayers.i18n('cadastrapp.duc.batiment_descriptif'),
                  handler: function() {
-                     GEOR.Addons.Cadastre.showHabitationDetails('A', '01', '01001', '2014', '1030295808');
+                     selectedRecordsArray = fiucBatimentsGrid.getSelectionModel().getSelected();
+                     
+                     if(selectedRecordsArray){
+                         GEOR.Addons.Cadastre.showHabitationDetails('A', selectedRecordsArray.data.dniv, selectedRecordsArray.data.dpor , selectedRecordsArray.data.annee, selectedRecordsArray.data.invar);
+                     }else{
+                         Ext.Msg.alert('Vous devez d\'abord sélectionner un batiment');
+                     }
                  }
              }]
         });
