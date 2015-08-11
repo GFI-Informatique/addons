@@ -27,6 +27,9 @@
     "default_options": {},
     "i18n": {
         "en": {
+         	"cadastrapp.menu.tooltips.cadastre": "Si coché active les informations sur les unités cadastrales, infobulle et fenêtre de détails",
+            "cadastrapp.menu.tooltips.foncier": "Si coché active les informations sur les unités foncière, infobulle et fenêtre de détails",
+           
             "cadastrapp.cadastre_tools": "Cadastre tools",
             "cadastrapp.delete_feature": "Delete feature",
             "cadastrapp.delete": "Delete",
@@ -268,6 +271,9 @@
 	
         },
         "es": {
+        	"cadastrapp.menu.tooltips.cadastre": "Si coché active les informations sur les unités cadastrales, infobulle et fenêtre de détails",
+            "cadastrapp.menu.tooltips.foncier": "Si coché active les informations sur les unités foncière, infobulle et fenêtre de détails",
+          
             "cadastrapp.cadastre_tools": "Outils Cadastre",
             "cadastrapp.delete_feature": "Borrar el objeto",
             "cadastrapp.delete": "Borrar",
@@ -506,10 +512,11 @@
 			"cadastrapp.bordereauparcellaire.data.without" : "Sans données nominatives",
 			"cadastrapp.bordereauparcellaire.data.with" : "Avec données nominatives"
 
-	
-			
         },
         "fr": {
+        	"cadastrapp.menu.tooltips.cadastre": "Si coché active les informations sur les unités cadastrales, infobulle et fenêtre de détails",
+            "cadastrapp.menu.tooltips.foncier": "Si coché active les informations sur les unités foncière, infobulle et fenêtre de détails",
+           
             "cadastrapp.cadastre_tools": "Outils Cadastre",
             "cadastrapp.delete_feature": "Supprimer l'objet",
             "cadastrapp.delete": "Supprimer",
@@ -754,6 +761,9 @@
 			"cadastrapp.bordereauparcellaire.data.with" : "Avec données nominatives"
         },
         "de": {
+           	"cadastrapp.menu.tooltips.cadastre": "Si coché active les informations sur les unités cadastrales, infobulle et fenêtre de détails",
+            "cadastrapp.menu.tooltips.foncier": "Si coché active les informations sur les unités foncière, infobulle et fenêtre de détails",
+          
             "cadastrapp.cadastre_tools": "Outils Cadastre",
             "cadastrapp.delete_feature": "Objekt löschen",
             "cadastrapp.delete": "Löschen",

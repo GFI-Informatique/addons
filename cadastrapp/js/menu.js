@@ -362,44 +362,57 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
     initCadastrappControls : function(layer) {
         // menu : checkbox cadastre
         var cadastrePanel = new Ext.Panel({
-            frame : false,
-            border : false,
-            bodyStyle : 'background:transparent;',
-            style : 'margin-left:5px;margin-right:5px',
-            items : [ {
-                xtype : 'checkbox',
-                checked : _isCadastre,
-                style : 'margin-top:2px;margin-left:15px',
-                listeners : {
-                    check : function(cb, checked) {
+            frame: false,
+            border: false,
+            bodyStyle: 'background:transparent;',
+            style: 'margin-left:5px;margin-right:5px',
+            items: [ {
+                id: 'UCCheckbox',
+                xtype: 'checkbox',
+                checked: _isCadastre,
+                style: 'margin-top:2px;margin-left:15px',
+                listeners: {
+                    check: function(cb, checked) {
                         _isCadastre = checked;
+                    },
+                    render: function(c) {
+                        Ext.QuickTips.register({
+                            target: c,
+                            text: OpenLayers.i18n("cadastrapp.menu.tooltips.cadastre")
+                        });
                     }
                 }
             }, {
-                xtype : 'displayfield',
-                value : OpenLayers.i18n("cadastrapp.cadastre")
+                xtype: 'displayfield',
+                value: OpenLayers.i18n("cadastrapp.cadastre"),
             } ]
         });
         this.actions.push(cadastrePanel);
-
+        
         // menu : checkbox foncier
         var foncierPanel = new Ext.Panel({
-            frame : false,
-            border : false,
-            bodyStyle : 'background:transparent;',
-            style : 'margin-left:5px;margin-right:5px',
-            items : [ {
-                xtype : 'checkbox',
-                checked : _isFoncier,
-                style : 'margin-top:2px;margin-left:10px',
-                listeners : {
-                    check : function(cb, checked) {
+            frame: false,
+            border: false,
+            bodyStyle: 'background:transparent;',
+            style: 'margin-left:5px;margin-right:5px',
+            items: [ {
+                xtype: 'checkbox',
+                checked: _isFoncier, 
+                style: 'margin-top:2px;margin-left:10px',
+                listeners: {
+                    check: function(cb, checked) {
                         _isFoncier = checked;
+                    },
+                    render: function(c) {
+                        Ext.QuickTips.register({
+                            target: c,
+                            text: OpenLayers.i18n("cadastrapp.menu.tooltips.foncier"),
+                        });
                     }
                 }
             }, {
-                xtype : 'displayfield',
-                value : OpenLayers.i18n("cadastrapp.foncier")
+                xtype: 'displayfield',
+                value: OpenLayers.i18n("cadastrapp.foncier"),
             } ]
         });
         this.actions.push(foncierPanel);
