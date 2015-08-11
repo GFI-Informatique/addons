@@ -42,13 +42,13 @@ GEOR.Addons.Cadastre.addNewDataResultParcelle = function(result) {
         if (GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle) == -1) {
            
             var newRecord = new TopicRecord({
-                parcelle : element.parcelle,
-                adresse : (element.adresse) ? element.adresse : element.dnvoiri + element.dindic +' '+element.cconvo  +' ' + element.dvoilib,
-                cgocommune : element.cgocommune,
-                ccopre : element.ccopre,
-                ccosec : element.ccosec,
-                dnupla : element.dnupla,   
-                dcntpa : element.dcntpa
+                parcelle: element.parcelle,
+                adresse: (element.adresse) ? element.adresse : element.dnvoiri + element.dindic +' '+element.cconvo  +' ' + element.dvoilib,
+                cgocommune: element.cgocommune,
+                ccopre: element.ccopre,
+                ccosec: element.ccosec,
+                dnupla: element.dnupla,   
+                dcntpa: element.dcntpa
             });
             // ajout de la ligne
             GEOR.Addons.Cadastre.tabs.activeTab.store.add(newRecord);
@@ -264,19 +264,19 @@ GEOR.Addons.Cadastre.closeFoncierAndCadastre = function(idParcelle, grid) {
 GEOR.Addons.Cadastre.initResultParcelle = function() {
     // fenêtre principale
     GEOR.Addons.Cadastre.resultParcelleWindow = new Ext.Window({
-        title : OpenLayers.i18n('cadastrapp.parcelle.result.title'),
-        frame : true,
-        autoScroll : true,
-        minimizable : false,
-        closable : true,
-        resizable : true,
-        draggable : true,
-        constrainHeader : true,
-        border : false,
-        width : 500,
-        autoHeight : true,
-        listeners : {
-            close : function(window) {
+        title: OpenLayers.i18n('cadastrapp.parcelle.result.title'),
+        frame: true,
+        autoScroll: true,
+        minimizable: false,
+        closable: true,
+        resizable: true,
+        draggable: true,
+        constrainHeader: true,
+        border: false,
+        boxMaxHeight:Ext.getBody().getViewSize().height - 200,
+        width: 500,
+        listeners: {
+            close: function(window) {
 
                 // *********************
                 // supprime tous les entités de la couche selection
@@ -287,30 +287,30 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
                 // *********************
                 GEOR.Addons.Cadastre.resultParcelleWindow = null;
             },
-            show : function(window) {
+            show: function(window) {
                 // lors du changement entre onglets : deselection de toutes les
                 // parcelles et selection de celles du nouvel onglet
             }
         },
-        items : [ {
-            xtype : 'tabpanel',
-            items : [ {
-                xtype : 'panel',
-                title : '+',
-                border : true,
-                closable : false,
-                listeners : {
-                    activate : function(grid) {
+        items: [ {
+            xtype: 'tabpanel',
+            items: [ {
+                xtype: 'panel',
+                title: '+',
+                border: true,
+                closable: false,
+                listeners: {
+                    activate: function(grid) {
                         GEOR.Addons.Cadastre.addVoidResultParcelle();
                     }
                 }
             } ]
         } ],
 
-        buttons : [ {
-            text : OpenLayers.i18n('cadastrapp.close'),
-            listeners : {
-                click : function(b, e) {
+        buttons: [ {
+            text: OpenLayers.i18n('cadastrapp.close'),
+            listeners: {
+                click: function(b, e) {
                     GEOR.Addons.Cadastre.resultParcelleWindow.close();
                 }
             }
