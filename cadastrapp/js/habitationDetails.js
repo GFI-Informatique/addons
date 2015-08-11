@@ -29,7 +29,12 @@ GEOR.Addons.Cadastre.showHabitationDetails = function(batiment, niveau, porte, a
             animate: true,
             activeOnTop: true
         },
-        items: []
+        items: [],
+        listeners : {
+            close : function(window) {
+                habitationDetailsWindows = null;
+            }
+        },
     });
            
     // récuperation des données article40, article50 et article60
@@ -42,21 +47,31 @@ GEOR.Addons.Cadastre.showHabitationDetails = function(batiment, niveau, porte, a
             // Pour chaque Habitation
             Ext.each(result.article40, function(element, indexNumber){
                if(element){
-                   habitationDetailsWindows.add(GEOR.Addons.Cadastre.createArcticle40Panel(element));
+                   var article40Panel = GEOR.Addons.Cadastre.createArcticle40Panel(element);
+                   if(article40Panel!=null){
+                       habitationDetailsWindows.add(article40Panel);
+                   }
+                  
                }
             });
             
             // Pour chaque locaux professionel
             Ext.each(result.article50, function(element, indexNumber){
                 if(element){
-                    habitationDetailsWindows.add(GEOR.Addons.Cadastre.createArcticle50Panel(element));
+                    var article50Panel = GEOR.Addons.Cadastre.createArcticle50Panel(element);
+                    if(article50Panel!=null){
+                        habitationDetailsWindows.add(article50Panel);
+                    }
                 }
             });
             
          // Pour chaque dépendance
             Ext.each(result.article60, function(element, indexNumber){
                 if(element){
-                    habitationDetailsWindows.add(GEOR.Addons.Cadastre.createArcticle60Panel(element));
+                    var article60Panel = GEOR.Addons.Cadastre.createArcticle60Panel(element);
+                    if(article60Panel!=null){
+                        habitationDetailsWindows.add(article60Panel);
+                    }
                 }
             });
             
@@ -66,9 +81,9 @@ GEOR.Addons.Cadastre.showHabitationDetails = function(batiment, niveau, porte, a
 
     GEOR.Addons.Cadastre.createArcticle40Panel = function(article40Details) {
         
-        if(article40Details){
+        if(article40Details && article40Details.detent && article40Details.detent!=null){
            
-            var details = '<div class=\'habitationDetailsMenuTitle\'> Caractéristiques générales </div>'+ 
+            var details = '<div class=\'habitationDetailsMenuTitle\'> Caractéristiques générales </div>'; 
             article40Details.detent &&  article40Details.detent!='00' ? details = details + '<div> Etat d\'entretien ' + article40Details.detent + '</div>' : null;
             article40Details.dsupdc &&  article40Details.dsupdc!='00' ? details = details + '<div> Surface habitable ' + article40Details.dsupdc + ' m²</div>' : null;
             article40Details.dnbppr && article40Details.dnbpdc &&  article40Details.dnbpdc!='00' ? details = details + '<div> Nombre de pièces ' + article40Details.dnbpdc.replace(/^0+/,'') + ' dont ' + article40Details.dnbppr.replace(/^0+/,'') + ' principales</div>' : null;
@@ -96,25 +111,27 @@ GEOR.Addons.Cadastre.showHabitationDetails = function(batiment, niveau, porte, a
             article40Details.gvorlc &&  article40Details.gvorlc=='0' ? details = details + '<div>Vide-ordure</div>' : null;
             
             return  new Ext.Panel({
-                title: article40Details.dnupev_lib +'   ' + article40Details.dnudes,
-                html:details
+                title: 'Habitation    ' + article40Details.dnudes,
+                html:details,
+                layout: 'fit'
             });
         }
     }
     
   GEOR.Addons.Cadastre.createArcticle50Panel = function(article50Details) {
         
-        if(article40Details){
+        if(article50Details){
             return  new Ext.Panel({
                 title: 'Partie professionelle   ' + article50Details.dnudes,
-                html:'<div>Surface réelle ' + article50Details.vsurzt + ' m²</div>'
+                html:'<div>Surface réelle ' + article50Details.vsurzt + ' m²</div>',
+                layout: 'fit',
             });
         }
     }
   
   GEOR.Addons.Cadastre.createArcticle60Panel = function(article60Details) {
        
-      if(article40Details){
+      if(article60Details){
           
           var details = '<div>' + article60Details.cconad_lib + ' ' + article60Details.dsudep + ' m²</div>'; 
           
@@ -129,7 +146,8 @@ GEOR.Addons.Cadastre.showHabitationDetails = function(batiment, niveau, porte, a
           
           return  new Ext.Panel({
               title: 'Dépendance(s)  ' + article60Details.dnudes,
-              html: details
+              html: details,
+              layout: 'fit',
           });
       }
   }
