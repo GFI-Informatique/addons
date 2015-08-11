@@ -163,6 +163,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                     }
                     // on remplace le contenu du store des parcelles selon la section selectionnée
                     GEOR.Addons.Cadastre.loadParcelleStore(e.grid.getColumnModel().getColumnById(e.field).editor.getStore(), parcCityCombo1.value, e.record.data.section);
+                    GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
                 }
             },
             afteredit: function(e) {
@@ -178,9 +179,6 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                     }); // create new record
                     e.grid.store.add(p); 
                 }
-            },
-            change : function(combo, newValue, oldValue) {
-                GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
             }
         }
     });
@@ -308,6 +306,9 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                 }
                                 q.query = new RegExp(Ext.escapeRe(q.query), 'i');
                                 q.query.length = length;
+                            },
+                            select: function(combo, record, index){
+                                GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
                             }
                         }
                     }]
@@ -337,17 +338,36 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                     allowBlank: false,
                     fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.ident'),
                     name: 'ident',
-                    width: 300
+                    width: 300,
+                    validator: function(value)
+                    {
+                        if(!value || value.length<19) {
+                        return 'L\'id de parcelle doit contenir au moins 19 caractères, si plusieurs ids de parcelle sont fournis il faut les séparer par un espace, une virgule ou un point virgule';
+                        } else {
+                        return true;
+                        }
+                    },
+                    listeners: {
+                        valid: function(element) {
+                            GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
+                        }
+                    }
                 }, {
                     value: OpenLayers.i18n('cadastrapp.parcelle.ident.exemple'),
                     fieldClass: 'displayfieldGray'
                 } ]
-            } ]
+            } ], 
+            listeners: {
+                beforetabchange: function(panel, newTab, currentTab){
+                    GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].disable();
+                }
+            }
         } ],
 
         buttons: [ {
+            id:'butSearchParcByRef',
             text: OpenLayers.i18n('cadastrapp.search'),
-            disabled: false,
+            disabled: true,
             listeners: {
                 click: function(b, e) {
                     var currentForm = GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].getActiveTab();

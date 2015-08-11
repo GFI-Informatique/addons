@@ -67,8 +67,8 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     q.query.length = length;
                 }
             },
-            change : function(combo, newValue, oldValue) {
-                GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
+            valid : function(element) {
+                Ext.getCmp('comboDnomlpSearchByOwners').enable();
             }
         }
     });
@@ -113,33 +113,33 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     q.query.length = length;
                 }
             },
-            change : function(combo, newValue, oldValue) {
-                 // TODO enable button only when at leastGEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
+            valid : function(element) {
+                Ext.getCmp('gripOwnerSearchByOwners').enable();
             }
         }
     });
 
     // grille "proprietaires"
     var proprietaireGrid = new Ext.grid.EditorGridPanel({
-        fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.proprietaires'),
-        name : 'proprietaires',
-        xtype : 'editorgrid',
+        id: 'gripOwnerSearchByOwners',
+        fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.proprietaires'),
+        name: 'proprietaires',
+        xtype: 'editorgrid',
         clicksToEdit : 1,
-        ds : GEOR.Addons.Cadastre.getVoidProprietaireStore(),
-        cm : GEOR.Addons.Cadastre.getProprietaireColModel(),
-        autoExpandColumn : 'proprietaire',
-        height : 100,
-        width : 300,
-        border : true,
-        listeners : {
-            beforeedit : function(e) {
-                if (e.column == 0) {
-                    // pas d'edition de section si aucune ville selectionnée
-                    if (propCityCombo2.value == '')
-                        return false;
+        ds: GEOR.Addons.Cadastre.getVoidProprietaireStore(),
+        cm: GEOR.Addons.Cadastre.getProprietaireColModel(),
+        autoExpandColumn: 'proprietaire',
+        height: 100,
+        width: 300,
+        border: true,
+        disabled: true,
+        listeners: {
+            beforeedit: function(e) {
+                if (e.column == 0 && propCityCombo2.value == '') {
+                    return false;                       
                 }
             },
-            afteredit : function(e) {
+            afteredit: function(e) {
                 // on ajoute un champ vide, si le dernier champ est complet
                 var lastIndex = e.grid.store.getCount() - 1;
                 var lastData = e.grid.store.getAt(e.grid.store.getCount() - 1).data;
@@ -153,6 +153,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     // store (also see add)
                     this.startEditing(e.row + 1, 0);
                 }
+                GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
             }
         }
     });
@@ -162,58 +163,55 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
     // recherche
     // et de fermeture de la fenetre
     GEOR.Addons.Cadastre.proprietaireWindow = new Ext.Window({
-        title : OpenLayers.i18n('cadastrapp.proprietaire.title'),
-        frame : true,
-        autoScroll : true,
-        minimizable : false,
-        closable : true,
-        resizable : true,
-        draggable : true,
-        constrainHeader : true,
-
-        border : false,
-        labelWidth : 100,
-        width : 450,
-        defaults : {
-            autoHeight : true,
-            bodyStyle : 'padding:10px',
-            flex : 1
+        title: OpenLayers.i18n('cadastrapp.proprietaire.title'),
+        frame: true,
+        autoScroll: true,
+        minimizable: false,
+        closable: true,
+        resizable: true,
+        draggable: true,
+        constrainHeader: true,
+        border: false,
+        labelWidth: 100,
+        width: 450,
+        defaults: {
+            autoHeight: true,
+            bodyStyle: 'padding:10px',
+            flex: 1
         },
-
-        listeners : {
-            close : function(window) {
+        listeners: {
+            close: function(window) {
                 GEOR.Addons.Cadastre.proprietaireWindow = null;
             }
         },
 
-        items : [ {
-            xtype : 'tabpanel',
-            activeTab : 0,
-
-            items : [ {
-
+        items: [ {
+            xtype: 'tabpanel',
+            activeTab: 0,
+            items: [ {
                 // ONGLET "Nom Usage ou Naissance"
-                id : 'propFirstForm',
+                id: 'propFirstForm',
                 xtype : 'form',
-                title : OpenLayers.i18n('cadastrapp.proprietaire.title.tab1'),
-                defaultType : 'displayfield',
-                height : 200,
-
-                items : [ propCityCombo1, {
-                    value : OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
-                    fieldClass : 'displayfieldGray'
+                title: OpenLayers.i18n('cadastrapp.proprietaire.title.tab1'),
+                defaultType: 'displayfield',
+                height: 200,
+                items: [ propCityCombo1, {
+                    value: OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
+                    fieldClass: 'displayfieldGray'
                 }, {
-                    hiddenName :'dnomlp',
-                    fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.lastname'),
-                    xtype : 'combo',
-                    allowBlank : false,
-                    width : 300,
+                    id:'comboDnomlpSearchByOwners',
+                    hiddenName:'dnomlp',
+                    fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.lastname'),
+                    xtype: 'combo',
+                    allowBlank: false,
+                    width: 300,
                     mode: 'local',
                     value: '',
                     forceSelection: false,
                     editable: true,
                     displayField: 'dnomlp',
                     valueField: 'dnomlp',
+                    disabled: true,
                     store: new Ext.data.JsonStore({
                         proxy: new Ext.data.HttpProxy({
                             url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire',
@@ -222,8 +220,8 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                         }),
                         fields: ['dnomlp', 'dprnlp']
                     }),
-                    listeners : {
-                        beforequery : function(q) {
+                    listeners: {
+                        beforequery: function(q) {
                             if (q.query) {
                                 var length = q.query.length;
                                 if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
@@ -239,19 +237,25 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                             }
                             q.query = new RegExp(Ext.escapeRe(q.query), 'i');
                             q.query.length = length;
+                        },
+                        valid: function(element) {
+                            Ext.getCmp("textfieldCadDprnlpSearch").enable();
+                            GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
                         }
                     }
                 }, {
-                    value : OpenLayers.i18n('cadastrapp.proprietaire.lastname.exemple'),
-                    fieldClass : 'displayfieldGray'
+                    value: OpenLayers.i18n('cadastrapp.proprietaire.lastname.exemple'),
+                    fieldClass: 'displayfieldGray'
                 }, {
-                    xtype : 'textfield',
-                    fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.firstname'),
-                    name : 'dprnlp',
-                    width : 300
+                    id:'textfieldCadDprnlpSearch',
+                    xtype: 'textfield',
+                    fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.firstname'),
+                    name: 'dprnlp',
+                    width: 300,
+                    disabled: true,
                 }, {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.firstname.exemple'),
-                    fieldClass : 'displayfieldGray'
+                    fieldClass: 'displayfieldGray'
                 } ]
             }, {
 
@@ -279,14 +283,18 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     height : 25,
                     width : 300
                 } ]
-            } ]
+            } ],
+            listeners: {
+                beforetabchange: function(panel, newTab, currentTab){
+                       GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].disable();
+                }
+            }
         } ],
-
-        buttons : [ {
-            text : OpenLayers.i18n('cadastrapp.search'),
-            // disabled: true,
-            listeners : {
-                click : function(b, e) {
+        buttons: [ {
+            text: OpenLayers.i18n('cadastrapp.search'),
+            disabled: true,
+            listeners: {
+                click: function(b, e) {
                     var currentForm = GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].getActiveTab();
                     if (currentForm.id == 'propFirstForm') {
                         if (currentForm.getForm().isValid()) {
