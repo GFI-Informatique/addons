@@ -15,7 +15,7 @@ GEOR.Addons.Cadastre.showHabitationDetails = function(batiment, niveau, porte, a
     // Creation de la fenetre de details d'habitation
     var habitationDetailsWindows = new Ext.Window({
         id:"cadHabDetailsWindows",
-        title:" Batiments " + batiment + "- niveau "+ niveau+ " - porte " + porte,
+        title:" Batiment " + batiment + " - niveau "+ niveau+ " - porte " + porte,
         frame : true,
         autoScroll : true,
         layout:'accordion',
@@ -69,9 +69,9 @@ GEOR.Addons.Cadastre.showHabitationDetails = function(batiment, niveau, porte, a
         if(article40Details){
            
             var details = '<div class=\'habitationDetailsMenuTitle\'> Caractéristiques générales </div>'+ 
-                    '<div> Etat d\'entretien ' + article40Details.detent + '</div>' + 
-                    '<div> Surface habitable ' + article40Details.dsupdc + ' m²</div>' + 
-                    '<div> Nombre de pièces ' + article40Details.dnbpdc.replace(/^0+/,'') + ' dont ' + article40Details.dnbppr.replace(/^0+/,'') + ' principales</div>';
+            article40Details.detent &&  article40Details.detent!='00' ? details = details + '<div> Etat d\'entretien ' + article40Details.detent + '</div>' : null;
+            article40Details.dsupdc &&  article40Details.dsupdc!='00' ? details = details + '<div> Surface habitable ' + article40Details.dsupdc + ' m²</div>' : null;
+            article40Details.dnbppr && article40Details.dnbpdc &&  article40Details.dnbpdc!='00' ? details = details + '<div> Nombre de pièces ' + article40Details.dnbpdc.replace(/^0+/,'') + ' dont ' + article40Details.dnbppr.replace(/^0+/,'') + ' principales</div>' : null;
                     
             article40Details.dnbniv &&  article40Details.dnbniv!='00' ? details = details +  '<div> Nombre de niveaux ' + article40Details.dnbniv.replace(/^0+/,'' ) + '</div>' : null;  
             details = details + '<div class=\'habitationDetailsMenuTitle\'>Répartition des pièces</div>';
