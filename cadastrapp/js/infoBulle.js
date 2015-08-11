@@ -1,8 +1,3 @@
-/**
- * api: (define) module = GEOR class = Cadastrapp base_link =
- * `Ext.util.Observable
- * <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
- */
 Ext.namespace("GEOR.Addons.Cadastre");
 
 /**
@@ -27,7 +22,6 @@ GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
     Ext.Ajax.request({
         url : urlInfoBulleService,
         failure : function() {
-            //TODO change i18n
             alert("Erreur lors de la requete 'getInfoBulle' ");
         },
         method : "GET",
@@ -60,7 +54,6 @@ GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
                     html += "</div>"
                 }
                 if (GEOR.Addons.Cadastre.isFoncier()){
-                    //TODO wait for data from view
                     html += "<div class=\"cadastrapp-infobulle-unite-fonciere\">" +
                             "<div>"+result.comptecommunal +"</div>" +
                             "<div>"+ OpenLayers.i18n('cadastrapp.contenancedgfip') +" UF : "+result.dcntpa_sum.toLocaleString()+" m²</div>" +
@@ -83,8 +76,6 @@ GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
                 });
                 
                 popup.show();
-            
-                // TODO check to avoid erase too quickly
                 document.body.onmousemove = function(e) {
                     //destroy popup on move
                     popup.destroy()
