@@ -49,7 +49,7 @@ GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
                     if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
                         if (typeof(result.proprietaires) != "undefined"){
                             Ext.each(result.proprietaires, function(proprietaire, currentIndex){
-                                if(currentIndex==4){
+                                if(currentIndex==8){
                                     html = html + "<div>...  </div>";
                                 }else{
                                     html = html + "<div>"+ proprietaire.ddenom +"</div>";
