@@ -53,6 +53,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
         tabIndex:0,
         displayField: 'displayname',
         valueField: 'cgocommune',
+        minLength: GEOR.Addons.Cadastre.minCharToSearch,
         store: GEOR.Addons.Cadastre.getPartialCityStore(),
         listeners: {
             beforequery: function(q) {
@@ -87,6 +88,9 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 parcelleGrid.reconfigure(GEOR.Addons.Cadastre.getVoidRefStore(), GEOR.Addons.Cadastre.getRefColModel(newValue));
                 // permettre l'édition automatique du premier champ de section
                 parcelleGrid.startEditing(0,0);
+            }, 
+            valid: function(element){
+                parcelleGrid.enable();
             }
         }
     });
@@ -103,6 +107,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
         tabIndex:0,
         displayField: 'displayname',
         valueField: 'cgocommune',
+        minLength: GEOR.Addons.Cadastre.minCharToSearch,
         store: GEOR.Addons.Cadastre.getPartialCityStore(),
         listeners: {
             beforequery: function(q) {
@@ -130,6 +135,9 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                     q.query = new RegExp(Ext.escapeRe(q.query), 'i');
                     q.query.length = length;
                 }
+            }, 
+            valid: function(element){
+                Ext.getCmp('cfCadSearchByRef').enable();
             }
         }
     });
@@ -146,6 +154,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
         width: 300,
         tabIndex:1,
         border: true,
+        disabled: true,
         listeners: {
             beforeedit: function(e) {
                 if (e.column == 0) {
@@ -243,14 +252,15 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 defaultType: 'displayfield',
                 id: 'parcSecondForm',
                 height: 200,
-
                 items: [ parcCityCombo2, // combobox "villes"
                 {
                     value: OpenLayers.i18n('cadastrapp.parcelle.city.exemple'),
                     fieldClass: 'displayfieldGray'
                 }, {
+                    id: 'cfCadSearchByRef',
                     xtype: 'compositefield',
                     fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.street'),
+                    disabled: true,
                     defaults: {
                         flex: 1
                     },
@@ -281,6 +291,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         editable: true,
                         displayField: 'dvoilib',
                         valueField: 'dvoilib',
+                        minLength: GEOR.Addons.Cadastre.minCharToSearch,
                         store: new Ext.data.JsonStore({
                             proxy: new Ext.data.HttpProxy({
                                 url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getVoie',
@@ -307,10 +318,11 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                 q.query = new RegExp(Ext.escapeRe(q.query), 'i');
                                 q.query.length = length;
                             },
-                            select: function(combo, record, index){
+                            valid: function(element){
                                 GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
                             }
-                        }
+                        },
+                        
                     }]
                 }, {
                     value: OpenLayers.i18n('cadastrapp.parcelle.street.exemple'),
