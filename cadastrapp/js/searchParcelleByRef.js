@@ -353,8 +353,8 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                     width: 300,
                     validator: function(value)
                     {
-                        if(!value || value.length<19) {
-                        return 'L\'id de parcelle doit contenir au moins 19 caractères, si plusieurs ids de parcelle sont fournis il faut les séparer par un espace, une virgule ou un point virgule';
+                        if(!value || value.length<14) {
+                        return 'L\'id de parcelle doit contenir au moins 15 caractères pour le modèle arcopole et 19 pour le modèle qgis, si plusieurs ids de parcelle sont fournis il faut les séparer par un espace, une virgule ou un point virgule';
                         } else {
                         return true;
                         }
