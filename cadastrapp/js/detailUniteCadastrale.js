@@ -130,12 +130,12 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     width: 30,
                     iconCls:'small-pdf-button',
                     handler: function() {
-                        loadbordereauParcellaire();
+                        GEOR.Addons.Cadastre.onClickPrintBordereauParcellaireWindow(parcelleId);
                     }
                 },{
                     text:OpenLayers.i18n('cadastrapp.duc.bordereau.parcellaire'),   
                     handler: function() {
-                        loadbordereauParcellaire();
+                        GEOR.Addons.Cadastre.onClickPrintBordereauParcellaireWindow(parcelleId);
                      }
                 }]
             })  
@@ -617,13 +617,6 @@ function getSelectedBatiment() {
 
 }
 
-
-/**
- * 
- */
-function loadbordereauParcellaire() {
-    console.log("download bordereau function");
-}
 
 /**
  * 

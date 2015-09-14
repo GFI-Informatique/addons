@@ -1,5 +1,6 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
+// Change this to avoir global variables
 var printBordereauParcellaireWindow;
 
 /**
@@ -12,7 +13,7 @@ GEOR.Addons.Cadastre.onClickPrintBordereauParcellaireWindow = function(parcelleI
     if (printBordereauParcellaireWindow != null) {
         printBordereauParcellaireWindow.close();
     }
-    initPrintBordereauParcellaireWindow(parcelleId);
+    GEOR.Addons.Cadastre.initPrintBordereauParcellaireWindow(parcelleId);
     printBordereauParcellaireWindow.show();
     return printBordereauParcellaireWindow;
 }
@@ -23,8 +24,9 @@ GEOR.Addons.Cadastre.onClickPrintBordereauParcellaireWindow = function(parcelleI
  * @param parcelleId
  */
 GEOR.Addons.Cadastre.initPrintBordereauParcellaireWindow = function(parcelleId) {
+   
     // fenêtre principale
-   var printBordereauParcellaireWindow = new Ext.Window({
+   printBordereauParcellaireWindow = new Ext.Window({
         title : OpenLayers.i18n('cadastrapp.bordereauparcellaire.title') + ' - ' + parcelleId,
         frame : true,
         autoScroll : true,
@@ -68,14 +70,14 @@ GEOR.Addons.Cadastre.initPrintBordereauParcellaireWindow = function(parcelleId) 
                     xtype : 'radio',
                     boxLabel : OpenLayers.i18n('cadastrapp.bordereauparcellaire.data.without'),
                     checked : true,
-                    name : 'data',
-                    inputValue : 'false'
+                    name : 'personaldata',
+                    inputValue : 0
 
                 }, {
                     xtype : 'radio',
                     boxLabel : OpenLayers.i18n('cadastrapp.bordereauparcellaire.data.with'),
-                    name : 'data',
-                    inputValue : 'true'
+                    name : 'personaldata',
+                    inputValue : 1
                 } ]
             } ]
         } ],
@@ -85,19 +87,18 @@ GEOR.Addons.Cadastre.initPrintBordereauParcellaireWindow = function(parcelleId) 
             listeners : {
                 click : function(b, e) {
 
-                    // PARAMS
-                    var params = printBordereauParcellaireWindow.items.items[0].getForm().getValues();
-                    var url = GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle/toFile?' + Ext.urlEncode(params);
-
-                    // téléchargement du fichier
-                    Ext.DomHelper.append(document.body, {
-                        tag : 'iframe',
-                        id : 'downloadIframe',
-                        frameBorder : 0,
-                        width : 0,
-                        height : 0,
-                        css : 'display:none;visibility:hidden;height:0px;',
-                        src : url
+                    //envoi des données d'une form
+                    Ext.Ajax.request({
+                        method: 'GET',
+                        url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createBordereauParcellaire',
+                        params:printBordereauParcellaireWindow.items.items[0].getForm().getValues(),
+                        success: function(result) {
+                            printBordereauParcellaireWindow.close();
+                        },
+                        failure: function(result) {
+                            printBordereauParcellaireWindow.close();
+                            alert('Erreur lors de la récupération du bordereau parcellaire');
+                        }
                     });
                 }
             }
