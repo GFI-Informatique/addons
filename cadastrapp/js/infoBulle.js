@@ -78,7 +78,7 @@ GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
                 popup.show();
                 document.body.onmousemove = function(e) {
                     //destroy popup on move
-                    popup.destroy();
+                    popup = null;
                 }
             }
         },
