@@ -22,6 +22,9 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         GEOR.Addons.Cadastre.cnil1RoleName = this.options.CNIL.cnil1RoleName;
         GEOR.Addons.Cadastre.cnil2RoleName = this.options.CNIL.cnil2RoleName;
         
+        GEOR.Addons.Cadastre.relevePropriete=[];
+        GEOR.Addons.Cadastre.relevePropriete.maxProprietaire = 25;
+        
         // Init gobal variables   
         GEOR.Addons.Cadastre.selectedFeatures = [];
         GEOR.Addons.Cadastre.selectLayer;
