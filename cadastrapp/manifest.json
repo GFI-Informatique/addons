@@ -1,6 +1,7 @@
 {
     "js": [
     	"js/printBordereauParcellaire.js",
+    	"js/printRelevePropriete.js",
 		"js/selectFeature.js",
 		"js/resultParcelle.js",
 		"js/searchUtils.js",
