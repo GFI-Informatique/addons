@@ -13,9 +13,33 @@ GEOR.Addons.Cadastre.onClickPrintBordereauParcellaireWindow = function(parcelleI
     if (printBordereauParcellaireWindow != null) {
         printBordereauParcellaireWindow.close();
     }
-    GEOR.Addons.Cadastre.initPrintBordereauParcellaireWindow(parcelleId);
-    printBordereauParcellaireWindow.show();
-    return printBordereauParcellaireWindow;
+    
+    // Test if user have CNIL level 1 or 2
+    // ask if user want with or without personnal data
+    if (GEOR.Addons.Cadastre.isCNIL1 || GEOR.Addons.Cadastre.isCNIL2){
+        GEOR.Addons.Cadastre.initPrintBordereauParcellaireWindow(parcelleId);
+        printBordereauParcellaireWindow.show();
+    }else{
+        // PARAMS
+        var params = {
+            parcelle : parcelleId, personaldata:0
+        } 
+        var url = GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createBordereauParcellaire?' + Ext.urlEncode(params);
+
+        // Directly download file, without and call service without ogcproxy
+        Ext.DomHelper.append(document.body, {
+            tag : 'iframe',
+            id : 'downloadIframe',
+            frameBorder : 0,
+            width : 0,
+            height : 0,
+            css : 'display:none;visibility:hidden;height:0px;',
+            src : url
+        });
+        
+        //TODO add waiting panel
+        printBordereauParcellaireWindow.close();
+    }
 }
 
 /**
