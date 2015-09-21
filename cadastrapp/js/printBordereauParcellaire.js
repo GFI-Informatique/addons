@@ -26,6 +26,8 @@ GEOR.Addons.Cadastre.onClickPrintBordereauParcellaireWindow = function(parcelleI
         } 
         var url = GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createBordereauParcellaire?' + Ext.urlEncode(params);
 
+        Ext.DomHelper.useDom = true;
+        
         // Directly download file, without and call service without ogcproxy
         Ext.DomHelper.append(document.body, {
             tag : 'iframe',

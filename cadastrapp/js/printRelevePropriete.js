@@ -11,6 +11,8 @@ GEOR.Addons.Cadastre.onClickPrintRelevePropriete = function(compteCommunal) {
     }
     var url = GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createRelevePropriete?' + Ext.urlEncode(params);
 
+    Ext.DomHelper.useDom = true;
+    
     // Directly download file, without and call service without ogcproxy
     Ext.DomHelper.append(document.body, {
         tag : 'iframe',
