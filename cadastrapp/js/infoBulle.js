@@ -78,9 +78,12 @@ GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
                 popup.show();
                 document.body.onmousemove = function(e) {
                     //destroy popup on move
-                    popup.destroy()
+                    popup.destroy();
                 }
             }
+        },
+        failure : function(response, options){ 
+            console.log("Infobulle : Error occured when trying to get information from server, please check server logs")
         }
     }); 
     
