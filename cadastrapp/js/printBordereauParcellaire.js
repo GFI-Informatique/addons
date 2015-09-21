@@ -16,7 +16,7 @@ GEOR.Addons.Cadastre.onClickPrintBordereauParcellaireWindow = function(parcelleI
     
     // Test if user have CNIL level 1 or 2
     // ask if user want with or without personnal data
-    if (GEOR.Addons.Cadastre.isCNIL1 || GEOR.Addons.Cadastre.isCNIL2){
+    if (GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
         GEOR.Addons.Cadastre.initPrintBordereauParcellaireWindow(parcelleId);
         printBordereauParcellaireWindow.show();
     }else{
