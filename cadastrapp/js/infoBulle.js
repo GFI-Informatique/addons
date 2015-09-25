@@ -65,7 +65,7 @@ GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
                 popup = new GeoExt.Popup({
                     map:map,
                     location: lonlat,
-                    width: 200,
+                    width: 300,
                     html: html,
                     listeners: {
                         close: function() {
