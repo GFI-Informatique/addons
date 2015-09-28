@@ -16,14 +16,12 @@
         "js/FeaturePanel.js",
         "js/main.js",
       	"js/cadastrappUtil.js",
-        "../../../lib/externals/ext/examples/ux/Spinner.js",
-        "../../../lib/externals/ext/examples/ux/SpinnerField.js",
-        "../../../lib/externals/ext/examples/ux/fileuploadfield/FileUploadField.js"
+  		"js/external/fileUploadField.js"
     ],
     
     "css": [
         "css/cadastrapp.css",
-        "../../../lib/externals/ext/examples/ux/fileuploadfield/css/fileuploadfield.css"
+        "css/external/fileuploadfield.css"
     ],
     "default_options": {},
     "i18n": {
