@@ -111,8 +111,22 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
      * Method: destroy Called by GEOR_tools when deselecting this addon
      */
     destroy: function() {
+        
+        // Remove menu
         this.window.hide();
         this.control = null;
+        
+        // Delete selectedFeature 
+        GEOR.Addons.Cadastre.selectedFeatures=null;
+        
+        // Remove WMS Layer
+        layer.map.removeLayer(GEOR.Addons.Cadastre.WMSLayer);
+        GEOR.Addons.Cadastre.WMSLayer.destroy();
+        
+        // Remove WFSLayer
+        layer.map.removeLayer(GEOR.Addons.Cadastre.selectLayer);
+        GEOR.Addons.Cadastre.selectLayer.destroy();
+
         GEOR.Addons.Base.prototype.destroy.call(this);
     }
     

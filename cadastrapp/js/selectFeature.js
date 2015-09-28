@@ -31,6 +31,7 @@ var TopicRecord = Ext.data.Record.create([
  * 
  */
 GEOR.Addons.Cadastre.createSelectionControl = function(style, selectedStyle) {
+   
     var map = layer.map;
 
     var styleFeatures = new OpenLayers.StyleMap(new OpenLayers.Style({ // param config
@@ -85,7 +86,7 @@ GEOR.Addons.Cadastre.createSelectionControl = function(style, selectedStyle) {
     }));
     
     // création de la couche des entités selectionnées
-    GEOR.Addons.Cadastre.selectLayer = new OpenLayers.Layer.Vector("selection");
+    GEOR.Addons.Cadastre.selectLayer = new OpenLayers.Layer.Vector("selection" , {displayInLayerSwitcher: false});
     GEOR.Addons.Cadastre.selectLayer.styleMap = styleFeatures;
    
     // ajout de la couche à la carte
@@ -709,8 +710,14 @@ GEOR.Addons.Cadastre.zoomToSelectedFeatures = function() {
  * @param: wmsSetting
  */
 GEOR.Addons.Cadastre.addWMSLayer = function(wmsSetting) {
+    
+    // Show layer in switcher only if it has a name set by administrator
+    var isDisplayInLayerSwitcher = false;  
+    if(wmsSetting.layerNameInPanel.length > 0){
+        isDisplayInLayerSwitcher = true;
+    }
 
-    var cadastre = new OpenLayers.Layer.WMS(
+    GEOR.Addons.Cadastre.WMSLayer = new OpenLayers.Layer.WMS(
             // paramètres de la requête wms
             wmsSetting.layerNameInPanel, 
             wmsSetting.url, {
@@ -719,16 +726,16 @@ GEOR.Addons.Cadastre.addWMSLayer = function(wmsSetting) {
                 format : wmsSetting.format,
             }, { 
                 // options carte
+                displayInLayerSwitcher: isDisplayInLayerSwitcher,
                 isBaseLayer : false,
-                //singleTile: true,
                 queryable : true,
-                //rendererOptions:{zIndexing: true}
             });
-    var map = layer.map;
-    var layer1 = map.getLayersByName(wmsSetting.layerNameInPanel)[0];
+   
+    // Remove existing Layer if already exist.
+    var layer1 = layer.map.getLayersByName(wmsSetting.layerNameInPanel)[0];
     if (layer1) {
-        map.removeLayer(layer1)
+        layer1.destroy();
     }
-    map.addLayer(cadastre); // ajout de la couche à la carte	*/
+    layer.map.addLayer(GEOR.Addons.Cadastre.WMSLayer); // ajout de la couche à la carte	*/
 }
 
