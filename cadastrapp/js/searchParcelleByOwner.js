@@ -1,14 +1,8 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
 /**
- * public: method[onClickRechercheProprietaire] Appelée sur click sur le bouton
- * 'fonctions avancees' Comprend la recherche par nom ou par compte
- * propriétaire. En sortie, le lancement de la recherche affiche une fenetre
- * listant les propriétaires correspondants
+ * Init windows if not existing
  */
-GEOR.Addons.Cadastre.proprietaireWindow;
-
-// Déclaration de la fonction de recherche par nom
 GEOR.Addons.Cadastre.onClickRechercheProprietaire = function(tab) {
 
     if (GEOR.Addons.Cadastre.proprietaireWindow == null) {
@@ -18,11 +12,10 @@ GEOR.Addons.Cadastre.onClickRechercheProprietaire = function(tab) {
     GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].setActiveTab(tab);
 }
 
-// Déclaration de la fonction d'initialisation de recherche de propriétaire
-// Comprend une combobox "villes" par onglet, permettant la gestion de
-// l'autocomplétion
-// ainsi qu'un tableau permettant de rechercher un ou plusieurs comptes
-// propriétaires
+/**
+ * Create search windows to find list of plots using owners information Town,
+ * name or id
+ */
 GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
 
     // comboboxe "villes" de l'onglet "Nom usage ou Naissance"
@@ -38,22 +31,23 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
         displayField : 'displayname',
         valueField : 'cgocommune',
         store : GEOR.Addons.Cadastre.getPartialCityStore(),
-
-        // Recherche de la ville demandée avec gestion de l'autocomplétion
         listeners : {
             beforequery : function(q) {
+                // Check not null querry and if enough chars
                 if (q.query) {
                     var length = q.query.length;
+                    // If enough chars in query
                     if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
+
+                        // if not a number request by town name
                         if (isNaN(q.query)) {
-                            // recherche par nom de ville
                             q.combo.getStore().load({
                                 params : {
                                     libcom : q.query
                                 }
                             });
                         } else {
-                            // recherche par code insee
+                            // if not a number request by town code
                             q.combo.getStore().load({
                                 params : {
                                     cgocommune : q.query
@@ -72,6 +66,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
             }
         }
     });
+
     // Combobox "Villes" de l'onglet "Compte propriétaire"
     var propCityCombo2 = new Ext.form.ComboBox({
         fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.city'),
@@ -121,25 +116,25 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
 
     // grille "proprietaires"
     var proprietaireGrid = new Ext.grid.EditorGridPanel({
-        id: 'gripOwnerSearchByOwners',
-        fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.proprietaires'),
-        name: 'proprietaires',
-        xtype: 'editorgrid',
+        id : 'gripOwnerSearchByOwners',
+        fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.proprietaires'),
+        name : 'proprietaires',
+        xtype : 'editorgrid',
         clicksToEdit : 1,
-        ds: GEOR.Addons.Cadastre.getVoidProprietaireStore(),
-        cm: GEOR.Addons.Cadastre.getProprietaireColModel(),
-        autoExpandColumn: 'proprietaire',
-        height: 100,
-        width: 300,
-        border: true,
-        disabled: true,
-        listeners: {
-            beforeedit: function(e) {
+        ds : GEOR.Addons.Cadastre.getVoidProprietaireStore(),
+        cm : GEOR.Addons.Cadastre.getProprietaireColModel(),
+        autoExpandColumn : 'proprietaire',
+        height : 100,
+        width : 300,
+        border : true,
+        disabled : true,
+        listeners : {
+            beforeedit : function(e) {
                 if (e.column == 0 && propCityCombo2.value == '') {
-                    return false;                       
+                    return false;
                 }
             },
-            afteredit: function(e) {
+            afteredit : function(e) {
                 // on ajoute un champ vide, si le dernier champ est complet
                 var lastIndex = e.grid.store.getCount() - 1;
                 var lastData = e.grid.store.getAt(e.grid.store.getCount() - 1).data;
@@ -163,72 +158,75 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
     // recherche
     // et de fermeture de la fenetre
     GEOR.Addons.Cadastre.proprietaireWindow = new Ext.Window({
-        title: OpenLayers.i18n('cadastrapp.proprietaire.title'),
-        frame: true,
-        autoScroll: true,
-        minimizable: false,
-        closable: true,
-        resizable: true,
-        draggable: true,
-        constrainHeader: true,
-        border: false,
-        labelWidth: 100,
-        width: 450,
-        defaults: {
-            autoHeight: true,
-            bodyStyle: 'padding:10px',
-            flex: 1
+        title : OpenLayers.i18n('cadastrapp.proprietaire.title'),
+        frame : true,
+        autoScroll : true,
+        minimizable : false,
+        closable : true,
+        resizable : true,
+        draggable : true,
+        constrainHeader : true,
+        border : false,
+        labelWidth : 100,
+        width : 450,
+        defaults : {
+            autoHeight : true,
+            bodyStyle : 'padding:10px',
+            flex : 1
         },
-        listeners: {
-            close: function(window) {
+        listeners : {
+            close : function(window) {
                 GEOR.Addons.Cadastre.proprietaireWindow = null;
             }
         },
-
-        items: [ {
-            xtype: 'tabpanel',
-            activeTab: 0,
-            items: [ {
+        items : [ {
+            xtype : 'tabpanel',
+            activeTab : 0,
+            items : [ {
                 // ONGLET "Nom Usage ou Naissance"
-                id: 'propFirstForm',
+                id : 'propFirstForm',
                 xtype : 'form',
-                title: OpenLayers.i18n('cadastrapp.proprietaire.title.tab1'),
-                defaultType: 'displayfield',
-                height: 200,
-                items: [ propCityCombo1, {
-                    value: OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
-                    fieldClass: 'displayfieldGray'
+                title : OpenLayers.i18n('cadastrapp.proprietaire.title.tab1'),
+                defaultType : 'displayfield',
+                height : 150,
+                items : [ propCityCombo1, {
+                    value : OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
+                    fieldClass : 'displayfieldGray'
                 }, {
-                    id:'comboDnomlpSearchByOwners',
-                    hiddenName:'dnomlp',
-                    fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.lastname'),
-                    xtype: 'combo',
-                    allowBlank: false,
-                    width: 300,
-                    mode: 'local',
-                    value: '',
-                    forceSelection: false,
-                    editable: true,
-                    displayField: 'dnomlp',
-                    valueField: 'dnomlp',
-                    disabled: true,
-                    store: new Ext.data.JsonStore({
-                        proxy: new Ext.data.HttpProxy({
-                            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire',
-                            method: 'GET',
-                            autoload: true
+                    id : 'comboDnomlpSearchByOwners',
+                    hiddenName : 'globalname',
+                    fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.name'),
+                    xtype : 'combo',
+                    allowBlank : false,
+                    width : 300,
+                    mode : 'local',
+                    value : '',
+                    forceSelection : false,
+                    editable : true,
+                    displayField : 'globalname',
+                    valueField : 'globalname',
+                    disabled : true,
+                    store : new Ext.data.JsonStore({
+                        proxy : new Ext.data.HttpProxy({
+                            url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire',
+                            method : 'GET',
+                            autoload : true
                         }),
-                        fields: ['dnomlp', 'dprnlp']
+                        fields : [ { 
+                            name: 'globalname', 
+                            convert: function(v, rec) {
+                                return rec.dnomlp +' '+rec.dnomcp+' '+rec.dprnlp+''+rec.dprncp;
+                            } }]
                     }),
-                    listeners: {
-                        beforequery: function(q) {
+                    listeners : {
+                        beforequery : function(q) {
                             if (q.query) {
                                 var length = q.query.length;
                                 if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
                                     q.combo.getStore().load({
                                         params : {
                                             cgocommune : GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].getActiveTab().getForm().findField('cgocommune').value,
-                                            dnomlp : q.query
+                                            globalname : q.query
                                         }
                                     });
                                 }
@@ -238,43 +236,36 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                             q.query = new RegExp(Ext.escapeRe(q.query), 'i');
                             q.query.length = length;
                         },
-                        valid: function(element) {
-                            Ext.getCmp("textfieldCadDprnlpSearch").enable();
+                        valid : function(element) {
                             GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
                         }
                     }
                 }, {
-                    value: OpenLayers.i18n('cadastrapp.proprietaire.lastname.exemple'),
-                    fieldClass: 'displayfieldGray'
-                }, {
-                    id:'textfieldCadDprnlpSearch',
-                    xtype: 'textfield',
-                    fieldLabel: OpenLayers.i18n('cadastrapp.proprietaire.firstname'),
-                    name: 'dprnlp',
-                    width: 300,
-                    disabled: true,
-                }, {
-                    value : OpenLayers.i18n('cadastrapp.proprietaire.firstname.exemple'),
-                    fieldClass: 'displayfieldGray'
+                    value : OpenLayers.i18n('cadastrapp.proprietaire.name.exemple'),
+                    fieldClass : 'displayfieldGray'
                 } ]
             }, {
-
                 // ONGLET "Compte proprietaire"
                 id : 'propSecondForm',
                 xtype : 'form',
                 title : OpenLayers.i18n('cadastrapp.proprietaire.title.tab2'),
                 defaultType : 'displayfield',
-                fileUpload : true,
-                height : 200,
+                height : 150,
 
                 items : [ propCityCombo2, {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
                     fieldClass : 'displayfieldGray'
                 }, proprietaireGrid, // grille "proprietaires"
-                {
-                    value : OpenLayers.i18n('cadastrapp.proprietaire.or'),
-                    fieldClass : 'displayfieldCenter'
-                }, {
+                ]
+            }, {
+                // ONGLET "par lot"
+                id : 'propThirdForm',
+                xtype : 'form',
+                title : OpenLayers.i18n('cadastrapp.proprietaire.title.tab3'),
+                defaultType : 'displayfield',
+                fileUpload : true,
+                height : 150,
+                items : [ {
                     fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.file.path'),
                     name : 'filePath',
                     xtype : 'fileuploadfield',
@@ -282,29 +273,39 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     buttonText : OpenLayers.i18n('cadastrapp.proprietaire.file.open'),
                     height : 25,
                     width : 300
-                } ]
+                }, {
+                    value : OpenLayers.i18n('cadastrapp.proprietaire.file.explanation'),
+                    fieldClass : 'displayfieldGray'
+                } ], 
+                listeners : {
+                    afterrender: function(element) {
+                        GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
+                    }
+                }
             } ],
-            listeners: {
-                beforetabchange: function(panel, newTab, currentTab){
-                       GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].disable();
+            listeners : {
+                beforetabchange : function(panel, newTab, currentTab) {
+                    if(GEOR.Addons.Cadastre.proprietaireWindow){
+                        GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].disable();
+                    }
                 }
             }
         } ],
-        buttons: [ {
-            text: OpenLayers.i18n('cadastrapp.search'),
-            disabled: true,
-            listeners: {
-                click: function(b, e) {
+        buttons : [ {
+            text : OpenLayers.i18n('cadastrapp.search'),
+            disabled : true,
+            listeners : {
+                click : function(b, e) {
                     var currentForm = GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].getActiveTab();
                     if (currentForm.id == 'propFirstForm') {
                         if (currentForm.getForm().isValid()) {
                             // TITRE de l'onglet resultat
                             var resultTitle = currentForm.getForm().findField('cgocommune').lastSelectionText;
 
-                            // PARAMS                      
+                            // PARAMS
                             var params = currentForm.getForm().getValues();
                             params.details = 2;
-  
+
                             // envoi des données d'une form
                             Ext.Ajax.request({
                                 method : 'GET',
@@ -314,10 +315,10 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                     var paramsGetParcelle = {};
                                     var comptecommunalArray = [];
                                     var result = Ext.decode(response.responseText);
-                                    for(var i=0; i<result.length; i++){
+                                    for (var i = 0; i < result.length; i++) {
                                         comptecommunalArray.push(result[i].comptecommunal);
                                     }
-                                    paramsGetParcelle.comptecommunal=comptecommunalArray;
+                                    paramsGetParcelle.comptecommunal = comptecommunalArray;
                                     // envoi des données d'une form
                                     Ext.Ajax.request({
                                         method : 'GET',
@@ -339,16 +340,16 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
 
                     } else {
                         if (currentForm.getForm().isValid()) {
-                            // TITRE de l'onglet resultat
-                            var resultTitle = currentForm.getForm().findField('cgocommune').lastSelectionText;
-
+                           
                             if (currentForm.getForm().findField('filePath').value != undefined) {
                                 // PAR FICHIER
+                                // TITRE de l'onglet resultat
+                                var resultTitle = OpenLayers.i18n('cadastrapp.result.title.fichier');
 
                                 // soumet la form (pour envoyer le fichier)
                                 currentForm.getForm().submit({
                                     method : 'POST',
-                                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle/fromProprietairesFile',
+                                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'fromProprietairesFile',
                                     params : {
                                         details : 1
                                     },
@@ -361,7 +362,10 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                 });
 
                             } else {
-                                
+
+                                // TITRE de l'onglet resultat
+                                var resultTitle = currentForm.getForm().findField('cgocommune').lastSelectionText;
+
                                 // PARAMS
                                 var params = currentForm.getForm().getValues();
                                 params.details = 2;
@@ -371,8 +375,8 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                 proprietaireGrid.getStore().each(function(record) {
                                     dnuproList.push(record.data.proprietaire);
                                 });
-                                params.dnupro=dnuproList;
-                                // PAR LISTE                                
+                                params.dnupro = dnuproList;
+                                // PAR LISTE
                                 // envoi des données d'une form
                                 Ext.Ajax.request({
                                     method : 'GET',
@@ -382,10 +386,10 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                         var paramsGetParcelle = {};
                                         var comptecommunalArray = [];
                                         var result = Ext.decode(response.responseText);
-                                        for(var i=0; i<result.length; i++){
+                                        for (var i = 0; i < result.length; i++) {
                                             comptecommunalArray.push(result[i].comptecommunal);
                                         }
-                                        paramsGetParcelle.comptecommunal=comptecommunalArray;
+                                        paramsGetParcelle.comptecommunal = comptecommunalArray;
                                         // envoi des données d'une form
                                         Ext.Ajax.request({
                                             method : 'GET',
@@ -417,4 +421,5 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
             }
         } ]
     });
+    
 };

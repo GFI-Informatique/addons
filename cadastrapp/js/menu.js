@@ -502,6 +502,13 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
             });
             buttonRechercheProprietaireCompte.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheProprietaire(1)});
     
+         // sous-sous-menu : recherche proprietaire - par compte
+            var buttonRechercheProprietaireCompte = scrollMenuRechercheProprietaire.add({
+                tooltip : OpenLayers.i18n("cadastrapp.proprietaire.lot"),
+                text : OpenLayers.i18n("cadastrapp.proprietaire.lot")
+            });
+            buttonRechercheProprietaireCompte.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheProprietaire(2)});
+            
             // sous-menu : recherche copropriété
             var buttonRechercheCopropriete = scrollMenu.add({
                 tooltip : OpenLayers.i18n("cadastrapp.copropriete"),

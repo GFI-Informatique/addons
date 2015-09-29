@@ -505,7 +505,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         else if (currentForm.id == 'parcThirdForm') {
 
                             //TITRE de l'onglet resultat
-                            var resultTitle = "Recherche par id(s)";
+                            var resultTitle = OpenLayers.i18n('cadastrapp.result.title.ids');
 
                             //envoi des données d'une form
                             Ext.Ajax.request({
@@ -524,7 +524,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                             if (currentForm.getForm().findField('filePath').value != undefined
                                     && currentForm.getForm().findField('filePath').value.length > 2) {
                                 
-                                var resultTitle = "Par fichier";
+                                var resultTitle = OpenLayers.i18n('cadastrapp.result.title.fichier');
                            
                                 // sousmet le form (pour envoyer le fichier)
                                 currentForm.getForm().submit({
