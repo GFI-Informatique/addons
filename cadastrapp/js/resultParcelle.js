@@ -1,16 +1,6 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
 
-// Result parcelle grid
-// init array which will contain all open windows
-GEOR.Addons.Cadastre.resultParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
-    detailParcelles : new Array(),
-    fichesCOuvertes : new Array(),
-    idParcellesCOuvertes : new Array(),
-    fichesFOuvertes : new Array(),
-    idParcellesFOuvertes : new Array(),
-});
-
 /**
  *  Init Global windows containing all tabs
  */
@@ -27,9 +17,15 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
         draggable: true,
         constrainHeader: true,
         border: false,
-        boxMaxHeight:Ext.getBody().getViewSize().height - 200,
         width: 500,
+        boxMaxHeight : Ext.getBody().getViewSize().height - 200,
         listeners: {
+            // Adding because autoheight and boxMaxHeight to not work together on tabPanel
+            afterlayout: function(window){
+                if (this.getHeight() > this.boxMaxHeight) {
+                    this.setHeight(this.boxMaxHeight);
+                }
+            },
             close: function(window) {
 
                 // *********************
@@ -48,6 +44,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
         },
         items: [ {
             xtype: 'tabpanel',
+            layoutOnTabChange : true,
             items: [ {
                 xtype: 'panel',
                 title: '+',
@@ -72,6 +69,18 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
         } ]
     });
 };
+
+/**
+ * Result parcelle grid
+ * For each tab, contains gridPanel with value + list of selection and open windows
+ */
+GEOR.Addons.Cadastre.resultParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
+     detailParcelles : new Array(),
+     fichesCOuvertes : new Array(),
+     idParcellesCOuvertes : new Array(),
+     fichesFOuvertes : new Array(),
+     idParcellesFOuvertes : new Array(),
+});
 
 /**
  * public: method[addNewResultParcelle] 
@@ -102,11 +111,11 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
     }
     
     // Get tab list
-    GEOR.Addons.Cadastre.tabs = GEOR.Addons.Cadastre.resultParcelleWindow.items.items[0];
+    GEOR.Addons.Cadastre.resultParcelleWindow.tabs = GEOR.Addons.Cadastre.resultParcelleWindow.items.items[0];
    
     // **********
     // Listener
-    GEOR.Addons.Cadastre.tabs.addListener('beforetabchange', function(tab, newTab, currentTab) {
+    GEOR.Addons.Cadastre.resultParcelleWindow.tabs.addListener('beforetabchange', function(tab, newTab, currentTab) {
         var store;
         if (currentTab) { // cad la table de resultats est ouverte et on navigue entre les
             // onglets, sinon toute selection en bleue sur la carte va redevenir jaune
@@ -132,13 +141,13 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
 
     GEOR.Addons.Cadastre.newGrid = new GEOR.Addons.Cadastre.resultParcelleGrid({
         title : title,
-        id : 'resultParcelleWindowTab' +  GEOR.Addons.Cadastre.tabs.items.length,
-        autoHeight : true,
+        id : 'resultParcelleWindowTab' +  GEOR.Addons.Cadastre.resultParcelleWindow.tabs.items.length,
         border : true,
         closable : true,
         store : (result != null) ? result : new Ext.data.Store(),
         colModel : GEOR.Addons.Cadastre.getResultParcelleColModel(),
         multiSelect : true,
+        autoHeight : true,
         viewConfig : {
             deferEmptyText : false,
             emptyText : message
@@ -154,7 +163,7 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
                 });
                  
                 // on ferme la fenetre si c'est le dernier onglet
-                if (GEOR.Addons.Cadastre.tabs.items.length == 2) {
+                if (GEOR.Addons.Cadastre.resultParcelleWindow.tabs.items.length == 2) {
                     // si il ne reste que cet onglet et l'onglet '+', fermer la fenetre
                     GEOR.Addons.Cadastre.resultParcelleWindow.close();
                 } else {
@@ -162,8 +171,8 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
                     // activer, pour eviter de tomber sur le '+' (qui va
                     // tenter de refaire un onglet et ça va faire
                     // nimporte quoi)
-                    var index = GEOR.Addons.Cadastre.tabs.items.findIndex('id', grid.id);
-                    GEOR.Addons.Cadastre.tabs.setActiveTab((index == 0) ? 1 : (index - 1));
+                    var index = GEOR.Addons.Cadastre.resultParcelleWindow.tabs.items.findIndex('id', grid.id);
+                    GEOR.Addons.Cadastre.resultParcelleWindow.tabs.setActiveTab((index == 0) ? 1 : (index - 1));
                     // *************
                     // quand on ferme l'onglet on vire toutes les
                     // parcelles dependantes
@@ -207,8 +216,8 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
         GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.data.parcelle);
     });
 
-    GEOR.Addons.Cadastre.tabs.insert(0, GEOR.Addons.Cadastre.newGrid);
-    GEOR.Addons.Cadastre.tabs.setActiveTab(0);
+    GEOR.Addons.Cadastre.resultParcelleWindow.tabs.insert(0, GEOR.Addons.Cadastre.newGrid);
+    GEOR.Addons.Cadastre.resultParcelleWindow.tabs.setActiveTab(0);
     GEOR.Addons.Cadastre.resultParcelleWindow.show();
 }
 
@@ -234,7 +243,7 @@ GEOR.Addons.Cadastre.addNewDataResultParcelle = function(result) {
                 dcntpa: element.dcntpa
             });
             // ajout de la ligne
-            GEOR.Addons.Cadastre.tabs.activeTab.store.add(newRecord);
+            GEOR.Addons.Cadastre.resultParcelleWindow.tabs.activeTab.store.add(newRecord);
            
             // Ajout de la parcelle à la liste de feature sélectionner pour le zoom et la sélection en jaune
             GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.parcelle);

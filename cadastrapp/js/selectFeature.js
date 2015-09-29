@@ -282,7 +282,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                             parcelsIds.push(id);
                         } else {
                             // sinon on la supprime du tableau et on ferme les fenêtres de détail
-                            GEOR.Addons.Cadastre.tabs.activeTab.store.removeAt(GEOR.Addons.Cadastre.indexRowParcelle(id));
+                            GEOR.Addons.Cadastre.resultParcelleWindow.tabs.activeTab.store.removeAt(GEOR.Addons.Cadastre.indexRowParcelle(id));
                             GEOR.Addons.Cadastre.closeWindowFIUC(id, GEOR.Addons.Cadastre.newGrid);
                             GEOR.Addons.Cadastre.closeWindowFIUF(id, GEOR.Addons.Cadastre.newGrid);
                         }
@@ -437,7 +437,7 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
                 var rowIndex;
                 
                 // si la fenetre de recherche n'est pas ouverte
-                if (!GEOR.Addons.Cadastre.tabs || !GEOR.Addons.Cadastre.tabs.activeTab) { 
+                if (!GEOR.Addons.Cadastre.resultParcelleWindow.tabs || !GEOR.Addons.Cadastre.resultParcelleWindow.tabs.activeTab) { 
                    
                     GEOR.Addons.Cadastre.addNewResultParcelle("result selection (" + parcelsIds.length + ")", GEOR.Addons.Cadastre.getResultParcelleStore(response.responseText, false));
                     
@@ -467,7 +467,7 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
                                 dcntpa : element.dcntpa,
                             });
                             // ajout de la ligne
-                            GEOR.Addons.Cadastre.tabs.activeTab.store.add(newRecord);
+                           GEOR.Addons.Cadastre.resultParcelleWindow.tabs.activeTab.store.add(newRecord);
                             // Ajout à la selection
                             GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.parcelle);
                         }
