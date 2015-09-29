@@ -449,7 +449,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                 params.cgocommune = currentForm.getForm().findField('cgocommune').value;
                                 
                                 // init result windows without showing it
-                                GEOR.Addons.Cadastre.addNewResult(resultTitle, null, OpenLayers.i18n('cadastrapp.parcelle.result.nodata'));
+                                GEOR.Addons.Cadastre.addNewResult(resultTitle, null);
                                 
                                 parcelleGrid.getStore().each(function(record) {
                                     console.log("parcelleGrid each row");
