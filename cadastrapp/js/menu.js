@@ -560,13 +560,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 tooltip : OpenLayers.i18n("cadastrapp.selection.proprietaires.edition"),
                 text : OpenLayers.i18n("cadastrapp.selection.proprietaires.edition")
             });
-
         }
-        // sous-sous-menu : traitement sélection - import
-        var buttonTraitementSelectionImport = scrollMenuTraitementSelection.add({
-            tooltip : OpenLayers.i18n("cadastrapp.selection.import"),
-            text : OpenLayers.i18n("cadastrapp.selection.import")
-        });
     },
 
     /**
