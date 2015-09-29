@@ -454,24 +454,31 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         });
         // sous-sous-menu : recherche parcelle - par référence
         var buttonRechercheParcelleIdentifiant = scrollMenuRechercheParcelle.add({
-            tooltip : OpenLayers.i18n("cadastrapp.parcelle.refer"),
-            text : OpenLayers.i18n("cadastrapp.parcelle.refer")
+            tooltip : OpenLayers.i18n("cadastrapp.menu.parcelle.refer"),
+            text : OpenLayers.i18n("cadastrapp.menu.parcelle.refer")
         });
         buttonRechercheParcelleIdentifiant.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheParcelle(0)});
 
         // sous-sous-menu : recherche parcelle - par adresse
         var buttonRechercheParcelleAdresse = scrollMenuRechercheParcelle.add({
-            tooltip : OpenLayers.i18n("cadastrapp.parcelle.adresse"),
-            text : OpenLayers.i18n("cadastrapp.parcelle.adresse")
+            tooltip : OpenLayers.i18n("cadastrapp.menu.parcelle.adresse"),
+            text : OpenLayers.i18n("cadastrapp.menu.parcelle.adresse")
         });
         buttonRechercheParcelleAdresse.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheParcelle(1)});
 
         // sous-sous-menu : recherche parcelle - par identifiant cadastral
         var buttonRechercheParcelleAdresse = scrollMenuRechercheParcelle.add({
-            tooltip : OpenLayers.i18n("cadastrapp.parcelle.identifiant"),
-            text : OpenLayers.i18n("cadastrapp.parcelle.identifiant")
+            tooltip : OpenLayers.i18n("cadastrapp.menu.parcelle.identifiant"),
+            text : OpenLayers.i18n("cadastrapp.menu.parcelle.identifiant")
         });
         buttonRechercheParcelleAdresse.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheParcelle(2)});
+        
+        // sous-sous-menu : recherche parcelle - par identifiant cadastral
+        var buttonRechercheParcelleLot = scrollMenuRechercheParcelle.add({
+            tooltip : OpenLayers.i18n("cadastrapp.menu.parcelle.lot"),
+            text : OpenLayers.i18n("cadastrapp.menu.parcelle.lot")
+        });
+        buttonRechercheParcelleLot.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheParcelle(3)});
 
         if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
             // sous-menu : recherche proprietaire

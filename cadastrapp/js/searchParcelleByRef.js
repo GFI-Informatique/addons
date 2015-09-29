@@ -1,16 +1,17 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
-// Parcelle windows with three tabs
+// Parcelle windows with four tabs
 // Ref ; Adresse cadastrale, Ref cadastrale
 GEOR.Addons.Cadastre.rechercheParcelleWindow;
 
 /**
- * Init windows if it does not exist, and select firt tab
+ * Init windows if it does not exist, and select first tab
  * 
- * @param: tab 0, 1 or 2 
+ * @param: tab 0, 1, 2 or 3
  *      0 -> tab search by ref
  *      1 -> tab search by adresse
- *      2 -> tab search by ref cadastrale
+ *      2 -> tab search by id
+ *      3 -> tab search by lot
  */
 GEOR.Addons.Cadastre.onClickRechercheParcelle = function(tab) {
     
@@ -24,13 +25,14 @@ GEOR.Addons.Cadastre.onClickRechercheParcelle = function(tab) {
     
     // Set defaut focus to directly write information
     if(tab==0){
-        Ext.getCmp('firstFormCommuneCombo').focus(true,true);
+        Ext.getCmp('searchById').focus(true,true);
     }else if(tab==1){
-        Ext.getCmp('secondFormCommuneCombo').focus(true,true);
+        Ext.getCmp('searchByAdress').focus(true,true);
+    }else if(tab==2){
+        Ext.getCmp('searchByRef').focus(true,true);
     }else{
-        Ext.getCmp('thirdFormParcelleTextField').focus(true,true);
-    }
-    
+        Ext.getCmp('searchByLot').focus(true,true);
+    }    
 }
 
 /**
@@ -42,7 +44,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
 
     // combobox "villes"
     var parcCityCombo1 = new Ext.form.ComboBox({
-        id:'firstFormCommuneCombo',
+        id:'searchById',
         fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
         hiddenName: 'cgocommune',
         width: 300,
@@ -97,7 +99,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
 
     var parcCityCombo2 = new Ext.form.ComboBox({
         fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
-        id:'secondFormCommuneCombo',
+        id:'searchByAdress',
         hiddenName: 'cgocommune',
         allowBlank: false,
         width: 300,
@@ -224,26 +226,13 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 xtype: 'form',
                 defaultType: 'displayfield',
                 id: 'parcFirstForm',
-                fileUpload: true,
-                height: 200,
+                height: 140,
                 items: [ parcCityCombo1, // combobox "villes"
                 {
                     value: OpenLayers.i18n('cadastrapp.parcelle.city.exemple'),
                     fieldClass: 'displayfieldGray'
-                }, parcelleGrid, // grille "références"
-                {
-                    value: OpenLayers.i18n('cadastrapp.parcelle.or'),
-                    fieldClass: 'displayfieldCenter'
-                }, 
-                {
-                    fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.file.path'),
-                    name: 'filePath',
-                    xtype: 'fileuploadfield',
-                    emptyText: OpenLayers.i18n('cadastrapp.parcelle.file.exemple'),
-                    buttonText: OpenLayers.i18n('cadastrapp.parcelle.file.open'),
-                    height: 25,
-                    width: 300
-                } ]
+                }, parcelleGrid // grille "références"
+               ]
             }, {
 
                 // ONGLET 2
@@ -251,7 +240,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 xtype: 'form',
                 defaultType: 'displayfield',
                 id: 'parcSecondForm',
-                height: 200,
+                height: 140,
                 items: [ parcCityCombo2, // combobox "villes"
                 {
                     value: OpenLayers.i18n('cadastrapp.parcelle.city.exemple'),
@@ -343,18 +332,18 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 xtype: 'form',
                 defaultType: 'displayfield',
                 id: 'parcThirdForm',
-                height: 200,
+                height: 140,
                 items: [ {
                     xtype: 'textfield',
-                    id:'thirdFormParcelleTextField',
+                    id:'searchByRef',
                     allowBlank: false,
                     fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.ident'),
-                    name: 'ident',
+                    name: 'parcelle',
                     width: 300,
                     validator: function(value)
                     {
                         if(!value || value.length<14) {
-                        return 'L\'id de parcelle doit contenir au moins 15 caractères pour le modèle arcopole et 19 pour le modèle qgis, si plusieurs ids de parcelle sont fournis il faut les séparer par un espace, une virgule ou un point virgule';
+                        return OpenLayers.i18n('cadastrapp.parcelle.ident.control');
                         } else {
                         return true;
                         }
@@ -367,6 +356,71 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 }, {
                     value: OpenLayers.i18n('cadastrapp.parcelle.ident.exemple'),
                     fieldClass: 'displayfieldGray'
+                } ]
+            },{
+             // ONGLET 4
+                title: OpenLayers.i18n('cadastrapp.parcelle.title.tab4'),
+                xtype: 'form',
+                defaultType: 'displayfield',
+                id: 'parcForthForm',
+                fileUpload: true,
+                height: 140,
+                items: [ {
+                    xtype: 'textarea',
+                    id:'searchByLot',
+                    fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.lot'),
+                    name: 'parcelle',
+                    width: 300,
+                    height: 40,
+                    validator: function(value)
+                    {
+                        if(Ext.getCmp('searchByLotPath').getValue().length<2 && (!value || value.length<14)) {
+                            return OpenLayers.i18n('cadastrapp.parcelle.lot.control');
+                        } else {
+                            return true;
+                        }
+                    },
+                    listeners: {
+                        focus: function(element){
+                            Ext.getCmp('searchByLotPath').reset();
+                        },
+                        valid: function(element) {
+                            GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
+                        }
+                    }
+                }, {
+                    value: OpenLayers.i18n('cadastrapp.parcelle.lot.exemple'),
+                    fieldClass: 'displayfieldGray'
+                },
+                {
+                    value: OpenLayers.i18n('cadastrapp.parcelle.or'),
+                    fieldClass: 'displayfieldCenter'
+                }, 
+                {
+                    fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.file.path'),
+                    name: 'filePath',
+                    xtype: 'fileuploadfield',
+                    id:'searchByLotPath',
+                    emptyText: OpenLayers.i18n('cadastrapp.parcelle.file.exemple'),
+                    buttonText: OpenLayers.i18n('cadastrapp.parcelle.file.open'),
+                    height: 25,
+                    width: 300,
+                    validator: function(value)
+                    {
+                        if(Ext.getCmp('searchByLot').getValue().length<2 && (!value || value.length<2)) {
+                            return false;
+                        }else{
+                            return true;
+                        }
+                    },
+                    listeners: {
+                        fileselected: function(element){
+                            Ext.getCmp('searchByLot').reset();
+                        },
+                        valid: function(element) {
+                            GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
+                        }
+                    }
                 } ]
             } ], 
             listeners: {
@@ -386,22 +440,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
 
                     if (currentForm.getForm().isValid()){
                         if (currentForm.id == 'parcFirstForm') {
-                            // Recherche parcelle par fichier
-                            if (currentForm.getForm().findField('filePath').value != undefined) {
                            
-                                // sousmet le form (pour envoyer le fichier)
-                                currentForm.getForm().submit({
-                                    url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'fromParcellesFile',
-                                    params: {},
-                                    success: function(form, action) {
-                                        GEOR.Addons.Cadastre.addNewResultParcelle('Par fichier', GEOR.Addons.Cadastre.getResultParcelleStore(action.response.responseText, true));
-                                    },
-                                    failure: function(form, action) {
-                                        alert('ERROR');
-                                    }
-                                });
-                            }
-                            else{
                                 // TITRE de l'onglet resultat
                                 var resultTitle = currentForm.getForm().findField('cgocommune').lastSelectionText;
                                 
@@ -440,7 +479,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                         console.log("Not enough data to call the webservice ");
                                     }
                                 });
-                            }
+                            
                         }
                         else if (currentForm.id == 'parcSecondForm') {
                             //TITRE de l'onglet resultat
@@ -465,18 +504,14 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         }
                         else if (currentForm.id == 'parcThirdForm') {
 
-                            //PARAMS
-                            var params = currentForm.getForm().getValues();
-
                             //TITRE de l'onglet resultat
                             var resultTitle = "Recherche par id(s)";
-                            params.parcelle = currentForm.getForm().getValues().ident;
 
                             //envoi des données d'une form
                             Ext.Ajax.request({
                                 method: 'GET',
                                 url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
-                                params: params,
+                                params: currentForm.getForm().getValues(),
                                 success: function(result) {
                                     GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
                                 },
@@ -484,6 +519,44 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                     alert('ERROR');
                                 }
                             });
+                        }else if (currentForm.id == 'parcForthForm'){
+                            // Recherche parcelle par fichier
+                            if (currentForm.getForm().findField('filePath').value != undefined
+                                    && currentForm.getForm().findField('filePath').value.length > 2) {
+                                
+                                var resultTitle = "Par fichier";
+                           
+                                // sousmet le form (pour envoyer le fichier)
+                                currentForm.getForm().submit({
+                                    url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'fromParcellesFile',
+                                    params: {},
+                                    success: function(form, action) {
+                                        GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(action.response.responseText, true));
+                                    },
+                                    failure: function(form, action) {
+                                        alert('ERROR');
+                                    }
+                                });
+                            }
+                            else{
+
+                                //TITRE de l'onglet resultat
+                                var resultTitle = "Recherche par lot";
+
+                                //envoi des données d'une form
+                                Ext.Ajax.request({
+                                    method: 'GET',
+                                    url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+                                    params: currentForm.getForm().getValues(),
+                                    success: function(result) {
+                                        GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
+                                    },
+                                    failure: function(result) {
+                                        alert('ERROR');
+                                    }
+                                });
+                                
+                            }
                         }
                     }
                 }
