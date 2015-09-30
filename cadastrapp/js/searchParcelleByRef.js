@@ -269,58 +269,55 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         displayField: 'name',
                         valueField: 'value',
                         store: parcBisStore
-                    }, {
-                        // Add auto completion on dvoilib using getVoie service
-                        hiddenName:'dvoilib',
-                        xtype: 'combo',
-                        width: 190,
-                        mode: 'local',
-                        value: '',
-                        forceSelection: false,
-                        editable: true,
-                        displayField: 'dvoilib',
-                        valueField: 'dvoilib',
-                        minLength: GEOR.Addons.Cadastre.minCharToSearch,
-                        store: new Ext.data.JsonStore({
-                            proxy: new Ext.data.HttpProxy({
-                                url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getVoie',
-                                method: 'GET',
-                                autoload: true
-                            }),
-                            fields: ['dvoilib']
-                        }),
-                        listeners: {
-                            beforequery: function(q) {
-                                if (q.query) {
-                                    var length = q.query.length;
-                                    if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
-                                        q.combo.getStore().load({
-                                            params: {
-                                                cgocommune: GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].getActiveTab().getForm().findField('cgocommune').value,
-                                                dvoilib: q.query
-                                            }
-                                        });
-                                    }
-                                } else if (length < GEOR.Addons.Cadastre.minCharToSearch) {
-                                    q.combo.getStore().loadData([], false);
-                                }
-                                q.query = new RegExp(Ext.escapeRe(q.query), 'i');
-                                q.query.length = length;
-                            },
-                            valid: function(element){
-                                GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
-                            }
-                        },
-                        
-                    }]
-                }, {
-                    value: OpenLayers.i18n('cadastrapp.parcelle.street.exemple'),
-                    fieldClass: 'displayfieldGray'
-                }, {
-                    xtype: 'textfield',
+                    },{
+                        xtype: 'displayfield',
+                        value: OpenLayers.i18n('cadastrapp.parcelle.street.exemple'),
+                        fieldClass: 'displayfieldGray',
+                        width: 100,
+                    },]
+                },  {
+                    // Add auto completion on dvoilib using getVoie service
                     fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.town'),
-                    name: 'town',
-                    width: 300
+                    hiddenName:'dvoilib',
+                    xtype: 'combo',
+                    width: 190,
+                    mode: 'local',
+                    value: '',
+                    forceSelection: false,
+                    editable: true,
+                    displayField: 'dvoilib',
+                    valueField: 'dvoilib',
+                    minLength: GEOR.Addons.Cadastre.minCharToSearch,
+                    store: new Ext.data.JsonStore({
+                        proxy: new Ext.data.HttpProxy({
+                            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getVoie',
+                            method: 'GET',
+                            autoload: true
+                        }),
+                        fields: ['dvoilib']
+                    }),
+                    listeners: {
+                        beforequery: function(q) {
+                            if (q.query) {
+                                var length = q.query.length;
+                                if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
+                                    q.combo.getStore().load({
+                                        params: {
+                                            cgocommune: GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].getActiveTab().getForm().findField('cgocommune').value,
+                                            dvoilib: q.query
+                                        }
+                                    });
+                                }
+                            } else if (length < GEOR.Addons.Cadastre.minCharToSearch) {
+                                q.combo.getStore().loadData([], false);
+                            }
+                            q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+                            q.query.length = length;
+                        },
+                        valid: function(element){
+                            GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
+                        }
+                    },               
                 }, {
                     value: OpenLayers.i18n('cadastrapp.parcelle.town.exemple'),
                     fieldClass: 'displayfieldGray'
