@@ -194,7 +194,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     fieldClass : 'displayfieldGray'
                 }, {
                     id : 'comboDnomlpSearchByOwners',
-                    hiddenName : 'globalname',
+                    hiddenName : 'ddenom',
                     fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.name'),
                     xtype : 'combo',
                     allowBlank : false,
@@ -203,8 +203,8 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     value : '',
                     forceSelection : false,
                     editable : true,
-                    displayField : 'globalname',
-                    valueField : 'globalname',
+                    displayField : 'displayname',
+                    valueField : 'ddenom',
                     disabled : true,
                     store : new Ext.data.JsonStore({
                         proxy : new Ext.data.HttpProxy({
@@ -212,10 +212,10 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                             method : 'GET',
                             autoload : true
                         }),
-                        fields : [ { 
-                            name: 'globalname', 
+                        fields : [  'ddenom', { 
+                            name: 'displayname', 
                             convert: function(v, rec) {
-                                return rec.dnomlp +' '+rec.dnomcp+' '+rec.dprnlp+''+rec.dprncp;
+                                return rec.ddenom.replace('/', ' ');
                             } }]
                     }),
                     listeners : {
@@ -226,7 +226,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                     q.combo.getStore().load({
                                         params : {
                                             cgocommune : GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].getActiveTab().getForm().findField('cgocommune').value,
-                                            globalname : q.query
+                                            ddenom : q.query,
                                         }
                                     });
                                 }
