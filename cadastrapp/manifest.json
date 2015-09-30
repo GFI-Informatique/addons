@@ -94,6 +94,12 @@
 			"cadastrapp.parcelle.result.adresse": "Cadastral address",
 			"cadastrapp.parcelle.result.surface": "Surface DGFiP in m²",
 			
+			"cadastrapp.result.parcelle.zoom.list": "Zoom on list",
+			"cadastrapp.result.parcelle.zoom.selection": "Zoom on selection",
+			"cadastrapp.result.parcelle.delete": "Delete entry",
+			"cadastrapp.result.parcelle.fiche": "Information form",
+			"cadastrapp.result.parcelle.export": "Export list",
+			
 			"cadastrapp.proprietaire": "owner",
 			"cadastrapp.proprietaire.nom": "By name",
 			"cadastrapp.proprietaire.compte": "By identifier",
@@ -353,6 +359,12 @@
 			"cadastrapp.parcelle.result.commune": "Commune",
 			"cadastrapp.parcelle.result.adresse": "Adresse cadastrale",
 			"cadastrapp.parcelle.result.surface": "Surface DGFiP en m²",
+			
+			"cadastrapp.result.parcelle.zoom.list": "Zoom liste",
+			"cadastrapp.result.parcelle.zoom.selection": "Zoom sélection",
+			"cadastrapp.result.parcelle.delete": "Enlever parcelle(s)",
+			"cadastrapp.result.parcelle.fiche": "Fiche d'info parcelle(s)",
+			"cadastrapp.result.parcelle.export": "Exporter la liste",
 			
 			"cadastrapp.proprietaire": "Propriétaire",
 			"cadastrapp.proprietaire.nom": "Par nom",

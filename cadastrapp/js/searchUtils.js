@@ -228,14 +228,14 @@ GEOR.Addons.Cadastre.getResultParcelleColModel = function() {
 			dataIndex: 'dnupla',
 			header: OpenLayers.i18n('cadastrapp.parcelle.result.dnupla'),
 			sortable: true,
-            width: 60
+            width: 70
 		},
 		{
 			id:'adresse',
 			dataIndex: 'adresse',
 			header: OpenLayers.i18n('cadastrapp.parcelle.result.adresse'),
 			sortable: true,
-            width: 190
+            width: 250
 		},
 		{
 			id:'dcntpa',

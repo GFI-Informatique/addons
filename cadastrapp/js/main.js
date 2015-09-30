@@ -26,9 +26,10 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         GEOR.Addons.Cadastre.relevePropriete.maxProprietaire = 25;
         
         // Init gobal variables   
-        GEOR.Addons.Cadastre.selectedFeatures = [];
         GEOR.Addons.Cadastre.selectLayer;
-        GEOR.Addons.Cadastre.newGrid,tabs;
+        GEOR.Addons.Cadastre.result=[];
+        GEOR.Addons.Cadastre.result.tabs;
+        GEOR.Addons.Cadastre.result.window;
        
         // TODO check why click on global
         GEOR.Addons.Cadastre.click;
@@ -115,9 +116,11 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         // Remove menu
         this.window.hide();
         this.control = null;
-        
-        // Delete selectedFeature 
-        GEOR.Addons.Cadastre.selectedFeatures=null;
+                
+        if (GEOR.Addons.Cadastre.result.windows){
+            GEOR.Addons.Cadastre.result.windows.close();
+        }
+        GEOR.Addons.Cadastre.tabs=null;
         
         // Remove WMS Layer
         layer.map.removeLayer(GEOR.Addons.Cadastre.WMSLayer);
@@ -128,6 +131,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         GEOR.Addons.Cadastre.selectLayer.destroy();
 
         GEOR.Addons.Base.prototype.destroy.call(this);
+
     }
     
 });
