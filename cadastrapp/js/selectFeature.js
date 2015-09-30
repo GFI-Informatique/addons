@@ -437,7 +437,7 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
                 var rowIndex;
                 
                 // si la fenetre de recherche n'est pas ouverte
-                if (!GEOR.Addons.Cadastre.resultParcelleWindow.tabs || !GEOR.Addons.Cadastre.resultParcelleWindow.tabs.activeTab) { 
+                if (!GEOR.Addons.Cadastre.resultParcelleWindow || !GEOR.Addons.Cadastre.resultParcelleWindow.tabs || !GEOR.Addons.Cadastre.resultParcelleWindow.tabs.activeTab) { 
                    
                     GEOR.Addons.Cadastre.addNewResultParcelle("result selection (" + parcelsIds.length + ")", GEOR.Addons.Cadastre.getResultParcelleStore(response.responseText, false));
                     
