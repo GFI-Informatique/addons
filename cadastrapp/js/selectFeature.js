@@ -679,22 +679,23 @@ GEOR.Addons.Cadastre.getLayerByName = function(layerName) {
 }
 
 /**
- * Method: zoomToSelectedFeatures
+ * Method: zoomOnSelectedFeatures
  * 
  *  zoom sur les entités selectionnées etat 1 ou 2 
  *
  * @param: layerName
  */
-GEOR.Addons.Cadastre.zoomToSelectedFeatures = function() { 
+GEOR.Addons.Cadastre.zoomOnFeatures = function(features) { 
+    
     // zoom sur les entités selectionnées etat 2 
-    if (GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures.length > 0) {
+    if (features.length > 0) {
         // récupération des bordure de  l'enveloppe des entités selectionnées
-        var minLeft = GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures[0].geometry.bounds.left;
-        var maxRight = GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures[0].geometry.bounds.right;
-        var minBottom = GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures[0].geometry.bounds.bottom;
-        var maxTop = GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures[0].geometry.bounds.top;
+        var minLeft = features[0].geometry.bounds.left;
+        var maxRight = features[0].geometry.bounds.right;
+        var minBottom = features[0].geometry.bounds.bottom;
+        var maxTop = features[0].geometry.bounds.top;
         // on calcule l'enveloppe maximale des entités de la couche slection
-        Ext.each(GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures, function(selectedFeature, currentIndex){
+        Ext.each(features, function(selectedFeature, currentIndex){
             minLeft = Math.min(minLeft, selectedFeature.geometry.bounds.left)
             maxRight = Math.max(maxRight, selectedFeature.geometry.bounds.right)
             minBottom = Math.min(minBottom, selectedFeature.geometry.bounds.bottom)
