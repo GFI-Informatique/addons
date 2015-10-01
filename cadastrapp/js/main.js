@@ -81,7 +81,6 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                 scope: this
             });
             this.target.doLayout();
-        } else {
             // create a menu item for the "tools" menu:
             this.item = new Ext.menu.CheckItem({
                 text: this.getText(record),
