@@ -262,7 +262,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                         index = -1;
 
                         // on teste si l'entité est déja selectionnée
-                        Ext.each(GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures, function(selectedFeature, currentIndexJ){
+                        Ext.each(GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList, function(selectedFeature, currentIndexJ){
                             if (selectedFeature.fid == feature.fid) { 
                                 exist = true;
                                 feature = selectedFeature;
@@ -274,7 +274,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                         // on l'ajoute à la selection si elle n'est pas trouvée
                         if (!exist) {
                             GEOR.Addons.Cadastre.selectLayer.addFeatures(feature);
-                            GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures.push(feature);
+                            GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList.push(feature);
                         }
                         
                         // on met à jour son état
@@ -328,7 +328,7 @@ GEOR.Addons.Cadastre.indexFeatureSelected = function(feature) {
     var idField = GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle;
     var index = -1;
     
-    Ext.each(GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures, function(selectedFeature, currentIndex){
+    Ext.each(GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList, function(selectedFeature, currentIndex){
         if (selectedFeature.attributes[idField] == feature.attributes[idField]){
             index = currentIndex;
             return false;  // this breaks out of the 'each' loop
@@ -527,7 +527,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSAttribute = function(idParcelle) {
             if (feature) {
                 if (GEOR.Addons.Cadastre.indexFeatureSelected(feature) == -1) {
                     GEOR.Addons.Cadastre.selectLayer.addFeatures(feature);
-                    GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures.push(feature);
+                    GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList.push(feature);
                     GEOR.Addons.Cadastre.changeStateFeature(feature, null, "searchSelector");
                 }
             }
@@ -551,7 +551,7 @@ GEOR.Addons.Cadastre.getFeatureById = function(idParcelle) {
     var idField = GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle;
     var feature;
 
-    Ext.each(GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures, function(selectedFeature, currentIndex){
+    Ext.each(GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList, function(selectedFeature, currentIndex){
         if (selectedFeature.attributes[idField] == idParcelle){
             feature= selectedFeature;
             return false;
@@ -595,7 +595,7 @@ GEOR.Addons.Cadastre.changeStateFeature = function(feature, index, typeSelector)
         if (feature.state == "1") {
             state = "2";
         } else if (feature.state == "2") {
-            GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures.splice(index, 1);
+            GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList.splice(index, 1);
             GEOR.Addons.Cadastre.selectLayer.destroyFeatures([ feature ]);
         } else {
             state = "1";
@@ -611,7 +611,7 @@ GEOR.Addons.Cadastre.changeStateFeature = function(feature, index, typeSelector)
         break;
 
     case "reset":
-        GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures.splice(index, 1);
+        GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList.splice(index, 1);
         GEOR.Addons.Cadastre.selectLayer.destroyFeatures([ feature ]);
         break;
 
@@ -632,7 +632,7 @@ GEOR.Addons.Cadastre.changeStateFeature = function(feature, index, typeSelector)
  *
  */
 GEOR.Addons.Cadastre.clearLayerSelection = function() {
-    GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures = [];
+    GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList = [];
     GEOR.Addons.Cadastre.selectLayer.removeAllFeatures();
 }
 
@@ -679,22 +679,23 @@ GEOR.Addons.Cadastre.getLayerByName = function(layerName) {
 }
 
 /**
- * Method: zoomToSelectedFeatures
+ * Method: zoomOnFeatures
  * 
- *  zoom sur les entités selectionnées etat 1 ou 2 
+ *  Zoom on given features
  *
- * @param: layerName
+ * @param: features Array 
  */
-GEOR.Addons.Cadastre.zoomToSelectedFeatures = function() { 
+GEOR.Addons.Cadastre.zoomOnFeatures = function(features) { 
+    
     // zoom sur les entités selectionnées etat 2 
-    if (GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures.length > 0) {
+    if (features.length > 0) {
         // récupération des bordure de  l'enveloppe des entités selectionnées
-        var minLeft = GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures[0].geometry.bounds.left;
-        var maxRight = GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures[0].geometry.bounds.right;
-        var minBottom = GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures[0].geometry.bounds.bottom;
-        var maxTop = GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures[0].geometry.bounds.top;
+        var minLeft = features[0].geometry.bounds.left;
+        var maxRight = features[0].geometry.bounds.right;
+        var minBottom = features[0].geometry.bounds.bottom;
+        var maxTop = features[0].geometry.bounds.top;
         // on calcule l'enveloppe maximale des entités de la couche slection
-        Ext.each(GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures, function(selectedFeature, currentIndex){
+        Ext.each(features, function(selectedFeature, currentIndex){
             minLeft = Math.min(minLeft, selectedFeature.geometry.bounds.left)
             maxRight = Math.max(maxRight, selectedFeature.geometry.bounds.right)
             minBottom = Math.min(minBottom, selectedFeature.geometry.bounds.bottom)
@@ -703,7 +704,7 @@ GEOR.Addons.Cadastre.zoomToSelectedFeatures = function() {
         var map = GeoExt.MapPanel.guess().map;
         map.zoomToExtent([ minLeft, minBottom, maxRight, maxTop ]); //zoom sur l'emprise
     } else{
-        console.log("pas d'entité selectionnée pour zoomer dessus");
+        console.log("Pas d'entité fournit pour réaliser un zoom");
     }
 }
 
