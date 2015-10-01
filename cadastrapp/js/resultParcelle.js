@@ -63,7 +63,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
             listeners: {
                 click: function(b, e) {
                    // zoom on plots from the active tab
-                    GEOR.Addons.Cadastre.zoomOnFeatures(GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures);
+                    GEOR.Addons.Cadastre.zoomOnFeatures(GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList);
                 }
             }
         },{
@@ -71,7 +71,16 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
             listeners: {
                 click: function(b, e) {
                  // zoom on selected plots from the active  tab
-                    GEOR.Addons.Cadastre.zoomOnFeatures(GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures);
+                    var selection = GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().getSelections();
+                    
+                    var features=[];
+                    Ext.each(selection, function (item) {                      
+                        var parcelleId =item.data.parcelle;
+                        features.push(GEOR.Addons.Cadastre.getFeatureById(parcelleId));
+                    });
+                    if(features){
+                        GEOR.Addons.Cadastre.zoomOnFeatures(features);
+                    }
                     
                 }
             }
@@ -162,8 +171,8 @@ GEOR.Addons.Cadastre.resultParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
      idParcellesCOuvertes : new Array(),
      fichesFOuvertes : new Array(),
      idParcellesFOuvertes : new Array(),
-     selectedFeatures : new Array(),
-     selectionFeatures : new Array()
+     featuresList : new Array(),
+     selectedFeatures : new Array()
 });
 
 /**

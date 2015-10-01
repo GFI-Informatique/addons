@@ -276,7 +276,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
             group : this.toggleGroup,
             checked : false,
             handler : function(){
-                GEOR.Addons.Cadastre.zoomOnFeatures(GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures);
+                GEOR.Addons.Cadastre.zoomOnFeatures(GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList);
             }
         };
 

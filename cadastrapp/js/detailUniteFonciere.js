@@ -241,7 +241,7 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
                         GEOR.Addons.Cadastre.getFeaturesWFSAttribute(record.data.parcelle);
                     });
                     // TODO add the good list of feature
-                    GEOR.Addons.Cadastre.zoomOnFeatures(GEOR.Addons.Cadastre.result.tabs.activeTab.selectedFeatures);
+                    GEOR.Addons.Cadastre.zoomOnFeatures(GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList);
                 }
             }
         } ]
