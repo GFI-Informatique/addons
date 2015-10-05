@@ -34,28 +34,18 @@ Il faut rajouter ```ROLE_``` devant le nom du groupe ldap. Par exemple si votre 
 	"options": { 
 		"target": "tbar_12",
 		"webapp":{
-			"url" : "http://hostname/cadastrapp",
-			"minCharToSearch" : 3
-		},
-		"CNIL":{
-			"cnil1RoleName" : "ROLE_EL_CAD_CNIL1",
-			"cnil2RoleName" : "ROLE_EL_CAD_CNIL2"
-		},
+			"url" : "http://hostname/cadastrapp"
+		}
 		"WMSLayer":{
-			"layerNameInPanel":"geo_parcelle",
-			"url": "http://hostname/geoserver/qgis/wms",
-			"layerNameGeoserver": "qgis:geo_parcelle",
+			"layerNameInPanel":"",
 			"transparent":true,
 			"format": "image/png"
 		},
 		"WFSLayerSetting": {
-			"wfsUrl":"http://hostname/geoserver/wfs?",
 			"request" : "getfeature",
 			"version" : "1.0.0",
 			"service" : "wfs",
-			"typename" : "qgis:geo_parcelle",
 			"outputFormat" : "application/json",
-			"nameFieldIdParcelle": "geo_parcelle",
 			"geometryField":"geom"
 		},
 		"defautStyleParcelle" :{

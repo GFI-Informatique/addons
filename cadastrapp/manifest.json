@@ -26,6 +26,7 @@
     "default_options": {},
     "i18n": {
         "en": {
+        	"cadastrapp.connection.error":"Error, add-on could not be loaded, no connection to service available",
          	"cadastrapp.menu.tooltips.cadastre": "If check, this will activate additonnal information about cadastral data on tips and details windows",
             "cadastrapp.menu.tooltips.foncier": "If check, this will activate additonnal information about landed property on tips and details windows",
            
@@ -294,6 +295,7 @@
 			"cadastrapp.bordereauparcellaire.data.with" : "With owner information"
         },
         "fr": {
+        	"cadastrapp.connection.error":"Erreur lors du chargement de la configuration, webservice indisponible",
         	"cadastrapp.menu.tooltips.cadastre": "Si coché active les informations sur les unités cadastrales, infobulle et fenêtre de détails",
             "cadastrapp.menu.tooltips.foncier": "Si coché active les informations sur les unités foncière, infobulle et fenêtre de détails",
            

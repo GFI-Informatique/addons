@@ -13,93 +13,118 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
      */
     init: function(record) {
         
+        // Create closure to be able to create windows
+        var initThis = this;
+        
         // Get information for addons options
-        GEOR.Addons.Cadastre.WFSLayerSetting = this.options.WFSLayerSetting;
+        GEOR.Addons.Cadastre.cadastrappWebappUrl = record.data.options.webapp.url+"services/";
         
-        GEOR.Addons.Cadastre.cadastrappWebappUrl = this.options.webapp.url+"services/";
-        GEOR.Addons.Cadastre.minCharToSearch = this.options.webapp.minCharToSearch;
+        GEOR.Addons.Cadastre.WFSLayerSetting = record.data.options.WFSLayerSetting;
         
-        GEOR.Addons.Cadastre.cnil1RoleName = this.options.CNIL.cnil1RoleName;
-        GEOR.Addons.Cadastre.cnil2RoleName = this.options.CNIL.cnil2RoleName;
+        var WMSSetting = record.data.options.WMSLayer;
         
-        GEOR.Addons.Cadastre.selection=[];
-        GEOR.Addons.Cadastre.selection.state=[];
-        GEOR.Addons.Cadastre.selection.state.list = this.options.selectedStyle.colorState1;
-        GEOR.Addons.Cadastre.selection.state.selected = this.options.selectedStyle.colorState2;
-        GEOR.Addons.Cadastre.selection.state.details = this.options.selectedStyle.colorState3;
+        // Call the webapp configuration services
+        Ext.Ajax.request({
+            method: 'GET',
+            url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getConfiguration',
+            success: function(response) {
+                var configuration = Ext.decode(response.responseText);
+                
+                GEOR.Addons.Cadastre.cnil1RoleName = configuration.cnil1RoleName;
+                GEOR.Addons.Cadastre.cnil2RoleName = configuration.cnil2RoleName;
+                GEOR.Addons.Cadastre.minCharToSearch = configuration.minNbCharForSearch;
+                
+                GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle = configuration.cadastreLayerIdParcelle;
+                GEOR.Addons.Cadastre.WFSLayerSetting.wfsUrl = configuration.cadastreGeoserverURL+"/wfs?";
+                GEOR.Addons.Cadastre.WFSLayerSetting.typename = configuration.cadastreLayerName;
+                
+                WMSSetting.layerNameGeoserver = configuration.cadastreLayerName;
+                WMSSetting.url =  configuration.cadastreGeoserverURL+"/wms";
+           
+               
+                // TODO check why click on global
+                GEOR.Addons.Cadastre.click;
+                
+                var cadastrapp = new GEOR.Addons.Cadastre.Menu({
+                    map: this.map,
+                    popupOptions: {
+                        unpinnable: false,
+                        draggable: true
+                    }
+                });
         
-        GEOR.Addons.Cadastre.relevePropriete=[];
-        GEOR.Addons.Cadastre.relevePropriete.maxProprietaire = 25;
-        
-        // Init gobal variables   
-        GEOR.Addons.Cadastre.selectLayer;
-        GEOR.Addons.Cadastre.result=[];
-        GEOR.Addons.Cadastre.result.tabs;
-        GEOR.Addons.Cadastre.result.window;
-       
-        // TODO check why click on global
-        GEOR.Addons.Cadastre.click;
-        
-        var cadastrapp = new GEOR.Addons.Cadastre.Menu({
-            map: this.map,
-            popupOptions: {
-                unpinnable: false,
-                draggable: true
-            }
-        });
+                GEOR.Addons.Cadastre.addWMSLayer(WMSSetting);
 
-        this.map.allOverlays = false;
-
-        GEOR.Addons.Cadastre.addWMSLayer(this.options.WMSLayer);
-        GEOR.Addons.Cadastre.createSelectionControl(this.options.defautStyleParcelle , this.options.selectedStyle);
-        GEOR.Addons.Cadastre.addPopupOnhover(this.options.popup);
-
-        this.window = new Ext.Window({
-            title: OpenLayers.i18n('cadastrapp.cadastre_tools'),
-            width: 540,
-            closable: true,
-            closeAction: "hide",
-            resizable: false,
-            border: false,
-            constrainHeader: true,
-            cls: 'cadastrapp',
-            items: [ {
-                xtype: 'toolbar',
-                border: false,
-                items: cadastrapp.actions
-            } ],
-            listeners: {
-                "hide": function() {
-                    this.item && this.item.setChecked(false);
-                    this.components && this.components.toggle(false);
-                },
-                scope: this
-            }
-        });
-
-        if (this.target) {
-            // create a button to be inserted in toolbar:
-            this.components = this.target.insertButton(this.position, {
-                xtype: 'button',
-                tooltip: this.getTooltip(record),
-                iconCls: "addon-cadastrapp",
-                handler: this._onCheckchange,
-                scope: this
-            });
-            this.target.doLayout();
-            // create a menu item for the "tools" menu:
-            this.item = new Ext.menu.CheckItem({
-                text: this.getText(record),
-                qtip: this.getQtip(record),
-                iconCls: "addon-cadastrapp",
-                checked: false,
-                listeners: {
-                    "checkchange": this._onCheckchange,
-                    scope: this
+                GEOR.Addons.Cadastre.selection=[];
+                GEOR.Addons.Cadastre.selection.state=[];
+                GEOR.Addons.Cadastre.selection.state.list = record.data.options.selectedStyle.colorState1;
+                GEOR.Addons.Cadastre.selection.state.selected = record.data.options.selectedStyle.colorState2;
+                GEOR.Addons.Cadastre.selection.state.details = record.data.options.selectedStyle.colorState3;
+                
+                GEOR.Addons.Cadastre.relevePropriete=[];
+                GEOR.Addons.Cadastre.relevePropriete.maxProprietaire = 25;
+                
+                // Init gobal variables   
+                GEOR.Addons.Cadastre.selectLayer;
+                GEOR.Addons.Cadastre.result=[];
+                GEOR.Addons.Cadastre.result.tabs;
+                GEOR.Addons.Cadastre.result.window;
+                
+                GEOR.Addons.Cadastre.createSelectionControl(record.data.options.defautStyleParcelle , record.data.options.selectedStyle);
+                GEOR.Addons.Cadastre.addPopupOnhover(record.data.options.popup);
+        
+                initThis.window = new Ext.Window({
+                    title: OpenLayers.i18n('cadastrapp.cadastre_tools'),
+                    width: 540,
+                    closable: true,
+                    closeAction: "hide",
+                    resizable: false,
+                    border: false,
+                    constrainHeader: true,
+                    cls: 'cadastrapp',
+                    items: [ {
+                        xtype: 'toolbar',
+                        border: false,
+                        items: cadastrapp.actions
+                    } ],
+                    listeners: {
+                        "hide": function() {
+                            initThis.item && initThis.item.setChecked(false);
+                            initThis.components && initThis.components.toggle(false);
+                        },
+                        scope: this
+                    }
+                });
+        
+                if (initThis.target) {
+                    // create a button to be inserted in toolbar:
+                    initThis.components = initThis.target.insertButton(initThis.position, {
+                        xtype: 'button',
+                        tooltip: initThis.getTooltip(record),
+                        iconCls: "addon-cadastrapp",
+                        handler: initThis._onCheckchange,
+                        scope: this
+                    });
+                    initThis.target.doLayout();
+                    // create a menu item for the "tools" menu:
+                    initThis.item = new Ext.menu.CheckItem({
+                        text: initThis.getText(record),
+                        qtip: initThis.getQtip(record),
+                        iconCls: "addon-cadastrapp",
+                        checked: false,
+                        listeners: {
+                            "checkchange": initThis._onCheckchange,
+                            scope: initThis
+                        }
+                    });
                 }
-            });
-        }
+            },
+            failure: function(result) {
+                alert(OpenLayers.i18n('cadastrapp.connection.error'));
+            }
+        });
     },
+    
 
     /**
      * Method: _onCheckchange Callback on checkbox state changed
