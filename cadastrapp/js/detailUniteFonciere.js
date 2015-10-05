@@ -224,7 +224,7 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
                 GEOR.Addons.Cadastre.result.tabs.activeTab.fichesFOuvertes.splice(index, 1);
                 var feature = GEOR.Addons.Cadastre.getFeatureById(parcelleId);
                 if (feature){
-                    GEOR.Addons.Cadastre.changeStateFeature(feature, -1, GEOR.Addons.Cadastre.selection.state1);
+                    GEOR.Addons.Cadastre.changeStateFeature(feature, -1, GEOR.Addons.Cadastre.selection.state.list);
                 } 
                 GEOR.Addons.Cadastre.closeWindowFIUC(parcelleId, GEOR.Addons.Cadastre.result.tabs.activeTab); // on ferme la fenêtre
                 // cadastrale si ouverte

@@ -67,8 +67,9 @@ Il faut rajouter ```ROLE_``` devant le nom du groupe ldap. Par exemple si votre 
 		},
 		"selectedStyle" : {
 			"defautColor":"#AAAAAA",
-			"colorSelected1":"#FFFF00", //selection niveau 1
-			"colorSelected2":"#81BEF7", // selection niveau 2
+			"colorState1":"#FFFF00", //selection niveau 1
+			"colorState2":"#81BEF7", // selection niveau 2
+			"colorState3":"#57D53B", // selection niveau 3
 			"opacity":"0.4",
 			"strokeWidth":"3"
 		},

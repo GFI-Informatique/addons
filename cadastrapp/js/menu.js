@@ -1,21 +1,7 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
-/**
- * @include OpenLayers/Control/DrawFeature.js
- * @include OpenLayers/Control/ModifyFeature.js
- * @include OpenLayers/Control/SelectFeature.js
- * @include OpenLayers/Feature/Vector.js
- * @include OpenLayers/Handler/Path.js
- * @include OpenLayers/Handler/Point.js
- * @include OpenLayers/Handler/Polygon.js
- * @include OpenLayers/Handler/RegularPolygon.js
- * @include OpenLayers/Lang.js
- * @include GeoExt/widgets/Action.js
- * @include GeoExt/widgets/MapPanel.js
- * @include GeoExt/widgets/Popup.js
- */
 
-// ***************
+// TODO move this ***************
 var _isCadastre = true;
 var _isFoncier = false;
 
@@ -26,9 +12,9 @@ GEOR.Addons.Cadastre.isCadastre = function() {
 GEOR.Addons.Cadastre.isFoncier = function() {
     return _isFoncier;
 }
+// **********************************
 
 /**
- * api: constructor .. class:: Cadastrapp(config)
  * 
  * Create a menu main controler for cadastrapp
  */
@@ -45,11 +31,6 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
      */
     cadastrappControls : null,
 
-    /**
-     * api: config[lastDrawControl] ``OpenLayers.Control.DrawFeature`` The last
-     * active cadastrapp control.
-     */
-    lastDrawControl : null,
 
     /**
      * api: config[actions] ``Array(GeoExt.Action or Ext.Action)`` An array of
@@ -57,38 +38,6 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
      * toolbar.
      */
     actions : null,
-
-    /**
-     * api: config[featureControl] ``OpenLayers.Control.ModifyFeature or
-     * OpenLayers.Control.SelectFeature`` The OpenLayers control responsible of
-     * selecting the feature by clicks on the screen and, optionnaly, edit
-     * feature geometry.
-     */
-    featureControl : null,
-
-    /**
-     * api: config[featurePanel] ``GEOR.FeaturePanel`` A reference to the
-     * FeaturePanel object created
-     */
-    featurePanel : null,
-
-    /**
-     * api: config[popup] ``GeoExt.Popup`` A reference to the Popup object
-     * created
-     */
-    popup : null,
-
-    /**
-     * api: config[downloadService] ``String`` URL used in order to use a server
-     * download service. The attributes "format" and "content" are sent (POST)
-     * to this service.
-     */
-    /**
-     * private: property[downloadService] ``String`` URL used in order to use a
-     * server download service. The attributes "format" and "content" are sent
-     * (POST) to this service.
-     */
-    downloadService : null,
 
     /**
      * private: property[useDefaultAttributes] ``Boolean`` If set to true,
@@ -112,63 +61,17 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
     defaultAttributesValues : [ OpenLayers.i18n('cadastrapp.no_title'), '' ],
 
     /**
-     * private: property[style] ``Object`` Feature style hash to use when
-     * creating a layer. If none is defined,
-     * OpenLayers.Feature.Vector.style['default'] is used instead.
-     */
-    style : null,
-
-    /**
-     * private: property[defaultStyle] ``Object`` Feature style hash to apply to
-     * the default OpenLayers.Feature.Vector.style['default'] if no style was
-     * specified.
-     */
-    defaultStyle : {
-        fillColor : "#FF0000",
-        strokeColor : "#FF0000",
-        fontColor : "#000000"
-    },
-
-    /**
      * api: config[layerOptions] ``Object`` Options to be passed to the
      * OpenLayers.Layer.Vector constructor.
      */
     layerOptions : {},
 
-    /**
-     * api: config[fadeRatio] ``Numeric`` The fade ratio to apply when features
-     * are not selected.
-     */
-    fadeRatio : 0.4,
-
-    /**
-     * api: config[opacityProperties] ``Array(String)`` The style properties
-     * refering to opacity.
-     */
-    opacityProperties : [ "fillOpacity", "hoverFillOpacity", "strokeOpacity", "hoverStrokeOpacity" ],
-
-    /**
-     * api: config[defaultOpacity] ``Numeric`` Default opacity maximum value
-     */
-    defaultOpacity : 1,
 
     /**
      * api: property[toggleGroup] ``String`` The name of the group used for the
      * buttons created. If none is provided, it's set to this.map.id.
      */
     toggleGroup : null,
-
-    /**
-     * api: property[popupOptions] ``Object`` The options hash used when
-     * creating GeoExt.Popup objects.
-     */
-    popupOptions : {},
-
-    /**
-     * api: property[styler] ``Styler`` The styler type to use in the
-     * FeaturePanel widget.
-     */
-    styler : null,
 
     /**
      * private: method[constructor] Private constructor override.
@@ -203,21 +106,6 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         this.layer = layer;
         this.map.addLayer(layer);
 
-        // *********************************************************************
-        // *********************************************************************
-
-        layer.events.on({
-            "beforefeatureselected" : this.onBeforeFeatureSelect,
-            "featureunselected" : this.onFeatureUnselect,
-            "featureselected" : this.onFeatureSelect,
-            "beforefeaturemodified" : this.onModificationStart,
-            "featuremodified" : this.onModification,
-            "afterfeaturemodified" : this.onModificationEnd,
-            "beforefeatureadded" : this.onBeforeFeatureAdded,
-            scope : this
-        });
-
-        // 2nd, create new ones from the current active layer
         this.initZoomControls(layer);
         this.actions.push('-');
         this.initSelectionControls(layer);
@@ -598,85 +486,6 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
     },
 
     /**
-     * private: method[destroyDrawControls] Destroy all drawControls and all
-     * their related objects.
-     */
-    destroyDrawControls : function() {
-        for (var i = 0; i < this.drawControls.length; i++) {
-            this.drawControls[i].destroy();
-        }
-        this.drawControls = [];
-    },
-
-    /**
-     * private: method[initDeleteAllAction] Create a Ext.Action object that is
-     * set as the deleteAllAction property and pushed to te actions array.
-     */
-    initDeleteAllAction : function() {
-        var actionOptions = {
-            handler : this.deleteAllFeatures,
-            scope : this,
-            text : OpenLayers.i18n('cadastrapp.delete_all'),
-            iconCls : "gx-featureediting-delete",
-            iconAlign : 'top',
-            tooltip : OpenLayers.i18n('cadastrapp.delete_all_features')
-        };
-
-        var action = new Ext.Action(actionOptions);
-
-        this.actions.push(action);
-    },
-
-    /**
-     * private: method[deleteAllFeatures] Called when the deleteAllAction is
-     * triggered (button pressed). Destroy all features from all layers.
-     */
-    deleteAllFeatures : function() {
-        Ext.MessageBox.confirm(OpenLayers.i18n('cadastrapp.delete_all_features'), OpenLayers.i18n('cadastrapp.delete_features_confirm'), function(btn) {
-            if (btn == 'yes') {
-                if (this.popup) {
-                    this.popup.close();
-                    this.popup = null;
-                }
-                this.layer.destroyFeatures();
-            }
-        }, this);
-    },
-
-    /**
-     * private: method[getActiveDrawControl] :return:
-     * ``OpenLayers.Control.DrawFeature or false`` Get the current active
-     * DrawFeature control. If none is active, false is returned.
-     */
-    getActiveDrawControl : function() {
-        var control = false;
-
-        for (var i = 0; i < this.cadastrappControls.length; i++) {
-            if (this.cadastrappControls[i].active) {
-                control = this.cadastrappControls[i];
-                break;
-            }
-        }
-        return control;
-    },
-
-    /**
-     * private: method[onLabelAdded]
-     * 
-     * @param event: ``event`` Called when a new
-     * label feature is added to the layer. Set a flag to let the controler know
-     * it's a label.
-     * 
-     */
-    onLabelAdded : function(event) {
-        var feature = event.feature;
-        feature.style.label = feature.attributes.label;
-        feature.style.graphic = false;
-        feature.style.labelSelect = true;
-        feature.isLabel = true;
-    },
-
-    /**
      * private: method[onFeatureAdded] 
      * 
      * @param event: ``event`` Called when a new
@@ -685,263 +494,14 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
      * 
      */
     onFeatureAdded : function(event) {
-        var feature, cadastrappControl;
+        var feature;
 
         feature = event.feature;
         feature.state = OpenLayers.State.INSERT;
 
-        cadastrappControl = this.getActiveDrawControl();
-        if (cadastrappControl) {
-            cadastrappControl.deactivate();
-            this.lastDrawControl = cadastrappControl;
-        }
-        // **************************
-        // this.featureControl.activate();
         selctedFeatures = GEOR.Addons.Cadastre.selectFeatureIntersection(feature);
+        // erase point, line or polygones
         feature.layer.removeAllFeatures();
-        // **************************
-    },
-
-    /**
-     * private: method[onModificationStart] 
-     * 
-     * @param event: ``event`` Called when
-     * a feature is selected. Display a popup that contains the FeaturePanel.
-     */
-    onModificationStart : function(event) {
-        var feature = (event.geometry) ? event : event.feature;
-
-        // to keep the state before any modification, useful when hitting the
-        // 'cancel' button
-        /*
-         * if(feature.state != OpenLayers.State.INSERT){ feature.myClone =
-         * feature.clone(); feature.myClone.fid = feature.fid; }
-         */
-
-        // if the user clicked on an other feature while adding a new one,
-        // deactivate the cadastrapp control.
-        var cadastrappControl = this.getActiveDrawControl();
-        if (cadastrappControl) {
-            cadastrappControl.deactivate();
-            this.featureControl.activate();
-        }
-
-        var options = {
-            features : [ feature ],
-            styler : this.styler
-        };
-
-        this.featurePanel = new GEOR.FeaturePanel(options);
-
-        // display the popup
-        popupOptions = {
-            location : feature,
-            // the following line is here for compatibility with
-            // GeoExt < 1 (before changeset 2343)
-            feature : feature,
-            items : [ this.featurePanel ]
-        };
-        popupOptions = OpenLayers.Util.applyDefaults(popupOptions, this.popupOptions);
-        popupOptions = OpenLayers.Util.applyDefaults(popupOptions, {
-            layout : 'fit',
-            border : false,
-            width : 280
-        });
-
-        var popup = new GeoExt.Popup(popupOptions);
-        feature.popup = popup;
-        this.popup = popup;
-        popup.on({
-            close : function() {
-                if (OpenLayers.Util.indexOf(this.layer.selectedFeatures, feature) > -1) {
-                    this.featureControl.unselectFeature(feature);
-                    this.featureControl.deactivate();
-                }
-            },
-            scope : this
-        });
-        popup.show();
-
-    },
-
-    /**
-     * private: method[onModification] 
-     * @param event: ``event``
-     */
-    onModification : function(event) {
-        var feature = (event.geometry) ? event : event.feature;
-    },
-
-    /**
-     * private: method[onModificationEnd] 
-     * @param event: ``event``
-     */
-    onModificationEnd : function(event) {
-        var feature = (event.geometry) ? event : event.feature;
-        // or we could execute commits here also
-
-        if (!feature) {
-            return;
-        }
-
-        if (feature.popup) {
-            feature.popup.close();
-            feature.popup = null;
-        }
-
-        this.reactivateDrawControl();
-    },
-
-    /**
-     * private: method[onBeforeFeatureAdded] 
-     * @param event: ``event`` Called when
-     * a new feature is added to the layer.
-     */
-    onBeforeFeatureAdded : function(event) {
-        var feature = event.feature;
-        this.parseFeatureStyle(feature);
-        this.parseFeatureDefaultAttributes(feature);
-    },
-
-    /**
-     * private: method[parseFeatureStyle]
-     */
-    parseFeatureStyle : function(feature) {
-        var symbolizer = this.layer.styleMap.createSymbolizer(feature);
-        feature.style = symbolizer;
-    },
-
-    /**
-     * private: method[parseFeatureDefaultAttributes] 
-     * @param event: ``OpenLayers.Feature.Vector`` Check if the feature has any attributes. If
-     * not, add those defined in this.defaultAttributes.
-     */
-    parseFeatureDefaultAttributes : function(feature) {
-        var hasAttributes;
-
-        if (this.useDefaultAttributes === true) {
-            hasAttributes = false;
-
-            for ( var key in feature.attributes) {
-                hasAttributes = true;
-                break;
-            }
-
-            if (!hasAttributes) {
-                for (var i = 0; i < this.defaultAttributes.length; i++) {
-                    feature.attributes[this.defaultAttributes[i]] = this.defaultAttributesValues[i];
-                }
-            }
-        }
-    },
-    /*
-     * /** private: method[reactivateDrawControl]
-     */
-    reactivateDrawControl : Ext.emptyFn,
-
-    /**
-     * private: method[onBeforeFeatureSelect] 
-     *  @param event: ``event`` Called
-     * before a feature is selected
-     */
-    onBeforeFeatureSelect : function(event) {
-        var feature = (event.geometry) ? event : event.feature;
-
-        // if it's the first feature that is selected
-        if (feature.layer.selectedFeatures.length === 0) {
-            this.applyStyles('faded', {
-                'recadastrapp' : true
-            });
-        }
-    },
-
-    /**
-     * private: method[onFeatureUnselect] 
-     * @param event: ``event`` Called when a
-     * feature is unselected.
-     */
-    onFeatureUnselect : function(event) {
-        var feature = (event.geometry) ? event : event.feature;
-        this.applyStyle(feature, 'faded', {
-            'recadastrapp' : true
-        });
-
-        // if it's the last feature that is unselected
-        if (feature.layer.selectedFeatures.length === 0) {
-            this.applyStyles('normal', {
-                'recadastrapp' : true
-            });
-        }
-    },
-
-    /**
-     * private: method[onFeatureSelect] 
-     * @param event: ``event`` Called when a
-     * feature is selected
-     */
-    onFeatureSelect : function(event) {
-        var feature = (event.geometry) ? event : event.feature;
-        this.applyStyle(feature, 'normal', {
-            'recadastrapp' : true
-        });
-
-    },
-
-    /**
-     * private: method[applyStyles] 
-     * @param style: ``String`` Mandatory. Can be
-     * "normal" or "faded". :param options: ``Object`` Object of options. Apply
-     * a specific style to all layers of this controler. If 'recadastrapp': true
-     * was specified in the options, the layer is recadastrappn after.
-     */
-    applyStyles : function(style, options) {
-        style = style || "normal";
-        options = options || {};
-        var layer = this.layer;
-        for (var j = 0; j < layer.features.length; j++) {
-            feature = layer.features[j];
-            // don't apply any style to features coming from the
-            // ModifyFeature control
-            if (!feature._sketch) {
-                this.applyStyle(feature, style);
-            }
-        }
-
-        if (options['recadastrapp'] === true) {
-            layer.recadastrapp();
-        }
-    },
-
-    /**
-     * private: method[applyStyle] 
-     * @param feature: ``OpenLayers.Feature.Vector``
-     * @param style: ``String`` Mandatory. Can be "normal" or "faded". 
-     * @param options: ``Object`` Object of options. Apply a specific style to a
-     * specific feature. If 'recadastrapp': true was specified in the options,
-     * the layer is recadastrappn after.
-     */
-    applyStyle : function(feature, style, options) {
-        var fRatio;
-        options = options || {};
-
-        switch (style) {
-            case "faded":
-                fRatio = this.fadeRatio;
-                break;
-            default:
-                fRatio = 1 / this.fadeRatio;
-        }
-
-        for (var i = 0; i < this.opacityProperties.length; i++) {
-            property = this.opacityProperties[i];
-            if (feature.style[property]) {
-                feature.style[property] *= fRatio;
-            }
-        }
-
-        if (options['recadastrapp'] === true) {
-            feature.layer.cadastrappFeature(feature);
-        }
     },
 
     CLASS_NAME : "Cadastrapp"

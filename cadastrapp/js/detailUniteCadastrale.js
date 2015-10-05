@@ -52,7 +52,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 GEOR.Addons.Cadastre.result.tabs.activeTab.fichesCOuvertes.splice(index, 1);
                 var feature = GEOR.Addons.Cadastre.getFeatureById(parcelleId);
                 if (feature) {
-                    GEOR.Addons.Cadastre.changeStateFeature(feature, -1, GEOR.Addons.Cadastre.selection.state1);
+                    GEOR.Addons.Cadastre.changeStateFeature(feature, -1, GEOR.Addons.Cadastre.selection.state.list);
                 }
 
                 // on ferme la fenêtre foncière si ouverte
