@@ -160,7 +160,32 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
             text: OpenLayers.i18n('cadastrapp.result.parcelle.export'),
             listeners: {
                 click: function(b, e) {
-                 // Export selected plots as csv
+                    // Export selected plots as csv
+                    
+                    var selection = GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().getSelections();
+                    var parcelleIds = [];
+                    Ext.each(selection, function (item) {
+                        parcelleIds.push(item.data.parcelle);
+                    });
+                    
+                    // PARAMS
+                    var params = {
+                            data : parcelleIds
+                    } 
+                    var url = GEOR.Addons.Cadastre.cadastrappWebappUrl + 'exportAsCsv?' + Ext.urlEncode(params);
+
+                    Ext.DomHelper.useDom = true;
+                    
+                    // Directly download file, without and call service without ogcproxy
+                    Ext.DomHelper.append(document.body, {
+                        tag : 'iframe',
+                        id : 'downloadIframe',
+                        frameBorder : 0,
+                        width : 0,
+                        height : 0,
+                        css : 'display:none;visibility:hidden;height:0px;',
+                        src : url
+                    });
                     
                 }
             }
