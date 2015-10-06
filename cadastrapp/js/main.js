@@ -35,18 +35,18 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                 GEOR.Addons.Cadastre.minCharToSearch = configuration.minNbCharForSearch;
                 
                 GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle = configuration.cadastreLayerIdParcelle;
-                GEOR.Addons.Cadastre.WFSLayerSetting.wfsUrl = configuration.cadastreGeoserverURL+"/wfs?";
+                GEOR.Addons.Cadastre.WFSLayerSetting.wfsUrl = configuration.cadastreWFSURL;
                 GEOR.Addons.Cadastre.WFSLayerSetting.typename = configuration.cadastreLayerName;
                 
                 WMSSetting.layerNameGeoserver = configuration.cadastreLayerName;
-                WMSSetting.url =  configuration.cadastreGeoserverURL+"/wms";
+                WMSSetting.url =  configuration.cadastreWMSURL;
            
                
                 // TODO check why click on global
                 GEOR.Addons.Cadastre.click;
                 
                 var cadastrapp = new GEOR.Addons.Cadastre.Menu({
-                    map: this.map,
+                    map: initThis.map,
                     popupOptions: {
                         unpinnable: false,
                         draggable: true
@@ -92,7 +92,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                             initThis.item && initThis.item.setChecked(false);
                             initThis.components && initThis.components.toggle(false);
                         },
-                        scope: this
+                        scope: initThis
                     }
                 });
         
@@ -103,7 +103,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                         tooltip: initThis.getTooltip(record),
                         iconCls: "addon-cadastrapp",
                         handler: initThis._onCheckchange,
-                        scope: this
+                        scope: initThis
                     });
                     initThis.target.doLayout();
                     // create a menu item for the "tools" menu:
