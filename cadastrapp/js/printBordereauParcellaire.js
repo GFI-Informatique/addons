@@ -39,8 +39,10 @@ GEOR.Addons.Cadastre.onClickPrintBordereauParcellaireWindow = function(parcelleI
             src : url
         });
         
-        //TODO add waiting panel
-        printBordereauParcellaireWindow.close();
+        // windows might not have been open
+        if (printBordereauParcellaireWindow != null) {
+            printBordereauParcellaireWindow.close();
+        }
     }
 }
 
