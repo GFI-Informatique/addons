@@ -2,8 +2,6 @@ Ext.namespace("GEOR.Addons.Cadastre");
 
 GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
 
-    control: null,
-
     window: null,
 
     /**
@@ -41,7 +39,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                 WMSSetting.layerNameGeoserver = configuration.cadastreLayerName;
                 WMSSetting.url =  configuration.cadastreWMSURL;
                           
-                var cadastrapp = new GEOR.Addons.Cadastre.Menu({
+                GEOR.Addons.Cadastre.menu = new GEOR.Addons.Cadastre.Menu({
                     map: initThis.map,
                     popupOptions: {
                         unpinnable: false,
@@ -61,7 +59,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                 GEOR.Addons.Cadastre.relevePropriete.maxProprietaire = 25;
                 
                 // Init gobal variables   
-                GEOR.Addons.Cadastre.selectLayer;
+                GEOR.Addons.Cadastre.WFSLayer;
                 GEOR.Addons.Cadastre.result=[];
                 GEOR.Addons.Cadastre.result.tabs;
                 GEOR.Addons.Cadastre.result.window;
@@ -81,7 +79,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                     items: [ {
                         xtype: 'toolbar',
                         border: false,
-                        items: cadastrapp.actions
+                        items: GEOR.Addons.Cadastre.menu.items
                     } ],
                     listeners: {
                         "hide": function() {
@@ -141,23 +139,29 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         
         // Remove menu
         this.window.hide();
-        this.control = null;
-                
+        
+        GEOR.Addons.Cadastre.menu.destroy();
+    
+        // Delete all global variable        
         if (GEOR.Addons.Cadastre.result.windows){
             GEOR.Addons.Cadastre.result.windows.close();
+            GEOR.Addons.Cadastre.result.windows=null;
         }
-        GEOR.Addons.Cadastre.tabs=null;
-        
-        // Remove WMS Layer
-        layer.map.removeLayer(GEOR.Addons.Cadastre.WMSLayer);
-        GEOR.Addons.Cadastre.WMSLayer.destroy();
-        
-        // Remove WFSLayer
-        layer.map.removeLayer(GEOR.Addons.Cadastre.selectLayer);
-        GEOR.Addons.Cadastre.selectLayer.destroy();
+        if( GEOR.Addons.Cadastre.printBordereauParcellaireWindow){
+            GEOR.Addons.Cadastre.printBordereauParcellaireWindow.close();
+            GEOR.Addons.Cadastre.printBordereauParcellaireWindow=null;
+        }
+        GEOR.Addons.Cadastre.selection=null;
+        GEOR.Addons.Cadastre.relevePropriete=null;
+        GEOR.Addons.Cadastre.result=null;
+        GEOR.Addons.Cadastre.cnil1RoleName=null;
+        GEOR.Addons.Cadastre.cnil2RoleName=null;
+        GEOR.Addons.Cadastre.minCharToSearch=null;        
+        GEOR.Addons.Cadastre.WFSLayerSetting=null;
+               
+        this.map = null;
 
         GEOR.Addons.Base.prototype.destroy.call(this);
-
     }
     
 });

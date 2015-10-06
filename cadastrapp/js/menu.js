@@ -20,47 +20,13 @@ GEOR.Addons.Cadastre.isFoncier = function() {
  */
 GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
 
-    /**
-     * api: property[map] ``OpenLayers.Map`` A configured map object.
-     */
     map : null,
 
-    /**
-     * api: config[cadastrappControls] ``Array(OpenLayers.Control.DrawFeature)``
-     * An array of DrawFeature controls automatically created from the layer.
-     */
     cadastrappControls : null,
 
+    items : null,
 
-    /**
-     * api: config[actions] ``Array(GeoExt.Action or Ext.Action)`` An array of
-     * actions created from various controls or tasks that are to be added to a
-     * toolbar.
-     */
-    actions : null,
-
-    /**
-     * private: property[useDefaultAttributes] ``Boolean`` If set to true,
-     * defaultAttributes are set to new features added with no attributes.
-     */
-    useDefaultAttributes : true,
-
-    /**
-     * api: config[defaultAttributes] ``Array(String)`` An array of attribute
-     * names to used when a blank feature is added to the map if
-     * useDefaultAttributes is set to true.
-     */
-    defaultAttributes : [ 'label', 'description' ],
-
-    /**
-     * api: config[defaultAttributesValues] ``Array(String|Number)`` An array of
-     * attribute values to used when a blank feature is added to the map if
-     * useDefaultAttributes is set to true. This should match the
-     * defaultAttributes order.
-     */
-    defaultAttributesValues : [ OpenLayers.i18n('cadastrapp.no_title'), '' ],
-
-    /**
+     /**
      * api: config[layerOptions] ``Object`` Options to be passed to the
      * OpenLayers.Layer.Vector constructor.
      */
@@ -80,7 +46,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         Ext.apply(this, config);
 
         this.cadastrappControls = [];
-        this.actions = [];
+        this.items = [];
 
         this.initMap();
         var info;
@@ -107,13 +73,13 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         this.map.addLayer(layer);
 
         this.initZoomControls(layer);
-        this.actions.push('-');
+        this.items.push('-');
         this.initSelectionControls(layer);
-        this.actions.push('-');
+        this.items.push('-');
         this.initCadastrappControls(layer);
-        this.actions.push('-');
+        this.items.push('-');
         this.initRechercheControls(layer);
-        this.actions.push('-');
+        this.items.push('-');
         this.initDemandeControl(layer);
 
         GEOR.Addons.Cadastre.Menu.superclass.constructor.apply(this, arguments);
@@ -169,7 +135,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         };
 
         action = new Ext.Button(actionOptions);
-        this.actions.push(action);
+        this.items.push(action);
 
     },
     /**
@@ -241,7 +207,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
 
             action = new GeoExt.Action(actionOptions);
 
-            this.actions.push(action);
+            this.items.push(action);
         }
 
     },
@@ -280,7 +246,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 value: OpenLayers.i18n("cadastrapp.cadastre"),
             } ]
         });
-        this.actions.push(cadastrePanel);
+        this.items.push(cadastrePanel);
         
         // menu : checkbox foncier
         var foncierPanel = new Ext.Panel({
@@ -308,7 +274,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 value: OpenLayers.i18n("cadastrapp.foncier"),
             } ]
         });
-        this.actions.push(foncierPanel);
+        this.items.push(foncierPanel);
     },
 
     /**
@@ -325,7 +291,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
             text : OpenLayers.i18n("cadastrapp.parcelle"),
             handler : function(){GEOR.Addons.Cadastre.onClickRechercheParcelle(0)}
         };
-        this.actions.push(new Ext.Button(configRechercheParcelle));
+        this.items.push(new Ext.Button(configRechercheParcelle));
 
         // menu : recherche avancée
         var scrollMenu = new Ext.menu.Menu();
@@ -336,7 +302,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
             text : OpenLayers.i18n("cadastrapp.recherches"),
             menu : scrollMenu
         };
-        this.actions.push(new Ext.Button(configRechercheAvancee));
+        this.items.push(new Ext.Button(configRechercheAvancee));
 
         // sous-menu : recherche parcelle
         var scrollMenuRechercheParcelle = new Ext.menu.Menu();
@@ -489,7 +455,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         };
         button = new Ext.Button(config);
 
-        this.actions.push(button);
+        this.items.push(button);
     },
 
     /**
@@ -507,9 +473,38 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         feature.state = OpenLayers.State.INSERT;
 
         GEOR.Addons.Cadastre.selectFeatureIntersection(feature);
-        
         // erase point, line or polygones
         feature.layer.removeAllFeatures();
+    },
+    
+    /**
+     * 
+     */
+    destroy:function(){
+        
+        Ext.each(this.cadastrappControls, function(control, index){
+            control.deactivate();
+            this.map.removeControl(control);
+        });
+        this.cadastrappControls=null,
+        this.items = null;
+        
+        // Remove WMS Layer
+        this.map.removeLayer(GEOR.Addons.Cadastre.WMSLayer);
+        GEOR.Addons.Cadastre.WMSLayer.destroy();
+        GEOR.Addons.Cadastre.WMSLayer=null;
+        
+        // Remove WFSLayer
+        GEOR.Addons.Cadastre.WFSLayer.removeAllFeatures();
+        this.map.removeLayer(GEOR.Addons.Cadastre.WFSLayer);
+        GEOR.Addons.Cadastre.WFSLayer.destroy();
+        GEOR.Addons.Cadastre.WFSLayer=null;
+        
+        this.layer.destroy();
+        this.layer=null;
+
+        this.map=null;
+       
     },
 
     CLASS_NAME : "Cadastrapp"

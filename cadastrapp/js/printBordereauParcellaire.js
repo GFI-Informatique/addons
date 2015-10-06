@@ -1,8 +1,5 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
-// Change this to avoir global variables
-var printBordereauParcellaireWindow;
-
 
 /**
  * 
@@ -11,15 +8,15 @@ var printBordereauParcellaireWindow;
  * @returns Ext.Window 
  */
 GEOR.Addons.Cadastre.onClickPrintBordereauParcellaireWindow = function(parcelleId) {
-    if (printBordereauParcellaireWindow != null) {
-        printBordereauParcellaireWindow.close();
+    if (GEOR.Addons.Cadastre.printBordereauParcellaireWindow != null) {
+        GEOR.Addons.Cadastre.printBordereauParcellaireWindow.close();
     }
     
     // Test if user have CNIL level 1 or 2
     // ask if user want with or without personnal data
     if (GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
         GEOR.Addons.Cadastre.initPrintBordereauParcellaireWindow(parcelleId);
-        printBordereauParcellaireWindow.show();
+        GEOR.Addons.Cadastre.printBordereauParcellaireWindow.show();
     }else{
         // PARAMS
         var params = {
@@ -42,8 +39,8 @@ GEOR.Addons.Cadastre.onClickPrintBordereauParcellaireWindow = function(parcelleI
         });
         
         // windows might not have been open
-        if (printBordereauParcellaireWindow != null) {
-            printBordereauParcellaireWindow.close();
+        if (GEOR.Addons.Cadastre.printBordereauParcellaireWindow != null) {
+            GEOR.Addons.Cadastre.printBordereauParcellaireWindow.close();
         }
     }
 }
@@ -56,7 +53,7 @@ GEOR.Addons.Cadastre.onClickPrintBordereauParcellaireWindow = function(parcelleI
 GEOR.Addons.Cadastre.initPrintBordereauParcellaireWindow = function(parcelleId) {
 
     // fenêtre principale
-    printBordereauParcellaireWindow = new Ext.Window({
+    GEOR.Addons.Cadastre.printBordereauParcellaireWindow = new Ext.Window({
         title : OpenLayers.i18n('cadastrapp.bordereauparcellaire.title') + ' - ' + parcelleId,
         frame : true,
         autoScroll : true,
@@ -76,7 +73,7 @@ GEOR.Addons.Cadastre.initPrintBordereauParcellaireWindow = function(parcelleId) 
 
         listeners : {
             close : function(window) {
-                printBordereauParcellaireWindow = null;
+                GEOR.Addons.Cadastre.printBordereauParcellaireWindow = null;
             }
         },
 
@@ -118,7 +115,7 @@ GEOR.Addons.Cadastre.initPrintBordereauParcellaireWindow = function(parcelleId) 
                 click : function(b, e) {
 
                     // PARAMS
-                    var params = printBordereauParcellaireWindow.items.items[0].getForm().getValues();
+                    var params = GEOR.Addons.Cadastre.printBordereauParcellaireWindow.items.items[0].getForm().getValues();
                     var url = GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createBordereauParcellaire?' + Ext.urlEncode(params);
 
                     // Needed for IE
@@ -136,14 +133,14 @@ GEOR.Addons.Cadastre.initPrintBordereauParcellaireWindow = function(parcelleId) 
                     });
                     
                     //TODO add waiting panel
-                    printBordereauParcellaireWindow.close();
+                    GEOR.Addons.Cadastre.printBordereauParcellaireWindow.close();
                 }
             }
         }, {
             text : OpenLayers.i18n('cadastrapp.close'),
             listeners : {
                 click : function(b, e) {
-                    printBordereauParcellaireWindow.close();
+                    GEOR.Addons.Cadastre.printBordereauParcellaireWindow.close();
                 }
             }
         } ]

@@ -69,14 +69,14 @@ GEOR.Addons.Cadastre.createSelectionControl = function(style, selectedStyle) {
     }));
 
     // création de la couche des entités selectionnées
-    GEOR.Addons.Cadastre.selectLayer = new OpenLayers.Layer.Vector("selection", {
+    GEOR.Addons.Cadastre.WFSLayer = new OpenLayers.Layer.Vector("selection", {
         displayInLayerSwitcher : false
     });
-    GEOR.Addons.Cadastre.selectLayer.styleMap = styleFeatures;
+    GEOR.Addons.Cadastre.WFSLayer.styleMap = styleFeatures;
 
     // ajout de la couche à la carte
-    layer.map.addLayer(GEOR.Addons.Cadastre.selectLayer);
-    GEOR.Addons.Cadastre.selectLayer.setZIndex(1001);
+    layer.map.addLayer(GEOR.Addons.Cadastre.WFSLayer);
+    GEOR.Addons.Cadastre.WFSLayer.setZIndex(1001);
 
     // création de la classe de l'écouteur clique
     OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
@@ -252,7 +252,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
 
                         // on l'ajoute à la selection si elle n'est pas trouvée
                         if (!exist) {
-                            GEOR.Addons.Cadastre.selectLayer.addFeatures(feature);
+                            GEOR.Addons.Cadastre.WFSLayer.addFeatures(feature);
                             GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList.push(feature);
                         }
 
@@ -359,7 +359,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSAttribute = function(idParcelle) {
             var feature = geojson_format.read(featureJson)[0];
             if (feature) {
                 if (GEOR.Addons.Cadastre.indexFeatureSelected(feature) == -1) {
-                    GEOR.Addons.Cadastre.selectLayer.addFeatures(feature);
+                    GEOR.Addons.Cadastre.WFSLayer.addFeatures(feature);
                     GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList.push(feature);
                     GEOR.Addons.Cadastre.changeStateFeature(feature, null, GEOR.Addons.Cadastre.selection.state.list);
                 }
@@ -404,7 +404,7 @@ GEOR.Addons.Cadastre.getFeatureById = function(idParcelle) {
  */
 GEOR.Addons.Cadastre.setState = function(feature, state) {
     feature.state = state;
-    GEOR.Addons.Cadastre.selectLayer.drawFeature(feature);
+    GEOR.Addons.Cadastre.WFSLayer.drawFeature(feature);
 }
 
 /**
@@ -446,7 +446,7 @@ GEOR.Addons.Cadastre.changeStateFeature = function(feature, index, typeSelector)
 
     case "reset":
         GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList.splice(index, 1);
-        GEOR.Addons.Cadastre.selectLayer.destroyFeatures([ feature ]);
+        GEOR.Addons.Cadastre.WFSLayer.destroyFeatures([ feature ]);
         break;
 
     case "tmp":
@@ -466,7 +466,7 @@ GEOR.Addons.Cadastre.changeStateFeature = function(feature, index, typeSelector)
  */
 GEOR.Addons.Cadastre.clearLayerSelection = function() {
     GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList = [];
-    GEOR.Addons.Cadastre.selectLayer.removeAllFeatures();
+    GEOR.Addons.Cadastre.WFSLayer.removeAllFeatures();
 }
 
 /**
