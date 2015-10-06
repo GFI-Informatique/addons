@@ -236,12 +236,16 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
             text: "Seletionner toutes les parcelles",
             disabled: true,
             listeners: {
-                click: function(b, e) {                   
+                click: function(b, e) {   
+                    var features = [];
+                    
                     fiufParcelleListStore.each(function(record) {
                         GEOR.Addons.Cadastre.getFeaturesWFSAttribute(record.data.parcelle);
+                        features.push(GEOR.Addons.Cadastre.getFeatureById(record.data.parcelle));
                     });
-                    // TODO add the good list of feature
-                    GEOR.Addons.Cadastre.zoomOnFeatures(GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList);
+                    if(features.length>0){
+                        GEOR.Addons.Cadastre.zoomOnFeatures(features);
+                    }
                 }
             }
         } ]
