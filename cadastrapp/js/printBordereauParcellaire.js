@@ -3,6 +3,7 @@ Ext.namespace("GEOR.Addons.Cadastre");
 // Change this to avoir global variables
 var printBordereauParcellaireWindow;
 
+
 /**
  * 
  * @param parcelleId
@@ -22,7 +23,8 @@ GEOR.Addons.Cadastre.onClickPrintBordereauParcellaireWindow = function(parcelleI
     }else{
         // PARAMS
         var params = {
-            parcelle : parcelleId, personaldata:0
+            parcelle : parcelleId, 
+            personaldata:0
         } 
         var url = GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createBordereauParcellaire?' + Ext.urlEncode(params);
 

@@ -100,6 +100,8 @@
 			"cadastrapp.result.parcelle.delete": "Delete entry",
 			"cadastrapp.result.parcelle.fiche": "Information form",
 			"cadastrapp.result.parcelle.export": "Export list",
+			"cadastrapp.result.no.search": "You need to do a search before",
+			"cadastrapp.result.no.selection": "You need to select plots before",
 			
 			"cadastrapp.proprietaire": "owner",
 			"cadastrapp.proprietaire.nom": "By name",
@@ -367,6 +369,8 @@
 			"cadastrapp.result.parcelle.delete": "Enlever parcelle(s)",
 			"cadastrapp.result.parcelle.fiche": "Fiche d'info parcelle(s)",
 			"cadastrapp.result.parcelle.export": "Exporter la liste",
+			"cadastrapp.result.no.search": "Veuillez selectioner une parcelle",
+			"cadastrapp.result.no.selection": "Veuillez selectioner une parcelle",
 			
 			"cadastrapp.proprietaire": "Propriétaire",
 			"cadastrapp.proprietaire.nom": "Par nom",
