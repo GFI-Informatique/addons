@@ -40,11 +40,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                 
                 WMSSetting.layerNameGeoserver = configuration.cadastreLayerName;
                 WMSSetting.url =  configuration.cadastreWMSURL;
-           
-               
-                // TODO check why click on global
-                GEOR.Addons.Cadastre.click;
-                
+                          
                 var cadastrapp = new GEOR.Addons.Cadastre.Menu({
                     map: initThis.map,
                     popupOptions: {
