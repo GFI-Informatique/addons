@@ -191,6 +191,8 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 }
             };
             geometryType = geometryTypes[i];
+            
+            var isButtonPressed = false;
 
             switch (geometryType) {
             case "LineString":
@@ -202,7 +204,8 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 handler = OpenLayers.Handler.Point;
                 iconCls = "gx-featureediting-cadastrapp-point";
                 tooltip = OpenLayers.i18n("cadastrapp.create_point");
-
+                // Point pressed by default
+                isButtonPressed = true;
                 break;
             case "Polygon":
                 handler = OpenLayers.Handler.Polygon;
@@ -226,7 +229,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 // button options
                 toggleGroup : this.toggleGroup,
                 allowDepress : true,
-                pressed : false,
+                pressed : isButtonPressed,
                 tooltip : tooltip,
                 iconCls : iconCls,
                 text : OpenLayers.i18n("cadastrapp." + geometryType.toLowerCase()),
@@ -503,7 +506,8 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         feature = event.feature;
         feature.state = OpenLayers.State.INSERT;
 
-        selctedFeatures = GEOR.Addons.Cadastre.selectFeatureIntersection(feature);
+        GEOR.Addons.Cadastre.selectFeatureIntersection(feature);
+        
         // erase point, line or polygones
         feature.layer.removeAllFeatures();
     },
