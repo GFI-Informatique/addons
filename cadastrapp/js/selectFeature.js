@@ -386,7 +386,7 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds, selectRows) {
                         if (GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle) == -1) {
                             
                             // création de l'enregistrement
-                           var newRecord = new GEOR.Addons.Cadastre.TopicRecord({
+                           var newRecord = new GEOR.Addons.Cadastre.resultParcelleRecord({
                                 parcelle : element.parcelle,
                                 adresse : (element.adresse) ? element.adresse : element.dnvoiri + element.dindic +' '+element.cconvo  +' ' + element.dvoilib,
                                 cgocommune : element.cgocommune,

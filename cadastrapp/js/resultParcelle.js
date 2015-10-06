@@ -2,7 +2,7 @@ Ext.namespace("GEOR.Addons.Cadastre");
 
 //structure de l'enregistrement pour ajouter des lignes dans un tableau de résultats
 //TODO change scope probably namespace
-GEOR.Addons.Cadastre.TopicRecord = Ext.data.Record.create([
+GEOR.Addons.Cadastre.resultParcelleRecord = Ext.data.Record.create([
          {name: 'adresse', mapping: 'adresse'},
          {name: 'cgocommune', mapping: 'cgocommune'},
          {name: 'cconvo', mapping: 'cconvo'},
@@ -359,7 +359,7 @@ GEOR.Addons.Cadastre.addNewDataResultParcelle = function(result) {
     Ext.each(result, function(element, index) {
         if (GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle) == -1) {
            
-            var newRecord = new TopicRecord({
+            var newRecord = new GEOR.Addons.Cadastre.resultParcelleRecord({
                 parcelle: element.parcelle,
                 adresse: (element.adresse) ? element.adresse : element.dnvoiri + element.dindic +' '+element.cconvo  +' ' + element.dvoilib,
                 cgocommune: element.cgocommune,
