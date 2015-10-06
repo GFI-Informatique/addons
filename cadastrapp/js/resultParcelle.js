@@ -101,7 +101,12 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
             listeners : {
                 click : function(b, e) {
                     // zoom on plots from the active tab
-                    GEOR.Addons.Cadastre.zoomOnFeatures(GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList);
+                    var features = [];
+                    GEOR.Addons.Cadastre.result.tabs.activeTab.getStore().each(function(item,index){
+                        var parcelleId = item.data.parcelle;
+                        features.push(GEOR.Addons.Cadastre.getFeatureById(parcelleId));
+                    });
+                    GEOR.Addons.Cadastre.zoomOnFeatures(features);
                 }
             }
         }, {
@@ -208,8 +213,7 @@ GEOR.Addons.Cadastre.resultParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
     idParcellesCOuvertes : new Array(),
     fichesFOuvertes : new Array(),
     idParcellesFOuvertes : new Array(),
-    featuresList : new Array(),
-    selectedFeatures : new Array()
+    featuresList : new Array()
 });
 
 /**
@@ -263,8 +267,8 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
                     store = newTab.store.data.items;
                     // selection en jaune
                     GEOR.Addons.Cadastre.changeStateParcelleOfTab(store, GEOR.Addons.Cadastre.selection.state.list);
-                    var selectedRows = newTab.getSelectionModel().selections.items;
                     // selection en bleue
+                    var selectedRows = newTab.getSelectionModel().selections.items;
                     GEOR.Addons.Cadastre.changeStateParcelleOfTab(selectedRows, GEOR.Addons.Cadastre.selection.state.selected);
                 }
             }
