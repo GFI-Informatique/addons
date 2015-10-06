@@ -381,6 +381,99 @@ GEOR.Addons.Cadastre.addNewDataResultParcelle = function(result) {
 }
 
 /**
+ * Method: showTabSelection
+ * 
+ * Affiche le tableau de résultat ou le met à jour
+ * 
+ * @param: parcelsIds
+ * @param: selectRows
+ */
+GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds) {
+
+    // si il existe au moins une parcelle
+    if (parcelsIds.length > 0) {
+
+        // Vérifie si la parcelle n'est pas déjà dans le store
+        if (GEOR.Addons.Cadastre.result.tabs.activeTab && GEOR.Addons.Cadastre.result.tabs.activeTab.getStore()) {
+
+            GEOR.Addons.Cadastre.result.tabs.activeTab.getStore().each(function(item) {
+
+                // Si la parcelle est déja dans le store on la supprime de la liste
+                // et on la change l'état de selection
+                var index = parcelsIds.indexOf(item.data.parcelle);
+                if (index > -1) {
+                    parcelsIds.splice(index);
+                    var rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(item.data.parcelle);
+                    if(GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().isSelected(rowIndex)){
+                        GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().deselectRow(rowIndex, false);
+                    }
+                    else{
+                        GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().selectRow(rowIndex, true);
+                    }
+                    
+                }
+            });
+        }
+
+        // all parcels could have been removed
+        if (parcelsIds.length > 0) {
+            // paramètres pour le getParcelle
+            var params = {};
+            params.parcelle = new Array();
+            Ext.each(parcelsIds, function(parcelleId, currentIndex) {
+                params.parcelle.push(parcelleId);
+            });
+
+            // envoi la liste de resultat
+            Ext.Ajax.request({
+                method : 'GET',
+                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+                params : params,
+                success : function(response) {
+
+                    var result = Ext.decode(response.responseText);
+                    var rowIndex;
+
+                    // si la fenetre de recherche n'est pas ouverte
+                    if (!GEOR.Addons.Cadastre.result.window || !GEOR.Addons.Cadastre.result.tabs || !GEOR.Addons.Cadastre.result.tabs.activeTab) {
+
+                        GEOR.Addons.Cadastre.addNewResultParcelle("Selection (" + parcelsIds.length + ")", GEOR.Addons.Cadastre.getResultParcelleStore(response.responseText, false));
+
+                        GEOR.Addons.Cadastre.result.tabs.activeTab.on('viewready', function(view, firstRow, lastRow) {
+
+                        });
+                        // si la fenêtre est ouverte on ajoute les lignes
+                    } else {
+                        Ext.each(result, function(element, currentIndex) {
+                            if (GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle) == -1) {
+
+                                // création de l'enregistrement
+                                var newRecord = new GEOR.Addons.Cadastre.resultParcelleRecord({
+                                    parcelle : element.parcelle,
+                                    adresse : (element.adresse) ? element.adresse : element.dnvoiri + element.dindic + ' ' + element.cconvo + ' ' + element.dvoilib,
+                                    cgocommune : element.cgocommune,
+                                    ccopre : element.ccopre,
+                                    ccosec : element.ccosec,
+                                    dnupla : element.dnupla,
+                                    dcntpa : element.dcntpa,
+                                });
+                                // ajout de la ligne
+                                GEOR.Addons.Cadastre.result.tabs.activeTab.store.add(newRecord);
+                                // Ajout à la selection
+                                GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.parcelle);
+                            }
+                        });
+                    }
+                },
+                failure : function(result) {
+                    alert('ERROR-');
+                }
+            });
+        }
+    }
+}
+
+/**
  * met à jour l'état des parcelles en fonction de l'évènement sur l'onglet
  * 
  * @param: store
