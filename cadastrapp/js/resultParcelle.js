@@ -42,6 +42,7 @@ GEOR.Addons.Cadastre.resultParcelleRecord = Ext.data.Record.create([ {
  * Init Global windows containing all tabs
  */
 GEOR.Addons.Cadastre.initResultParcelle = function() {
+    
 
     // fenêtre principale
     GEOR.Addons.Cadastre.result.window = new Ext.Window({
@@ -82,6 +83,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
         items : [ {
             xtype : 'tabpanel',
             layoutOnTabChange : true,
+            enableTabScroll : true,
             items : [ {
                 xtype : 'panel',
                 title : '+',
