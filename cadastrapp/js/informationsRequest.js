@@ -301,9 +301,9 @@ GEOR.Addons.Cadastre.onClickAskInformations = function() {
         border : true
     });
 
-    var askInformationsWindow = new Ext.Window(
+    GEOR.Addons.Cadastre.request.informationsWindow = new Ext.Window(
             {
-                title : 'Demande Informations Foncieres',
+                title : 'Demande Informations Foncières',
                 frame : true,
                 bodyPadding : 10,
                 autoScroll : true,

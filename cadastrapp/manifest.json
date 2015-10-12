@@ -7,7 +7,7 @@
 		"js/searchUtils.js",
 		"js/searchParcelleByOwner.js",
 		"js/searchParcelleByRef.js",
-		"js/askInformations.js",
+		"js/informationsRequest.js",
 		"js/detailUniteFonciere.js",
 		"js/habitationDetails.js",
 		"js/detailUniteCadastrale.js",
