@@ -154,7 +154,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             autoLoad : true,
 
             // Champs constituant l'onglet propriétaire
-            fields : [ 'comptecommunal', 'ccodro', 'dnupro', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp', {
+            fields : [ 'comptecommunal', 'ccodro', 'dnupro', 'ddenom', {
                 // Le champ adress est l'addition des champs dlign3,dlign4,dlign5, dlign6
                 name : 'adress',
                 convert : function(v, rec) {
@@ -204,25 +204,9 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     width : 50
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.nom'),
-                    dataIndex : 'dnomlp',
+                    dataIndex : 'ddenom',
                     width : 100
-                }, {
-                    header : OpenLayers.i18n('cadastrapp.duc.prenom'),
-                    dataIndex : 'dprnlp',
-                    width : 100
-                }, {
-                    header : OpenLayers.i18n('cadastrapp.duc.mentioncpl'),
-                    dataIndex : 'epxnee',
-                    width : 75
-                }, {
-                    header : OpenLayers.i18n('cadastrapp.duc.nomcpl'),
-                    dataIndex : 'dnomcp',
-                    width : 100
-                }, {
-                    header : OpenLayers.i18n('cadastrapp.duc.prenomcpl'),
-                    dataIndex : 'dprncp',
-                    width : 100
-                }, {
+                },  {
                     header : OpenLayers.i18n('cadastrapp.duc.adresse'),
                     dataIndex : 'adress',
                     width : 200
