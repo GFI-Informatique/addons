@@ -2,7 +2,6 @@ Ext.namespace("GEOR.Addons.Cadastre");
 
 // structure de l'enregistrement pour ajouter des lignes dans un tableau de
 // résultats
-// TODO change scope probably namespace
 GEOR.Addons.Cadastre.resultParcelleRecord = Ext.data.Record.create([ {
     name : 'adresse',
     mapping : 'adresse'
