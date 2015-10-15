@@ -3,44 +3,37 @@
  * `Ext.util.Observable
  * <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
  */
-Ext.namespace("GEOR.Addons.Cadastre");
+Ext.namespace("GEOR.Addons.Cadastre.request");
 
 /**
  * public: method[onClickAskInformations] :
  * 
  * 
- * Cette méthode est appellée sur appui du bouton 'Demande' de la barre d'outil de
- * cadastrapp Elle ouvre une fenetre composee d'informations sur le
+ * Cette méthode est appellée sur appui du bouton 'Demande' de la barre d'outil
+ * de cadastrapp Elle ouvre une fenetre composee d'informations sur le
  * demandeur,ainsi que sur le ou les biens à consulter La demande d'information
  * peut etre imprimée
  */
 GEOR.Addons.Cadastre.onClickAskInformations = function() {
 
-    var parcBisStore = GEOR.Addons.Cadastre.getBisStore();
-    var parcCityStore = GEOR.Addons.Cadastre.getPartialCityStore();
+    if (GEOR.Addons.Cadastre.request.informationsWindow == null || GEOR.Addons.Cadastre.request.informationsWindow.isDestroyed == true) {
+        GEOR.Addons.Cadastre.initInformationRequestWindow();
+    } else {
+        GEOR.Addons.Cadastre.request.informationsWindow.show();
+    }
+}
 
+/**
+ * Create information window
+ */
+GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 
-    // liste des sections : TODO : charger dynamiquement selon la ville choisie
-    // var sectionStore = getSectionStore();
-    var sectionStore = new Ext.data.JsonStore({
-        fields : [ 'name', 'value' ],
-        data : [ {
-            name : 'sect1',
-            value : 'sect1'
-        }, {
-            name : 'sect2',
-            value : 'sect2'
-        }, {
-            name : 'sect3',
-            value : 'sect3'
-        } ]
-    });
-
-    var parcCityCombo = new Ext.form.ComboBox({
+    // comboboxe "villes" de l'onglet "Nom usage ou Naissance"
+    var cityCombox = new Ext.form.ComboBox({
         fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.city'),
         hiddenName : 'cgocommune',
         allowBlank : false,
-        width : 300,
+        width : 280,
         mode : 'local',
         value : '',
         forceSelection : true,
@@ -50,19 +43,21 @@ GEOR.Addons.Cadastre.onClickAskInformations = function() {
         store : GEOR.Addons.Cadastre.getPartialCityStore(),
         listeners : {
             beforequery : function(q) {
+                // Check not null querry and if enough chars
                 if (q.query) {
                     var length = q.query.length;
-                    if (length >= GEOR.Addons.Cadastre.minCharToSearch
-                            && q.combo.getStore().getCount() == 0) {
+                    // If enough chars in query
+                    if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
+
+                        // if not a number request by town name
                         if (isNaN(q.query)) {
-                            // recherche par nom de ville
                             q.combo.getStore().load({
                                 params : {
                                     libcom : q.query
                                 }
                             });
                         } else {
-                            // recherche par code insee
+                            // if not a number request by town code
                             q.combo.getStore().load({
                                 params : {
                                     cgocommune : q.query
@@ -75,387 +70,188 @@ GEOR.Addons.Cadastre.onClickAskInformations = function() {
                     q.query = new RegExp(Ext.escapeRe(q.query), 'i');
                     q.query.length = length;
                 }
-            },
-            change : function(combo, newValue, oldValue) {
-                GEOR.Addons.Cadastre.parcelleWindow.buttons[0].enable();
             }
         }
     });
-    // grille "références"
-    var parcelleGrid = new Ext.grid.EditorGridPanel(
-            {
-                fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.references'),
-                xtype : 'editorgrid',
-                clicksToEdit : 1,
-                ds : GEOR.Addons.Cadastre.getVoidRefStore(),
-                cm : GEOR.Addons.Cadastre.getRefColModel(null),
-                autoExpandColumn : 'parcelle',
-                height : 100,
-                width : 300,
-                border : true,
-                listeners : {
-                    beforeedit : function(e) {
-                        if (e.column == 0) {
-                            // pas d'edition de section si aucune ville
-                            // selectionnée
-                            if (parcCityCombo1.value == '')
-                                return false;
-                        }
-                        if (e.column == 1) {
-                            // pas d'edition de parcelle si aucune section
-                            // selectionnée
-                            if (e.record.data.section == ''){
-                                return false;
-                            }
 
-                            // on remplace le contenu du store des parcelles
-                            // selon la section selectionnée
-                            GEOR.Addons.Cadastre.loadParcelleStore(e.grid.getColumnModel()
-                                    .getColumnById(e.field).editor.getStore(),
-                                    parcCityCombo1.value, e.record.data.section);
-                        }
-                    },
-                    afteredit : function(e) {
-                        // on ajoute un champ vide, si le dernier champ est
-                        // complet
-                        var lastIndex = e.grid.store.getCount() - 1;
-                        var lastData = e.grid.store.getAt(e.grid.store.getCount() - 1).data;
-
-                        if (lastData.section != '' && lastData.parcelle != '') {
-                            var p = new e.grid.store.recordType({
-                                section : '',
-                                parcelle : ''
-                            }); // create new record
-                            e.grid.stopEditing();
-                            e.grid.store.add(p); // insert a new record into
-                                                    // the store (also see add)
-                            this.startEditing(e.row, 1);
+    GEOR.Addons.Cadastre.request.informationsWindow = new Ext.Window({
+        title : 'Demande Informations Foncières',
+        frame : true,
+        bodyPadding : 10,
+        autoScroll : true,
+        width : 450,
+        closable : true,
+        resizable : true,
+        draggable : true,
+        constrainHeader : true,
+        fieldDefaults : {
+            labelAlign : 'right'
+        },
+        items : [ {
+            id : 'requestInformationForm',
+            xtype : 'form',
+            items : [ {
+                xtype : 'fieldset',
+                title : OpenLayers.i18n('cadastrapp.demandeinformation.titre1'),
+                defaultType : 'textfield',
+                labelWidth : 120,
+                items : [ {
+                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.cni'),
+                    id : 'requestCNI',
+                    width : 280,
+                    allowBlank: false,
+                    listeners : {
+                        change : function(textfield, newValue, oldValue){
+                            
+                            var params = {};
+                            params.id=newValue;
+                            // envoi des données d'une form
+                            Ext.Ajax.request({
+                                method : 'GET',
+                                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'checkRequestLimitation',
+                                params : params,
+                                success : function(response) {
+                                    
+                                    var result = Ext.decode(response.responseText);
+                                   // result.lastname;
+                                   // result.firstname;
+                                   // result.adress;
+                                  // result.cgocommune;
+                                    
+                                   // if(result.additionalinformation.length>0){
+                                   //  Ext.Msg.alert(result.additionalinformation);
+                                //}
+                                  
+                                },
+                                failure : function(result) {
+                                    Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.alert.user'));
+                                }
+                            });
                         }
                     }
-                }
-            });
-
-    // liste des parcelles : TODO : charger dynamiquement selon la ville choisie
-    // et la section choisie
-    // var parcelleStore = getParcelleStore();
-    var parcelleStore = new Ext.data.JsonStore({
-        fields : [ 'name', 'value' ],
-        data : [ {
-            name : 'parc1',
-            value : 'parc1'
-        }, {
-            name : 'parc2',
-            value : 'parc2'
-        }, {
-            name : 'parc3',
-            value : 'parc3'
-        } ]
-    });
-
-    // listes des section / parcelles saisies : "références"
-    // initialement vide
-    // ajoute automatique une ligne vide quand la dernière ligne est
-    // complètement remplie
-    // actuellement, on ne peut pas supprimer une ligne
-    var ds = new Ext.data.JsonStore({
-        fields : [ 'section', 'parcelle' ],
-        data : [ {
-            section : '',
-            parcelle : ''
+                } ,{
+                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.nom'),
+                    id : 'requestLastName',
+                    width : 280,
+                    allowBlank: false
+                }, {
+                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.prenom'),
+                    id : 'requestFirstName',
+                    width : 280,
+                    allowBlank: false
+                },{
+                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.num_rue'),
+                    id : 'requestAdress',
+                    width : 280,
+                    allowBlank: false
+                }, cityCombox ]
+            }, {
+                xtype : 'fieldset',
+                title : OpenLayers.i18n('cadastrapp.demandeinformation.titre2'),
+                defaultType : 'textfield',
+                labelWidth : 120,
+                items : [ {
+                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.comptecommunal'),
+                    id : 'requestCompteCommunal',
+                    width : 280,
+                    listeners : {
+                        change : function(textfield, newValue, oldValue){
+                            
+                            var params = {};
+                            params.comptecommunal=newValue;
+                            // Check if user can have information about this owner (could be outside commune or not enough CNIL right)
+                            Ext.Ajax.request({
+                                method : 'GET',
+                                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'checkRequestValidity',
+                                params : params,
+                                success : function(response) {
+                                    
+                                    var result = Ext.decode(response.responseText);     
+                                    Ext.getCmp('requestLastName').enable;
+                                },
+                                failure : function(result) {
+                                    Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.alert.demande'));
+                                }
+                            });
+                        }
+                    }
+                }, {
+                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.parcelles'),
+                    id : 'requestParcelleId',
+                    width : 280,
+                    listeners : {
+                        change : function(textfield, newValue, oldValue){
+                            
+                            var params = {};
+                            params.parcelle=newValue;
+                            // Check if user can have information about this parcelle (could be outside commune)
+                            Ext.Ajax.request({
+                                method : 'GET',
+                                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'checkRequestValidity',
+                                params : params,
+                                success : function(response) {
+                                    
+                                    var result = Ext.decode(response.responseText);     
+                                    Ext.getCmp('requestLastName').enable;
+                                },
+                                failure : function(result) {
+                                    Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.alert.demande'));
+                                }
+                            });
+                        }
+                    }
+                } ]
+            } ]
         } ],
-        listeners : {
-            update : function(store, record, operation) {
-                var lastIndex = this.getCount() - 1;
-                var lastData = this.getAt(this.getCount() - 1).data;
-
-                if (lastData.section != '' && lastData.parcelle != '') {
-                    var p = new this.recordType({
-                        section : '',
-                        parcelle : ''
-                    }); // create new record
-                    parcelleGrid.stopEditing();
-                    this.add(p); // insert a new record into the store (also
-                    // see add)
-                    parcelleGrid.startEditing(lastIndex + 1, 0); //
+        buttons : [ {
+            labelAlign : 'left',
+            text : OpenLayers.i18n('cadastrapp.demandeinformation.annuler'),
+            listeners : {
+                click : function(b, e) {
+                    GEOR.Addons.Cadastre.request.informationsWindow.hide();
                 }
+            }
+        }, {
+            labelAlign : 'right',
+            text : OpenLayers.i18n('cadastrapp.demandeinformation.imprimer'),
+            id: 'requestPrintButton',
+            disabled : true,
+            listeners : {
+                click : function(b, e) {
+                    // PARAMS
+                    var params = {};
+                    params.lastname = Ext.getCmp('requestLastName').getValue();
+                    params.fisrtname = Ext.getCmp('requestFirstName').getValue();
+                    params.adress = Ext.getCmp('requestAdress').getValue();
+                    params.cni = Ext.getCmp('requestCNI').getValue();
+                    params.comptecommunal = Ext.getCmp('requestCompteCommunal').getValue();
+                    params.parcelle = Ext.getCmp('requestParcelleId').getValue();
+
+                    // TODO
+                    params.requestid = 1;
+                    var url = GEOR.Addons.Cadastre.cadastrappWebappUrl + 'printPDFRequest?' + Ext.urlEncode(params);
+
+                    // Directly download file, without and call service without
+                    // ogcproxy
+                    Ext.DomHelper.append(document.body, {
+                        tag : 'iframe',
+                        id : 'downloadIframe',
+                        frameBorder : 0,
+                        width : 0,
+                        height : 0,
+                        css : 'display:none;visibility:hidden;height:0px;',
+                        src : url
+                    });
+
+                }
+            }
+        } ],
+        listeners: {
+            beforehide : function(windows){
+                GEOR.Addons.Cadastre.request.informationsWindow.items.items[0].getForm().reset();
             }
         }
     });
-
-    // modele la la grille des "parcelles"
-    var colModel = new Ext.grid.ColumnModel([ {
-        id : 'section',
-        dataIndex : 'section',
-        header : "Section",
-        width : 250,
-        sortable : false,
-        editor : new Ext.form.ComboBox({
-            mode : 'local',
-            value : '',
-            forceSelection : true,
-            editable : true,
-            displayField : 'name',
-            valueField : 'value',
-            store : sectionStore
-        })
-    }, {
-        id : "parcelle",
-        dataIndex : 'parcelle',
-        header : "Parcelle",
-        width : 350,
-        sortable : false,
-        editor : new Ext.form.ComboBox({
-            mode : 'local',
-            value : '',
-            forceSelection : true,
-            editable : true,
-            displayField : 'name',
-            valueField : 'value',
-            store : parcCityStore
-        })
-    } ]);
-
-    // grille "parcellle"
-    // grille "références"
-    parcelleGrid = new Ext.grid.EditorGridPanel(
-            {
-                fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.references'),
-                xtype : 'editorgrid',
-                clicksToEdit : 1,
-                ds : GEOR.Addons.Cadastre.getVoidRefStore(),
-                cm : GEOR.Addons.Cadastre.getRefColModel(null),
-                autoExpandColumn : 'parcelle',
-                height : 100,
-                width : 405,
-                border : true,
-                listeners : {
-                    beforeedit : function(e) {
-                        if (e.column == 0) {
-                            // pas d'edition de section si aucune ville
-                            // selectionnée
-                            if (parcCityCombo.value == '')
-                                return false;
-                        }
-                        if (e.column == 1) {
-                            // pas d'edition de parcelle si aucune section
-                            // selectionnée
-                            if (e.record.data.section == '')
-                                return false;
-
-                            // on remplace le contenu du store des parcelles
-                            // selon la section selectionnée
-                            GEOR.Addons.Cadastre.loadParcelleStore(e.grid.getColumnModel()
-                                    .getColumnById(e.field).editor.getStore(),
-                                    parcCityCombo1.value, e.record.data.section);
-                        }
-                    },
-                    afteredit : function(e) {
-                        // on ajoute un champ vide, si le dernier champ est
-                        // complet
-                        var lastIndex = e.grid.store.getCount() - 1;
-                        var lastData = e.grid.store.getAt(e.grid.store
-                                .getCount() - 1).data;
-
-                        if (lastData.section != '' && lastData.parcelle != '') {
-                            var p = new e.grid.store.recordType({
-                                section : '',
-                                parcelle : ''
-                            }); // create new record
-                            e.grid.stopEditing();
-                            e.grid.store.add(p); // insert a new record into
-                                                    // the store (also see add)
-                            this.startEditing(e.row, 1);
-                        }
-                    }
-                }
-            });
-
-    // modele la la grille des "adresses"
-    var coladresseModel = new Ext.grid.ColumnModel([ {
-        id : 'adresse',
-        dataIndex : 'adresse',
-        header : "Adresse cadastrale",
-        width : 400,
-        sortable : false,
-        editor : new Ext.form.ComboBox({
-            mode : 'local',
-            value : '',
-            // editable: true,
-            displayField : 'name',
-            valueField : 'value',
-            store : sectionStore
-        })
-    } ]);
-
-    // grille "adresse"
-    var adresseGrid = new Ext.grid.EditorGridPanel({
-        fieldLabel : 'adresse(s)',
-        name : 'adresse cadastrales',
-        xtype : 'editorgrid',
-        clicksToEdit : 3,
-        ds : ds,
-        cm : coladresseModel,
-        autoExpandColumn : 'adresse',
-        height : 140,
-        width : 400,
-        border : true
-    });
-
-    GEOR.Addons.Cadastre.request.informationsWindow = new Ext.Window(
-            {
-                title : 'Demande Informations Foncières',
-                frame : true,
-                bodyPadding : 10,
-                autoScroll : true,
-                width : 450,
-                closable : true,
-                resizable : true,
-                draggable : true,
-                constrainHeader : true,
-
-                fieldDefaults : {
-                    labelAlign : 'right',
-
-                    msgTarget : 'side'
-                },
-                items : [
-                        {
-                            xtype : 'form',
-                            title : 'Informations sur le demandeur',
-                            labelWidth : 120,
-                            defaultType : 'textfield',
-                            items : [
-                                    {
-                                        fieldLabel : OpenLayers
-                                                .i18n('cadastrapp.demandeinformation.nom'),
-                                        name : 'nom',
-                                        width : 280
-                                    },
-                                    {
-                                        fieldLabel : OpenLayers
-                                                .i18n('cadastrapp.demandeinformation.prenom'),
-                                        name : 'prenom',
-                                        width : 280
-                                    },
-                                    {
-                                        fieldLabel : OpenLayers
-                                                .i18n('cadastrapp.parcelle.city'),
-                                        name : 'city',
-                                        width : 280
-                                    },
-
-                                    {
-                                        xtype : 'compositefield',
-                                        fieldLabel : OpenLayers
-                                                .i18n('cadastrapp.demandeinformation.num_rue'),
-                                        items : [ {
-                                            xtype : 'numberfield',
-                                            name : 'numero',
-                                            width : 40
-                                        }, {
-                                            xtype : 'combo',
-                                            name : 'complement',
-                                            width : 40
-                                        }, {
-                                            xtype : 'textfield',
-                                            name : 'rue',
-                                            width : 190
-                                        } ]
-                                    },
-                                    {
-                                        fieldLabel : OpenLayers
-                                                .i18n('cadastrapp.demandeinformation.lieudit'),
-                                        name : 'lieudit',
-                                        width : 280
-                                    },
-                                    {
-                                        fieldLabel : OpenLayers
-                                                .i18n('cadastrapp.demandeinformation.cni'),
-                                        name : 'cni',
-                                        width : 280
-                                    } ]
-                        },
-                        {
-                            xtype : 'fieldset',
-                            title : OpenLayers
-                                    .i18n('cadastrapp.demandeinformation.titre2'),
-                            defaultType : 'textfield',
-                            labelWidth : 120,
-                            items : [
-
-                                    parcCityCombo, // combobox "villes"
-                                    {
-                                        xtype : 'tabpanel',
-                                        height : 160,
-                                        width : 405,
-                                        activeTab : 0,
-                                        items : [ {
-
-                                            // ONGLET 1
-                                            title : OpenLayers
-                                                    .i18n('cadastrapp.demandeinformation.parcelles'),
-                                            // layout:'form',
-                                            defaultType : 'displayfield',
-                                            height : 200,
-                                            id : 'firstForm',
-                                            fileUpload : true,
-
-                                            items : [
-                                                    parcelleGrid, // grille
-                                                    // "parcelle"
-                                                    {
-                                                        fieldClass : 'displayfieldCenter'
-                                                    } ]
-
-                                        } ]
-                                    },
-                                    {
-                                        xtype : 'tabpanel',
-                                        width : 405,
-                                        activeTab : 0,
-                                        items : [ {
-
-                                            // ONGLET 1
-                                            title : OpenLayers
-                                                    .i18n('cadastrapp.demandeinformation.adressescadastrales'),
-                                            defaultType : 'displayfield',
-                                            id : 'firstForm',
-                                            fileUpload : true,
-
-                                            items : [
-                                                    adresseGrid, // grille
-                                                    // "adresse"
-                                                    {
-                                                        fieldClass : 'displayfieldCenter'
-                                                    } ]
-
-                                        } ]
-                                    } ]
-                        } ],
-                buttons : [
-                        {
-                            labelAlign : 'left',
-                            text : OpenLayers
-                                    .i18n('cadastrapp.demandeinformation.annuler'),
-                            listeners : {
-                                click : function(b, e) {
-                                    askInformationsWindow.close();
-                                }
-                            }
-                        },
-                        {
-                            labelAlign : 'right',
-                            text : OpenLayers
-                                    .i18n('cadastrapp.demandeinformation.imprimer'),
-                            listeners : {
-                                click : function(b, e) {
-                                    onClickDisplayInfoBulle();
-                                    askInformationsWindow.close();
-
-                                }
-                            }
-                        } ]
-            });
-    askInformationsWindow.show();
+    GEOR.Addons.Cadastre.request.informationsWindow.show();
     console.log("onClick")
 };

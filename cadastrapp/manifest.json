@@ -234,11 +234,13 @@
              
              "cadastrapp.demandeinformation.titre2": "Properties",
              "cadastrapp.demandeinformation.parcelles": "Plot(s)",
-             "cadastrapp.demandeinformation.section": "Section",
-             "cadastrapp.demandeinformation.parcelle": "Plot",
-             "cadastrapp.demandeinformation.adressescadastrales": "Cadastral address",
+             "cadastrapp.demandeinformation.comptecommunal": "Owner Id",
              "cadastrapp.demandeinformation.annuler": "Cancel request",
              "cadastrapp.demandeinformation.imprimer": "Print request",
+             
+            "cadastrapp.demandeinformation.alert.title":"Request information ",
+           	"cadastrapp.demandeinformation.alert.demande":"An error occurs during information verification, no result can be given",
+           	"cadastrapp.demandeinformation.alert.user":"An error occurs during information verification, no result can be given",
  
             "cadastrapp.surface" : "Capacity",
             "cadastrapp.CoProprietaire" : "co-owner",
@@ -297,7 +299,7 @@
 			"cadastrapp.bordereauparcellaire.data.with" : "With owner information"
         },
         "fr": {
-        	"cadastrapp.connection.error":"Erreur lors du chargement de la configuration, webservice indisponible",
+        	"cadastrapp.connection.error":"Erreur lors du chargement de la configuration du module cadastre, webservice indisponible",
         	"cadastrapp.menu.tooltips.cadastre": "Si coché active les informations sur les unités cadastrales, infobulle et fenêtre de détails",
             "cadastrapp.menu.tooltips.foncier": "Si coché active les informations sur les unités foncière, infobulle et fenêtre de détails",
            
@@ -504,11 +506,14 @@
              
              "cadastrapp.demandeinformation.titre2": "Biens à consulter",
              "cadastrapp.demandeinformation.parcelles": "Parcelle(s)",
-             "cadastrapp.demandeinformation.section": "Section",
-             "cadastrapp.demandeinformation.parcelle": "Parcelle",
-             "cadastrapp.demandeinformation.adressescadastrales": "Adresse(s) cadastrale(s)",
+           	 "cadastrapp.demandeinformation.comptecommunal": "Compte communal",
              "cadastrapp.demandeinformation.annuler": "Annuler la demande",
              "cadastrapp.demandeinformation.imprimer": "Imprimer la demande",
+             
+             "cadastrapp.demandeinformation.alert.title":"Demande d'information impossible",
+          	 "cadastrapp.demandeinformation.alert.demande":" Erreur lors de la vérification de la demande, aucune demande ne peut être réalisée pour l'instant",
+           	 "cadastrapp.demandeinformation.alert.user":"Erreur lors de la vérification de l'utilisateur, aucune demande ne peut être réalisée",
+ 
              
             "cadastrapp.uniteFonciere": "Unite foncière",
             "cadastrapp.surface" : "Surface",

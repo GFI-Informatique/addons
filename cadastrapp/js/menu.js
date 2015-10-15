@@ -438,24 +438,16 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
      * ``OpenLayers.Layer.Vector`` Create ...TODO
      */
     initDemandeControl : function(layer) {
-        var button, config;
-
-        config = {
-            // button options
-            toggleGroup : this.toggleGroup,
-            allowDepress : false,
-            pressed : false,
+        
+        // menu : recherche parcelle
+        var configDemande = {
             tooltip : OpenLayers.i18n("cadastrapp.demande"),
-            // check item options
-            group : this.toggleGroup,
             iconCls : "gx-featureediting-cadastrapp-demande",
             iconAlign : 'top',
             text : OpenLayers.i18n("cadastrapp.demande"),
             handler : GEOR.Addons.Cadastre.onClickAskInformations
         };
-        button = new Ext.Button(config);
-
-        this.items.push(button);
+        this.items.push(new Ext.Button(configDemande));
     },
 
     /**
