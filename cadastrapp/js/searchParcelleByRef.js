@@ -444,10 +444,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                 // PARAMS
                                 var params = {};
                                 params.cgocommune = currentForm.getForm().findField('cgocommune').value;
-                                
-                                // init result windows without showing it
-                                GEOR.Addons.Cadastre.addNewResult(resultTitle, null);
-                                
+                                                                
                                 parcelleGrid.getStore().each(function(record) {
                                     console.log("parcelleGrid each row");
                                     
@@ -464,8 +461,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                             url: GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
                                             params: params,
                                             success: function(result) {
-                                                var data = Ext.decode(result.responseText);
-                                                GEOR.Addons.Cadastre.addNewDataResultParcelle(data);
+                                                GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
                                             },
                                             failure : function(result) {
                                                 alert('ERROR');
