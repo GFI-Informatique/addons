@@ -55,6 +55,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
         constrainHeader : true,
         border : false,
         width : 580,
+        height : 200,
         boxMaxHeight : Ext.getBody().getViewSize().height - 200,
         listeners : {
             // Adding because autoheight and boxMaxHeight to not work together
@@ -342,47 +343,12 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
     GEOR.Addons.Cadastre.result.tabs.insert(0, currentTabGrid);
     GEOR.Addons.Cadastre.result.tabs.setActiveTab(0);
 
-    // lors d'une recherche de parcelle on envoie une requête attributtaire
-    // pour selectionner les parcelles
+    // lors d'une recherche de parcelle on envoie une requête attributtaire pour stocker les features
     currentTabGrid.getStore().each(function(record) {
         GEOR.Addons.Cadastre.getFeaturesWFSAttribute(record.data.parcelle);
     });
 
-    GEOR.Addons.Cadastre.zoomOnFeatures(GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList);
     GEOR.Addons.Cadastre.result.window.show();
-}
-
-/**
- * public: method[addNewDataResultParcelle]
- * 
- * Add result for webservice to resultParcelle Panel and to selected feature
- * list
- * 
- * @param result -
- *            Json result from ajax request
- */
-GEOR.Addons.Cadastre.addNewDataResultParcelle = function(result) {
-    Ext.each(result, function(element, index) {
-        if (GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle) == -1) {
-
-            var newRecord = new GEOR.Addons.Cadastre.resultParcelleRecord({
-                parcelle : element.parcelle,
-                adresse : (element.adresse) ? element.adresse : element.dnvoiri + element.dindic + ' ' + element.cconvo + ' ' + element.dvoilib,
-                cgocommune : element.cgocommune,
-                ccopre : element.ccopre,
-                ccosec : element.ccosec,
-                dnupla : element.dnupla,
-                dcntpa : element.dcntpa
-            });
-            // ajout de la ligne
-            GEOR.Addons.Cadastre.result.tabs.activeTab.store.add(newRecord);
-
-            // Ajout de la parcelle à la liste de feature sélectionner pour le
-            // zoom et la sélection en jaune
-            GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.parcelle);
-        }
-    });
-    GEOR.Addons.Cadastre.zoomOnFeatures(GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList);
 }
 
 /**
