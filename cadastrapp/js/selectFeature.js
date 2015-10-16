@@ -519,7 +519,7 @@ GEOR.Addons.Cadastre.getLayerByName = function(layerName) {
 GEOR.Addons.Cadastre.zoomOnFeatures = function(features) {
 
     // zoom sur les entités selectionnées etat 2 
-    if (features.length > 0) {
+    if (features.length > 0 && features[0] != null) {
         // récupération des bordure de  l'enveloppe des entités selectionnées
         var minLeft = features[0].geometry.bounds.left;
         var maxRight = features[0].geometry.bounds.right;
