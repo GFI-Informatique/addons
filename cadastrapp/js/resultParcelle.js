@@ -339,9 +339,10 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
         }
     });
 
-    // Add grid to first tab and makeit Active
-    GEOR.Addons.Cadastre.result.tabs.insert(0, currentTabGrid);
-    GEOR.Addons.Cadastre.result.tabs.setActiveTab(0);
+    // Add new panel at the end just before + and activate it
+    var currentTabIndex = GEOR.Addons.Cadastre.result.tabs.items.length -1;
+    GEOR.Addons.Cadastre.result.tabs.insert(currentTabIndex, currentTabGrid);
+    GEOR.Addons.Cadastre.result.tabs.setActiveTab(currentTabIndex);
 
     // lors d'une recherche de parcelle on envoie une requête attributtaire pour stocker les features
     currentTabGrid.getStore().each(function(record) {
