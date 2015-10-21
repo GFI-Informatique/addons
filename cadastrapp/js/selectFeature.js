@@ -241,7 +241,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                         index = -1;
 
                         // on teste si l'entité est déja selectionnée
-                        Ext.each(GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList, function(selectedFeature, currentIndexJ) {
+                        Ext.each(GEOR.Addons.Cadastre.result.tabs.getActiveTab().featuresList, function(selectedFeature, currentIndexJ) {
                             if (selectedFeature.fid == feature.fid) {
                                 exist = true;
                                 feature = selectedFeature;
@@ -253,7 +253,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                         // on l'ajoute à la selection si elle n'est pas trouvée
                         if (!exist) {
                             GEOR.Addons.Cadastre.WFSLayer.addFeatures(feature);
-                            GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList.push(feature);
+                            GEOR.Addons.Cadastre.result.tabs.getActiveTab().featuresList.push(feature);
                         }
 
                         // on met à jour son état
@@ -265,9 +265,9 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                             parcelsIds.push(id);
                         } else {
                             // sinon on la supprime du tableau et on ferme les fenêtres de détail
-                            GEOR.Addons.Cadastre.result.tabs.activeTab.store.removeAt(GEOR.Addons.Cadastre.indexRowParcelle(id));
-                            GEOR.Addons.Cadastre.closeWindowFIUC(id, GEOR.Addons.Cadastre.result.tabs.activeTab);
-                            GEOR.Addons.Cadastre.closeWindowFIUF(id, GEOR.Addons.Cadastre.result.tabs.activeTab);
+                            GEOR.Addons.Cadastre.result.tabs.getActiveTab().store.removeAt(GEOR.Addons.Cadastre.indexRowParcelle(id));
+                            GEOR.Addons.Cadastre.closeWindowFIUC(id, GEOR.Addons.Cadastre.result.tabs.getActiveTab());
+                            GEOR.Addons.Cadastre.closeWindowFIUF(id, GEOR.Addons.Cadastre.result.tabs.getActiveTab());
                         }
                     }
                 });
@@ -303,7 +303,7 @@ GEOR.Addons.Cadastre.indexFeatureSelected = function(feature) {
     var idField = GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle;
     var index = -1;
 
-    Ext.each(GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList, function(selectedFeature, currentIndex) {
+    Ext.each(GEOR.Addons.Cadastre.result.tabs.getActiveTab().featuresList, function(selectedFeature, currentIndex) {
         if (selectedFeature.attributes[idField] == feature.attributes[idField]) {
             index = currentIndex;
             return false; // this breaks out of the 'each' loop
@@ -320,7 +320,7 @@ GEOR.Addons.Cadastre.indexFeatureSelected = function(feature) {
  * @param: idParcelle
  */
 GEOR.Addons.Cadastre.indexRowParcelle = function(idParcelle) {
-    var rowIndex = GEOR.Addons.Cadastre.result.tabs.activeTab.getStore().find('parcelle', idParcelle);
+    var rowIndex = GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore().find('parcelle', idParcelle);
     return rowIndex;
 }
 
@@ -360,7 +360,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSAttribute = function(idParcelle) {
             if (feature) {
                 if (GEOR.Addons.Cadastre.indexFeatureSelected(feature) == -1) {
                     GEOR.Addons.Cadastre.WFSLayer.addFeatures(feature);
-                    GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList.push(feature);
+                    GEOR.Addons.Cadastre.result.tabs.getActiveTab().featuresList.push(feature);
                     GEOR.Addons.Cadastre.changeStateFeature(feature, null, GEOR.Addons.Cadastre.selection.state.list);
                 }
             }
@@ -384,7 +384,7 @@ GEOR.Addons.Cadastre.getFeatureById = function(idParcelle) {
     var idField = GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle;
     var feature;
 
-    Ext.each(GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList, function(selectedFeature, currentIndex) {
+    Ext.each(GEOR.Addons.Cadastre.result.tabs.getActiveTab().featuresList, function(selectedFeature, currentIndex) {
         if (selectedFeature.attributes[idField] == idParcelle) {
             feature = selectedFeature;
             return false;
@@ -445,7 +445,7 @@ GEOR.Addons.Cadastre.changeStateFeature = function(feature, index, typeSelector)
         break;
 
     case "reset":
-        GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList.splice(index, 1);
+        GEOR.Addons.Cadastre.result.tabs.getActiveTab().featuresList.splice(index, 1);
         GEOR.Addons.Cadastre.WFSLayer.destroyFeatures([ feature ]);
         break;
 
@@ -465,7 +465,7 @@ GEOR.Addons.Cadastre.changeStateFeature = function(feature, index, typeSelector)
  *
  */
 GEOR.Addons.Cadastre.clearLayerSelection = function() {
-    GEOR.Addons.Cadastre.result.tabs.activeTab.featuresList = [];
+    GEOR.Addons.Cadastre.result.tabs.getActiveTab().featuresList = [];
     GEOR.Addons.Cadastre.WFSLayer.removeAllFeatures();
 }
 

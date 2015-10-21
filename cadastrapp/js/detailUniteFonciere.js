@@ -217,16 +217,16 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
             close: function(window) {
                 // deselection de la ligne
                 var rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(parcelleId);
-                GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().deselectRow(rowIndex);
+                GEOR.Addons.Cadastre.result.tabs.getActiveTab().getSelectionModel().deselectRow(rowIndex);
                 // mise à jour des tableau de fenêtres ouvertes
-                var index = GEOR.Addons.Cadastre.result.tabs.activeTab.idParcellesFOuvertes.indexOf(parcelleId);
-                GEOR.Addons.Cadastre.result.tabs.activeTab.idParcellesFOuvertes.splice(index, 1);
-                GEOR.Addons.Cadastre.result.tabs.activeTab.fichesFOuvertes.splice(index, 1);
+                var index = GEOR.Addons.Cadastre.result.tabs.getActiveTab().idParcellesFOuvertes.indexOf(parcelleId);
+                GEOR.Addons.Cadastre.result.tabs.getActiveTab().idParcellesFOuvertes.splice(index, 1);
+                GEOR.Addons.Cadastre.result.tabs.getActiveTab().fichesFOuvertes.splice(index, 1);
                 var feature = GEOR.Addons.Cadastre.getFeatureById(parcelleId);
                 if (feature){
                     GEOR.Addons.Cadastre.changeStateFeature(feature, -1, GEOR.Addons.Cadastre.selection.state.list);
                 } 
-                GEOR.Addons.Cadastre.closeWindowFIUC(parcelleId, GEOR.Addons.Cadastre.result.tabs.activeTab); // on ferme la fenêtre
+                GEOR.Addons.Cadastre.closeWindowFIUC(parcelleId, GEOR.Addons.Cadastre.result.tabs.getActiveTab()); // on ferme la fenêtre
                 // cadastrale si ouverte
                 windowFIUF = null;
             }
@@ -252,8 +252,8 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
 
     });
     
-    GEOR.Addons.Cadastre.result.tabs.activeTab.fichesFOuvertes.push(windowFIUF);
-    GEOR.Addons.Cadastre.result.tabs.activeTab.idParcellesFOuvertes.push(parcelleId);
+    GEOR.Addons.Cadastre.result.tabs.getActiveTab().fichesFOuvertes.push(windowFIUF);
+    GEOR.Addons.Cadastre.result.tabs.getActiveTab().idParcellesFOuvertes.push(parcelleId);
     windowFIUF.show();
 };
 ;

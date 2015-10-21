@@ -104,7 +104,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
                 click : function(b, e) {
                     // zoom on plots from the active tab
                     var features = [];
-                    GEOR.Addons.Cadastre.result.tabs.activeTab.getStore().each(function(item,index){
+                    GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore().each(function(item,index){
                         var parcelleId = item.data.parcelle;
                         features.push(GEOR.Addons.Cadastre.getFeatureById(parcelleId));
                     });
@@ -116,7 +116,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
             listeners : {
                 click : function(b, e) {
                     // zoom on selected plots from the active tab
-                    var selection = GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().getSelections();
+                    var selection = GEOR.Addons.Cadastre.result.tabs.getActiveTab().getSelectionModel().getSelections();
 
                     var features = [];
                     Ext.each(selection, function(item) {
@@ -135,18 +135,18 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
                 click : function(b, e) {
                     // remove selected plots from the active tab
                     // delete from store
-                    var selection = GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().getSelections();
+                    var selection = GEOR.Addons.Cadastre.result.tabs.getActiveTab().getSelectionModel().getSelections();
 
                     Ext.each(selection, function(item) {
 
                         // remove from store
-                        GEOR.Addons.Cadastre.result.tabs.activeTab.store.remove(item);
+                        GEOR.Addons.Cadastre.result.tabs.getActiveTab().store.remove(item);
 
                         var parcelleId = item.data.parcelle;
                         var feature = GEOR.Addons.Cadastre.getFeatureById(parcelleId);
 
                         // Close open windows
-                        GEOR.Addons.Cadastre.closeFoncierAndCadastre(parcelleId, GEOR.Addons.Cadastre.result.tabs.activeTab);
+                        GEOR.Addons.Cadastre.closeFoncierAndCadastre(parcelleId, GEOR.Addons.Cadastre.result.tabs.getActiveTab());
 
                         // Remove feature
                         if (feature) {
@@ -161,7 +161,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
             listeners : {
                 click : function(b, e) {
 
-                    var selection = GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().getSelections();
+                    var selection = GEOR.Addons.Cadastre.result.tabs.getActiveTab().getSelectionModel().getSelections();
 
                     Ext.each(selection, function(item) {
                         var parcelleId = item.data.parcelle;
@@ -170,10 +170,10 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
 
                         // Si la fenêtre details cadastre ou foncier est déjà
                         // ouverte
-                        if (GEOR.Addons.Cadastre.result.tabs.activeTab.idParcellesCOuvertes.indexOf(parcelleId) != -1 || GEOR.Addons.Cadastre.result.tabs.activeTab.idParcellesFOuvertes.indexOf(parcelleId) != -1) {
+                        if (GEOR.Addons.Cadastre.result.tabs.getActiveTab().idParcellesCOuvertes.indexOf(parcelleId) != -1 || GEOR.Addons.Cadastre.result.tabs.getActiveTab().idParcellesFOuvertes.indexOf(parcelleId) != -1) {
                             GEOR.Addons.Cadastre.closeFoncierAndCadastre(parcelleId, grid);
                         } else {
-                            GEOR.Addons.Cadastre.openFoncierOrCadastre(parcelleId, GEOR.Addons.Cadastre.result.tabs.activeTab);
+                            GEOR.Addons.Cadastre.openFoncierOrCadastre(parcelleId, GEOR.Addons.Cadastre.result.tabs.getActiveTab());
                             state = GEOR.Addons.Cadastre.selection.state.details;
                         }
 
@@ -366,9 +366,9 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds) {
     if (parcelsIds.length > 0) {
 
         // Vérifie si la parcelle n'est pas déjà dans le store
-        if (GEOR.Addons.Cadastre.result.tabs.activeTab && GEOR.Addons.Cadastre.result.tabs.activeTab.getStore()) {
+        if (GEOR.Addons.Cadastre.result.tabs.getActiveTab() && GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore()) {
 
-            GEOR.Addons.Cadastre.result.tabs.activeTab.getStore().each(function(item) {
+            GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore().each(function(item) {
 
                 // Si la parcelle est déja dans le store on la supprime de la liste
                 // et on la change l'état de selection
@@ -376,11 +376,11 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds) {
                 if (index > -1) {
                     parcelsIds.splice(index);
                     var rowIndex = GEOR.Addons.Cadastre.indexRowParcelle(item.data.parcelle);
-                    if(GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().isSelected(rowIndex)){
-                        GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().deselectRow(rowIndex, false);
+                    if(GEOR.Addons.Cadastre.result.tabs.getActiveTab().getSelectionModel().isSelected(rowIndex)){
+                        GEOR.Addons.Cadastre.result.tabs.getActiveTab().getSelectionModel().deselectRow(rowIndex, false);
                     }
                     else{
-                        GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().selectRow(rowIndex, true);
+                        GEOR.Addons.Cadastre.result.tabs.getActiveTab().getSelectionModel().selectRow(rowIndex, true);
                     }
                     
                 }
@@ -407,11 +407,11 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds) {
                     var rowIndex;
 
                     // si la fenetre de recherche n'est pas ouverte
-                    if (!GEOR.Addons.Cadastre.result.window || !GEOR.Addons.Cadastre.result.tabs || !GEOR.Addons.Cadastre.result.tabs.activeTab) {
+                    if (!GEOR.Addons.Cadastre.result.window || !GEOR.Addons.Cadastre.result.tabs || !GEOR.Addons.Cadastre.result.tabs.getActiveTab()) {
 
                         GEOR.Addons.Cadastre.addNewResultParcelle("Selection (" + parcelsIds.length + ")", GEOR.Addons.Cadastre.getResultParcelleStore(response.responseText, false));
 
-                        GEOR.Addons.Cadastre.result.tabs.activeTab.on('viewready', function(view, firstRow, lastRow) {
+                        GEOR.Addons.Cadastre.result.tabs.getActiveTab().on('viewready', function(view, firstRow, lastRow) {
 
                         });
                         // si la fenêtre est ouverte on ajoute les lignes
@@ -430,7 +430,7 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds) {
                                     dcntpa : element.dcntpa,
                                 });
                                 // ajout de la ligne
-                                GEOR.Addons.Cadastre.result.tabs.activeTab.store.add(newRecord);
+                                GEOR.Addons.Cadastre.result.tabs.getActiveTab().store.add(newRecord);
                                 // Ajout à la selection
                                 GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.parcelle);
                             }
@@ -556,11 +556,11 @@ GEOR.Addons.Cadastre.closeWindowFIUF = function(idParcelle, grid) {
  * 
  */
 GEOR.Addons.Cadastre.closeAllWindowFIUC = function() {
-    Ext.each(GEOR.Addons.Cadastre.result.tabs.activeTab.fichesCOuvertes, function(ficheCadastreOuverte, currentIndex) {
+    Ext.each(GEOR.Addons.Cadastre.result.tabs.getActiveTab().fichesCOuvertes, function(ficheCadastreOuverte, currentIndex) {
         ficheCadastreOuverte.close();
     });
-    GEOR.Addons.Cadastre.result.tabs.activeTab.fichesCOuvertes = [];
-    GEOR.Addons.Cadastre.result.tabs.activeTab.idParcellesCOuvertes = [];
+    GEOR.Addons.Cadastre.result.tabs.getActiveTab().fichesCOuvertes = [];
+    GEOR.Addons.Cadastre.result.tabs.getActiveTab().idParcellesCOuvertes = [];
 }
 
 /**
@@ -570,11 +570,11 @@ GEOR.Addons.Cadastre.closeAllWindowFIUC = function() {
  * 
  */
 GEOR.Addons.Cadastre.closeAllWindowFIUF = function() {
-    Ext.each(GEOR.Addons.Cadastre.result.tabs.activeTab.fichesFOuvertes, function(fichesFOuverte, currentIndex) {
+    Ext.each(GEOR.Addons.Cadastre.result.tabs.getActiveTab().fichesFOuvertes, function(fichesFOuverte, currentIndex) {
         fichesFOuverte.close();
     });
-    GEOR.Addons.Cadastre.result.tabs.activeTab.fichesFOuvertes = [];
-    GEOR.Addons.Cadastre.result.tabs.activeTab.idParcellesFOuvertes = [];
+    GEOR.Addons.Cadastre.result.tabs.getActiveTab().fichesFOuvertes = [];
+    GEOR.Addons.Cadastre.result.tabs.getActiveTab().idParcellesFOuvertes = [];
 }
 
 /**
@@ -582,8 +582,8 @@ GEOR.Addons.Cadastre.closeAllWindowFIUF = function() {
  */
 GEOR.Addons.Cadastre.exportSelectionAsCSV = function() {
 
-    if (GEOR.Addons.Cadastre.result.tabs && GEOR.Addons.Cadastre.result.tabs.activeTab) {
-        var selection = GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().getSelections();
+    if (GEOR.Addons.Cadastre.result.tabs && GEOR.Addons.Cadastre.result.tabs.getActiveTab()) {
+        var selection = GEOR.Addons.Cadastre.result.tabs.getActiveTab().getSelectionModel().getSelections();
 
         if (selection && selection.length > 0) {
             var parcelleIds = [];
@@ -622,8 +622,8 @@ GEOR.Addons.Cadastre.exportSelectionAsCSV = function() {
  */
 GEOR.Addons.Cadastre.printSelectedBordereauParcellaire = function() {
 
-    if (GEOR.Addons.Cadastre.result.tabs && GEOR.Addons.Cadastre.result.tabs.activeTab) {
-        var selection = GEOR.Addons.Cadastre.result.tabs.activeTab.getSelectionModel().getSelections();
+    if (GEOR.Addons.Cadastre.result.tabs && GEOR.Addons.Cadastre.result.tabs.getActiveTab()) {
+        var selection = GEOR.Addons.Cadastre.result.tabs.getActiveTab().getSelectionModel().getSelections();
 
         if (selection && selection.length > 0) {
             var parcelleIds = [];
