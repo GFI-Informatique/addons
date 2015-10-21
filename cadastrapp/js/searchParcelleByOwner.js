@@ -341,7 +341,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     } else {
                         if (currentForm.getForm().isValid()) {
                            
-                            if (currentForm.getForm().findField('filePath').value != undefined) {
+                            if (currentForm.getForm().findField('filePath') && currentForm.getForm().findField('filePath').value != undefined) {
                                 // PAR FICHIER
                                 // TITRE de l'onglet resultat
                                 var resultTitle = OpenLayers.i18n('cadastrapp.result.title.fichier');
