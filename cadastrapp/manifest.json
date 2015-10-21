@@ -144,6 +144,7 @@
 			"cadastrapp.selection.proprietaires.export": "Export list as csv",
 			"cadastrapp.selection.proprietaires.edition": "Export list as pdf",
 			"cadastrapp.selection.import": "Import plots list .csv ",
+			
 			"cadastrapp.demande": "Request",
             "cadastrapp.point": "Point",
             "cadastrapp.multipoint": "MultiPoint",
@@ -229,7 +230,7 @@
              "cadastrapp.demandeinformation.prenom": "First name",
              "cadastrapp.demandeinformation.commune": "Town, municipality",
              "cadastrapp.demandeinformation.num_rue": "Road number",
-             "cadastrapp.demandeinformation.lieudit": "Location",
+             "cadastrapp.demandeinformation.code_postal": "Zip code",
              "cadastrapp.demandeinformation.cni": "CNI",
              
              "cadastrapp.demandeinformation.titre2": "Properties",
@@ -241,6 +242,7 @@
             "cadastrapp.demandeinformation.alert.title":"Request information ",
            	"cadastrapp.demandeinformation.alert.demande":"An error occurs during information verification, no result can be given",
            	"cadastrapp.demandeinformation.alert.user":"An error occurs during information verification, no result can be given",
+ 			"cadastrapp.demandeinformation.exceded.number":"No more request available for this user this week",
  
             "cadastrapp.surface" : "Capacity",
             "cadastrapp.CoProprietaire" : "co-owner",
@@ -495,13 +497,13 @@
              "cadastrapp.filiation.dnuplam": "Numéro de plan de la parcelle",
              "cadastrapp.filiation.type_filiation": "Type de filiation (D, R, T ou blanc)",
              
-             "cadastrapp.demandeinformation.titre": "Demande Informations Foncieres",
+             "cadastrapp.demandeinformation.titre": "Demande Informations Foncières",
              "cadastrapp.demandeinformation.titre1": "Informations sur le demandeur",
              "cadastrapp.demandeinformation.nom": "Nom",
              "cadastrapp.demandeinformation.prenom": "Prénom",
              "cadastrapp.demandeinformation.commune": "Ville, Commune",
              "cadastrapp.demandeinformation.num_rue": "N° de voirie et rue",
-             "cadastrapp.demandeinformation.lieudit": "Lieu-Dit",
+         	"cadastrapp.demandeinformation.code_postal": "Code postal",
              "cadastrapp.demandeinformation.cni": "CNI",
              
              "cadastrapp.demandeinformation.titre2": "Biens à consulter",
@@ -513,7 +515,7 @@
              "cadastrapp.demandeinformation.alert.title":"Demande d'information impossible",
           	 "cadastrapp.demandeinformation.alert.demande":" Erreur lors de la vérification de la demande, aucune demande ne peut être réalisée pour l'instant",
            	 "cadastrapp.demandeinformation.alert.user":"Erreur lors de la vérification de l'utilisateur, aucune demande ne peut être réalisée",
- 
+  			"cadastrapp.demandeinformation.exceded.number":"La limite de demande pour cet utilisateur et atteinte pour cette semaine",
              
             "cadastrapp.uniteFonciere": "Unite foncière",
             "cadastrapp.surface" : "Surface",
