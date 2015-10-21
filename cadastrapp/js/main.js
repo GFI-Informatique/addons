@@ -140,13 +140,22 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         // Remove menu
         this.window.hide();
         
-        GEOR.Addons.Cadastre.menu.destroy();
-    
-        // Delete all global variable        
+        // Remove all windows
+        if ( GEOR.Addons.Cadastre.proprietaireWindow){
+            GEOR.Addons.Cadastre.proprietaireWindow.close();
+            GEOR.Addons.Cadastre.proprietaireWindow = null;
+        }
+        
+        if (GEOR.Addons.Cadastre.rechercheParcelleWindow){
+            GEOR.Addons.Cadastre.rechercheParcelleWindow.close();
+            GEOR.Addons.Cadastre.rechercheParcelleWindow = null;
+        }
+     
         if (GEOR.Addons.Cadastre.result.windows){
             GEOR.Addons.Cadastre.result.windows.close();
             GEOR.Addons.Cadastre.result.windows=null;
         }
+        
         if( GEOR.Addons.Cadastre.printBordereauParcellaireWindow){
             GEOR.Addons.Cadastre.printBordereauParcellaireWindow.close();
             GEOR.Addons.Cadastre.printBordereauParcellaireWindow=null;
@@ -155,6 +164,9 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
             GEOR.Addons.Cadastre.request.informationsWindow.close();
             GEOR.Addons.Cadastre.request.informationsWindow=null;
         }
+        
+        
+        GEOR.Addons.Cadastre.menu.destroy();
         
         GEOR.Addons.Cadastre.selection=null;
         GEOR.Addons.Cadastre.relevePropriete=null;
