@@ -118,14 +118,14 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                     disabled: true
                 },// Le code postal et la commune ne sont pas en combox ici, car l'utilisateur qui fait la demande ne fait peut être pas parti des communes chargées en base
                 {
-                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.commune'),
-                    id : 'requestCommune',
+                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.code_postal'),
+                    id : 'requestCodePostal',
                     width : 280,
                     allowBlank: false,
                     disabled: true
-                } ,{
-                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.code_postal'),
-                    id : 'requestCodePostal',
+                },{
+                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.commune'),
+                    id : 'requestCommune',
                     width : 280,
                     allowBlank: false,
                     disabled: true
@@ -163,6 +163,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                         }
                     }
                 }, {
+                    xtype: 'textarea',
                     fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.parcelles'),
                     id : 'requestParcelleId',
                     width : 280,
@@ -188,7 +189,12 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                             });
                         }
                     }
-                } ]
+                },{
+                    xtype : 'displayfield',
+                    width : 280,
+                    value: OpenLayers.i18n('cadastrapp.demandeinformation.parcelles.exemple'),
+                    fieldClass: 'displayfieldGray'
+                }, ]
             } ]
         } ],
         buttons : [ {

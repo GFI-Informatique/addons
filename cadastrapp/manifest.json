@@ -243,7 +243,7 @@
            	"cadastrapp.demandeinformation.alert.demande":"An error occurs during information verification, no result can be given",
            	"cadastrapp.demandeinformation.alert.user":"An error occurs during information verification, no result can be given",
  			"cadastrapp.demandeinformation.exceded.number":"No more request available for this user this week",
- 
+ 			"cadastrapp.demandeinformation.parcelles.exemple":"Maximum 5 ids parcelle separated by space or coma",
             "cadastrapp.surface" : "Capacity",
             "cadastrapp.CoProprietaire" : "co-owner",
 		
@@ -516,6 +516,7 @@
           	 "cadastrapp.demandeinformation.alert.demande":" Erreur lors de la vérification de la demande, aucune demande ne peut être réalisée pour l'instant",
            	 "cadastrapp.demandeinformation.alert.user":"Erreur lors de la vérification de l'utilisateur, aucune demande ne peut être réalisée",
   			"cadastrapp.demandeinformation.exceded.number":"La limite de demande pour cet utilisateur est atteinte pour cette semaine",
+             "cadastrapp.demandeinformation.parcelles.exemple":"5 identifiants de parcelle maximum par demande, séparées par une virgule, un espace ou un retour à ligne",
              
             "cadastrapp.uniteFonciere": "Unite foncière",
             "cadastrapp.surface" : "Surface",
