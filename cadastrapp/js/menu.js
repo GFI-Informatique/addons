@@ -170,8 +170,6 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 handler = OpenLayers.Handler.Point;
                 iconCls = "gx-featureediting-cadastrapp-point";
                 tooltip = OpenLayers.i18n("cadastrapp.create_point");
-                // Point pressed by default
-                isButtonPressed = true;
                 break;
             case "Polygon":
                 handler = OpenLayers.Handler.Polygon;
