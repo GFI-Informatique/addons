@@ -62,7 +62,6 @@ GEOR.Addons.Cadastre.initPrintBordereauParcellaireWindow = function(parcelleId) 
         resizable : false,
         draggable : true,
         constrainHeader : true,
-
         border : false,
         width : 300,
         defaults : {

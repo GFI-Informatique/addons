@@ -515,7 +515,7 @@
              "cadastrapp.demandeinformation.alert.title":"Demande d'information impossible",
           	 "cadastrapp.demandeinformation.alert.demande":" Erreur lors de la vérification de la demande, aucune demande ne peut être réalisée pour l'instant",
            	 "cadastrapp.demandeinformation.alert.user":"Erreur lors de la vérification de l'utilisateur, aucune demande ne peut être réalisée",
-  			"cadastrapp.demandeinformation.exceded.number":"La limite de demande pour cet utilisateur et atteinte pour cette semaine",
+  			"cadastrapp.demandeinformation.exceded.number":"La limite de demande pour cet utilisateur est atteinte pour cette semaine",
              
             "cadastrapp.uniteFonciere": "Unite foncière",
             "cadastrapp.surface" : "Surface",
