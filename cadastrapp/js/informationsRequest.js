@@ -140,6 +140,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                     id : 'requestCompteCommunal',
                     width : 280,
                     disabled: true,
+                    regex: /[a-zA-Z0-9]+/,
                     listeners : {
                         change : function(textfield, newValue, oldValue){
                             
@@ -222,7 +223,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                     params.commune = Ext.getCmp('requestCommune').getValue();
                     params.codepostal = Ext.getCmp('requestCodePostal').getValue();
                     params.comptecommunal = Ext.getCmp('requestCompteCommunal').getValue();
-                    params.parcelle = Ext.getCmp('requestParcelleId').getValue();
+                    params.parcelles = Ext.getCmp('requestParcelleId').getValue();
                     
                     // Save request and get id
                     Ext.Ajax.request({
