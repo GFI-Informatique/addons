@@ -1,34 +1,39 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
-
 /**
  * Init Global windows containing all tabs
  */
 GEOR.Addons.Cadastre.initResultProprietaireWindow = function() {
-    
+
     var ownerGrid = new Ext.grid.GridPanel({
-        store: new Ext.data.JsonStore({
-            autoDestroy: true,
-            storeId:"resultOwnerStore",
-            fields: ['comptecommunal', 'ddenom'],
-            autoload:false
+        store : new Ext.data.JsonStore({
+            autoDestroy : true,
+            storeId : "resultOwnerStore",
+            fields : [ 'comptecommunal', 'ddenom' ],
+            autoload : false
         }),
-        colModel: new Ext.grid.ColumnModel({
-            defaults: {
-                sortable: true
+        colModel : new Ext.grid.ColumnModel({
+            defaults : {
+                sortable : true
             },
-            columns: [
-                {id: 'comptecommunal', header: OpenLayers.i18n('cadastrapp.result.owner.comptecommunal'), width: 35, dataIndex: 'comptecommunal'},
-                {header: OpenLayers.i18n('cadastrapp.result.owner.ddenom'), dataIndex: 'ddenom'}
-            ]
+            columns : [ {
+                id : 'comptecommunal',
+                header : OpenLayers.i18n('cadastrapp.result.owner.comptecommunal'),
+                width : 35,
+                dataIndex : 'comptecommunal'
+            }, {
+                header : OpenLayers.i18n('cadastrapp.result.owner.ddenom'),
+                dataIndex : 'ddenom'
+            } ]
         }),
-        viewConfig: {
-            forceFit: true,
+        viewConfig : {
+            forceFit : true,
         },
-        sm : new Ext.grid.RowSelectionModel({multiSelect : true,}),
-        autoHeight: true
+        sm : new Ext.grid.RowSelectionModel({
+            multiSelect : true,
+        }),
+        autoHeight : true
     });
-        
 
     // fenêtre principale
     GEOR.Addons.Cadastre.result.owner.window = new Ext.Window({
@@ -49,11 +54,45 @@ GEOR.Addons.Cadastre.initResultProprietaireWindow = function() {
             }
         },
         items : [ ownerGrid ],
-        buttons : [ {
-            text : OpenLayers.i18n('cadastrapp.result.parcelle.export'),
+        buttons : [  {
+            text : OpenLayers.i18n('cadastrapp.result.owner.show.parcelle'),
             listeners : {
                 click : function(b, e) {
 
+                    var selection = GEOR.Addons.Cadastre.result.owner.window.items.items[0].getSelectionModel().getSelections();
+
+                    if (selection && selection.length > 0) {
+                        var comptecommunalArray = [];
+                        Ext.each(selection, function(item) {
+                            comptecommunalArray.push(item.data.comptecommunal);
+                        });
+                        // Close all tab and open windows
+                        var paramsGetParcelle = {};
+                        paramsGetParcelle.comptecommunal = comptecommunalArray;
+                        
+                        // envoi des données d'une form
+                        Ext.Ajax.request({
+                            method : 'GET',
+                            url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+                            params : paramsGetParcelle,
+                            success : function(result) {
+
+                                GEOR.Addons.Cadastre.addNewResultParcelle(comptecommunalArray[0], GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
+                            },
+                            failure : function(result) {
+                                console.log('Error when getting parcelle information, check server side');
+                            }
+                        });
+                    } else {
+                        Ext.Msg.alert('Status', OpenLayers.i18n('cadastrapp.result.owner.no.selection'));
+                    }
+                }
+            }
+        },
+        {
+            text : OpenLayers.i18n('cadastrapp.result.parcelle.export'),
+            listeners : {
+                click : function(b, e) {
                     // Export selected plots as csv
                     GEOR.Addons.Cadastre.exportOwnerSelectionAsCSV();
                 }
@@ -66,11 +105,9 @@ GEOR.Addons.Cadastre.initResultProprietaireWindow = function() {
                     GEOR.Addons.Cadastre.result.owner.window.close();
                 }
             }
-        } ]
+        },]
     });
 };
-
-
 
 /**
  * public: method[addNewResult]
@@ -90,11 +127,9 @@ GEOR.Addons.Cadastre.addNewResultProprietaire = function(title, result, message)
     }
 
     GEOR.Addons.Cadastre.result.owner.window.items.items[0].getStore().loadData(result);
-    
+
     GEOR.Addons.Cadastre.result.owner.window.show();
 }
-
-
 
 /**
  * Export current selection of owenr as CSV
@@ -102,9 +137,9 @@ GEOR.Addons.Cadastre.addNewResultProprietaire = function(title, result, message)
 GEOR.Addons.Cadastre.exportOwnerSelectionAsCSV = function() {
 
     if (GEOR.Addons.Cadastre.result.owner.window) {
-      
-         var selection = GEOR.Addons.Cadastre.result.owner.window.items.items[0].getSelectionModel().getSelections();
-        
+
+        var selection = GEOR.Addons.Cadastre.result.owner.window.items.items[0].getSelectionModel().getSelections();
+
         if (selection && selection.length > 0) {
             var ownerIds = [];
             Ext.each(selection, function(item) {
@@ -136,4 +171,3 @@ GEOR.Addons.Cadastre.exportOwnerSelectionAsCSV = function() {
         Ext.Msg.alert('Status', OpenLayers.i18n('cadastrapp.result.owner.no.search'));
     }
 }
-

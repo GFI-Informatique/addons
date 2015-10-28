@@ -146,16 +146,6 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         this.window.hide();
         
         // Remove all windows
-        if ( GEOR.Addons.Cadastre.proprietaireWindow){
-            GEOR.Addons.Cadastre.proprietaireWindow.close();
-            GEOR.Addons.Cadastre.proprietaireWindow = null;
-        }
-        
-        if (GEOR.Addons.Cadastre.rechercheParcelleWindow){
-            GEOR.Addons.Cadastre.rechercheParcelleWindow.close();
-            GEOR.Addons.Cadastre.rechercheParcelleWindow = null;
-        }
-     
         if (GEOR.Addons.Cadastre.result.plot.window){
             GEOR.Addons.Cadastre.result.plot.window.close();
             GEOR.Addons.Cadastre.result.plot.window=null;
@@ -165,6 +155,18 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
             GEOR.Addons.Cadastre.result.owner.window.close();
             GEOR.Addons.Cadastre.result.owner.window=null;
         }
+        
+        
+        if ( GEOR.Addons.Cadastre.proprietaireWindow){
+            GEOR.Addons.Cadastre.proprietaireWindow.close();
+            GEOR.Addons.Cadastre.proprietaireWindow = null;
+        }
+        
+        if (GEOR.Addons.Cadastre.rechercheParcelleWindow){
+            GEOR.Addons.Cadastre.rechercheParcelleWindow.close();
+            GEOR.Addons.Cadastre.rechercheParcelleWindow = null;
+        }
+    
         
         if( GEOR.Addons.Cadastre.printBordereauParcellaireWindow){
             GEOR.Addons.Cadastre.printBordereauParcellaireWindow.close();

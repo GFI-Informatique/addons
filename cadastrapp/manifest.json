@@ -108,6 +108,7 @@
 			"cadastrapp.result.owner.ddenom":"Full name information",
 			"cadastrapp.result.owner.no.search":"You need to search for a owner before",
 			"cadastrapp.result.owner.no.selection":"You need to select owners before",
+			"cadastrapp.result.owner.show.parcelle":"See plot(s)",
 			
 			"cadastrapp.proprietaire": "owner",
 			"cadastrapp.proprietaire.nom": "By name",
@@ -387,6 +388,7 @@
 			"cadastrapp.result.owner.ddenom":"Dénomination",
 			"cadastrapp.result.owner.no.search":"Veuillez sélectioner au moins un propriétaire",
 			"cadastrapp.result.owner.no.selection":"Veuillez sélectioner au moins un propriétaire",
+			"cadastrapp.result.owner.show.parcelle":"Voir les parcelles",
 			
 			"cadastrapp.proprietaire": "Propriétaire",
 			"cadastrapp.proprietaire.nom": "Par nom",

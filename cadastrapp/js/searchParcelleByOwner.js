@@ -212,11 +212,12 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                             method : 'GET',
                             autoload : true
                         }),
-                        fields : [  'ddenom', { 
-                            name: 'displayname', 
-                            convert: function(v, rec) {
+                        fields : [ 'ddenom', {
+                            name : 'displayname',
+                            convert : function(v, rec) {
                                 return rec.ddenom.replace('/', ' ');
-                            } }]
+                            }
+                        } ]
                     }),
                     listeners : {
                         beforequery : function(q) {
@@ -276,16 +277,16 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                 }, {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.file.explanation'),
                     fieldClass : 'displayfieldGray'
-                } ], 
+                } ],
                 listeners : {
-                    afterrender: function(element) {
+                    afterrender : function(element) {
                         GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
                     }
                 }
             } ],
             listeners : {
                 beforetabchange : function(panel, newTab, currentTab) {
-                    if(GEOR.Addons.Cadastre.proprietaireWindow){
+                    if (GEOR.Addons.Cadastre.proprietaireWindow) {
                         GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].disable();
                     }
                 }
@@ -312,31 +313,30 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                 url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire',
                                 params : params,
                                 success : function(response) {
-                                    
-                                    
+
                                     var comptecommunalArray = [];
                                     var result = Ext.decode(response.responseText);
                                     for (var i = 0; i < result.length; i++) {
                                         comptecommunalArray.push(result[i].comptecommunal);
                                     }
-                                    if(result.length>1){
+                                    if (result.length > 1) {
                                         GEOR.Addons.Cadastre.addNewResultProprietaire(resultTitle, result, null);
-                                    }
-                                    else{
+                                    } else {
                                         var paramsGetParcelle = {};
-                                    paramsGetParcelle.comptecommunal = comptecommunalArray;
-                                    // envoi des données d'une form
-                                    Ext.Ajax.request({
-                                        method : 'GET',
-                                        url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
-                                        params : paramsGetParcelle,
-                                        success : function(result) {
-                                            GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
-                                        },
-                                        failure : function(result) {
-                                            console.log('Error when getting parcelle information, check server side');
-                                        }
-                                    });}
+                                        paramsGetParcelle.comptecommunal = comptecommunalArray;
+                                        // envoi des données d'une form
+                                        Ext.Ajax.request({
+                                            method : 'GET',
+                                            url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+                                            params : paramsGetParcelle,
+                                            success : function(result) {
+                                                GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
+                                            },
+                                            failure : function(result) {
+                                                console.log('Error when getting parcelle information, check server side');
+                                            }
+                                        });
+                                    }
                                 },
                                 failure : function(result) {
                                     alert('Error when getting proprietaire information, check server side');
@@ -346,7 +346,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
 
                     } else {
                         if (currentForm.getForm().isValid()) {
-                           
+
                             if (currentForm.getForm().findField('filePath') && currentForm.getForm().findField('filePath').value != undefined) {
                                 // PAR FICHIER
                                 // TITRE de l'onglet resultat
@@ -389,25 +389,30 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                     url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire',
                                     params : params,
                                     success : function(response) {
-                                        var paramsGetParcelle = {};
+                                        
                                         var comptecommunalArray = [];
                                         var result = Ext.decode(response.responseText);
                                         for (var i = 0; i < result.length; i++) {
                                             comptecommunalArray.push(result[i].comptecommunal);
                                         }
-                                        paramsGetParcelle.comptecommunal = comptecommunalArray;
-                                        // envoi des données d'une form
-                                        Ext.Ajax.request({
-                                            method : 'GET',
-                                            url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
-                                            params : paramsGetParcelle,
-                                            success : function(result) {
-                                                GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
-                                            },
-                                            failure : function(result) {
-                                                console.log('Error when getting parcelle information, check server side');
-                                            }
-                                        });
+                                        if (result.length > 1) {
+                                            GEOR.Addons.Cadastre.addNewResultProprietaire(resultTitle, result, null);
+                                        } else {
+                                            var paramsGetParcelle = {};
+                                            paramsGetParcelle.comptecommunal = comptecommunalArray;
+                                            // envoi des données d'une form
+                                            Ext.Ajax.request({
+                                                method : 'GET',
+                                                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+                                                params : paramsGetParcelle,
+                                                success : function(result) {
+                                                    GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
+                                                },
+                                                failure : function(result) {
+                                                    console.log('Error when getting parcelle information, check server side');
+                                                }
+                                            });
+                                        }
                                     },
                                     failure : function(result) {
                                         alert('Error when getting proprietaire information, check server side');
@@ -427,5 +432,5 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
             }
         } ]
     });
-    
+
 };
