@@ -20,6 +20,6 @@ GEOR.Addons.Cadastre.isCNIL1 = function() {
  * @return {Boolean} 
  */
 GEOR.Addons.Cadastre.isCNIL2 = function() {
-    return true;
+    return (GEOR.config.ROLES.indexOf(GEOR.Addons.Cadastre.cnil2RoleName) != -1);
 };
 
