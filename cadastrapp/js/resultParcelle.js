@@ -44,7 +44,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
     
 
     // fenêtre principale
-    GEOR.Addons.Cadastre.result.window = new Ext.Window({
+    GEOR.Addons.Cadastre.result.plot.window = new Ext.Window({
         title : OpenLayers.i18n('cadastrapp.parcelle.result.title'),
         frame : true,
         autoScroll : true,
@@ -73,7 +73,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
                 GEOR.Addons.Cadastre.closeAllWindowFIUC();
                 GEOR.Addons.Cadastre.closeAllWindowFIUF();
                 // *********************
-                GEOR.Addons.Cadastre.result.window = null;
+                GEOR.Addons.Cadastre.result.plot.window = null;
             },
             show : function(window) {
                 // lors du changement entre onglets : deselection de toutes les
@@ -190,7 +190,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
                 click : function(b, e) {
 
                     // Export selected plots as csv
-                    GEOR.Addons.Cadastre.exportSelectionAsCSV();
+                    GEOR.Addons.Cadastre.exportPlotSelectionAsCSV();
                 }
             }
         }, {
@@ -198,7 +198,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
             listeners : {
                 click : function(b, e) {
                     // Close all tab and open windows
-                    GEOR.Addons.Cadastre.result.window.close();
+                    GEOR.Addons.Cadastre.result.plot.window.close();
                 }
             }
         } ]
@@ -243,12 +243,12 @@ GEOR.Addons.Cadastre.addNewResultParcelle = function(title, result) {
 GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
 
     // If windows do not exist
-    if (GEOR.Addons.Cadastre.result.window == null) {
+    if (GEOR.Addons.Cadastre.result.plot.window == null) {
         GEOR.Addons.Cadastre.initResultParcelle();
     }
 
     // Get tab list
-    GEOR.Addons.Cadastre.result.tabs = GEOR.Addons.Cadastre.result.window.items.items[0];
+    GEOR.Addons.Cadastre.result.tabs = GEOR.Addons.Cadastre.result.plot.window.items.items[0];
 
     // **********
     // Listener
@@ -320,7 +320,7 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
                 if (GEOR.Addons.Cadastre.result.tabs.items.length == 2) {
                     // si il ne reste que cet onglet et l'onglet '+', fermer la
                     // fenetre
-                    GEOR.Addons.Cadastre.result.window.close();
+                    GEOR.Addons.Cadastre.result.plot.window.close();
                 } else {
                     // on selectionne manuellement le nouvel onglet à
                     // activer, pour eviter de tomber sur le '+' (qui va
@@ -349,7 +349,7 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
         GEOR.Addons.Cadastre.getFeaturesWFSAttribute(record.data.parcelle);
     });
 
-    GEOR.Addons.Cadastre.result.window.show();
+    GEOR.Addons.Cadastre.result.plot.window.show();
 }
 
 /**
@@ -407,7 +407,7 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds) {
                     var rowIndex;
 
                     // si la fenetre de recherche n'est pas ouverte
-                    if (!GEOR.Addons.Cadastre.result.window || !GEOR.Addons.Cadastre.result.tabs || !GEOR.Addons.Cadastre.result.tabs.getActiveTab()) {
+                    if (!GEOR.Addons.Cadastre.result.plot.window || !GEOR.Addons.Cadastre.result.tabs || !GEOR.Addons.Cadastre.result.tabs.getActiveTab()) {
 
                         GEOR.Addons.Cadastre.addNewResultParcelle("Selection (" + parcelsIds.length + ")", GEOR.Addons.Cadastre.getResultParcelleStore(response.responseText, false));
 
@@ -580,7 +580,7 @@ GEOR.Addons.Cadastre.closeAllWindowFIUF = function() {
 /**
  * Export selection of currentTab as CSV using webapp service
  */
-GEOR.Addons.Cadastre.exportSelectionAsCSV = function() {
+GEOR.Addons.Cadastre.exportPlotSelectionAsCSV = function() {
 
     if (GEOR.Addons.Cadastre.result.tabs && GEOR.Addons.Cadastre.result.tabs.getActiveTab()) {
         var selection = GEOR.Addons.Cadastre.result.tabs.getActiveTab().getSelectionModel().getSelections();

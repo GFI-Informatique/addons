@@ -4,6 +4,7 @@
     	"js/printRelevePropriete.js",
 		"js/selectFeature.js",
 		"js/resultParcelle.js",
+		"js/resultProprietaire.js",
 		"js/searchUtils.js",
 		"js/searchParcelleByOwner.js",
 		"js/searchParcelleByRef.js",
@@ -13,7 +14,6 @@
 		"js/detailUniteCadastrale.js",
 		"js/infoBulle.js",
         "js/menu.js",
-        "js/FeaturePanel.js",
         "js/main.js",
       	"js/cadastrappUtil.js",
   		"js/external/fileUploadField.js"
@@ -100,8 +100,14 @@
 			"cadastrapp.result.parcelle.delete": "Delete entry",
 			"cadastrapp.result.parcelle.fiche": "Information form",
 			"cadastrapp.result.parcelle.export": "Export list",
-			"cadastrapp.result.no.search": "You need to do a search before",
+			"cadastrapp.result.no.search": "You need to search for a plot before",
 			"cadastrapp.result.no.selection": "You need to select plots before",
+			
+			"cadastrapp.result.owner.title":"Owner list results",
+			"cadastrapp.result.owner.comptecommunal":"Owner id",
+			"cadastrapp.result.owner.ddenom":"Full name information",
+			"cadastrapp.result.owner.no.search":"You need to search for a owner before",
+			"cadastrapp.result.owner.no.selection":"You need to select owners before",
 			
 			"cadastrapp.proprietaire": "owner",
 			"cadastrapp.proprietaire.nom": "By name",
@@ -373,8 +379,14 @@
 			"cadastrapp.result.parcelle.delete": "Enlever parcelle(s)",
 			"cadastrapp.result.parcelle.fiche": "Fiche d'info parcelle(s)",
 			"cadastrapp.result.parcelle.export": "Exporter la liste",
-			"cadastrapp.result.no.search": "Veuillez selectioner une parcelle",
-			"cadastrapp.result.no.selection": "Veuillez selectioner une parcelle",
+			"cadastrapp.result.no.search": "Veuillez sélectioner une parcelle",
+			"cadastrapp.result.no.selection": "Veuillez sélectioner une parcelle",
+			
+			"cadastrapp.result.owner.title":"Liste des propriétaires",
+			"cadastrapp.result.owner.comptecommunal":"Compte communal",
+			"cadastrapp.result.owner.ddenom":"Dénomination",
+			"cadastrapp.result.owner.no.search":"Veuillez sélectioner au moins un propriétaire",
+			"cadastrapp.result.owner.no.selection":"Veuillez sélectioner au moins un propriétaire",
 			
 			"cadastrapp.proprietaire": "Propriétaire",
 			"cadastrapp.proprietaire.nom": "Par nom",

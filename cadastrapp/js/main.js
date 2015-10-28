@@ -62,7 +62,12 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                 GEOR.Addons.Cadastre.WFSLayer;
                 GEOR.Addons.Cadastre.result=[];
                 GEOR.Addons.Cadastre.result.tabs;
-                GEOR.Addons.Cadastre.result.window;
+                
+                // result window for plots and owners
+                GEOR.Addons.Cadastre.result.plot=[];
+                GEOR.Addons.Cadastre.result.plot.window;
+                GEOR.Addons.Cadastre.result.owner=[];
+                GEOR.Addons.Cadastre.result.owner.window;
                 
                 GEOR.Addons.Cadastre.createSelectionControl(record.data.options.defautStyleParcelle , record.data.options.selectedStyle);
                 GEOR.Addons.Cadastre.addPopupOnhover(record.data.options.popup);
@@ -151,9 +156,14 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
             GEOR.Addons.Cadastre.rechercheParcelleWindow = null;
         }
      
-        if (GEOR.Addons.Cadastre.result.windows){
-            GEOR.Addons.Cadastre.result.windows.close();
-            GEOR.Addons.Cadastre.result.windows=null;
+        if (GEOR.Addons.Cadastre.result.plot.window){
+            GEOR.Addons.Cadastre.result.plot.window.close();
+            GEOR.Addons.Cadastre.result.plot.window=null;
+        }
+        
+        if (GEOR.Addons.Cadastre.result.owner.window){
+            GEOR.Addons.Cadastre.result.owner.window.close();
+            GEOR.Addons.Cadastre.result.owner.window=null;
         }
         
         if( GEOR.Addons.Cadastre.printBordereauParcellaireWindow){

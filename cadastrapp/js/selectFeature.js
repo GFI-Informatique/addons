@@ -227,7 +227,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
             if (typeSelector != "infoBulle") {
 
                 // If result windows is not opened, create it
-                if (!GEOR.Addons.Cadastre.result.window) {
+                if (!GEOR.Addons.Cadastre.result.plot.window) {
                     GEOR.Addons.Cadastre.addNewResultParcelle("Sélection", null);
                 }
 

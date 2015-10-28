@@ -392,7 +392,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
             tooltip : OpenLayers.i18n("cadastrapp.selection.parcelles.export"),
             text : OpenLayers.i18n("cadastrapp.selection.parcelles.export")
         });
-        buttonTraitementSelectionParcellesExport.on('click', function(){GEOR.Addons.Cadastre.exportSelectionAsCSV()});
+        buttonTraitementSelectionParcellesExport.on('click', function(){GEOR.Addons.Cadastre.exportPlotSelectionAsCSV()});
         
         // sous-sous-sous-menu : traitement sélection - parcelles - bordereau
         var buttonTraitementSelectionParcellesBordereau = scrollMenuTraitementSelectionParcelles.add({
@@ -417,17 +417,15 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 text : OpenLayers.i18n("cadastrapp.selection.proprietaires"),
                 menu : scrollMenuTraitementSelectionProprietaires
             });
-            // sous-sous-sous-menu : traitement sélection - parcelles - export
-            var scrollMenuTraitementSelectionProprietairesExport = scrollMenuTraitementSelectionProprietaires.add({
+            
+            // sous-sous-sous-menu : traitement sélection - proprietaire - export
+            var buttonTraitementSelectionProprietairesExport = scrollMenuTraitementSelectionProprietaires.add({
                 tooltip : OpenLayers.i18n("cadastrapp.selection.proprietaires.export"),
                 text : OpenLayers.i18n("cadastrapp.selection.proprietaires.export")
             });
+            
+            buttonTraitementSelectionProprietairesExport.on('click', function(){GEOR.Addons.Cadastre.exportOwnerSelectionAsCSV()});
     
-            // sous-sous-sous-menu : traitement sélection - parcelles - edition
-            var scrollMenuTraitementSelectionProprietairesEdition = scrollMenuTraitementSelectionProprietaires.add({
-                tooltip : OpenLayers.i18n("cadastrapp.selection.proprietaires.edition"),
-                text : OpenLayers.i18n("cadastrapp.selection.proprietaires.edition")
-            });
         }
     },
 
