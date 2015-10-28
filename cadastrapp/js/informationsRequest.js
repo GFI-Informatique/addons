@@ -33,7 +33,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
         frame : true,
         bodyPadding : 10,
         autoScroll : true,
-        width : 450,
+        width : 470,
         closable : true,
         resizable : true,
         draggable : true,
@@ -48,12 +48,32 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                 xtype : 'fieldset',
                 title : OpenLayers.i18n('cadastrapp.demandeinformation.titre1'),
                 defaultType : 'textfield',
-                labelWidth : 120,
+                labelWidth : 140,
                 items : [ {
+                    xtype : 'combo',
+                    editable : false,
+                    mode : 'local',
+                    displayField : 'value',
+                    valueField : 'id',
+                    allowBlank : false,
+                    disableKeyFilter: true,
+                    store : new Ext.data.JsonStore({
+                        fields : ['name', 'value'],
+                        data   : [
+                            {id : 'A', value:  OpenLayers.i18n('cadastrapp.demandeinformation.type.A')},
+                            {id : 'P1', value: OpenLayers.i18n('cadastrapp.demandeinformation.type.P1')},
+                            {id : 'P2', value: OpenLayers.i18n('cadastrapp.demandeinformation.type.P2')},
+                            {id : 'P3', value: OpenLayers.i18n('cadastrapp.demandeinformation.type.P3')},
+                        ]
+                    }),
+                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.type.demandeur'),
+                    id : 'requestType',
+                    width : 280,
+                },{
                     fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.cni'),
                     id : 'requestCNI',
                     width : 280,
-                    allowBlank: false,
+                    allowBlank: true,
                     listeners : {
                         change : function(textfield, newValue, oldValue){
                             
@@ -129,6 +149,36 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                     width : 280,
                     allowBlank: false,
                     disabled: true
+                },{
+                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.mail'),
+                    id : 'requestMail',
+                    width : 280,
+                    allowBlank: true,
+                    disabled: true
+                },{
+                    id:'checkboxGroupDemandeRealise',
+                    xtype: 'checkboxgroup',
+                    fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.realise'),
+                    itemCls: 'x-check-group-alt',
+                    // Put all controls in a single column with width 100%
+                    columns: 3,
+                    items: [
+                        {boxLabel: OpenLayers.i18n('cadastrapp.demandeinformation.realise.guichet'), name: 'guichet', checked: true},
+                        {boxLabel: OpenLayers.i18n('cadastrapp.demandeinformation.realise.courrier'), name: 'courrier'},
+                        {boxLabel: OpenLayers.i18n('cadastrapp.demandeinformation.realise.mail'), name: 'mail'}
+                    ]
+                },{
+                    id:'checkboxGroupDemandeTransmission',
+                    xtype: 'checkboxgroup',
+                    fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.transmission'),
+                    itemCls: 'x-check-group-alt',
+                    // Put all controls in a single column with width 100%
+                    columns: 3,
+                    items: [
+                        {boxLabel: OpenLayers.i18n('cadastrapp.demandeinformation.transmission.guichet'), name: 'guichet', checked: true},
+                        {boxLabel: OpenLayers.i18n('cadastrapp.demandeinformation.transmission.courrier'), name: 'courrier'},
+                        {boxLabel: OpenLayers.i18n('cadastrapp.demandeinformation.transmission.mail'), name: 'mail'}
+                    ]
                 }]
             }, {
                 xtype : 'fieldset',
