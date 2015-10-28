@@ -154,7 +154,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             autoLoad : true,
 
             // Champs constituant l'onglet propriétaire
-            fields : [ 'comptecommunal', 'ccodro', 'dnupro', 'ddenom', {
+            fields : [ 'comptecommunal', 'ccodro', 'ddenom', {
                 // Le champ adress est l'addition des champs dlign3,dlign4,dlign5, dlign6
                 name : 'adress',
                 convert : function(v, rec) {
@@ -190,17 +190,12 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     sortable : true,
                 },
                 columns : [ fiucProprietairesSM, {
-                    header : 'Compte communal',
-                    dataIndex : 'comptecommunal',
-                    width : 100,
-                    hidden : true
-                }, {
                     header : OpenLayers.i18n('cadastrapp.proprietaires.ccodro'),
                     dataIndex : 'ccodro',
                     width : 100
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.compte'),
-                    dataIndex : 'dnupro',
+                    dataIndex : 'comptecommunal',
                     width : 50
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.nom'),
@@ -303,7 +298,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 autoLoad : false,
                 method : 'GET'
             }),
-            fields : [ 'comptecommunal', 'dniv', 'dpor', 'ccoaff_lib', 'annee', 'dnupro', 'ddenom', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp', 'invar' ]
+            fields : [ 'comptecommunal', 'dniv', 'dpor', 'ccoaff_lib', 'annee', 'ddenom', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp', 'invar' ]
         });
 
         // Récupère la liste des batiments de la parcelle
@@ -377,11 +372,6 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     sortable : true,
                 },
                 columns : [ {
-                    header : 'Compte communal',
-                    dataIndex : 'comptecommunal',
-                    width : 100,
-                    hidden : true
-                },{
                     header : OpenLayers.i18n('cadastrapp.duc.batiment_niveau'),
                     dataIndex : 'dniv',
                     width : 40
@@ -403,8 +393,8 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     width : 60
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.compte'),
-                    dataIndex : 'dnupro',
-                    width : 60
+                    dataIndex : 'comptecommunal',
+                    width : 100
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.denomination'),
                     dataIndex : 'ddenom',
