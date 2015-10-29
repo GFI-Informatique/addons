@@ -252,6 +252,9 @@
              "cadastrapp.demandeinformation.comptecommunal": "Owner Id",
              "cadastrapp.demandeinformation.annuler": "Cancel request",
              "cadastrapp.demandeinformation.imprimer": "Print request",
+               "cadastrapp.demandeinformation.object.type.1":"Owner id",
+            "cadastrapp.demandeinformation.object.type.2":"Plot id",
+             "cadastrapp.demandeinformation.object.type.3":"co-owners",
              
             "cadastrapp.demandeinformation.alert.title":"Request information ",
            	"cadastrapp.demandeinformation.alert.demande":"An error occurs during information verification, no result can be given",
@@ -551,6 +554,9 @@
            	 "cadastrapp.demandeinformation.alert.user":"Erreur lors de la vérification de l'utilisateur, aucune demande ne peut être réalisée",
   			"cadastrapp.demandeinformation.exceded.number":"La limite de demande pour cet utilisateur est atteinte pour cette semaine",
              "cadastrapp.demandeinformation.parcelles.exemple":"5 identifiants de parcelle maximum par demande, séparées par une virgule, un espace ou un retour à ligne",
+             "cadastrapp.demandeinformation.object.type.1":"Compte communal",
+            "cadastrapp.demandeinformation.object.type.2":"Parcelle",
+             "cadastrapp.demandeinformation.object.type.3":"Co-propriété",
              
             "cadastrapp.uniteFonciere": "Unite foncière",
             "cadastrapp.surface" : "Surface",

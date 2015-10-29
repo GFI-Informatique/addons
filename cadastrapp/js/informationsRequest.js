@@ -23,10 +23,56 @@ GEOR.Addons.Cadastre.onClickAskInformations = function() {
     }
 }
 
+GEOR.Addons.Cadastre.request.createObjectRequest = function() {
+
+    return new Ext.Container({
+
+        autoEl : 'div', // This is the default
+        layout : 'column',
+        items : [ {
+            xtype : 'combo',
+            mode : 'local',
+            value : '',
+            forceSelection : true,
+            editable : false,
+            displayField : 'value',
+            valueField : 'id',
+            columnWidth : .4,
+            store : new Ext.data.JsonStore({
+                fields : [ 'id', 'value' ],
+                data : [ {
+                    id : '1',
+                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.1')
+                }, {
+                    id : '2',
+                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.2')
+                }, {
+                    id : '3',
+                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.3')
+                } ]
+            })
+        }, {
+            xtype : 'textfield',
+            columnWidth : .6,
+            allowBlank : false
+        }, {
+            xtype : 'button',
+            width : 20,
+            iconCls : 'add-button',
+            handler : function() {
+                Ext.getCmp('requestObjectDemande').add(GEOR.Addons.Cadastre.request.createObjectRequest);
+                Ext.getCmp('requestObjectDemande').doLayout();
+            }
+        } ],
+    });
+}
+
 /**
  * Create information window
  */
 GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
+
+    var numberRequestAvailable = 10;
 
     GEOR.Addons.Cadastre.request.informationsWindow = new Ext.Window({
         title : OpenLayers.i18n('cadastrapp.demandeinformation.titre'),
@@ -56,60 +102,88 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                     displayField : 'value',
                     valueField : 'id',
                     allowBlank : false,
-                    disableKeyFilter: true,
+                    disableKeyFilter : true,
                     store : new Ext.data.JsonStore({
-                        fields : ['name', 'value'],
-                        data   : [
-                            {id : 'A', value:  OpenLayers.i18n('cadastrapp.demandeinformation.type.A')},
-                            {id : 'P1', value: OpenLayers.i18n('cadastrapp.demandeinformation.type.P1')},
-                            {id : 'P2', value: OpenLayers.i18n('cadastrapp.demandeinformation.type.P2')},
-                            {id : 'P3', value: OpenLayers.i18n('cadastrapp.demandeinformation.type.P3')},
-                        ]
+                        fields : [ 'id', 'value' ],
+                        data : [ {
+                            id : 'A',
+                            value : OpenLayers.i18n('cadastrapp.demandeinformation.type.A')
+                        }, {
+                            id : 'P1',
+                            value : OpenLayers.i18n('cadastrapp.demandeinformation.type.P1')
+                        }, {
+                            id : 'P2',
+                            value : OpenLayers.i18n('cadastrapp.demandeinformation.type.P2')
+                        }, {
+                            id : 'P3',
+                            value : OpenLayers.i18n('cadastrapp.demandeinformation.type.P3')
+                        }, ]
                     }),
                     fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.type.demandeur'),
                     id : 'requestType',
                     width : 280,
-                },{
+                    listeners : {
+                        valid : function(element) {
+                            Ext.getCmp('requestCNI').enable();
+                            Ext.getCmp('requestLastName').enable();
+                            Ext.getCmp('requestFirstName').enable();
+                            Ext.getCmp('requestAdress').enable();
+                            Ext.getCmp('requestCommune').enable();
+                            Ext.getCmp('requestCodePostal').enable();
+                            Ext.getCmp('requestMail').enable();
+
+                            Ext.getCmp('radioGroupDemandeRealisee').enable();
+                            Ext.getCmp('radioGroupDemandeTransmission').enable();
+
+                            Ext.getCmp('requestObjectDemande').enable();
+                        }
+                    }
+                }, {
                     fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.cni'),
                     id : 'requestCNI',
                     width : 280,
-                    allowBlank: true,
+                    allowBlank : true,
+                    disabled : true,
                     listeners : {
-                        change : function(textfield, newValue, oldValue){
-                            
+                        change : function(textfield, newValue, oldValue) {
+
                             var params = {};
-                            params.cni=newValue;
+                            params.cni = newValue;
                             // envoi des données d'une form
                             Ext.Ajax.request({
                                 method : 'GET',
                                 url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'checkRequestLimitation',
                                 params : params,
                                 success : function(response) {
-                                    
+
                                     var result = Ext.decode(response.responseText);
-                                    var nbRequestAvailable = result.requestAvailable; 
-                                    if(nbRequestAvailable <= 0){
+                                    var numberRequestAvailable = result.requestAvailable;
+
+                                    if (numberRequestAvailable <= 0) {
                                         Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.exceded.number'));
-                                    }
-                                    else{
-                                        // enabled field 
+                                    } else {
+                                        // enabled field
                                         Ext.getCmp('requestLastName').enable();
                                         Ext.getCmp('requestFirstName').enable();
                                         Ext.getCmp('requestAdress').enable();
                                         Ext.getCmp('requestCommune').enable();
                                         Ext.getCmp('requestCodePostal').enable();
-                                        Ext.getCmp('requestCompteCommunal').enable();
-                                        Ext.getCmp('requestParcelleId').enable();
-                                        
-                                        // full fill user information if present 
-                                        if(result.user){
+                                        Ext.getCmp('requestMail').enable();
+
+                                        Ext.getCmp('radioGroupDemandeRealisee').enable();
+                                        Ext.getCmp('radioGroupDemandeTransmission').enable();
+
+                                        Ext.getCmp('requestObjectDemande').enable();
+
+                                        // full fill user information if present
+                                        if (result.user) {
                                             Ext.getCmp('requestLastName').setValue(result.user.lastName);
                                             Ext.getCmp('requestFirstName').setValue(result.user.firstName);
                                             Ext.getCmp('requestAdress').setValue(result.user.adress);
                                             Ext.getCmp('requestCommune').setValue(result.user.commune);
                                             Ext.getCmp('requestCodePostal').setValue(result.user.codepostal);
                                         }
-                                       
+
                                     }
                                 },
                                 failure : function(result) {
@@ -118,134 +192,98 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                             });
                         }
                     }
-                } ,{
+                }, {
                     fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.nom'),
                     id : 'requestLastName',
                     width : 280,
-                    allowBlank: false,
-                    disabled: true
+                    allowBlank : false,
+                    disabled : true
                 }, {
                     fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.prenom'),
                     id : 'requestFirstName',
                     width : 280,
-                    allowBlank: false,
-                    disabled: true
-                },{
+                    allowBlank : false,
+                    disabled : true
+                }, {
                     fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.num_rue'),
                     id : 'requestAdress',
                     width : 280,
-                    allowBlank: false,
-                    disabled: true
-                },// Le code postal et la commune ne sont pas en combox ici, car l'utilisateur qui fait la demande ne fait peut être pas parti des communes chargées en base
+                    allowBlank : false,
+                    disabled : true
+                },// Le code postal et la commune ne sont pas en combox ici,
+                // car l'utilisateur qui fait la demande ne fait peut être
+                // pas parti des communes chargées en base
                 {
                     fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.code_postal'),
                     id : 'requestCodePostal',
                     width : 280,
-                    allowBlank: false,
-                    disabled: true
-                },{
+                    allowBlank : false,
+                    disabled : true
+                }, {
                     fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.commune'),
                     id : 'requestCommune',
                     width : 280,
-                    allowBlank: false,
-                    disabled: true
-                },{
+                    allowBlank : false,
+                    disabled : true
+                }, {
                     fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.mail'),
                     id : 'requestMail',
                     width : 280,
-                    allowBlank: true,
-                    disabled: true
-                },{
-                    id:'checkboxGroupDemandeRealise',
-                    xtype: 'checkboxgroup',
-                    fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.realise'),
-                    itemCls: 'x-check-group-alt',
-                    // Put all controls in a single column with width 100%
-                    columns: 3,
-                    items: [
-                        {boxLabel: OpenLayers.i18n('cadastrapp.demandeinformation.realise.guichet'), name: 'guichet', checked: true},
-                        {boxLabel: OpenLayers.i18n('cadastrapp.demandeinformation.realise.courrier'), name: 'courrier'},
-                        {boxLabel: OpenLayers.i18n('cadastrapp.demandeinformation.realise.mail'), name: 'mail'}
-                    ]
-                },{
-                    id:'checkboxGroupDemandeTransmission',
-                    xtype: 'checkboxgroup',
-                    fieldLabel: OpenLayers.i18n('cadastrapp.demandeinformation.transmission'),
-                    itemCls: 'x-check-group-alt',
-                    // Put all controls in a single column with width 100%
-                    columns: 3,
-                    items: [
-                        {boxLabel: OpenLayers.i18n('cadastrapp.demandeinformation.transmission.guichet'), name: 'guichet', checked: true},
-                        {boxLabel: OpenLayers.i18n('cadastrapp.demandeinformation.transmission.courrier'), name: 'courrier'},
-                        {boxLabel: OpenLayers.i18n('cadastrapp.demandeinformation.transmission.mail'), name: 'mail'}
-                    ]
-                }]
+                    allowBlank : true,
+                    disabled : true
+                }, {
+                    id : 'radioGroupDemandeRealisee',
+                    xtype : 'radiogroup',
+                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.realise'),
+                    columns : 3,
+                    items : [ {
+                        boxLabel : OpenLayers.i18n('cadastrapp.demandeinformation.realise.guichet'),
+                        name : 'realise',
+                        checked : true
+                    }, {
+                        boxLabel : OpenLayers.i18n('cadastrapp.demandeinformation.realise.courrier'),
+                        name : 'realise'
+                    }, {
+                        boxLabel : OpenLayers.i18n('cadastrapp.demandeinformation.realise.mail'),
+                        name : 'realise'
+                    } ],
+                    disabled : true
+                }, {
+                    id : 'radioGroupDemandeTransmission',
+                    xtype : 'radiogroup',
+                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.transmission'),
+                    columns : 3,
+                    items : [ {
+                        boxLabel : OpenLayers.i18n('cadastrapp.demandeinformation.transmission.guichet'),
+                        name : 'transmission',
+                        checked : true
+                    }, {
+                        boxLabel : OpenLayers.i18n('cadastrapp.demandeinformation.transmission.courrier'),
+                        name : 'transmission'
+                    }, {
+                        boxLabel : OpenLayers.i18n('cadastrapp.demandeinformation.transmission.mail'),
+                        name : 'transmission'
+                    } ],
+                    disabled : true
+                } ]
             }, {
                 xtype : 'fieldset',
                 title : OpenLayers.i18n('cadastrapp.demandeinformation.titre2'),
-                defaultType : 'textfield',
+                id : 'requestObjectDemande',
                 labelWidth : 120,
-                items : [ {
-                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.comptecommunal'),
-                    id : 'requestCompteCommunal',
-                    width : 280,
-                    disabled: true,
-                    regex: /[a-zA-Z0-9]+/,
-                    listeners : {
-                        change : function(textfield, newValue, oldValue){
-                            
-                            var params = {};
-                            params.comptecommunal=newValue;
-                            // Check if user can have information about this owner (could be outside commune or not enough CNIL right)
-                            Ext.Ajax.request({
-                                method : 'GET',
-                                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'checkRequestValidity',
-                                params : params,
-                                success : function(response) {
-                                    
-                                    var result = Ext.decode(response.responseText); 
-                                    
-                                    Ext.getCmp('requestPrintButton').enable();
-                                },
-                                failure : function(result) {
-                                    Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.alert.demande'));
-                                }
-                            });
+                items : [ GEOR.Addons.Cadastre.request.createObjectRequest(), GEOR.Addons.Cadastre.request.createObjectRequest() ],
+                disabled : true,
+                listeners : {
+                    // Check number of available request before added
+                    beforeadd : function(fielset, component, index) {
+                        if (numberRequestAvailable <= 0) {
+                            Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.exceded.number'));
+                            return false;
+                        } else {
+                            numberRequestAvailable = numberRequestAvailable - 1;
                         }
                     }
-                }, {
-                    xtype: 'textarea',
-                    fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.parcelles'),
-                    id : 'requestParcelleId',
-                    width : 280,
-                    disabled: true,
-                    listeners : {
-                        change : function(textfield, newValue, oldValue){
-                            
-                            var params = {};
-                            params.parcelle=newValue;
-                            // Check if user can have information about this parcelle (could be outside commune)
-                            Ext.Ajax.request({
-                                method : 'GET',
-                                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'checkRequestValidity',
-                                params : params,
-                                success : function(response) {
-                                    
-                                    var result = Ext.decode(response.responseText);     
-                                    Ext.getCmp('requestPrintButton').enable();
-                                },
-                                failure : function(result) {
-                                    Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.alert.demande'));
-                                }
-                            });
-                        }
-                    }
-                },{
-                    xtype : 'displayfield',
-                    width : 280,
-                    value: OpenLayers.i18n('cadastrapp.demandeinformation.parcelles.exemple'),
-                    fieldClass: 'displayfieldGray'
-                }, ]
+                }
             } ]
         } ],
         buttons : [ {
@@ -259,11 +297,11 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
         }, {
             labelAlign : 'right',
             text : OpenLayers.i18n('cadastrapp.demandeinformation.imprimer'),
-            id: 'requestPrintButton',
+            id : 'requestPrintButton',
             disabled : true,
             listeners : {
                 click : function(b, e) {
-                    
+
                     // PARAMS
                     var params = {};
                     params.lastname = Ext.getCmp('requestLastName').getValue();
@@ -274,22 +312,23 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                     params.codepostal = Ext.getCmp('requestCodePostal').getValue();
                     params.comptecommunal = Ext.getCmp('requestCompteCommunal').getValue();
                     params.parcelles = Ext.getCmp('requestParcelleId').getValue();
-                    
+
                     // Save request and get id
                     Ext.Ajax.request({
                         method : 'GET',
                         url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'saveInformationRequest',
                         params : params,
                         success : function(response) {
-                            
-                            var result = Ext.decode(response.responseText);  
-                            
-                            var paramsPrint={};
+
+                            var result = Ext.decode(response.responseText);
+
+                            var paramsPrint = {};
                             paramsPrint.requestid = result.id
-                            
+
                             var url = GEOR.Addons.Cadastre.cadastrappWebappUrl + 'printPDFRequest?' + Ext.urlEncode(paramsPrint);
 
-                            // Directly download file, without and call service without
+                            // Directly download file, without and call service
+                            // without
                             // ogcproxy
                             Ext.DomHelper.append(document.body, {
                                 tag : 'iframe',
@@ -301,17 +340,16 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                                 src : url
                             });
 
-
                         },
                         failure : function(result) {
                             Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.alert.demande'));
                         }
-                    });                   
+                    });
                 }
             }
         } ],
-        listeners: {
-            beforehide : function(windows){
+        listeners : {
+            beforehide : function(windows) {
                 GEOR.Addons.Cadastre.request.informationsWindow.items.items[0].getForm().reset();
             }
         }
