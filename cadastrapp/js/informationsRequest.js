@@ -23,6 +23,9 @@ GEOR.Addons.Cadastre.onClickAskInformations = function() {
     }
 }
 
+/**
+ * 
+ */
 GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 
     return new Ext.Container({
@@ -54,13 +57,18 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
         }, {
             xtype : 'textfield',
             columnWidth : .6,
-            allowBlank : false
+            allowBlank : false,
+            listeners : {
+                valid : function(element) {
+                    Ext.getCmp('requestPrintButton').enable();
+                }
+            }
         }, {
             xtype : 'button',
             width : 20,
             iconCls : 'add-button',
             handler : function() {
-                Ext.getCmp('requestObjectDemande').add(GEOR.Addons.Cadastre.request.createObjectRequest);
+                Ext.getCmp('requestObjectDemande').add(GEOR.Addons.Cadastre.request.createObjectRequest());
                 Ext.getCmp('requestObjectDemande').doLayout();
             }
         } ],
@@ -147,49 +155,53 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                     listeners : {
                         change : function(textfield, newValue, oldValue) {
 
-                            var params = {};
-                            params.cni = newValue;
-                            // envoi des données d'une form
-                            Ext.Ajax.request({
-                                method : 'GET',
-                                url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'checkRequestLimitation',
-                                params : params,
-                                success : function(response) {
+                            if ('P3' == Ext.getCmp('requestType').value) {
 
-                                    var result = Ext.decode(response.responseText);
-                                    var numberRequestAvailable = result.requestAvailable;
+                                var params = {};
+                                params.cni = newValue;
+                                // envoi des données d'une form
+                                Ext.Ajax.request({
+                                    method : 'GET',
+                                    url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'checkRequestLimitation',
+                                    params : params,
+                                    success : function(response) {
 
-                                    if (numberRequestAvailable <= 0) {
-                                        Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.exceded.number'));
-                                    } else {
-                                        // enabled field
-                                        Ext.getCmp('requestLastName').enable();
-                                        Ext.getCmp('requestFirstName').enable();
-                                        Ext.getCmp('requestAdress').enable();
-                                        Ext.getCmp('requestCommune').enable();
-                                        Ext.getCmp('requestCodePostal').enable();
-                                        Ext.getCmp('requestMail').enable();
+                                        var result = Ext.decode(response.responseText);
+                                        var numberRequestAvailable = result.requestAvailable;
 
-                                        Ext.getCmp('radioGroupDemandeRealisee').enable();
-                                        Ext.getCmp('radioGroupDemandeTransmission').enable();
+                                        if (numberRequestAvailable <= 0) {
+                                            Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.exceded.number'));
+                                        } else {
+                                            // enabled field
+                                            Ext.getCmp('requestLastName').enable();
+                                            Ext.getCmp('requestFirstName').enable();
+                                            Ext.getCmp('requestAdress').enable();
+                                            Ext.getCmp('requestCommune').enable();
+                                            Ext.getCmp('requestCodePostal').enable();
+                                            Ext.getCmp('requestMail').enable();
 
-                                        Ext.getCmp('requestObjectDemande').enable();
+                                            Ext.getCmp('radioGroupDemandeRealisee').enable();
+                                            Ext.getCmp('radioGroupDemandeTransmission').enable();
 
-                                        // full fill user information if present
-                                        if (result.user) {
-                                            Ext.getCmp('requestLastName').setValue(result.user.lastName);
-                                            Ext.getCmp('requestFirstName').setValue(result.user.firstName);
-                                            Ext.getCmp('requestAdress').setValue(result.user.adress);
-                                            Ext.getCmp('requestCommune').setValue(result.user.commune);
-                                            Ext.getCmp('requestCodePostal').setValue(result.user.codepostal);
+                                            Ext.getCmp('requestObjectDemande').enable();
+
+                                            // full fill user information if
+                                            // present
+                                            if (result.user) {
+                                                Ext.getCmp('requestLastName').setValue(result.user.lastName);
+                                                Ext.getCmp('requestFirstName').setValue(result.user.firstName);
+                                                Ext.getCmp('requestAdress').setValue(result.user.adress);
+                                                Ext.getCmp('requestCommune').setValue(result.user.commune);
+                                                Ext.getCmp('requestCodePostal').setValue(result.user.codepostal);
+                                            }
+
                                         }
-
+                                    },
+                                    failure : function(result) {
+                                        Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.alert.user'));
                                     }
-                                },
-                                failure : function(result) {
-                                    Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.alert.user'));
-                                }
-                            });
+                                });
+                            }
                         }
                     }
                 }, {
@@ -230,7 +242,8 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                     id : 'requestMail',
                     width : 280,
                     allowBlank : true,
-                    disabled : true
+                    disabled : true,
+                    regex:/^((([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z\s?]{2,5}){1,25})*)*$/
                 }, {
                     id : 'radioGroupDemandeRealisee',
                     xtype : 'radiogroup',
@@ -239,13 +252,16 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                     items : [ {
                         boxLabel : OpenLayers.i18n('cadastrapp.demandeinformation.realise.guichet'),
                         name : 'realise',
-                        checked : true
+                        checked : true,
+                        value : 1
                     }, {
                         boxLabel : OpenLayers.i18n('cadastrapp.demandeinformation.realise.courrier'),
-                        name : 'realise'
+                        name : 'realise',
+                        value : 2
                     }, {
                         boxLabel : OpenLayers.i18n('cadastrapp.demandeinformation.realise.mail'),
-                        name : 'realise'
+                        name : 'realise',
+                        value : 3
                     } ],
                     disabled : true
                 }, {
@@ -256,13 +272,16 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                     items : [ {
                         boxLabel : OpenLayers.i18n('cadastrapp.demandeinformation.transmission.guichet'),
                         name : 'transmission',
-                        checked : true
+                        checked : true,
+                        value : 1
                     }, {
                         boxLabel : OpenLayers.i18n('cadastrapp.demandeinformation.transmission.courrier'),
-                        name : 'transmission'
+                        name : 'transmission',
+                        value : 2
                     }, {
                         boxLabel : OpenLayers.i18n('cadastrapp.demandeinformation.transmission.mail'),
-                        name : 'transmission'
+                        name : 'transmission',
+                        value : 3
                     } ],
                     disabled : true
                 } ]
@@ -271,7 +290,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                 title : OpenLayers.i18n('cadastrapp.demandeinformation.titre2'),
                 id : 'requestObjectDemande',
                 labelWidth : 120,
-                items : [ GEOR.Addons.Cadastre.request.createObjectRequest(), GEOR.Addons.Cadastre.request.createObjectRequest() ],
+                items : [ GEOR.Addons.Cadastre.request.createObjectRequest() ],
                 disabled : true,
                 listeners : {
                     // Check number of available request before added
@@ -291,7 +310,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
             text : OpenLayers.i18n('cadastrapp.demandeinformation.annuler'),
             listeners : {
                 click : function(b, e) {
-                    GEOR.Addons.Cadastre.request.informationsWindow.hide();
+                    GEOR.Addons.Cadastre.request.informationsWindow.close();
                 }
             }
         }, {
@@ -304,15 +323,40 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 
                     // PARAMS
                     var params = {};
+                    params.type = Ext.getCmp('requestType').getValue();
                     params.lastname = Ext.getCmp('requestLastName').getValue();
                     params.firstname = Ext.getCmp('requestFirstName').getValue();
                     params.adress = Ext.getCmp('requestAdress').getValue();
                     params.cni = Ext.getCmp('requestCNI').getValue();
                     params.commune = Ext.getCmp('requestCommune').getValue();
                     params.codepostal = Ext.getCmp('requestCodePostal').getValue();
-                    params.comptecommunal = Ext.getCmp('requestCompteCommunal').getValue();
-                    params.parcelles = Ext.getCmp('requestParcelleId').getValue();
+                    params.mail = Ext.getCmp('requestMail').getValue();
 
+                    // For each element of second textfield get value
+                    // For each element of second textfield get value
+                    params.parcelles = [];
+                    params.comptecommunaux = [];
+                    params.coproprietes = [];
+
+                    Ext.each(Ext.getCmp('requestObjectDemande').items.items, function(element) {
+
+                        var requestType = element.items.items[0].getValue();
+
+                        if (requestType == 1) {
+                            params.parcelles.push(element.items.items[1].getValue());
+                        } else if (requestType == 2) {
+                            params.comptecommunaux.push(element.items.items[1].getValue());
+                        } else if (requestType == 3) {
+                            params.coproprietes.push(element.items.items[1].getValue());
+                        } else {
+                            console.log(" Object Type of request not defined");
+                        }
+
+                    });
+                    
+                    params.responseby = Ext.getCmp('radioGroupDemandeTransmission').getValue().value;                   
+                    params.askby = Ext.getCmp('radioGroupDemandeRealisee').getValue().value;
+                    
                     // Save request and get id
                     Ext.Ajax.request({
                         method : 'GET',
@@ -350,7 +394,11 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
         } ],
         listeners : {
             beforehide : function(windows) {
+                numberRequestAvailable = 10;
                 GEOR.Addons.Cadastre.request.informationsWindow.items.items[0].getForm().reset();
+            },
+            close : function(windows) {
+                GEOR.Addons.Cadastre.request.informationsWindow = null;
             }
         }
     });
