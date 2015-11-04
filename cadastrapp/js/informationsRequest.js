@@ -192,7 +192,8 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                                             Ext.getCmp('requestFirstName').setValue(result.user.firstName);
                                             Ext.getCmp('requestAdress').setValue(result.user.adress);
                                             Ext.getCmp('requestCommune').setValue(result.user.commune);
-                                            Ext.getCmp('requestCodePostal').setValue(result.user.codepostal);
+                                            Ext.getCmp('requestCodePostal').setValue(result.user.codePostal);
+                                            Ext.getCmp('requestMail').setValue(result.user.mail);
                                         }
 
                                     }
