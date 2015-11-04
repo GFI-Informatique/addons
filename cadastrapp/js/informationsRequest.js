@@ -36,8 +36,11 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
             xtype : 'combo',
             mode : 'local',
             value : '',
-            forceSelection : true,
             editable : false,
+            selectOnFocus : true,
+            typeAhead : true,
+            forceSelection : true,
+            triggerAction : 'all',
             displayField : 'value',
             valueField : 'id',
             columnWidth : .4,
@@ -105,12 +108,15 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                 labelWidth : 140,
                 items : [ {
                     xtype : 'combo',
-                    editable : false,
                     mode : 'local',
                     displayField : 'value',
                     valueField : 'id',
                     allowBlank : false,
-                    disableKeyFilter : true,
+                    selectOnFocus : true,
+                    typeAhead : true,
+                    forceSelection : true,
+                    triggerAction : 'all',
+                    editable : false,
                     store : new Ext.data.JsonStore({
                         fields : [ 'id', 'value' ],
                         data : [ {
@@ -132,18 +138,24 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                     width : 280,
                     listeners : {
                         valid : function(element) {
-                            Ext.getCmp('requestCNI').enable();
-                            Ext.getCmp('requestLastName').enable();
-                            Ext.getCmp('requestFirstName').enable();
-                            Ext.getCmp('requestAdress').enable();
-                            Ext.getCmp('requestCommune').enable();
-                            Ext.getCmp('requestCodePostal').enable();
-                            Ext.getCmp('requestMail').enable();
+                            if (OpenLayers.i18n('cadastrapp.demandeinformation.type.P3') == element.value
+                                    || 'P3' == element.value) {
+                                Ext.getCmp('requestCNI').enable();
+                            } else {
+                                Ext.getCmp('requestCNI').enable();
+                                Ext.getCmp('requestLastName').enable();
+                                Ext.getCmp('requestFirstName').enable();
+                                Ext.getCmp('requestAdress').enable();
+                                Ext.getCmp('requestCommune').enable();
+                                Ext.getCmp('requestCodePostal').enable();
+                                Ext.getCmp('requestMail').enable();
 
-                            Ext.getCmp('radioGroupDemandeRealisee').enable();
-                            Ext.getCmp('radioGroupDemandeTransmission').enable();
+                                Ext.getCmp('radioGroupDemandeRealisee').enable();
+                                Ext.getCmp('radioGroupDemandeTransmission').enable();
 
-                            Ext.getCmp('requestObjectDemande').enable();
+                                Ext.getCmp('requestObjectDemande').enable();
+                            }
+
                         }
                     }
                 }, {
@@ -158,7 +170,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                             var params = {};
                             params.cni = newValue;
                             params.type = Ext.getCmp('requestType').value;
-                            
+
                             // envoi des données d'une form
                             Ext.Ajax.request({
                                 method : 'GET',
@@ -167,7 +179,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                                 success : function(response) {
 
                                     var result = Ext.decode(response.responseText);
-                                    var numberRequestAvailable = result.requestAvailable;
+                                    numberRequestAvailable = result.requestAvailable;
 
                                     if (numberRequestAvailable <= 0) {
                                         Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.exceded.number'));
@@ -195,6 +207,10 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                                             Ext.getCmp('requestCodePostal').setValue(result.user.codePostal);
                                             Ext.getCmp('requestMail').setValue(result.user.mail);
                                         }
+
+                                        // Add object Request
+                                        Ext.getCmp('requestObjectDemande').add(GEOR.Addons.Cadastre.request.createObjectRequest());
+                                        Ext.getCmp('requestObjectDemande').doLayout();
 
                                     }
                                 },
@@ -291,7 +307,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                 title : OpenLayers.i18n('cadastrapp.demandeinformation.titre2'),
                 id : 'requestObjectDemande',
                 labelWidth : 120,
-                items : [ GEOR.Addons.Cadastre.request.createObjectRequest() ],
+                items : [],
                 disabled : true,
                 listeners : {
                     // Check number of available request before added
