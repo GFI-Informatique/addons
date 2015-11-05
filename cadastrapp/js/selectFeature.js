@@ -2,8 +2,8 @@ Ext.namespace("GEOR.Addons.Cadastre");
 
 /**
  * Method: createSelectionControl
- *
- * Créé le controle de sélection et la couche des parcelles à partir du wfs 
+ * 
+ * Créé le controle de sélection et la couche des parcelles à partir du wfs
  * 
  * @param: style
  * @param:selectedStyle
@@ -11,8 +11,10 @@ Ext.namespace("GEOR.Addons.Cadastre");
  */
 GEOR.Addons.Cadastre.createSelectionControl = function(style, selectedStyle) {
 
-    var styleFeatures = new OpenLayers.StyleMap(new OpenLayers.Style({ // param config
-        fillColor : "${getFillColor}", // style des entités en fonction de l'état
+    var styleFeatures = new OpenLayers.StyleMap(new OpenLayers.Style({ // param
+                                                                        // config
+        fillColor : "${getFillColor}", // style des entités en fonction de
+                                        // l'état
         strokeColor : "${getStrokeColor}",
         strokeWidth : "${getstrokeWidth}",
         fillOpacity : "${getFillOpacity}",
@@ -104,7 +106,7 @@ GEOR.Addons.Cadastre.createSelectionControl = function(style, selectedStyle) {
 
 /**
  * Method: addPopupOnhover
- *
+ * 
  * Créé un popup lorsque l'on survole la map
  * 
  * @param: popuConfig
@@ -158,9 +160,9 @@ GEOR.Addons.Cadastre.addPopupOnhover = function(popupConfig) {
 
 /**
  * Method: getFeaturesWFSSpatial
- *
- * Envoie une requête au geoserveur pour faire une intersection de la couche wms avec la géométrie 
- * donnée en paramètres
+ * 
+ * Envoie une requête au geoserveur pour faire une intersection de la couche wms
+ * avec la géométrie donnée en paramètres
  * 
  * @param: typeGeom
  * @param: coords
@@ -171,7 +173,8 @@ GEOR.Addons.Cadastre.addPopupOnhover = function(popupConfig) {
 GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSelector) {
 
     var filter;
-    var selectRows = false; // ligne dans le resultat de recherche doit être sélectionnée si etat =2
+    var selectRows = false; // ligne dans le resultat de recherche doit être
+                            // sélectionnée si etat =2
     var polygoneElements = "";
     var endPolygoneElements = "";
 
@@ -216,7 +219,8 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
 
             var geojson_format = new OpenLayers.Format.GeoJSON();
 
-            // dans cette variable on peut avoir plusieurs résultat pour la même parcelle
+            // dans cette variable on peut avoir plusieurs résultat pour la même
+            // parcelle
             var result = geojson_format.read(response.responseText);
 
             // !! récupère de façon unique les parcelles résultat
@@ -234,7 +238,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                 var feature, state;
                 var parcelsIds = [], codComm = null;
 
-                // Create parcelsList 
+                // Create parcelsList
                 Ext.each(resultSelection, function(feature, currentIndexI) {
                     if (feature) {
                         var exist = false;
@@ -246,7 +250,8 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                                 exist = true;
                                 feature = selectedFeature;
                                 index = currentIndexJ;
-                                return false; // this breaks out of the 'each' loop
+                                return false; // this breaks out of the 'each'
+                                                // loop
                             }
                         });
 
@@ -260,11 +265,13 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                         state = GEOR.Addons.Cadastre.changeStateFeature(feature, index - 1, typeSelector);
                         var id = feature.attributes[idField];
 
-                        // si la parcelle est selectionnée on récupère son id pour le getParcelle pour le tableau
+                        // si la parcelle est selectionnée on récupère son id
+                        // pour le getParcelle pour le tableau
                         if (state == GEOR.Addons.Cadastre.selection.state.list || state == GEOR.Addons.Cadastre.selection.state.selected || GEOR.Addons.Cadastre.selection.state.details) {
                             parcelsIds.push(id);
                         } else {
-                            // sinon on la supprime du tableau et on ferme les fenêtres de détail
+                            // sinon on la supprime du tableau et on ferme les
+                            // fenêtres de détail
                             GEOR.Addons.Cadastre.result.tabs.getActiveTab().store.removeAt(GEOR.Addons.Cadastre.indexRowParcelle(id));
                             GEOR.Addons.Cadastre.closeWindowFIUC(id, GEOR.Addons.Cadastre.result.tabs.getActiveTab());
                             GEOR.Addons.Cadastre.closeWindowFIUF(id, GEOR.Addons.Cadastre.result.tabs.getActiveTab());
@@ -275,7 +282,8 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                 GEOR.Addons.Cadastre.showTabSelection(parcelsIds);
                 // si la méthode est appelée pour afficher l'infobulle
             } else {
-                // si on survole la couche et pas le fond de carte pour avoir l'infobulle
+                // si on survole la couche et pas le fond de carte pour avoir
+                // l'infobulle
                 if (resultSelection.length > 0) {
                     var map = GeoExt.MapPanel.guess().map;
                     var idParcelle = resultSelection[0].attributes[idField];
@@ -291,12 +299,12 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
 }
 
 /**
- *  Method: indexFeatureSelected
+ * Method: indexFeatureSelected
  * 
- *  Récupère l'index de l'entité selectionnée dans la couche selection
- *  
- *  @param: feature
- *  
+ * Récupère l'index de l'entité selectionnée dans la couche selection
+ * 
+ * @param: feature
+ * 
  */
 GEOR.Addons.Cadastre.indexFeatureSelected = function(feature) {
 
@@ -314,8 +322,8 @@ GEOR.Addons.Cadastre.indexFeatureSelected = function(feature) {
 
 /**
  * Method: indexRowParcelle
- *  
- *  Récupère l'index de la ligne d'une parcelle dans le tableau
+ * 
+ * Récupère l'index de la ligne d'une parcelle dans le tableau
  * 
  * @param: idParcelle
  */
@@ -323,8 +331,6 @@ GEOR.Addons.Cadastre.indexRowParcelle = function(idParcelle) {
     var rowIndex = GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore().find('parcelle', idParcelle);
     return rowIndex;
 }
-
-
 
 /**
  * Method: getFeaturesWFSAttribute
@@ -396,7 +402,7 @@ GEOR.Addons.Cadastre.getFeatureById = function(idParcelle) {
 /**
  * Method: setState
  * 
- *  Change l'etat sur la carte et mis à jour le dessin
+ * Change l'etat sur la carte et mis à jour le dessin
  * 
  * @param: feature
  * @param: state
@@ -409,60 +415,64 @@ GEOR.Addons.Cadastre.setState = function(feature, state) {
 
 /**
  * Method: changeStateFeature
- *  
- *  Gestion du changement d'état lors du click sur l'entitée
+ * 
+ * Gestion du changement d'état lors du click sur l'entitée
  * 
  * @param: feature
  * @param: index
  * @param: typeSelector
  * 
+ * @return null if feature is null
+ * 
  */
 GEOR.Addons.Cadastre.changeStateFeature = function(feature, index, typeSelector) {
 
     var state = null;
-
-    switch (typeSelector) {
-    // changement par selection sur la carte
-    case "clickSelector":
-        if (feature.state == GEOR.Addons.Cadastre.selection.state.list) {
+    
+    if (feature) {
+        switch (typeSelector) {
+        // changement par selection sur la carte
+        case "clickSelector":
+            if (feature.state == GEOR.Addons.Cadastre.selection.state.list) {
+                state = GEOR.Addons.Cadastre.selection.state.selected;
+            } else if (feature.state == GEOR.Addons.Cadastre.selection.state.selected) {
+                state = GEOR.Addons.Cadastre.selection.state.list;
+            } else if (feature.state == GEOR.Addons.Cadastre.selection.state.details) {
+                console.log("no action from maps are available when details panel are open")
+            } else {
+                state = GEOR.Addons.Cadastre.selection.state.list;
+            }
+            break;
+        case GEOR.Addons.Cadastre.selection.state.selected:
             state = GEOR.Addons.Cadastre.selection.state.selected;
-        } else if (feature.state == GEOR.Addons.Cadastre.selection.state.selected) {
+            break;
+        case GEOR.Addons.Cadastre.selection.state.details:
+            state = GEOR.Addons.Cadastre.selection.state.details;
+            break;
+        case GEOR.Addons.Cadastre.selection.state.list:
             state = GEOR.Addons.Cadastre.selection.state.list;
-        } else if (feature.state == GEOR.Addons.Cadastre.selection.state.details) {
-            console.log("no action from maps are available when details panel are open")
-        } else {
-            state = GEOR.Addons.Cadastre.selection.state.list;
+            break;
+
+        case "reset":
+            GEOR.Addons.Cadastre.result.tabs.getActiveTab().featuresList.splice(index, 1);
+            GEOR.Addons.Cadastre.WFSLayer.destroyFeatures([ feature ]);
+            break;
+
+        case "tmp":
+            state = null;
+            break;
+
         }
-        break;
-    case GEOR.Addons.Cadastre.selection.state.selected:
-        state = GEOR.Addons.Cadastre.selection.state.selected;
-        break;
-    case GEOR.Addons.Cadastre.selection.state.details:
-        state = GEOR.Addons.Cadastre.selection.state.details;
-        break;
-    case GEOR.Addons.Cadastre.selection.state.list:
-        state = GEOR.Addons.Cadastre.selection.state.list;
-        break;
-
-    case "reset":
-        GEOR.Addons.Cadastre.result.tabs.getActiveTab().featuresList.splice(index, 1);
-        GEOR.Addons.Cadastre.WFSLayer.destroyFeatures([ feature ]);
-        break;
-
-    case "tmp":
-        state = null;
-        break;
-
+        GEOR.Addons.Cadastre.setState(feature, state);
     }
-    GEOR.Addons.Cadastre.setState(feature, state);
     return state;
 }
 
 /**
  * Method: clearLayerSelection
  * 
- *  Vide le tableau des entités selectionnées
- *
+ * Vide le tableau des entités selectionnées
+ * 
  */
 GEOR.Addons.Cadastre.clearLayerSelection = function() {
     GEOR.Addons.Cadastre.result.tabs.getActiveTab().featuresList = [];
@@ -472,8 +482,9 @@ GEOR.Addons.Cadastre.clearLayerSelection = function() {
 /**
  * Method: selectFeatureIntersection
  * 
- *  Récupère les coordonnées et la géométrie de l'entité dessinée et envoie une requête au serveur
- *
+ * Récupère les coordonnées et la géométrie de l'entité dessinée et envoie une
+ * requête au serveur
+ * 
  * @param: feature
  */
 GEOR.Addons.Cadastre.selectFeatureIntersection = function(feature) {
@@ -499,8 +510,8 @@ GEOR.Addons.Cadastre.selectFeatureIntersection = function(feature) {
 /**
  * Method: getLayerByName
  * 
- *  retourne la couche en prenant le nom
- *
+ * retourne la couche en prenant le nom
+ * 
  * @param: layerName
  */
 GEOR.Addons.Cadastre.getLayerByName = function(layerName) {
@@ -512,15 +523,15 @@ GEOR.Addons.Cadastre.getLayerByName = function(layerName) {
 /**
  * Method: zoomOnFeatures
  * 
- *  Zoom on given features
- *
- * @param: features Array 
+ * Zoom on given features
+ * 
+ * @param: features Array
  */
 GEOR.Addons.Cadastre.zoomOnFeatures = function(features) {
 
-    // zoom sur les entités selectionnées etat 2 
+    // zoom sur les entités selectionnées etat 2
     if (features.length > 0 && features[0] != null) {
-        // récupération des bordure de  l'enveloppe des entités selectionnées
+        // récupération des bordure de l'enveloppe des entités selectionnées
         var minLeft = features[0].geometry.bounds.left;
         var maxRight = features[0].geometry.bounds.right;
         var minBottom = features[0].geometry.bounds.bottom;
@@ -533,7 +544,8 @@ GEOR.Addons.Cadastre.zoomOnFeatures = function(features) {
             maxTop = Math.max(maxTop, selectedFeature.geometry.bounds.top)
         });
         var map = GeoExt.MapPanel.guess().map;
-        map.zoomToExtent([ minLeft, minBottom, maxRight, maxTop ]); //zoom sur l'emprise
+        map.zoomToExtent([ minLeft, minBottom, maxRight, maxTop ]); // zoom sur
+                                                                    // l'emprise
     } else {
         console.log("No feature in input, could not zoom on it");
     }
@@ -542,8 +554,8 @@ GEOR.Addons.Cadastre.zoomOnFeatures = function(features) {
 /**
  * Method: addWMSLayer
  * 
- *  ajout de la couche WMS à la carte 
- *
+ * ajout de la couche WMS à la carte
+ * 
  * @param: wmsSetting
  */
 GEOR.Addons.Cadastre.addWMSLayer = function(wmsSetting) {

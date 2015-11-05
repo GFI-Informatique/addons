@@ -293,13 +293,19 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
                 rowselect : function(grid, rowIndex, record) {
                     var parcelleId = record.data.parcelle;
                     var feature = GEOR.Addons.Cadastre.getFeatureById(parcelleId);
-                    GEOR.Addons.Cadastre.changeStateFeature(feature, 0, GEOR.Addons.Cadastre.selection.state.selected);
+                    if(feature){
+                        GEOR.Addons.Cadastre.changeStateFeature(feature, 0, GEOR.Addons.Cadastre.selection.state.selected);
+               
+                    }
                 },
                 // Remove feature and change state when deselected
                 rowdeselect : function(grid, rowIndex, record) {
                     var parcelleId = record.data.parcelle;
                     var feature = GEOR.Addons.Cadastre.getFeatureById(parcelleId);
-                    GEOR.Addons.Cadastre.changeStateFeature(feature, 0, GEOR.Addons.Cadastre.selection.state.list);
+                    if(feature){
+                        GEOR.Addons.Cadastre.changeStateFeature(feature, 0, GEOR.Addons.Cadastre.selection.state.list);
+               
+                    }
                 }
             }
         }),
