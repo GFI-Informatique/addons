@@ -359,9 +359,9 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 
                         var requestType = element.items.items[0].getValue();
 
-                        if (requestType == 1) {
+                        if (requestType == 2) {
                             params.parcelles.push(element.items.items[1].getValue());
-                        } else if (requestType == 2) {
+                        } else if (requestType == 1) {
                             params.comptecommunaux.push(element.items.items[1].getValue());
                         } else if (requestType == 3) {
                             params.coproprietes.push(element.items.items[1].getValue());
