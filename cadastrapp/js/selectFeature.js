@@ -272,7 +272,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                         } else {
                             // sinon on la supprime du tableau et on ferme les
                             // fenêtres de détail
-                            GEOR.Addons.Cadastre.result.tabs.getActiveTab().store.removeAt(GEOR.Addons.Cadastre.indexRowParcelle(id));
+                            GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore().removeAt(GEOR.Addons.Cadastre.indexRowParcelle(id));
                             GEOR.Addons.Cadastre.closeWindowFIUC(id, GEOR.Addons.Cadastre.result.tabs.getActiveTab());
                             GEOR.Addons.Cadastre.closeWindowFIUF(id, GEOR.Addons.Cadastre.result.tabs.getActiveTab());
                         }

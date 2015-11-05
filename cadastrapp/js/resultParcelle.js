@@ -103,12 +103,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
             listeners : {
                 click : function(b, e) {
                     // zoom on plots from the active tab
-                    var features = [];
-                    GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore().each(function(item,index){
-                        var parcelleId = item.data.parcelle;
-                        features.push(GEOR.Addons.Cadastre.getFeatureById(parcelleId));
-                    });
-                    GEOR.Addons.Cadastre.zoomOnFeatures(features);
+                    GEOR.Addons.Cadastre.zoomOnFeatures(GEOR.Addons.Cadastre.result.tabs.getActiveTab().featuresList);
                 }
             }
         }, {
@@ -140,7 +135,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
                     Ext.each(selection, function(item) {
 
                         // remove from store
-                        GEOR.Addons.Cadastre.result.tabs.getActiveTab().store.remove(item);
+                        GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore().remove(item);
 
                         var parcelleId = item.data.parcelle;
                         var feature = GEOR.Addons.Cadastre.getFeatureById(parcelleId);
@@ -205,18 +200,6 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
     });
 };
 
-/**
- * Result parcelle grid For each tab, contains gridPanel with value + list of
- * selection and open windows
- */
-GEOR.Addons.Cadastre.resultParcelleGrid = Ext.extend(Ext.grid.GridPanel, {
-    detailParcelles : new Array(),
-    fichesCOuvertes : new Array(),
-    idParcellesCOuvertes : new Array(),
-    fichesFOuvertes : new Array(),
-    idParcellesFOuvertes : new Array(),
-    featuresList : new Array()
-});
 
 /**
  * public: method[addNewResultParcelle]
@@ -267,18 +250,44 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
             if (newTab) {
                 if (newTab.store) {
                     store = newTab.store.data.items;
+                    newTab.featureList
+                    
                     // selection en jaune
-                    GEOR.Addons.Cadastre.changeStateParcelleOfTab(store, GEOR.Addons.Cadastre.selection.state.list);
+                    Ext.each(newTab.featuresList, function(feature, currentIndex) {
+                         
+                        // if exists, change state
+                        if (feature) {
+                            GEOR.Addons.Cadastre.changeStateFeature(feature, null, GEOR.Addons.Cadastre.selection.state.list);
+                        }
+                    });
+                    
                     // selection en bleue
                     var selectedRows = newTab.getSelectionModel().selections.items;
-                    GEOR.Addons.Cadastre.changeStateParcelleOfTab(selectedRows, GEOR.Addons.Cadastre.selection.state.selected);
+                    var idField = GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle;
+                    
+                    // For each element of the store
+                    Ext.each(selectedRows, function(element, currentIndex) {
+                        
+                        // get feature corresponding of the parcelleId
+                        Ext.each(newTab.featuresList, function(selectedFeature, currentIndex) {
+                            if (selectedFeature.attributes[idField] == element.data.parcelle) {
+                                feature = selectedFeature;
+                                return false;
+                            }
+                        });
+    
+                        // if exists, change state
+                        if (feature) {
+                            GEOR.Addons.Cadastre.changeStateFeature(feature, null, GEOR.Addons.Cadastre.selection.state.selected);
+                        }
+                    });
                 }
             }
         }
     });
     // **********
 
-    var currentTabGrid = new GEOR.Addons.Cadastre.resultParcelleGrid({
+    var currentTabGrid = new Ext.grid.GridPanel({
         title : title,
         id : 'resultParcelleWindowTab' + GEOR.Addons.Cadastre.result.tabs.items.length,
         border : true,
@@ -345,6 +354,14 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
         }
     });
 
+    currentTabGrid.detailParcelles = new Array();
+    currentTabGrid.fichesCOuvertes = new Array();
+    currentTabGrid.idParcellesCOuvertes = new Array();
+    currentTabGrid.fichesFOuvertes = new Array();
+    currentTabGrid.idParcellesFOuvertes = new Array();
+    currentTabGrid.featuresList = new Array();
+    
+    
     // Add new panel at the end just before + and activate it
     var currentTabIndex = GEOR.Addons.Cadastre.result.tabs.items.length -1;
     GEOR.Addons.Cadastre.result.tabs.insert(currentTabIndex, currentTabGrid);
@@ -436,7 +453,7 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds) {
                                     dcntpa : element.dcntpa,
                                 });
                                 // ajout de la ligne
-                                GEOR.Addons.Cadastre.result.tabs.getActiveTab().store.add(newRecord);
+                                GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore().add(newRecord);
                                 // Ajout à la selection
                                 GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.parcelle);
                             }
@@ -460,9 +477,12 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds) {
  */
 GEOR.Addons.Cadastre.changeStateParcelleOfTab = function(store, typeSelector) {
 
+    // For each element of the store
     Ext.each(store, function(element, currentIndex) {
-        var id = element.data.parcelle;
-        var feature = GEOR.Addons.Cadastre.getFeatureById(id);
+        // get feature corresponding of the parcelleId
+        var feature = GEOR.Addons.Cadastre.getFeatureById(element.data.parcelle);
+        
+        // if exists, change state
         if (feature) {
             var index = GEOR.Addons.Cadastre.indexFeatureSelected(feature);
             GEOR.Addons.Cadastre.changeStateFeature(feature, index, typeSelector);
