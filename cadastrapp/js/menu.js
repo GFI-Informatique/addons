@@ -27,9 +27,9 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
     items : null,
 
      /**
-     * api: config[layerOptions] ``Object`` Options to be passed to the
-     * OpenLayers.Layer.Vector constructor.
-     */
+         * api: config[layerOptions] ``Object`` Options to be passed to the
+         * OpenLayers.Layer.Vector constructor.
+         */
     layerOptions : {},
 
 
@@ -130,7 +130,16 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
             group : this.toggleGroup,
             checked : false,
             handler : function(){
-                GEOR.Addons.Cadastre.zoomOnFeatures(GEOR.Addons.Cadastre.result.tabs.getActiveTab().featuresList);
+                // Zoom on all element from all parcelle from each tab of resultParcellet tabpanel
+                if(GEOR.Addons.Cadastre.result.tabs && GEOR.Addons.Cadastre.result.tabs.items.items){
+                    var allfeatures = {};
+                    Ext.each(GEOR.Addons.Cadastre.result.tabs.items.items, function(tab, currentIndex) {
+                        if(tab.featuresList){
+                            allfeatures.push(tab.featuresList);
+                        }
+                    }
+                    GEOR.Addons.Cadastre.zoomOnFeatures(allfeatures);
+                }
             }
         };
 
@@ -418,7 +427,8 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 menu : scrollMenuTraitementSelectionProprietaires
             });
             
-            // sous-sous-sous-menu : traitement sélection - proprietaire - export
+            // sous-sous-sous-menu : traitement sélection - proprietaire -
+            // export
             var buttonTraitementSelectionProprietairesExport = scrollMenuTraitementSelectionProprietaires.add({
                 tooltip : OpenLayers.i18n("cadastrapp.selection.proprietaires.export"),
                 text : OpenLayers.i18n("cadastrapp.selection.proprietaires.export")
@@ -447,11 +457,11 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
     },
 
     /**
-     * private: method[onFeatureAdded] 
+     * private: method[onFeatureAdded]
      * 
-     * @param event: ``event`` Called when a new
-     * feature is added to the layer. Change the state of the feature to INSERT
-     * and select it.
+     * @param event:
+     *            ``event`` Called when a new feature is added to the layer.
+     *            Change the state of the feature to INSERT and select it.
      * 
      */
     onFeatureAdded : function(event) {
