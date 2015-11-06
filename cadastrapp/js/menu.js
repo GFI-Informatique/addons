@@ -382,6 +382,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 tooltip : OpenLayers.i18n("cadastrapp.copropriete"),
                 text : OpenLayers.i18n("cadastrapp.copropriete")
             });
+            buttonRechercheCopropriete.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheCoPropriete()});
         }
 
         // sous-menu : traitement sélection

@@ -8,6 +8,7 @@
 		"js/searchUtils.js",
 		"js/searchParcelleByOwner.js",
 		"js/searchParcelleByRef.js",
+		"js/searchCoPropriete.js",
 		"js/informationsRequest.js",
 		"js/detailUniteFonciere.js",
 		"js/habitationDetails.js",
@@ -17,8 +18,7 @@
         "js/main.js",
       	"js/cadastrappUtil.js",
   		"js/external/fileUploadField.js"
-    ],
-    
+    ],    
     "css": [
         "css/cadastrapp.css",
         "css/external/fileuploadfield.css"
@@ -52,10 +52,10 @@
 
 			"cadastrapp.parcelle.ident": "Identifier",
 			"cadastrapp.parcelle.ident.control": "Cadastral identifier must be at least 15 chars for Arcopole model and 19 chars for Qgis model, if more than one identifier is given, they should be separed by space, comma or semi-colon",
-			"cadastrapp.parcelle.ident.exemple": "Example: 20148301032610C0012 ",
+			"cadastrapp.parcelle.ident.exemple": "ex. 20148301032610C0012 ",
 			"cadastrapp.parcelle.lot": "Identifiers",
 			"cadastrapp.parcelle.lot.control": "Identifiers list must contains at least one entry",
-			"cadastrapp.parcelle.lot.exemple": "Example: 20148301032610C0012, 20148301032610C0013, 20148301032610C0014",
+			"cadastrapp.parcelle.lot.exemple": "ex. 20148301032610C0012, 20148301032610C0013, 20148301032610C0014",
 			"cadastrapp.parcelle.adresse": "by cadatral adress",
 			"cadastrapp.parcelle.title": "Plots research",
 			"cadastrapp.parcelle.title.tab1": "Reference",
@@ -137,6 +137,11 @@
 			"cadastrapp.proprietaire.result.nodata": "No results",
 			"cadastrapp.proprietaire.result.dnomlp": "Last name",
 			"cadastrapp.proprietaire.result.dprnlp": "First name",
+			
+			"cadastrapp.search.copropriete.title": "Co-ownership search",
+			"cadastrapp.search.copropriete.parcelle.ident": "Plot id",
+			"cadastrapp.search.copropriete.comptecommunal.ident": "Owner id",
+			"cadastrapp.search.copropriete.comptecommunal.exemple": "ex. 350001+00160",
 			
 			"cadastrapp.result.title.fichier":"By file",
 			"cadastrapp.result.title.ids":"By id(s)",
@@ -344,7 +349,7 @@
 			
 			"cadastrapp.parcelle.title": "Recherche des parcelles",
 			"cadastrapp.parcelle.ident": " Identifiant ",
-			"cadastrapp.parcelle.ident.exemple": " Exemple: 20148301032610C0012 ",
+			"cadastrapp.parcelle.ident.exemple": " ex. 20148301032610C0012 ",
 			"cadastrapp.parcelle.ident.control": "L'id de parcelle doit contenir au moins 15 caractères pour le modèle arcopole et 19 pour le modèle qgis, si plusieurs ids de parcelle sont fournis il faut les séparer par un espace, une virgule ou un point virgule",
 			"cadastrapp.parcelle.lot": "Liste d'identifiants",
 			"cadastrapp.parcelle.lot.control": "La liste d'identifiant doit au moins contenir un identifiant ",
@@ -428,6 +433,13 @@
 			"cadastrapp.proprietaire.result.nodata": "Aucune données",
 			"cadastrapp.proprietaire.result.dnomlp": "Nom",
 			"cadastrapp.proprietaire.result.dprnlp": "Prénom",
+			
+			"cadastrapp.search.copropriete.title": "Recherche de co-propriétés",
+			"cadastrapp.search.copropriete.parcelle.ident": "Identifiant de parcelle",
+			"cadastrapp.search.copropriete.comptecommunal.ident": "Compte communal",
+			"cadastrapp.search.copropriete.comptecommunal.exemple": "ex. 350001+00160",
+			"cadastrapp.search.copropriete.comptecommunal.control": "Le compte communal est composé d'au moins 12 caractères",
+			
 			"cadastrapp.copropriete": "Lots de copropriété",
 			"cadastrapp.selection": "Traitement sélection",
 			"cadastrapp.selection.parcelles": "Parcelles",
