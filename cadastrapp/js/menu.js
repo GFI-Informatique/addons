@@ -131,16 +131,18 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
             checked : false,
             handler : function(){
                 // Zoom on all element from all parcelle from each tab of resultParcellet tabpanel
-                if(GEOR.Addons.Cadastre.result.tabs && GEOR.Addons.Cadastre.result.tabs.items.items){
-                    var allfeatures = {};
+                if(GEOR.Addons.Cadastre.result.tabs && GEOR.Addons.Cadastre.result.tabs.items){
+                    var allfeatures = new Array();
                     Ext.each(GEOR.Addons.Cadastre.result.tabs.items.items, function(tab, currentIndex) {
                         if(tab.featuresList){
-                            allfeatures.push(tab.featuresList);
+                            Ext.each(tab.featuresList, function(feature) {
+                                allfeatures.push(feature);
+                            })
                         }
-                    }
+                    })
                     GEOR.Addons.Cadastre.zoomOnFeatures(allfeatures);
                 }
-            }
+            }        
         };
 
         action = new Ext.Button(actionOptions);
