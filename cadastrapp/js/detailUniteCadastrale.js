@@ -196,15 +196,15 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.compte'),
                     dataIndex : 'comptecommunal',
-                    width : 50
+                    width : 100
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.nom'),
                     dataIndex : 'ddenom',
-                    width : 100
+                    width : 200
                 },  {
                     header : OpenLayers.i18n('cadastrapp.duc.adresse'),
                     dataIndex : 'adress',
-                    width : 200
+                    width : 250
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.datenaissance'),
                     dataIndex : 'jdatnss',
@@ -325,7 +325,6 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                                     });
                                 }
                             }
-
                         });
 
                         // load first batiment information
