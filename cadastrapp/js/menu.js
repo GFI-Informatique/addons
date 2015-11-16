@@ -127,7 +127,6 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
             text : OpenLayers.i18n("cadastrapp.zoom"),
             iconAlign : 'top',
             // check item options
-            group : this.toggleGroup,
             checked : false,
             handler : function(){
                 // Zoom on all element from all parcelle from each tab of resultParcellet tabpanel
@@ -202,7 +201,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 control : control,
                 map : this.map,
                 // button options
-                toggleGroup : this.toggleGroup,
+                toggleGroup : 'map',
                 allowDepress : true,
                 pressed : isButtonPressed,
                 tooltip : tooltip,
