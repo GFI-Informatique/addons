@@ -109,8 +109,9 @@
 			"cadastrapp.result.owner.no.search":"You need to search for a owner before",
 			"cadastrapp.result.owner.no.selection":"You need to select owners before",
 			"cadastrapp.result.owner.show.parcelle":"See plot(s)",
+			"cadastrapp.result.owner.rp":"Properties details",
 			
-			"cadastrapp.proprietaire": "owner",
+			"cadastrapp.proprietaire": "Owner",
 			"cadastrapp.proprietaire.nom": "By name",
 			"cadastrapp.proprietaire.compte": "By identifier",
 			"cadastrapp.proprietaire.lot":"By lot",
@@ -404,6 +405,7 @@
 			"cadastrapp.result.owner.no.search":"Veuillez sélectioner au moins un propriétaire",
 			"cadastrapp.result.owner.no.selection":"Veuillez sélectioner au moins un propriétaire",
 			"cadastrapp.result.owner.show.parcelle":"Voir les parcelles",
+			"cadastrapp.result.owner.rp":"Relevé de propriétés",
 			
 			"cadastrapp.proprietaire": "Propriétaire",
 			"cadastrapp.proprietaire.nom": "Par nom",
