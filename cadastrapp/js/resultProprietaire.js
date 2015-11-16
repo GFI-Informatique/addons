@@ -90,6 +90,23 @@ GEOR.Addons.Cadastre.initResultProprietaireWindow = function() {
             }
         },
         {
+            text : OpenLayers.i18n('cadastrapp.result.owner.rp'),
+            listeners : {
+                click : function(b, e) {
+                    // create relevepropriete
+                    var selection = GEOR.Addons.Cadastre.result.owner.window.items.items[0].getSelectionModel().getSelections();
+
+                    if (selection && selection.length > 0) {
+                        var comptecommunaux = [];
+                        Ext.each(selection, function(item) {
+                            comptecommunaux.push(item.data.comptecommunal);
+                        });
+                        GEOR.Addons.Cadastre.onClickPrintRelevePropriete(comptecommunaux);
+                    }
+                }
+            }
+        },
+        {
             text : OpenLayers.i18n('cadastrapp.result.parcelle.export'),
             listeners : {
                 click : function(b, e) {
