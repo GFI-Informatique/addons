@@ -91,13 +91,18 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             if (result && result[0]) {
 
                 var isBuilding = OpenLayers.i18n('cadastrapp.no')
+                var isUrbain = OpenLayers.i18n('cadastrapp.no')
+                
+                if (result[0].gurbpa =='1'){
+                    isUrbain = OpenLayers.i18n('cadastrapp.yes')
+                }
                 if (result[0].gparbat == '1') {
                     isBuilding = OpenLayers.i18n('cadastrapp.yes')
                 }
                 // Remplissage du tableau de données
                 fiucParcelleData = [ [ OpenLayers.i18n('cadastrapp.ficu.commune'), result[0].cgocommune ], [ OpenLayers.i18n('cadastrapp.ficu.section'), result[0].ccopre + result[0].ccosec ], [ OpenLayers.i18n('cadastrapp.ficu.parcelle'), result[0].dnupla ], [ OpenLayers.i18n('cadastrapp.ficu.voie'), result[0].dnvoiri + result[0].dindic ],
                         [ OpenLayers.i18n('cadastrapp.ficu.adresse'), result[0].cconvo + result[0].dvoilib ], [ OpenLayers.i18n('cadastrapp.ficu.contenancedgfip'), result[0].dcntpa.toLocaleString() ], [ OpenLayers.i18n('cadastrapp.ficu.contenancesig'), result[0].surfc.toLocaleString() ], [ OpenLayers.i18n('cadastrapp.ficu.batie'), isBuilding ],
-                        [ OpenLayers.i18n('cadastrapp.ficu.urbain'), result[0].gurbpa ] ];
+                        [ OpenLayers.i18n('cadastrapp.ficu.urbain'), isUrbain ] ];
 
                 // Chargement des données
                 fiucParcelleStore.loadData(fiucParcelleData);
