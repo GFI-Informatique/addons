@@ -53,7 +53,7 @@ GEOR.Addons.Cadastre.initResultParcelle = function() {
         draggable : true,
         constrainHeader : true,
         border : false,
-        width : 580,
+        width : 600,
         height : 200,
         boxMaxHeight : Ext.getBody().getViewSize().height - 200,
         listeners : {
