@@ -26,6 +26,8 @@
     "default_options": {},
     "i18n": {
         "en": {
+        	"cadastrapp.no": "no",
+        	"cadastrapp.yes": "yes",
         	"cadastrapp.connection.error":"Error, add-on could not be loaded, no connection to service available",
          	"cadastrapp.menu.tooltips.cadastre": "If check, this will activate additonnal information about cadastral data on tips and details windows",
             "cadastrapp.menu.tooltips.foncier": "If check, this will activate additonnal information about landed property on tips and details windows",
@@ -316,6 +318,17 @@
             "cadastrapp.duc.elements.incorpores" : "Element",
             "cadastrapp.duc.partie.professionnelle" : "Business part",
             "cadastrapp.duc.dependances" : "outbuilding",
+            
+            "cadastrapp.ficu.commune":"Town",
+            "cadastrapp.ficu.section":"Section", 
+            "cadastrapp.ficu.parcelle":"Plot",
+            "cadastrapp.ficu.voie":"Voie (Code fantoir)", 
+            "cadastrapp.ficu.adresse":"Address",
+            "cadastrapp.ficu.contenancedgfip":"Size DGFiP in m²",
+            "cadastrapp.ficu.contenancesig":"Size in m²",
+            "cadastrapp.ficu.batie":"Plot with building",
+            "cadastrapp.ficu.urbain":"Urban region",
+                                 
             "cadastrapp.contenancedgfip" : "DGFiP",
             "cadastrapp.sig" : 	"GIS", 
 			"cadastrapp.bordereauparcellaire.title" : "Plot information",
@@ -324,6 +337,8 @@
 			"cadastrapp.bordereauparcellaire.data.with" : "With owner information"
         },
         "fr": {
+       		"cadastrapp.no": "non",
+        	"cadastrapp.yes": "oui",
         	"cadastrapp.connection.error":"Erreur lors du chargement de la configuration du module cadastre, webservice indisponible",
         	"cadastrapp.menu.tooltips.cadastre": "Si coché active les informations sur les unités cadastrales, infobulle et fenêtre de détails",
             "cadastrapp.menu.tooltips.foncier": "Si coché active les informations sur les unités foncière, infobulle et fenêtre de détails",
@@ -625,6 +640,17 @@
             "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
             "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
             "cadastrapp.duc.dependances" : "Dépendances",
+            
+            "cadastrapp.ficu.commune":"Commune",
+            "cadastrapp.ficu.section":"Section", 
+            "cadastrapp.ficu.parcelle":"Parcelle",
+            "cadastrapp.ficu.voie":"Voie (Code fantoir)", 
+            "cadastrapp.ficu.adresse":"Adresse",
+            "cadastrapp.ficu.contenancedgfip":"Contenance DGFiP en m²",
+            "cadastrapp.ficu.contenancesig":"Contenance calculée en m²",
+            "cadastrapp.ficu.batie":"Parcelle bâtie",
+            "cadastrapp.ficu.urbain":"Secteur urbain",
+            
             "cadastrapp.contenancedgfip" : "DGFiP",
             "cadastrapp.sig" : 	"SIG", 
 			"cadastrapp.bordereauparcellaire.title" : "Bordereau Parcellaire",

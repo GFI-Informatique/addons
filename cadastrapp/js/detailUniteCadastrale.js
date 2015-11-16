@@ -86,13 +86,22 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
         method : 'GET',
         success : function(response) {
             var result = Ext.decode(response.responseText);
-            // Remplissage du tableau de données
-            // TODO: remplacer les libellés par les i18n correspondants
-            fiucParcelleData = [ [ 'Commune', result[0].cgocommune ], [ 'Section', result[0].ccopre + result[0].ccosec ], [ 'Parcelle', result[0].dnupla ], [ 'Voie (Code fantoir)', result[0].dnvoiri + result[0].dindic ], [ 'Adresse', result[0].cconvo + result[0].dvoilib ], [ 'Contenance DGFiP en m²', result[0].dcntpa.toLocaleString() ],
-                    [ 'Contenance calculée en m²', result[0].surfc.toLocaleString() ], [ 'Parcelle bâtie', result[0].gparbat ], [ 'Secteur urbain', result[0].gurbpa ] ];
 
-            // Chargement des données
-            fiucParcelleStore.loadData(fiucParcelleData);
+            // Replace 0 / 1 by yes no
+            if (result && result[0]) {
+
+                var isBuilding = OpenLayers.i18n('cadastrapp.no')
+                if (result[0].gparbat == '1') {
+                    isBuilding = OpenLayers.i18n('cadastrapp.yes')
+                }
+                // Remplissage du tableau de données
+                fiucParcelleData = [ [ OpenLayers.i18n('cadastrapp.ficu.commune'), result[0].cgocommune ], [ OpenLayers.i18n('cadastrapp.ficu.section'), result[0].ccopre + result[0].ccosec ], [ OpenLayers.i18n('cadastrapp.ficu.parcelle'), result[0].dnupla ], [ OpenLayers.i18n('cadastrapp.ficu.voie'), result[0].dnvoiri + result[0].dindic ],
+                        [ OpenLayers.i18n('cadastrapp.ficu.adresse'), result[0].cconvo + result[0].dvoilib ], [ OpenLayers.i18n('cadastrapp.ficu.contenancedgfip'), result[0].dcntpa.toLocaleString() ], [ OpenLayers.i18n('cadastrapp.ficu.contenancesig'), result[0].surfc.toLocaleString() ], [ OpenLayers.i18n('cadastrapp.ficu.batie'), isBuilding ],
+                        [ OpenLayers.i18n('cadastrapp.ficu.urbain'), result[0].gurbpa ] ];
+
+                // Chargement des données
+                fiucParcelleStore.loadData(fiucParcelleData);
+            }
             cadastreTabPanel.activate(0);
         }
     });
@@ -173,7 +182,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
         });
 
         var fiucProprietairesSM = new Ext.grid.CheckboxSelectionModel();
-        
+
         // Déclaration du tableau de propriétaires
         var fiucProprietairesGrid = new Ext.grid.GridPanel({
             store : fiucProprietaireStore,
@@ -201,7 +210,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     header : OpenLayers.i18n('cadastrapp.duc.nom'),
                     dataIndex : 'ddenom',
                     width : 200
-                },  {
+                }, {
                     header : OpenLayers.i18n('cadastrapp.duc.adresse'),
                     dataIndex : 'adress',
                     width : 250
@@ -224,42 +233,43 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 iconCls : 'small-pdf-button',
                 handler : function() {
                     var selectedRecordsArray = fiucProprietairesGrid.getSelectionModel().getSelections();
-                    
+
                     // check if at least one row is check
                     if (selectedRecordsArray.length > 0 && selectedRecordsArray.length < GEOR.Addons.Cadastre.relevePropriete.maxProprietaire) {
                         var comptecommunaux = []
-                        Ext.each(selectedRecordsArray, function(selection, index){
+                        Ext.each(selectedRecordsArray, function(selection, index) {
                             // only add comptecommunal if not in the list
-                            if(comptecommunaux.indexOf(selection.data.comptecommunal) == -1){
+                            if (comptecommunaux.indexOf(selection.data.comptecommunal) == -1) {
                                 comptecommunaux.push(selection.data.comptecommunal);
                             }
                         })
                         GEOR.Addons.Cadastre.onClickPrintRelevePropriete(comptecommunaux);
-                    } else if (selectedRecordsArray.length >= GEOR.Addons.Cadastre.relevePropriete.maxProprietaire){
-                        Ext.Msg.alert('Vous ne pouvez pas sélectionner plus de '+ GEOR.Addons.Cadastre.relevePropriete.maxProprietaire +' proprietaires');
+                    } else if (selectedRecordsArray.length >= GEOR.Addons.Cadastre.relevePropriete.maxProprietaire) {
+                        Ext.Msg.alert('Vous ne pouvez pas sélectionner plus de ' + GEOR.Addons.Cadastre.relevePropriete.maxProprietaire + ' proprietaires');
                         // TODO see if we remove selection
-                    }else {
+                    } else {
                         Ext.Msg.alert('Vous devez d\'abord sélectionner au moins un proprietaire');
                     }
                 }
             }, {
-                text : OpenLayers.i18n('cadastrapp.duc.releve.depropriete'), handler : function() {
+                text : OpenLayers.i18n('cadastrapp.duc.releve.depropriete'),
+                handler : function() {
                     var selectedRecordsArray = fiucProprietairesGrid.getSelectionModel().getSelections();
-                    
+
                     // check if at least one row is check
                     if (selectedRecordsArray.length > 0 && selectedRecordsArray.length < GEOR.Addons.Cadastre.relevePropriete.maxProprietaire) {
                         var comptecommunaux = []
-                        Ext.each(selectedRecordsArray, function(selection, index){
+                        Ext.each(selectedRecordsArray, function(selection, index) {
                             // only add comptecommunal if not in the list
-                            if(comptecommunaux.indexOf(selection.data.comptecommunal) == -1){
+                            if (comptecommunaux.indexOf(selection.data.comptecommunal) == -1) {
                                 comptecommunaux.push(selection.data.comptecommunal);
                             }
                         })
                         GEOR.Addons.Cadastre.onClickPrintRelevePropriete(comptecommunaux);
-                    } else if (selectedRecordsArray.length >= GEOR.Addons.Cadastre.relevePropriete.maxProprietaire){
-                        Ext.Msg.alert('Vous ne pouvez pas sélectionner plus de '+ GEOR.Addons.Cadastre.relevePropriete.maxProprietaire +' proprietaires');
+                    } else if (selectedRecordsArray.length >= GEOR.Addons.Cadastre.relevePropriete.maxProprietaire) {
+                        Ext.Msg.alert('Vous ne pouvez pas sélectionner plus de ' + GEOR.Addons.Cadastre.relevePropriete.maxProprietaire + ' proprietaires');
                         // TODO see if we remove selection
-                    }else {
+                    } else {
                         Ext.Msg.alert('Vous devez d\'abord sélectionner au moins un proprietaire');
                     }
                 }
@@ -416,22 +426,23 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 iconCls : 'small-pdf-button',
                 handler : function() {
                     var selectedRecordsArray = fiucBatimentsGrid.getSelectionModel().getSelected();
-                    
-                    if (selectedRecordsArray){
+
+                    if (selectedRecordsArray) {
                         GEOR.Addons.Cadastre.onClickPrintRelevePropriete(selectedRecordsArray.data.comptecommunal);
-                    }else {
+                    } else {
                         Ext.Msg.alert('Vous devez d\'abord sélectionner un propriétaire');
+                    }
                 }
-            }}, {
+            }, {
                 text : OpenLayers.i18n('cadastrapp.duc.releve.depropriete'),
                 handler : function() {
                     var selectedRecordsArray = fiucBatimentsGrid.getSelectionModel().getSelected();
-                    
-                    if (selectedRecordsArray){
+
+                    if (selectedRecordsArray) {
                         GEOR.Addons.Cadastre.onClickPrintRelevePropriete(selectedRecordsArray.data.comptecommunal);
-                    }else {
+                    } else {
                         Ext.Msg.alert('Vous devez d\'abord sélectionner un propriétaire');
-                }
+                    }
                 }
             }, {
                 iconCls : 'house-button',
