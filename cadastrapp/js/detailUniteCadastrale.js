@@ -288,9 +288,6 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             } ]
         });
 
-        // Workaround toogleGroup not working
-        var buttonList = [];
-
         // Modèle de donnée pour l'onglet batiment
         var fiucBatimentsStore = new Ext.data.JsonStore({
             proxy : new Ext.data.HttpProxy({
@@ -316,10 +313,9 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                             id : element.dnubat,
                             text : element.dnubat,
                             margins : '0 10 0 10',
-                            toogleGroup : 'batButToggleGroup',
+                            toggleGroup : 'batButToggleGroup',
                             enableToggle : true,
                             toggleHandler : function(btn, pressed) {
-                                console.log('toggle', btn.text, pressed);
                                 if (pressed) {
                                     fiucBatimentsStore.load({
                                         params : {
@@ -327,15 +323,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                                             'parcelle' : parcelleId
                                         }
                                     });
-                                    console.log('Pressed');
                                 }
-                                // Workaround toogleGroup not working
-                                Ext.each(buttonList, function(button, index) {
-                                    if (button && button.text != btn.text) {
-                                        button.toggle(false, true);
-                                        console.log(button.text + ' Toggle false');
-                                    }
-                                });
                             }
 
                         });
@@ -344,12 +332,11 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                         if (index == 0) {
                             buttonBatiment.toggle();
                         }
-                        buttonList.push(buttonBatiment);
+                        buttonToolBar.add(buttonBatiment);
                     } else {
                         console.log("Pas de batiments sur la parcelle");
                     }
                 });
-                buttonToolBar.add(buttonList);
                 buttonToolBar.doLayout();
             }
         });
