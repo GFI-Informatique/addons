@@ -302,14 +302,16 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         this.items.push(new Ext.Button(configRechercheParcelle));
         
         // menu : recherche propriétaire
-        var configRechercheProprietaire = {
-            tooltip : OpenLayers.i18n("cadastrapp.proprietaire"),
-            iconCls : "gx-featureediting-cadastrapp-parcelle",
-            iconAlign : 'top',
-            text : OpenLayers.i18n("cadastrapp.proprietaire"),
-            handler : function(){GEOR.Addons.Cadastre.onClickRechercheProprietaire(0)}
-        };
-        this.items.push(new Ext.Button(configRechercheProprietaire));
+        if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
+            var configRechercheProprietaire = {
+                tooltip : OpenLayers.i18n("cadastrapp.proprietaire"),
+                iconCls : "gx-featureediting-cadastrapp-parcelle",
+                iconAlign : 'top',
+                text : OpenLayers.i18n("cadastrapp.proprietaire"),
+                handler : function(){GEOR.Addons.Cadastre.onClickRechercheProprietaire(0)}
+            };
+            this.items.push(new Ext.Button(configRechercheProprietaire));
+        }
 
         // menu : recherche avancée
         var scrollMenu = new Ext.menu.Menu();
