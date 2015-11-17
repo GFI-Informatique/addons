@@ -403,7 +403,6 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds) {
                     } else {
                         GEOR.Addons.Cadastre.result.tabs.getActiveTab().getSelectionModel().selectRow(rowIndex, true);
                     }
-
                 }
             });
         }
@@ -432,30 +431,9 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds) {
 
                         GEOR.Addons.Cadastre.addNewResultParcelle("Selection (" + parcelsIds.length + ")", GEOR.Addons.Cadastre.getResultParcelleStore(response.responseText, false));
 
-                        GEOR.Addons.Cadastre.result.tabs.getActiveTab().on('viewready', function(view, firstRow, lastRow) {
-
-                        });
-                        // si la fenêtre est ouverte on ajoute les lignes
+                    // si la fenêtre est ouverte on ajoute les lignes
                     } else {
-                        Ext.each(result, function(element, currentIndex) {
-                            if (GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle) == -1) {
-
-                                // création de l'enregistrement
-                                var newRecord = new GEOR.Addons.Cadastre.resultParcelleRecord({
-                                    parcelle : element.parcelle,
-                                    adresse : (element.adresse) ? element.adresse : element.dnvoiri + element.dindic + ' ' + element.cconvo + ' ' + element.dvoilib,
-                                    cgocommune : element.cgocommune,
-                                    ccopre : element.ccopre,
-                                    ccosec : element.ccosec,
-                                    dnupla : element.dnupla,
-                                    dcntpa : element.dcntpa,
-                                });
-                                // ajout de la ligne
-                                GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore().add(newRecord);
-                                // Ajout à la selection
-                                GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.parcelle);
-                            }
-                        });
+                        GEOR.Addons.Cadastre.addResultToTab(result);
                     }
                 },
                 failure : function(result) {
@@ -677,4 +655,40 @@ GEOR.Addons.Cadastre.printSelectedBordereauParcellaire = function() {
 
     }
 
+}
+
+/**
+ *  Add JSON information to current tab and to feature list
+ *      If Plots already exist in store it will not be added twice
+ *  
+ *  @param result JSON information for getParcelle service
+ *  
+ *  If result is empty nothing is added
+ * 
+ */
+GEOR.Addons.Cadastre.addResultToTab = function(result) {
+
+    if (result && GEOR.Addons.Cadastre.result.tabs.getActiveTab() && GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore()) {
+        Ext.each(result, function(element, currentIndex) {
+            
+            // Add parcelle only if not already in
+            if (GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle) == -1) {
+
+                // création de l'enregistrement
+                var newRecord = new GEOR.Addons.Cadastre.resultParcelleRecord({
+                    parcelle : element.parcelle,
+                    adresse : (element.adresse) ? element.adresse : element.dnvoiri + element.dindic + ' ' + element.cconvo + ' ' + element.dvoilib,
+                    cgocommune : element.cgocommune,
+                    ccopre : element.ccopre,
+                    ccosec : element.ccosec,
+                    dnupla : element.dnupla,
+                    dcntpa : element.dcntpa,
+                });
+                // ajout de la ligne
+                GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore().add(newRecord);
+                // Ajout à la selection
+                GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.parcelle);
+            }
+        });
+    }
 }
