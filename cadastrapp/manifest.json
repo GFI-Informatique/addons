@@ -433,7 +433,7 @@
 			"cadastrapp.proprietaire.or": "ou",
 			"cadastrapp.proprietaire.city": "Ville, Commune",
 			"cadastrapp.proprietaire.city.exemple": "ex. Rennes, Cesson-Sévigné",
-			"cadastrapp.proprietaire.name" : "Nom et prénom",
+			"cadastrapp.proprietaire.name" : "Nom et/ou prénom",
 			"cadastrapp.proprietaire.name.exemple" : "ex. Jego pierre",
 			"cadastrapp.proprietaire.lastname": "Nom",
 			"cadastrapp.proprietaire.lastname.exemple": "ex. Dupond, Dupont",
