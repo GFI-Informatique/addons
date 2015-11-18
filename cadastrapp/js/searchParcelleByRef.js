@@ -61,7 +61,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
             beforequery: function(q) {
                 if (q.query) {
                     var length = q.query.length;
-                    if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
+                    if (length >= GEOR.Addons.Cadastre.minCharToSearch) {
                         if (isNaN(q.query)) {
                             // recherche par nom de ville
                             q.combo.getStore().load({
@@ -115,7 +115,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
             beforequery: function(q) {
                 if (q.query) {
                     var length = q.query.length;
-                    if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
+                    if (length >= GEOR.Addons.Cadastre.minCharToSearch) {
                         if (isNaN(q.query)) {
                             // recherche par nom de ville
                             q.combo.getStore().load({
@@ -300,7 +300,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         beforequery: function(q) {
                             if (q.query) {
                                 var length = q.query.length;
-                                if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
+                                if (length >= GEOR.Addons.Cadastre.minCharToSearch) {
                                     q.combo.getStore().load({
                                         params: {
                                             cgocommune: GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].getActiveTab().getForm().findField('cgocommune').value,

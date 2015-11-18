@@ -37,7 +37,7 @@ GEOR.Addons.Cadastre.initRechercheCoPropriete = function() {
                 if (q.query) {
                     var length = q.query.length;
                     // If enough chars in query
-                    if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
+                    if (length >= GEOR.Addons.Cadastre.minCharToSearch) {
 
                         // if not a number request by town name
                         if (isNaN(q.query)) {
@@ -144,7 +144,7 @@ GEOR.Addons.Cadastre.initRechercheCoPropriete = function() {
                     beforequery : function(q) {
                         if (q.query) {
                             var length = q.query.length;
-                            if (length >= GEOR.Addons.Cadastre.minCharToSearch && q.combo.getStore().getCount() == 0) {
+                            if (length >= GEOR.Addons.Cadastre.minCharToSearch) {
                                 q.combo.getStore().load({
                                     params : {
                                         cgocommune : GEOR.Addons.Cadastre.coProprieteWindow.items.items[0].getForm().findField('cgocommune').value,
