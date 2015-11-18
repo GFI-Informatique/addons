@@ -340,13 +340,14 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
                     // tenter de refaire un onglet et ça va faire
                     // nimporte quoi)
                     var index = GEOR.Addons.Cadastre.result.tabs.items.findIndex('id', grid.id);
-                    GEOR.Addons.Cadastre.result.tabs.setActiveTab((index == 0) ? 1 : (index - 1));
+               
                     // *************
                     // quand on ferme l'onglet on vire toutes les
                     // parcelles dependantes
                     store = grid.store.data.items;
                     GEOR.Addons.Cadastre.changeStateParcelleOfTab(store, "reset");
                     // *************
+                    GEOR.Addons.Cadastre.result.tabs.setActiveTab((index == 0) ? 1 : (index - 1));
                 }
             }
         }
