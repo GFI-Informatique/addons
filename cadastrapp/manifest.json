@@ -41,7 +41,7 @@
             "cadastrapp.multilinestring": "MultiLineString",
             "cadastrapp.zoom": "Zoom",
 			"cadastrapp.cadastre": "Cadastre",
-			"cadastrapp.foncier": "Foncier",
+			"cadastrapp.foncier": "Unit. Fonc.",
 			"cadastrapp.recherches": "Advanced searches",
 			"cadastrapp.search": "Search",
 			"cadastrapp.close": "Close",
