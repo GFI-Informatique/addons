@@ -424,14 +424,6 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         });
         buttonTraitementSelectionParcellesBordereau.on('click', function(){GEOR.Addons.Cadastre.printSelectedBordereauParcellaire()});
 
-        // sous-sous-sous-menu : traitement sélection - parcelles - plan
-        var buttonTraitementSelectionParcellesPlan = scrollMenuTraitementSelectionParcelles.add({
-            tooltip : OpenLayers.i18n("cadastrapp.selection.parcelles.plan"),
-            text : OpenLayers.i18n("cadastrapp.selection.parcelles.plan")
-        });
-        // TODO create plan de situation
-        buttonTraitementSelectionParcellesPlan.on('click', function(){GEOR.Addons.Cadastre.printSelectedBordereauParcellaire()});
-
         if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
             // sous-sous-menu : traitement sélection - proprietaires
             var scrollMenuTraitementSelectionProprietaires = new Ext.menu.Menu();
