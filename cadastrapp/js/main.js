@@ -145,6 +145,10 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         this.window.hide();
         
         // Remove all windows
+        if(GEOR.Addons.Cadastre.popup){
+            GEOR.Addons.Cadastre.popup.close();
+            GEOR.Addons.Cadastre.popup=null
+        }
         if (GEOR.Addons.Cadastre.result.plot.window){
             GEOR.Addons.Cadastre.result.plot.window.close();
             GEOR.Addons.Cadastre.result.plot.window=null;

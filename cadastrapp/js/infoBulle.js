@@ -8,6 +8,10 @@ Ext.namespace("GEOR.Addons.Cadastre");
  * @param lonlatt position where popup should be displayed
  */    
 GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
+    
+    if(GEOR.Addons.Cadastre.popup){
+        GEOR.Addons.Cadastre.popup.close();
+    }
 
     // Build url depending on check button Cadastre or Foncier
     urlInfoBulleService =  GEOR.Addons.Cadastre.cadastrappWebappUrl+ 'getInfoBulle?parcelle=' + idParcelle
@@ -62,7 +66,7 @@ GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
                     html += "</div>";
                 }
     
-                var popup = new GeoExt.Popup({
+               GEOR.Addons.Cadastre.popup = new GeoExt.Popup({
                     map:map,
                     location: lonlat,
                     width: 300,
@@ -70,15 +74,17 @@ GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
                     listeners: {
                         close: function() {
                             // closing a popup destroys it, but our reference is truthy
-                            popup = null;
+                            GEOR.Addons.Cadastre.popup = null;
                         }
                     }
                 });
                 
-                popup.show();
+               GEOR.Addons.Cadastre.popup.show();
                 document.body.onmousemove = function(e) {
                     //destroy popup on move
-                    popup = null;
+                    if(GEOR.Addons.Cadastre.popup){
+                        GEOR.Addons.Cadastre.popup.close();
+                    }
                 }
             }
         },
