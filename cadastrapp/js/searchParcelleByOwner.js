@@ -244,7 +244,11 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                 }, {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.name.exemple'),
                     fieldClass : 'displayfieldGray'
-                } ]
+                } 
+                , {
+                    value : OpenLayers.i18n('cadastrapp.proprietaire.name.tooltip'),
+                    fieldClass : 'displayfieldGray'} 
+                ]
             }, {
                 // ONGLET "Compte proprietaire"
                 id : 'propSecondForm',
