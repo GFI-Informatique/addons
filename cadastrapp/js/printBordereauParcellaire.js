@@ -12,6 +12,8 @@ GEOR.Addons.Cadastre.onClickPrintBordereauParcellaireWindow = function(parcelleI
         GEOR.Addons.Cadastre.printBordereauParcellaireWindow.close();
     }
     
+    //TODO add verification to limite bordereau parcellairenumber
+    
     // Test if user have CNIL level 1 or 2
     // ask if user want with or without personnal data
     if (GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){

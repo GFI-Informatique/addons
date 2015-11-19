@@ -291,6 +291,144 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
 
         // ---------- FIN ONGLET Propriétaire ------------------------------
     }
+    
+ // ---------- ONGLET Co-Propriétaire ------------------------------
+    //Seulement pour Cnil1 et Cnil2 
+    if (GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()) {
+
+        // Déclaration du modèle de données pour l'onglet Propriétaire.
+        // réalise l'appel à la webapp
+        var fiucCoProprietaireStore = new Ext.data.JsonStore({
+
+            // Appel à la webapp
+            url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getCoProprietaire?parcelle=' + parcelleId,
+            autoLoad : true,
+
+            // Champs constituant l'onglet propriétaire
+            fields : [ 'comptecommunal', 'ccodro', 'ddenom', {
+                // Le champ adress est l'addition des champs dlign3,dlign4,dlign5, dlign6
+                name : 'adress',
+                convert : function(v, rec) {
+                    return rec.dlign3 + rec.dlign4 + rec.dlign5 + rec.dlign6
+                }
+            }, 'jdatnss', 'dldnss', 'ccodro_lib' ],
+        });
+
+        // Déclaration de la bottom bar (25 propiétaires par page)
+        var bbar = new Ext.PagingToolbar({
+            pageSize : 25,
+            store : fiucCoProprietaireStore,
+            displayInfo : true,
+            displayMsg : 'Affichage {0} - {1} of {2}',
+            emptyMsg : "Pas de co-propriétaire a afficher",
+        });
+
+        var fiucCoProprietairesSM = new Ext.grid.CheckboxSelectionModel();
+
+        // Déclaration du tableau de propriétaires
+        var fiucCoProprietairesGrid = new Ext.grid.GridPanel({
+            store : fiucCoProprietaireStore,
+            stateful : true,
+            name : 'Fiuc_Co_Proprietaire',
+            xtype : 'editorgrid',
+            bbar : bbar,
+            autoExpandMax : 825,
+            height : 300,
+            sm : fiucCoProprietairesSM,
+            colModel : new Ext.grid.ColumnModel({
+                defaults : {
+                    border : true,
+                    sortable : true,
+                },
+                columns : [ fiucProprietairesSM, {
+                    header : OpenLayers.i18n('cadastrapp.proprietaires.ccodro'),
+                    dataIndex : 'ccodro',
+                    width : 100
+                }, {
+                    header : OpenLayers.i18n('cadastrapp.duc.compte'),
+                    dataIndex : 'comptecommunal',
+                    width : 100
+                }, {
+                    header : OpenLayers.i18n('cadastrapp.duc.nom'),
+                    dataIndex : 'ddenom',
+                    width : 200
+                }, {
+                    header : OpenLayers.i18n('cadastrapp.duc.adresse'),
+                    dataIndex : 'adress',
+                    width : 250
+                }, {
+                    header : OpenLayers.i18n('cadastrapp.duc.datenaissance'),
+                    dataIndex : 'jdatnss',
+                    width : 100
+                }, {
+                    header : OpenLayers.i18n('cadastrapp.duc.lieunaissance'),
+                    dataIndex : 'dldnss',
+                    width : 100
+                }, {
+                    header : OpenLayers.i18n('cadastrapp.duc.cco_lib'),
+                    dataIndex : 'ccodro_lib',
+                    width : 100
+                } ]
+            }),
+            // inline toolbars
+            tbar : [ {
+                iconCls : 'small-pdf-button',
+                handler : function() {
+                    var selectedRecordsArray = fiucCoProprietairesGrid.getSelectionModel().getSelections();
+
+                    // check if at least one row is check
+                    if (selectedRecordsArray.length > 0 && selectedRecordsArray.length < GEOR.Addons.Cadastre.relevePropriete.maxProprietaire) {
+                        var comptecommunaux = []
+                        Ext.each(selectedRecordsArray, function(selection, index) {
+                            // only add comptecommunal if not in the list
+                            if (comptecommunaux.indexOf(selection.data.comptecommunal) == -1) {
+                                comptecommunaux.push(selection.data.comptecommunal);
+                            }
+                        })
+                        GEOR.Addons.Cadastre.onClickPrintRelevePropriete(comptecommunaux);
+                    } else if (selectedRecordsArray.length >= GEOR.Addons.Cadastre.relevePropriete.maxProprietaire) {
+                        Ext.Msg.alert('Vous ne pouvez pas sélectionner plus de ' + GEOR.Addons.Cadastre.relevePropriete.maxProprietaire + ' proprietaires');
+                        // TODO see if we remove selection
+                    } else {
+                        Ext.Msg.alert('Vous devez d\'abord sélectionner au moins un proprietaire');
+                    }
+                }
+            }, {
+                text : OpenLayers.i18n('cadastrapp.duc.releve.depropriete'),
+                handler : function() {
+                    var selectedRecordsArray = fiucCoProprietairesGrid.getSelectionModel().getSelections();
+
+                    // check if at least one row is check
+                    if (selectedRecordsArray.length > 0 && selectedRecordsArray.length < GEOR.Addons.Cadastre.relevePropriete.maxProprietaire) {
+                        var comptecommunaux = []
+                        Ext.each(selectedRecordsArray, function(selection, index) {
+                            // only add comptecommunal if not in the list
+                            if (comptecommunaux.indexOf(selection.data.comptecommunal) == -1) {
+                                comptecommunaux.push(selection.data.comptecommunal);
+                            }
+                        })
+                        GEOR.Addons.Cadastre.onClickPrintRelevePropriete(comptecommunaux);
+                    } else if (selectedRecordsArray.length >= GEOR.Addons.Cadastre.relevePropriete.maxProprietaire) {
+                        Ext.Msg.alert('Vous ne pouvez pas sélectionner plus de ' + GEOR.Addons.Cadastre.relevePropriete.maxProprietaire + ' proprietaires');
+                        // TODO see if we remove selection
+                    } else {
+                        Ext.Msg.alert('Vous devez d\'abord sélectionner au moins un proprietaire');
+                    }
+                }
+            } ]
+        });
+
+        cadastreTabPanel.add({
+            // ONGLET 3:  Co-Propriétaire
+            title : OpenLayers.i18n('cadastrapp.duc.copropietaire'),
+            xtype : 'form',
+            items : [ fiucCoProprietairesGrid ],
+            layout : 'fit'
+        });
+
+        // ---------- FIN ONGLET Propriétaire ------------------------------
+    }
+    
 
     // ---------- ONGLET Batiment ------------------------------
     if (GEOR.Addons.Cadastre.isCNIL2()) {

@@ -18,7 +18,7 @@ GEOR.Addons.Cadastre.onClickRechercheCoPropriete = function(tab) {
  */
 GEOR.Addons.Cadastre.initRechercheCoPropriete = function() {
 
-    // comboboxe "villes" de l'onglet "Nom usage ou Naissance"
+    // combobox "villes" de l'onglet "Nom usage ou Naissance"
     var propCityCombo1 = new Ext.form.ComboBox({
         fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.city'),
         hiddenName : 'cgocommune',
@@ -94,7 +94,7 @@ GEOR.Addons.Cadastre.initRechercheCoPropriete = function() {
                 GEOR.Addons.Cadastre.coProprieteWindow = null;
             }
         },
-        items : [ { 
+        items : [ {
             // Form
             id : 'cadastrappCoProprieteSearchForm',
             xtype : 'form',
@@ -131,10 +131,9 @@ GEOR.Addons.Cadastre.initRechercheCoPropriete = function() {
                 }),
                 validator : function(value) {
                     // if other field are empty, check value size
-                    if(Ext.getCmp('cadastrappCoProprieteSearchTexfieldParcelle').isValid() ||
-                            Ext.getCmp('cadastrappCoProprieteSearchTexfieldComptecommunal').isValid()){
-                        return true;       
-                    }else if (!value || value.length < 14) {
+                    if (Ext.getCmp('cadastrappCoProprieteSearchTexfieldParcelle').isValid() || Ext.getCmp('cadastrappCoProprieteSearchTexfieldComptecommunal').isValid()) {
+                        return true;
+                    } else if (!value || value.length < 14) {
                         return OpenLayers.i18n('cadastrapp.search.copropriete.ddenom.control');
                     } else {
                         return true;
@@ -173,10 +172,9 @@ GEOR.Addons.Cadastre.initRechercheCoPropriete = function() {
                 width : 300,
                 validator : function(value) {
                     // if other field are empty, check value size                    
-                    if(Ext.getCmp('cadastrappCoProprieteSearchDdenomcombo').isValid() ||
-                            Ext.getCmp('cadastrappCoProprieteSearchTexfieldComptecommunal').isValid()){
-                        return true;       
-                    }else if (!value || value.length < 14) {
+                    if (Ext.getCmp('cadastrappCoProprieteSearchDdenomcombo').isValid() || Ext.getCmp('cadastrappCoProprieteSearchTexfieldComptecommunal').isValid()) {
+                        return true;
+                    } else if (!value || value.length < 14) {
                         return OpenLayers.i18n('cadastrapp.parcelle.ident.control');
                     } else {
                         return true;
@@ -194,15 +192,14 @@ GEOR.Addons.Cadastre.initRechercheCoPropriete = function() {
                 xtype : 'textfield',
                 id : 'cadastrappCoProprieteSearchTexfieldComptecommunal',
                 fieldLabel : OpenLayers.i18n('cadastrapp.search.copropriete.comptecommunal.ident'),
-                name : 'parcelle',
+                name : 'comptecommunal',
                 width : 300,
                 validator : function(value) {
-                        
+
                     // if other field are empty, check value size                    
-                    if(Ext.getCmp('cadastrappCoProprieteSearchDdenomcombo').isValid() ||
-                        Ext.getCmp('cadastrappCoProprieteSearchTexfieldParcelle').isValid()){
-                        return true;       
-                    }else if (!value || value.length < 12) {
+                    if (Ext.getCmp('cadastrappCoProprieteSearchDdenomcombo').isValid() || Ext.getCmp('cadastrappCoProprieteSearchTexfieldParcelle').isValid()) {
+                        return true;
+                    } else if (!value || value.length < 12) {
                         return OpenLayers.i18n('cadastrapp.search.copropriete.comptecommunal.control');
                     } else {
                         return true;
@@ -224,26 +221,53 @@ GEOR.Addons.Cadastre.initRechercheCoPropriete = function() {
             listeners : {
                 click : function(b, e) {
 
-                    if (GEOR.Addons.Cadastre.coProprieteWindow.items.items[0].getForm().isValid()) {
-                        // TITRE de l'onglet resultat
-                        var resultTitle = currentForm.getForm().findField('cgocommune').lastSelectionText;
+                    var currentForm = GEOR.Addons.Cadastre.coProprieteWindow.items.items[0];
 
-                        // PARAMS
-                        var params = currentForm.getForm().getValues();
-                        params.details = 2;
+                    // Form value to check which service to call
+                    var values = currentForm.getForm().getValues();
+
+                    if (values.parcelle && values.parcelle.length > 0) {
+
+                        var resultTitle = values.parcelle;
+                        var requestparam = {};
+                        requestparam.parcelle = values.parcelle;
+                        Ext.Ajax.request({
+                            method : 'GET',
+                            url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
+                            params : requestparam,
+                            success : function(result) {
+                                GEOR.Addons.Cadastre.addNewResultParcelle(resultTitle, GEOR.Addons.Cadastre.getResultParcelleStore(result.responseText, false));
+                            },
+                            failure : function(result) {
+                                console.log('Error when getting parcelle information, check server side');
+                            }
+                        });
+                    } else if (values.cgocommune && values.cgocommune.length > 0 && 
+                                (values.comptecommunal && values.comptecommunal.length > 0 || values.ddenom && values.ddenom.length >0)) {
+                        
+                        var resultTitle = currentForm.getForm().findField('cgocommune').lastSelectionText;
+                        if(resultTitle.length == 0){
+                            resultTitle = values.comptecommunal;
+                        }
+                        var requestparam = {};
+                        requestparam.comptecommunal = values.comptecommunal;
+                        requestparam.cgocommune = values.cgocommune;
+                        requestparam.ddenom = values.ddenom;
+                        requestparam.details=1;
 
                         // envoi des données d'une form
                         Ext.Ajax.request({
                             method : 'GET',
-                            url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire',
-                            params : params,
+                            url : GEOR.Addons.Cadastre.cadastrappWebappUrl + '/getCoProprietaireList',
+                            params : requestparam,
                             success : function(response) {
 
                                 var comptecommunalArray = [];
                                 var result = Ext.decode(response.responseText);
-                                for (var i = 0; i < result.length; i++) {
-                                    comptecommunalArray.push(result[i].comptecommunal);
-                                }
+                                Ext.each(result, function(value, index) {
+                                    comptecommunalArray.push(value.comptecommunal);
+                                });
+
                                 if (result.length > 1) {
                                     GEOR.Addons.Cadastre.addNewResultProprietaire(resultTitle, result, null);
                                 } else {
@@ -267,7 +291,11 @@ GEOR.Addons.Cadastre.initRechercheCoPropriete = function() {
                                 alert('Error when getting proprietaire information, check server side');
                             }
                         });
+                    } else{
+                        // no require parameter to make a call
+                        Ext.Msg.alert("Le choix d'une commune est obligatoire en complément d'un autre champ");
                     }
+
                 }
             }
         }, {
