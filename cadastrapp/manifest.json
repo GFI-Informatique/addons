@@ -279,6 +279,8 @@
 			"cadastrapp.duc.batiments" : "Building(s)",
 			"cadastrapp.duc.parcelle" : "Plot",
 			"cadastrapp.duc.propietaire" : "Owners",
+			"cadastrapp.duc.copropietaire" : "Co-Owners",
+			
 			
 			"cadastrapp.duc.compte" : "Identifier",
 			"cadastrapp.duc.denomination": "Designation",
@@ -603,26 +605,19 @@
 			"cadastrapp.duc.datenaissance" : "Date de naissance",
 			"cadastrapp.duc.lieunaissance" : "Lieu de naissance",
 			"cadastrapp.duc.cco_lib" : "Libellé - Code du droit réel",
-
 			"cadastrapp.duc.batiment_niveau" : "Niveau",
 			"cadastrapp.duc.batiment_porte" : "Porte",
 			"cadastrapp.duc.batiment_type" : "Type",
 			"cadastrapp.duc.batiment_date" : "Date",
 			"cadastrapp.duc.batiment_revenu" : "Revenu",
 			"cadastrapp.duc.batiment_descriptif" : "Descriptif",
-
-			
-			
 			"cadastrapp.duc.lettreindic" : "Lettre indicative",
 			"cadastrapp.duc.contenance" : "Contenance",
 			"cadastrapp.duc.terrain" : "Nature de culture",
 			"cadastrapp.duc. revenu" : "Revenu au 01-01",
-
-			
 			"cadastrapp.duc.dateacte" : "Date acte",
 			"cadastrapp.duc.reference_parcelle " : "Référence de la parcelle mère",
 			"cadastrapp.duc.type_mutation" : "Type de mutation",		
-	
             "cadastrapp.duc.designation" : "Designation",
             "cadastrapp.duc.valeur" : "Valeur",
 			"cadastrapp.duc.bordereau.parcellaire" : "Bordereau Parcellaire",
@@ -630,6 +625,7 @@
 			"cadastrapp.duc.batiments" : "Batiment(s)",
 			"cadastrapp.duc.parcelle" : "Parcelle",
 			"cadastrapp.duc.propietaire" : "Propriétaire",
+			"cadastrapp.duc.copropietaire" : "Co-propriétaire",
 			"cadastrapp.duc.batiment" : "Bâtiment",
 			"cadastrapp.duc.subdiv" : "Subdivisions fiscales",
 			"cadastrapp.duc.histomut" : "Historique de mutation",
