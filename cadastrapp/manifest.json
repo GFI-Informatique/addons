@@ -505,7 +505,7 @@
              "cadastrapp.parcelle.dindic": "Indice de répétition",
              "cadastrapp.parcelle.cconvo": "Nature de la voie",
              "cadastrapp.parcelle.dvoilib": "Libellé de la voie",
-             "cadastrapp.parcelle.dcntpa": "Contenance DGFIP",
+             "cadastrapp.parcelle.dcntpa": "Contenance DGFiP",
              "cadastrapp.parcelle.ccoriv": "Code Fantoir de la voie",
              "cadastrapp.parcelle.adresse.postale": "Adresse Postale",
              "cadastrapp.parcelle.millesime": "Millésime du fond de carte",
@@ -643,7 +643,7 @@
             "cadastrapp.ficu.voie":"Voie (Code fantoir)", 
             "cadastrapp.ficu.adresse":"Adresse",
             "cadastrapp.ficu.contenancedgfip":"Contenance DGFiP en m²",
-            "cadastrapp.ficu.contenancesig":"Contenance calculée en m²",
+            "cadastrapp.ficu.contenancesig":"Surface calculée en m²",
             "cadastrapp.ficu.batie":"Parcelle bâtie",
             "cadastrapp.ficu.urbain":"Secteur urbain",
             
