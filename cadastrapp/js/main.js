@@ -89,6 +89,49 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                         "hide": function() {
                             initThis.item && initThis.item.setChecked(false);
                             initThis.components && initThis.components.toggle(false);
+                            
+                            // Remove all windows
+                            if(GEOR.Addons.Cadastre.popup){
+                                GEOR.Addons.Cadastre.popup.close();
+                                GEOR.Addons.Cadastre.popup=null
+                            }
+                            if (GEOR.Addons.Cadastre.result.plot.window){
+                                GEOR.Addons.Cadastre.result.plot.window.close();
+                                GEOR.Addons.Cadastre.result.plot.window=null;
+                            }
+                            
+                            if (GEOR.Addons.Cadastre.result.owner.window){
+                                GEOR.Addons.Cadastre.result.owner.window.close();
+                                GEOR.Addons.Cadastre.result.owner.window=null;
+                            }
+                            
+                            
+                            if ( GEOR.Addons.Cadastre.proprietaireWindow){
+                                GEOR.Addons.Cadastre.proprietaireWindow.close();
+                                GEOR.Addons.Cadastre.proprietaireWindow = null;
+                            }
+                            
+                            if (GEOR.Addons.Cadastre.rechercheParcelleWindow){
+                                GEOR.Addons.Cadastre.rechercheParcelleWindow.close();
+                                GEOR.Addons.Cadastre.rechercheParcelleWindow = null;
+                            }
+                        
+                            
+                            if( GEOR.Addons.Cadastre.printBordereauParcellaireWindow){
+                                GEOR.Addons.Cadastre.printBordereauParcellaireWindow.close();
+                                GEOR.Addons.Cadastre.printBordereauParcellaireWindow=null;
+                            }       
+                            
+                            if( GEOR.Addons.Cadastre.request.informationsWindow){
+                                GEOR.Addons.Cadastre.request.informationsWindow.close();
+                                GEOR.Addons.Cadastre.request.informationsWindow=null;
+                            }
+                            
+                            if(GEOR.Addons.Cadastre.coProprieteWindow){
+                                GEOR.Addons.Cadastre.coProprieteWindow.close();
+                                GEOR.Addons.Cadastre.coProprieteWindow=null;
+                            }
+                            
                         },
                         scope: initThis
                     }
