@@ -34,9 +34,9 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                 
                 GEOR.Addons.Cadastre.WFSLayerSetting.nameFieldIdParcelle = configuration.cadastreLayerIdParcelle;
                 GEOR.Addons.Cadastre.WFSLayerSetting.wfsUrl = configuration.cadastreWFSURL;
-                GEOR.Addons.Cadastre.WFSLayerSetting.typename = configuration.cadastreLayerName;
+                GEOR.Addons.Cadastre.WFSLayerSetting.typename = configuration.cadastreWFSLayerName;
                 
-                WMSSetting.layerNameGeoserver = configuration.cadastreLayerName;
+                WMSSetting.layerNameGeoserver = configuration.cadastreWMSLayerName;
                 WMSSetting.url =  configuration.cadastreWMSURL;
                           
                 GEOR.Addons.Cadastre.menu = new GEOR.Addons.Cadastre.Menu({
