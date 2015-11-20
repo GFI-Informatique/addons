@@ -406,7 +406,7 @@
 			"cadastrapp.parcelle.result.dvoilib": "Libellé de la voie",
 			"cadastrapp.parcelle.result.commune": "Commune",
 			"cadastrapp.parcelle.result.adresse": "Adresse cadastrale",
-			"cadastrapp.parcelle.result.surface": "Surface DGFiP en m²",
+			"cadastrapp.parcelle.result.surface": "Contenance DGFiP en m²",
 			
 			"cadastrapp.result.parcelle.zoom.list": "Zoom liste",
 			"cadastrapp.result.parcelle.zoom.selection": "Zoom sélection",
