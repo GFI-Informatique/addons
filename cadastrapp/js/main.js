@@ -76,7 +76,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                     title: OpenLayers.i18n('cadastrapp.cadastre_tools'),
                     closable: true,
                     closeAction: "hide",
-                    resizable: false,
+                    resizable: true,
                     border: false,
                     constrainHeader: true,
                     cls: 'cadastrapp',
