@@ -382,7 +382,7 @@
 			"cadastrapp.parcelle.file.path": "Chemin",
 			"cadastrapp.parcelle.file.open": "Ouvrir fichier",
 			"cadastrapp.parcelle.file.exemple": "Charger un fichier au format .csv",
-			"cadastrapp.parcelle.street": "N de voirie et type",
+			"cadastrapp.parcelle.street": "n° / complément",
 			"cadastrapp.parcelle.street.exemple": "ex. 4 TER",
 			"cadastrapp.parcelle.town": "Nom de voie ou lieu-dit",
 			"cadastrapp.parcelle.town.exemple": "ex. Henri Fréville ou Mont-Romain",

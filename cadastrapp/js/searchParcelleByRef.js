@@ -245,37 +245,8 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 {
                     value: OpenLayers.i18n('cadastrapp.parcelle.city.exemple'),
                     fieldClass: 'displayfieldGray'
-                }, {
-                    id: 'cfCadSearchByRef',
-                    xtype: 'compositefield',
-                    fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.street'),
-                    disabled: true,
-                    defaults: {
-                        flex: 1
-                    },
-                    items: [ {
-                        name: 'dnvoiri',
-                        xtype: 'textfield',
-                        width: 50,
-                    }, {
-                        hiddenName: 'dindic',
-                        xtype: 'combo',
-                        width: 50,
-                        mode: 'local',
-                        value: '',
-                        triggerAction: 'all',
-                        forceSelection: true,
-                        editable: false,
-                        displayField: 'name',
-                        valueField: 'value',
-                        store: parcBisStore
-                    },{
-                        xtype: 'displayfield',
-                        value: OpenLayers.i18n('cadastrapp.parcelle.street.exemple'),
-                        fieldClass: 'displayfieldGray',
-                        width: 100,
-                    },]
-                },  {
+                },
+                {
                     // Add auto completion on dvoilib using getVoie service
                     fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.town'),
                     hiddenName:'dvoilib',
@@ -321,6 +292,36 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 }, {
                     value: OpenLayers.i18n('cadastrapp.parcelle.town.exemple'),
                     fieldClass: 'displayfieldGray'
+                }, {
+                    id: 'cfCadSearchByRef',
+                    xtype: 'compositefield',
+                    fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.street'),
+                    disabled: true,
+                    defaults: {
+                        flex: 1
+                    },
+                    items: [ {
+                        name: 'dnvoiri',
+                        xtype: 'textfield',
+                        width: 50,
+                    }, {
+                        hiddenName: 'dindic',
+                        xtype: 'combo',
+                        width: 50,
+                        mode: 'local',
+                        value: '',
+                        triggerAction: 'all',
+                        forceSelection: true,
+                        editable: false,
+                        displayField: 'name',
+                        valueField: 'value',
+                        store: parcBisStore
+                    },{
+                        xtype: 'displayfield',
+                        value: OpenLayers.i18n('cadastrapp.parcelle.street.exemple'),
+                        fieldClass: 'displayfieldGray',
+                        width: 100,
+                    }]
                 } ]
             }, {
 
