@@ -450,7 +450,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                                                 
                                 parcelleGrid.getStore().each(function(record) {
                                          
-                                    if(record.data.parcelle != undefined && record.data.parcelle.length>0 
+                                    if(record.data.parcelle != undefined && record.data.parcelle>0 
                                             && record.data.section != undefined && record.data.section.length>0){
                                                 
                                         params.dnupla = record.data.parcelle;

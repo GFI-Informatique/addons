@@ -77,7 +77,11 @@ GEOR.Addons.Cadastre.initParcelleStore = function() {
             url: GEOR.Addons.Cadastre.cadastrappWebappUrl + '/getDnuplaList',
             method: 'GET'}),
         params:{},
-        fields: ['dnupla']
+        fields: [{name: 'dnupla', type: 'number'}],
+        sortInfo: {
+            field: 'dnupla',
+            direction: 'ASC' 
+        }
     });
 }
 
@@ -179,7 +183,7 @@ GEOR.Addons.Cadastre.getRefColModel = function(cgocommune) {
         dataIndex: 'parcelle',
         header: OpenLayers.i18n('cadastrapp.parcelle.references.col2'),
         width: 100,
-        sortable: false,	
+        sortable: false,
         editor: new Ext.form.ComboBox({
             mode: 'local',
             value: '',
@@ -228,6 +232,8 @@ GEOR.Addons.Cadastre.getResultParcelleColModel = function() {
 			dataIndex: 'dnupla',
 			header: OpenLayers.i18n('cadastrapp.parcelle.result.dnupla'),
 			sortable: true,
+			xtype: 'numbercolumn',
+			format: '0',
             width: 70
 		},
 		{
@@ -242,6 +248,8 @@ GEOR.Addons.Cadastre.getResultParcelleColModel = function() {
 			dataIndex: 'dcntpa',
 			header: OpenLayers.i18n('cadastrapp.parcelle.result.surface'),
 			sortable: true,
+			xtype: 'numbercolumn',
+			format: '0',
             width: 150
 	}]);
 }
