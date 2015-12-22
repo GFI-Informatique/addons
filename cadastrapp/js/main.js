@@ -47,6 +47,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                     }
                 });
         
+                GEOR.Addons.Cadastre.isWMSLayerAdded = false;
                 GEOR.Addons.Cadastre.addWMSLayer(WMSSetting);
 
                 GEOR.Addons.Cadastre.selection=[];

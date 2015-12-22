@@ -12,9 +12,9 @@ Ext.namespace("GEOR.Addons.Cadastre");
 GEOR.Addons.Cadastre.createSelectionControl = function(style, selectedStyle) {
 
     var styleFeatures = new OpenLayers.StyleMap(new OpenLayers.Style({ // param
-                                                                        // config
+        // config
         fillColor : "${getFillColor}", // style des entités en fonction de
-                                        // l'état
+        // l'état
         strokeColor : "${getStrokeColor}",
         strokeWidth : "${getstrokeWidth}",
         fillOpacity : "${getFillOpacity}",
@@ -174,7 +174,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
 
     var filter;
     var selectRows = false; // ligne dans le resultat de recherche doit être
-                            // sélectionnée si etat =2
+    // sélectionnée si etat =2
     var polygoneElements = "";
     var endPolygoneElements = "";
 
@@ -251,7 +251,7 @@ GEOR.Addons.Cadastre.getFeaturesWFSSpatial = function(typeGeom, coords, typeSele
                                 feature = selectedFeature;
                                 index = currentIndexJ;
                                 return false; // this breaks out of the 'each'
-                                                // loop
+                                // loop
                             }
                         });
 
@@ -428,7 +428,7 @@ GEOR.Addons.Cadastre.setState = function(feature, state) {
 GEOR.Addons.Cadastre.changeStateFeature = function(feature, index, typeSelector) {
 
     var state = null;
-    
+
     if (feature) {
         switch (typeSelector) {
         // changement par selection sur la carte
@@ -545,7 +545,7 @@ GEOR.Addons.Cadastre.zoomOnFeatures = function(features) {
         });
         var map = GeoExt.MapPanel.guess().map;
         map.zoomToExtent([ minLeft, minBottom, maxRight, maxTop ]); // zoom sur
-                                                                    // l'emprise
+        // l'emprise
     } else {
         console.log("No feature in input, could not zoom on it");
     }
@@ -554,35 +554,50 @@ GEOR.Addons.Cadastre.zoomOnFeatures = function(features) {
 /**
  * Method: addWMSLayer
  * 
- * ajout de la couche WMS à la carte
+ * Add layer to map and layerswitcher only if same WMS url does not exist
  * 
- * @param: wmsSetting
+ * If layerNameInPanel is empty, do not display layer in layerswitcher
+ * 
+ * @param: wmsSetting[]
+ * 
+ *      wmsSetting.layerNameInPanel - Name in layer switcher
+ *      wmsSetting.url
+ *      wmsSetting.layerNameGeoserver
+ *      wmsSetting.transparent
+ *      wmsSetting.format
+ * 
  */
 GEOR.Addons.Cadastre.addWMSLayer = function(wmsSetting) {
 
-    // Show layer in switcher only if it has a name set by administrator
-    var isDisplayInLayerSwitcher = false;
-    if (wmsSetting.layerNameInPanel.length > 0) {
-        isDisplayInLayerSwitcher = true;
+    // Search layer with same wms URL
+    var layers = layer.map.getLayersBy("url", wmsSetting.url);
+   
+    // if layer not already present add cadastrapp addons layer
+    if(layers == null || layers.length == 0){
+
+        GEOR.Addons.Cadastre.isWMSLayerAdded = true;
+
+        // Show layer in switcher only if it has a name set by administrator
+        var isDisplayInLayerSwitcher = false;
+        if (wmsSetting.layerNameInPanel.length > 0) {
+            isDisplayInLayerSwitcher = true;
+        }
+
+        GEOR.Addons.Cadastre.WMSLayer = new OpenLayers.Layer.WMS(
+        // paramètres de la requête wms
+        wmsSetting.layerNameInPanel, wmsSetting.url, {
+            LAYERS : wmsSetting.layerNameGeoserver,
+            transparent : wmsSetting.transparent,
+            format : wmsSetting.format,
+        }, {
+            // options carte
+            displayInLayerSwitcher : isDisplayInLayerSwitcher,
+            isBaseLayer : false,
+            queryable : true,
+        });
+
+        // ajout de la couche à la carte   
+        layer.map.addLayer(GEOR.Addons.Cadastre.WMSLayer);
     }
 
-    GEOR.Addons.Cadastre.WMSLayer = new OpenLayers.Layer.WMS(
-    // paramètres de la requête wms
-    wmsSetting.layerNameInPanel, wmsSetting.url, {
-        LAYERS : wmsSetting.layerNameGeoserver,
-        transparent : wmsSetting.transparent,
-        format : wmsSetting.format,
-    }, {
-        // options carte
-        displayInLayerSwitcher : isDisplayInLayerSwitcher,
-        isBaseLayer : false,
-        queryable : true,
-    });
-
-    // Remove existing Layer if already exist.
-    var layer1 = layer.map.getLayersByName(wmsSetting.layerNameInPanel)[0];
-    if (layer1) {
-        layer1.destroy();
-    }
-    layer.map.addLayer(GEOR.Addons.Cadastre.WMSLayer); // ajout de la couche à la carte	*/
 }

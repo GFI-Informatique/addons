@@ -1,10 +1,8 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
-
-// TODO move this ***************
+// ***************
 var _isCadastre = true;
 var _isFoncier = false;
-
 
 GEOR.Addons.Cadastre.isCadastre = function() {
     return _isCadastre;
@@ -26,12 +24,11 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
 
     items : null,
 
-     /**
-         * api: config[layerOptions] ``Object`` Options to be passed to the
-         * OpenLayers.Layer.Vector constructor.
-         */
+    /**
+     * api: config[layerOptions] ``Object`` Options to be passed to the
+     * OpenLayers.Layer.Vector constructor.
+     */
     layerOptions : {},
-
 
     /**
      * api: property[toggleGroup] ``String`` The name of the group used for the
@@ -52,6 +49,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         var info;
         // if set, automatically creates a "cadastrapp" layer
         var style = this.style || OpenLayers.Util.applyDefaults(this.defaultStyle, OpenLayers.Feature.Vector.style["default"]);
+
         var styleMap = new OpenLayers.StyleMap({
             'default' : style,
             'vertices' : new OpenLayers.Style({
@@ -128,12 +126,13 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
             iconAlign : 'top',
             // check item options
             checked : false,
-            handler : function(){
-                // Zoom on all element from all parcelle from each tab of resultParcellet tabpanel
-                if(GEOR.Addons.Cadastre.result.tabs && GEOR.Addons.Cadastre.result.tabs.items){
+            handler : function() {
+                // Zoom on all element from all parcelle from each tab of
+                // resultParcellet tabpanel
+                if (GEOR.Addons.Cadastre.result.tabs && GEOR.Addons.Cadastre.result.tabs.items) {
                     var allfeatures = new Array();
                     Ext.each(GEOR.Addons.Cadastre.result.tabs.items.items, function(tab, currentIndex) {
-                        if(tab.featuresList){
+                        if (tab.featuresList) {
                             Ext.each(tab.featuresList, function(feature) {
                                 allfeatures.push(feature);
                             })
@@ -141,7 +140,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                     })
                     GEOR.Addons.Cadastre.zoomOnFeatures(allfeatures);
                 }
-            }        
+            }
         };
 
         action = new Ext.Button(actionOptions);
@@ -167,7 +166,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 }
             };
             geometryType = geometryTypes[i];
-            
+
             var isButtonPressed = false;
 
             switch (geometryType) {
@@ -229,57 +228,57 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
     initCadastrappControls : function(layer) {
         // menu : checkbox cadastre
         var cadastrePanel = new Ext.Panel({
-            frame: false,
-            border: false,
-            bodyStyle: 'background:transparent;',
-            style: 'margin-left:5px;margin-right:5px',
-            items: [ {
-                id: 'UCCheckbox',
-                xtype: 'checkbox',
-                checked: _isCadastre,
-                style: 'margin-top:2px;margin-left:15px',
-                listeners: {
-                    check: function(cb, checked) {
+            frame : false,
+            border : false,
+            bodyStyle : 'background:transparent;',
+            style : 'margin-left:5px;margin-right:5px',
+            items : [ {
+                id : 'UCCheckbox',
+                xtype : 'checkbox',
+                checked : _isCadastre,
+                style : 'margin-top:2px;margin-left:15px',
+                listeners : {
+                    check : function(cb, checked) {
                         _isCadastre = checked;
                     },
-                    render: function(c) {
+                    render : function(c) {
                         Ext.QuickTips.register({
-                            target: c,
-                            text: OpenLayers.i18n("cadastrapp.menu.tooltips.cadastre")
+                            target : c,
+                            text : OpenLayers.i18n("cadastrapp.menu.tooltips.cadastre")
                         });
                     }
                 }
             }, {
-                xtype: 'displayfield',
-                value: OpenLayers.i18n("cadastrapp.cadastre"),
+                xtype : 'displayfield',
+                value : OpenLayers.i18n("cadastrapp.cadastre"),
             } ]
         });
         this.items.push(cadastrePanel);
-        
+
         // menu : checkbox foncier
         var foncierPanel = new Ext.Panel({
-            frame: false,
-            border: false,
-            bodyStyle: 'background:transparent;',
-            style: 'margin-left:5px;margin-right:5px',
-            items: [ {
-                xtype: 'checkbox',
-                checked: _isFoncier, 
-                style: 'margin-top:2px;margin-left:10px',
-                listeners: {
-                    check: function(cb, checked) {
+            frame : false,
+            border : false,
+            bodyStyle : 'background:transparent;',
+            style : 'margin-left:5px;margin-right:5px',
+            items : [ {
+                xtype : 'checkbox',
+                checked : _isFoncier,
+                style : 'margin-top:2px;margin-left:10px',
+                listeners : {
+                    check : function(cb, checked) {
                         _isFoncier = checked;
                     },
-                    render: function(c) {
+                    render : function(c) {
                         Ext.QuickTips.register({
-                            target: c,
-                            text: OpenLayers.i18n("cadastrapp.menu.tooltips.foncier"),
+                            target : c,
+                            text : OpenLayers.i18n("cadastrapp.menu.tooltips.foncier"),
                         });
                     }
                 }
             }, {
-                xtype: 'displayfield',
-                value: OpenLayers.i18n("cadastrapp.foncier"),
+                xtype : 'displayfield',
+                value : OpenLayers.i18n("cadastrapp.foncier"),
             } ]
         });
         this.items.push(foncierPanel);
@@ -297,18 +296,22 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
             iconCls : "gx-featureediting-cadastrapp-parcelle",
             iconAlign : 'top',
             text : OpenLayers.i18n("cadastrapp.parcelle"),
-            handler : function(){GEOR.Addons.Cadastre.onClickRechercheParcelle(0)}
+            handler : function() {
+                GEOR.Addons.Cadastre.onClickRechercheParcelle(0)
+            }
         };
         this.items.push(new Ext.Button(configRechercheParcelle));
-        
+
         // menu : recherche propriétaire
-        if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
+        if (GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()) {
             var configRechercheProprietaire = {
                 tooltip : OpenLayers.i18n("cadastrapp.proprietaire"),
                 iconCls : "gx-featureediting-cadastrapp-parcelle",
                 iconAlign : 'top',
                 text : OpenLayers.i18n("cadastrapp.proprietaire"),
-                handler : function(){GEOR.Addons.Cadastre.onClickRechercheProprietaire(0)}
+                handler : function() {
+                    GEOR.Addons.Cadastre.onClickRechercheProprietaire(0)
+                }
             };
             this.items.push(new Ext.Button(configRechercheProprietaire));
         }
@@ -336,30 +339,38 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
             tooltip : OpenLayers.i18n("cadastrapp.menu.parcelle.refer"),
             text : OpenLayers.i18n("cadastrapp.menu.parcelle.refer")
         });
-        buttonRechercheParcelleIdentifiant.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheParcelle(0)});
+        buttonRechercheParcelleIdentifiant.on('click', function() {
+            GEOR.Addons.Cadastre.onClickRechercheParcelle(0)
+        });
 
         // sous-sous-menu : recherche parcelle - par adresse
         var buttonRechercheParcelleAdresse = scrollMenuRechercheParcelle.add({
             tooltip : OpenLayers.i18n("cadastrapp.menu.parcelle.adresse"),
             text : OpenLayers.i18n("cadastrapp.menu.parcelle.adresse")
         });
-        buttonRechercheParcelleAdresse.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheParcelle(1)});
+        buttonRechercheParcelleAdresse.on('click', function() {
+            GEOR.Addons.Cadastre.onClickRechercheParcelle(1)
+        });
 
         // sous-sous-menu : recherche parcelle - par identifiant cadastral
         var buttonRechercheParcelleAdresse = scrollMenuRechercheParcelle.add({
             tooltip : OpenLayers.i18n("cadastrapp.menu.parcelle.identifiant"),
             text : OpenLayers.i18n("cadastrapp.menu.parcelle.identifiant")
         });
-        buttonRechercheParcelleAdresse.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheParcelle(2)});
-        
+        buttonRechercheParcelleAdresse.on('click', function() {
+            GEOR.Addons.Cadastre.onClickRechercheParcelle(2)
+        });
+
         // sous-sous-menu : recherche parcelle - par identifiant cadastral
         var buttonRechercheParcelleLot = scrollMenuRechercheParcelle.add({
             tooltip : OpenLayers.i18n("cadastrapp.menu.parcelle.lot"),
             text : OpenLayers.i18n("cadastrapp.menu.parcelle.lot")
         });
-        buttonRechercheParcelleLot.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheParcelle(3)});
+        buttonRechercheParcelleLot.on('click', function() {
+            GEOR.Addons.Cadastre.onClickRechercheParcelle(3)
+        });
 
-        if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
+        if (GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()) {
             // sous-menu : recherche proprietaire
             var scrollMenuRechercheProprietaire = new Ext.menu.Menu();
             var buttonRechercheProprietaire = scrollMenu.add({
@@ -372,28 +383,36 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 tooltip : OpenLayers.i18n("cadastrapp.proprietaire.nom"),
                 text : OpenLayers.i18n("cadastrapp.proprietaire.nom")
             });
-            buttonRechercheProprietaireNom.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheProprietaire(0)});
-            
+            buttonRechercheProprietaireNom.on('click', function() {
+                GEOR.Addons.Cadastre.onClickRechercheProprietaire(0)
+            });
+
             // sous-sous-menu : recherche proprietaire - par compte
             var buttonRechercheProprietaireCompte = scrollMenuRechercheProprietaire.add({
                 tooltip : OpenLayers.i18n("cadastrapp.proprietaire.compte"),
                 text : OpenLayers.i18n("cadastrapp.proprietaire.compte")
             });
-            buttonRechercheProprietaireCompte.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheProprietaire(1)});
-    
-         // sous-sous-menu : recherche proprietaire - par compte
+            buttonRechercheProprietaireCompte.on('click', function() {
+                GEOR.Addons.Cadastre.onClickRechercheProprietaire(1)
+            });
+
+            // sous-sous-menu : recherche proprietaire - par compte
             var buttonRechercheProprietaireCompte = scrollMenuRechercheProprietaire.add({
                 tooltip : OpenLayers.i18n("cadastrapp.proprietaire.lot"),
                 text : OpenLayers.i18n("cadastrapp.proprietaire.lot")
             });
-            buttonRechercheProprietaireCompte.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheProprietaire(2)});
-            
+            buttonRechercheProprietaireCompte.on('click', function() {
+                GEOR.Addons.Cadastre.onClickRechercheProprietaire(2)
+            });
+
             // sous-menu : recherche copropriété
             var buttonRechercheCopropriete = scrollMenu.add({
                 tooltip : OpenLayers.i18n("cadastrapp.copropriete"),
                 text : OpenLayers.i18n("cadastrapp.copropriete")
             });
-            buttonRechercheCopropriete.on('click', function(){GEOR.Addons.Cadastre.onClickRechercheCoPropriete()});
+            buttonRechercheCopropriete.on('click', function() {
+                GEOR.Addons.Cadastre.onClickRechercheCoPropriete()
+            });
         }
 
         // sous-menu : traitement sélection
@@ -415,16 +434,20 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
             tooltip : OpenLayers.i18n("cadastrapp.selection.parcelles.export"),
             text : OpenLayers.i18n("cadastrapp.selection.parcelles.export")
         });
-        buttonTraitementSelectionParcellesExport.on('click', function(){GEOR.Addons.Cadastre.exportPlotSelectionAsCSV()});
-        
+        buttonTraitementSelectionParcellesExport.on('click', function() {
+            GEOR.Addons.Cadastre.exportPlotSelectionAsCSV()
+        });
+
         // sous-sous-sous-menu : traitement sélection - parcelles - bordereau
         var buttonTraitementSelectionParcellesBordereau = scrollMenuTraitementSelectionParcelles.add({
             tooltip : OpenLayers.i18n("cadastrapp.selection.parcelles.bordereau"),
             text : OpenLayers.i18n("cadastrapp.selection.parcelles.bordereau")
         });
-        buttonTraitementSelectionParcellesBordereau.on('click', function(){GEOR.Addons.Cadastre.printSelectedBordereauParcellaire()});
+        buttonTraitementSelectionParcellesBordereau.on('click', function() {
+            GEOR.Addons.Cadastre.printSelectedBordereauParcellaire()
+        });
 
-        if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
+        if (GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()) {
             // sous-sous-menu : traitement sélection - proprietaires
             var scrollMenuTraitementSelectionProprietaires = new Ext.menu.Menu();
             var buttonTraitementSelectionProprietaires = scrollMenuTraitementSelection.add({
@@ -432,16 +455,18 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
                 text : OpenLayers.i18n("cadastrapp.selection.proprietaires"),
                 menu : scrollMenuTraitementSelectionProprietaires
             });
-            
+
             // sous-sous-sous-menu : traitement sélection - proprietaire -
             // export
             var buttonTraitementSelectionProprietairesExport = scrollMenuTraitementSelectionProprietaires.add({
                 tooltip : OpenLayers.i18n("cadastrapp.selection.proprietaires.export"),
                 text : OpenLayers.i18n("cadastrapp.selection.proprietaires.export")
             });
-            
-            buttonTraitementSelectionProprietairesExport.on('click', function(){GEOR.Addons.Cadastre.exportOwnerSelectionAsCSV()});
-    
+
+            buttonTraitementSelectionProprietairesExport.on('click', function() {
+                GEOR.Addons.Cadastre.exportOwnerSelectionAsCSV()
+            });
+
         }
     },
 
@@ -450,7 +475,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
      * ``OpenLayers.Layer.Vector`` Create ...TODO
      */
     initDemandeControl : function(layer) {
-        
+
         // menu : recherche parcelle
         var configDemande = {
             tooltip : OpenLayers.i18n("cadastrapp.demande"),
@@ -480,35 +505,39 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         // erase point, line or polygones
         feature.layer.removeAllFeatures();
     },
-    
+
     /**
      * 
      */
-    destroy:function(){
-        
-        Ext.each(this.cadastrappControls, function(control, index){
+    destroy : function() {
+
+        Ext.each(this.cadastrappControls, function(control, index) {
             control.deactivate();
             this.map.removeControl(control);
         });
-        this.cadastrappControls=null,
-        this.items = null;
-        
+        this.cadastrappControls = null, this.items = null;
+
         // Remove WMS Layer
-        this.map.removeLayer(GEOR.Addons.Cadastre.WMSLayer);
-        GEOR.Addons.Cadastre.WMSLayer.destroy();
-        GEOR.Addons.Cadastre.WMSLayer=null;
-        
+        if (GEOR.Addons.Cadastre.isWMSLayerAdded == true && GEOR.Addons.Cadastre.WMSLayer != null) {
+
+            this.map.removeLayer(GEOR.Addons.Cadastre.WMSLayer);
+            GEOR.Addons.Cadastre.WMSLayer.destroy();
+            GEOR.Addons.Cadastre.WMSLayer = null;
+        }
+
+        GEOR.Addons.Cadastre.isLayerAdded = null;
+
         // Remove WFSLayer
         GEOR.Addons.Cadastre.WFSLayer.removeAllFeatures();
         this.map.removeLayer(GEOR.Addons.Cadastre.WFSLayer);
         GEOR.Addons.Cadastre.WFSLayer.destroy();
-        GEOR.Addons.Cadastre.WFSLayer=null;
-        
-        this.layer.destroy();
-        this.layer=null;
+        GEOR.Addons.Cadastre.WFSLayer = null;
 
-        this.map=null;
-       
+        this.layer.destroy();
+        this.layer = null;
+
+        this.map = null;
+
     },
 
     CLASS_NAME : "Cadastrapp"
