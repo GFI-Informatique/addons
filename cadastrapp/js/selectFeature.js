@@ -583,18 +583,22 @@ GEOR.Addons.Cadastre.addWMSLayer = function(wmsSetting) {
             isDisplayInLayerSwitcher = true;
         }
 
+        // Modify WMS information to be added to layer
         GEOR.Addons.Cadastre.WMSLayer = new OpenLayers.Layer.WMS(
-        // paramètres de la requête wms
-        wmsSetting.layerNameInPanel, wmsSetting.url, {
-            LAYERS : wmsSetting.layerNameGeoserver,
-            transparent : wmsSetting.transparent,
-            format : wmsSetting.format,
-        }, {
-            // options carte
-            displayInLayerSwitcher : isDisplayInLayerSwitcher,
-            isBaseLayer : false,
-            queryable : true,
-        });
+            // Layer name in switch panel
+            wmsSetting.layerNameInPanel, 
+            wmsSetting.url, {
+                layers : wmsSetting.layerNameGeoserver,
+                transparent : wmsSetting.transparent,
+                format : wmsSetting.format,
+                type : "WMS",
+                queryable : true
+            }, {
+                // Map option
+                displayInLayerSwitcher : isDisplayInLayerSwitcher,
+                isBaseLayer : false
+            }
+         );
 
         // ajout de la couche à la carte   
         layer.map.addLayer(GEOR.Addons.Cadastre.WMSLayer);
