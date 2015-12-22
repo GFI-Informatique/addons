@@ -476,8 +476,8 @@ GEOR.Addons.Cadastre.changeStateParcelleOfTab = function(store, typeSelector) {
  */
 GEOR.Addons.Cadastre.openFoncierOrCadastre = function(id, grid) {
 
-    cadastreExiste = (grid.idParcellesCOuvertes.indexOf(id) != -1)
-    foncierExiste = (grid.idParcellesFOuvertes.indexOf(id) != -1)
+    var cadastreExiste = (grid.idParcellesCOuvertes.indexOf(id) != -1)
+    var foncierExiste = (grid.idParcellesFOuvertes.indexOf(id) != -1)
 
     if (GEOR.Addons.Cadastre.isFoncier() && GEOR.Addons.Cadastre.isCadastre()) {
         if (!foncierExiste) {
