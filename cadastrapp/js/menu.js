@@ -511,6 +511,7 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
      */
     destroy : function() {
 
+        // deactivate each button, so more element from cadastrapp is toogled
         Ext.each(this.cadastrappControls, function(control, index) {
             control.deactivate();
             this.map.removeControl(control);
@@ -537,6 +538,9 @@ GEOR.Addons.Cadastre.Menu = Ext.extend(Ext.util.Observable, {
         this.layer = null;
 
         this.map = null;
+        
+        
+        
 
     },
 
