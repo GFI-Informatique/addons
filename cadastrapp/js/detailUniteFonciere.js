@@ -64,15 +64,13 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
         success: function(response) {
             
             var result = Ext.decode(response.responseText);
-           
-            //TODO get Batical information
-            var surfaceBatie = 0;
+
 
             // Preparation du tableau de donnees
             var fiufGlobalInfosData = [ 
                    [ 'Surface DGFiP', result.dcntpa_sum ], 
                    [ 'Surface SIG', result.sigcal_sum ], 
-                   [ 'Surface Batie', surfaceBatie ] ];
+                   [ 'Surface Batie', result.sigcalb_sum ] ];
             
             // Chargement dans le store correspondant
             fiufGlobalInfosStore.loadData(fiufGlobalInfosData, false);
