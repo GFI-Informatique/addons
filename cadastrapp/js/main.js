@@ -186,7 +186,10 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
     destroy: function() {
         
         // Remove menu
-        this.window.hide();
+        // Add test in case add-ons did not load properly
+        if(this.windows){
+            this.window.hide();
+        }
         
         // Remove all windows
         if(GEOR.Addons.Cadastre.popup){
@@ -230,8 +233,10 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
             GEOR.Addons.Cadastre.coProprieteWindow=null;
         }
         
-        
-        GEOR.Addons.Cadastre.menu.destroy();
+     // Add test in case add-ons did not load properly
+        if(GEOR.Addons.Cadastre.menu){
+            GEOR.Addons.Cadastre.menu.destroy();
+        }
         
         GEOR.Addons.Cadastre.selection=null;
         GEOR.Addons.Cadastre.relevePropriete=null;
