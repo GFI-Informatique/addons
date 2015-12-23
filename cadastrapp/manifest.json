@@ -321,6 +321,12 @@
             "cadastrapp.duc.partie.professionnelle" : "Business part",
             "cadastrapp.duc.dependances" : "outbuilding",
             
+           	"cadastrapp.duc.annee_construction" : "creation date",
+            "cadastrapp.duc.invar" : "invar",
+            "cadastrapp.duc.revenu" : "income",
+            "cadastrapp.duc.type" : "type",
+            "cadastrapp.duc.door" : "door",
+            
             "cadastrapp.ficu.commune":"Town",
             "cadastrapp.ficu.section":"Section", 
             "cadastrapp.ficu.parcelle":"Plot",
@@ -636,6 +642,12 @@
             "cadastrapp.duc.elements.incorpores" : "Eléments incorporés",
             "cadastrapp.duc.partie.professionnelle" : "Partie professionnelle",
             "cadastrapp.duc.dependances" : "Dépendances",
+            
+            "cadastrapp.duc.annee_construction" : "Année de construction",
+            "cadastrapp.duc.invar" : "Invar",
+            "cadastrapp.duc.revenu" : "Revenu",
+            "cadastrapp.duc.type" : "Type",
+            "cadastrapp.duc.door" : "Porte",
             
             "cadastrapp.ficu.commune":"Commune",
             "cadastrapp.ficu.section":"Section", 
