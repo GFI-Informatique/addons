@@ -448,7 +448,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 autoLoad : false,
                 method : 'GET'
             }),
-            fields : [ 'comptecommunal', 'dniv', 'dpor', 'ccoaff_lib', 'annee', 'ddenom', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp', 'invar' ]
+            fields : [ 'comptecommunal', 'dniv', 'dpor', 'ccoaff_lib', 'annee', 'ddenom', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp', 'invar', 'dvltrt' ]
         });
 
         // Récupère la liste des batiments de la parcelle
@@ -515,20 +515,20 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     dataIndex : 'dniv',
                     width : 40
                 }, {
-                    header : "Porte",
+                    header : OpenLayers.i18n('cadastrapp.duc.door'),
                     dataIndex : 'dpor',
                     width : 40
                 }, {
-                    header : "Type",
+                    header : OpenLayers.i18n('cadastrapp.duc.type'),
                     dataIndex : 'ccoaff_lib',
                     width : 70
                 }, {
-                    header : "Date",
+                    header : OpenLayers.i18n('cadastrapp.duc.annee_construction'),
                     dataIndex : 'annee',
                     width : 40
                 }, {
-                    header : "Revenu",
-                    dataIndex : 'dvlrt',
+                    header : OpenLayers.i18n('cadastrapp.duc.revenu'),
+                    dataIndex : 'dvltrt',
                     width : 60
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.compte'),
@@ -559,7 +559,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     dataIndex : 'dprncp',
                     width : 150
                 }, {
-                    header : 'Invar',
+                    header : OpenLayers.i18n('cadastrapp.duc.invar'),
                     dataIndex : 'invar',
                     width : 150
                 } ]
