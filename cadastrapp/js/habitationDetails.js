@@ -87,7 +87,10 @@ GEOR.Addons.Cadastre.showHabitationDetails = function(batiment, niveau, porte, a
             article40Details.detent &&  article40Details.detent!='00' ? details = details + '<div> Etat d\'entretien ' + article40Details.detent + '</div>' : null;
             article40Details.dsupdc &&  article40Details.dsupdc!='00' ? details = details + '<div> Surface habitable ' + article40Details.dsupdc + ' m²</div>' : null;
             article40Details.dnbppr && article40Details.dnbpdc &&  article40Details.dnbpdc!='00' ? details = details + '<div> Nombre de pièces ' + article40Details.dnbpdc.replace(/^0+/,'') + ' dont ' + article40Details.dnbppr.replace(/^0+/,'') + ' principales</div>' : null;
-                    
+                 
+            article40Details.dmatgmdesc ? details = details + '<div class=\'habitationDetailsMenuTitle\'> Type de matériaux pour les murs</div><div>' + article40Details.dmatgmdesc + '</div>' : null;
+            article40Details.dmattodesc ? details = details + '<div class=\'habitationDetailsMenuTitle\'> Type de matériaux pour la toiture</div><div>' + article40Details.dmattodesc + '</div>' : null;
+            
             article40Details.dnbniv &&  article40Details.dnbniv!='00' ? details = details +  '<div> Nombre de niveaux ' + article40Details.dnbniv.replace(/^0+/,'' ) + '</div>' : null;  
             details = details + '<div class=\'habitationDetailsMenuTitle\'>Répartition des pièces</div>';
             article40Details.dnbsam &&  article40Details.dnbsam!='00' ? details = details +         '<div>' + article40Details.dnbsam.replace(/^0+/,'' ) + ' Salle(s) à manger</div>'  : null;  
@@ -109,6 +112,7 @@ GEOR.Addons.Cadastre.showHabitationDetails = function(batiment, niveau, porte, a
             article40Details.gesclc &&  article40Details.gesclc=='O' ? details = details + '<div>Escalier de service</div>' : null;
             article40Details.gaslc &&  article40Details.gaslc=='O' ? details = details + '<div>Ascenseur</div>' : null; 
             article40Details.gvorlc &&  article40Details.gvorlc=='O' ? details = details + '<div>Vide-ordure</div>' : null;
+
             
             return  new Ext.Panel({
                 title: 'Habitation    ' + article40Details.dnudes,
@@ -135,6 +139,9 @@ GEOR.Addons.Cadastre.showHabitationDetails = function(batiment, niveau, porte, a
           
           var details = '<div>' + article60Details.cconad_lib + ' ' + article60Details.dsudep + ' m²</div>'; 
           
+          article60Details.dmatgmdesc ? details = details + '<div class=\'habitationDetailsMenuTitle\'>Type de matériaux pour les murs</div><div>' + article60Details.dmatgmdesc + '</div>' : null;
+          article60Details.dmattodesc ? details = details + '<div class=\'habitationDetailsMenuTitle\'>Type de matériaux pour la toiture</div><div>' + article60Details.dmattodesc + '</div>' : null;
+        
           article60Details.dnbbai &&  article60Details.dnbbai!='00' ? details = details + '<div>' + article60Details.dnbbai.replace(/^0+/, '') + ' Baignoire(s)</div>' : null; 
           article60Details.dnbdou &&  article60Details.dnbdou!='00'? details = details + '<div>' + article60Details.dnbdou.replace(/^0+/, '') + ' Douche(s)</div>' : null; 
           article60Details.dnblav &&  article60Details.dnblav!='00' ? details = details + '<div>' + article60Details.dnblav.replace(/^0+/, '') + ' Lavabo(s)</div>' : null; 
