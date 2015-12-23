@@ -166,7 +166,6 @@ GEOR.Addons.Cadastre.getRefColModel = function(cgocommune) {
         id:'section',
 		dataIndex: 'section',
 		header: OpenLayers.i18n('cadastrapp.parcelle.references.col1'),
-		width: 100,
 		sortable: false,
 		editor: new Ext.form.ComboBox({
 		    mode: 'local',
@@ -182,7 +181,6 @@ GEOR.Addons.Cadastre.getRefColModel = function(cgocommune) {
         id: "parcelle",
         dataIndex: 'parcelle',
         header: OpenLayers.i18n('cadastrapp.parcelle.references.col2'),
-        width: 100,
         sortable: false,
         editor: new Ext.form.ComboBox({
             mode: 'local',

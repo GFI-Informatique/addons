@@ -47,9 +47,9 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
         id:'searchById',
         fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.city'),
         hiddenName: 'cgocommune',
-        width: 300,
         mode: 'local',
         value: ' ',
+        anchor: '95%',
         editable: true,
         selectOnFocus: true,
         tabIndex:0,
@@ -102,9 +102,9 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
         id:'searchByAdress',
         hiddenName: 'cgocommune',
         allowBlank: false,
-        width: 300,
         mode: 'local',
         value: '',
+        anchor: '95%',
         editable: true,
         tabIndex:0,
         displayField: 'displayname',
@@ -151,12 +151,13 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
         ds: GEOR.Addons.Cadastre.getVoidRefStore(),
         cm: GEOR.Addons.Cadastre.getRefColModel(null),
         clicksToEdit: 1,
-        autoExpandColumn: 'parcelle',
-        height: 100,
-        width: 300,
         tabIndex:1,
-        border: true,
+        autoHeight: true,
+        anchor: '95%',
         disabled: true,
+        viewConfig:{
+            forceFit:true,
+        },
         listeners: {
             beforeedit: function(e) {
                 if (e.column == 0) {
@@ -198,19 +199,17 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
     GEOR.Addons.Cadastre.rechercheParcelleWindow = new Ext.Window({
         title: OpenLayers.i18n('cadastrapp.parcelle.title'),
         frame: true,
-        autoScroll: true,
         minimizable: false,
         closable: true,
         resizable: true,
         draggable: true,
         constrainHeader: true,
         border: false,
+        layout: 'fit',
         labelWidth: 100,
         width: 450,
         defaults: {
-            autoHeight: true,
             bodyStyle: 'padding:10px',
-            flex: 1
         },
         listeners: {
             close: function(window) {
@@ -220,13 +219,14 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
         items: [ {
             xtype: 'tabpanel',
             activeTab: 0,
+            layoutOnTabChange: true,
+            defaults:{anchor: '95%',layoutOnTabChange: true},
             items: [ {
                 // ONGLET 1
                 title: OpenLayers.i18n('cadastrapp.parcelle.title.tab1'),
                 xtype: 'form',
                 defaultType: 'displayfield',
                 id: 'parcFirstForm',
-                height: 140,
                 items: [ parcCityCombo1, // combobox "villes"
                 {
                     value: OpenLayers.i18n('cadastrapp.parcelle.city.exemple'),
@@ -234,13 +234,11 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 }, parcelleGrid // grille "références"
                ]
             }, {
-
                 // ONGLET 2
                 title: OpenLayers.i18n('cadastrapp.parcelle.title.tab2'),
                 xtype: 'form',
                 defaultType: 'displayfield',
                 id: 'parcSecondForm',
-                height: 140,
                 items: [ parcCityCombo2, // combobox "villes"
                 {
                     value: OpenLayers.i18n('cadastrapp.parcelle.city.exemple'),
@@ -251,9 +249,9 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                     fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.town'),
                     hiddenName:'dvoilib',
                     xtype: 'combo',
-                    width: 190,
                     mode: 'local',
                     value: '',
+                    anchor: '95%',
                     forceSelection: false,
                     editable: true,
                     displayField: 'libellevoie',
@@ -299,6 +297,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 }, {
                     id: 'cfCadSearchByRef',
                     xtype: 'compositefield',
+                    anchor: '95%',
                     fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.street'),
                     disabled: true,
                     defaults: {
@@ -307,13 +306,13 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                     items: [ {
                         name: 'dnvoiri',
                         xtype: 'textfield',
-                        width: 50,
+                        anchor: '50%'
                     }, {
                         hiddenName: 'dindic',
                         xtype: 'combo',
-                        width: 50,
                         mode: 'local',
                         value: '',
+                        anchor: '50%',
                         triggerAction: 'all',
                         forceSelection: true,
                         editable: false,
@@ -324,24 +323,21 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         xtype: 'displayfield',
                         value: OpenLayers.i18n('cadastrapp.parcelle.street.exemple'),
                         fieldClass: 'displayfieldGray',
-                        width: 100,
                     }]
                 } ]
             }, {
-
                 // ONGLET 3
                 title: OpenLayers.i18n('cadastrapp.parcelle.title.tab3'),
                 xtype: 'form',
                 defaultType: 'displayfield',
                 id: 'parcThirdForm',
-                height: 140,
                 items: [ {
                     xtype: 'textfield',
                     id:'searchByRef',
                     allowBlank: false,
+                    anchor: '95%',
                     fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.ident'),
                     name: 'parcelle',
-                    width: 300,
                     validator: function(value)
                     {
                         if(!value || value.length<14) {
@@ -366,14 +362,12 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 defaultType: 'displayfield',
                 id: 'parcForthForm',
                 fileUpload: true,
-                height: 140,
                 items: [ {
                     xtype: 'textarea',
                     id:'searchByLot',
                     fieldLabel: OpenLayers.i18n('cadastrapp.parcelle.lot'),
                     name: 'parcelle',
-                    width: 300,
-                    height: 40,
+                    anchor: '95%',
                     validator: function(value)
                     {
                         if(Ext.getCmp('searchByLotPath').getValue().length<2 && (!value || value.length<14)) {
@@ -403,10 +397,9 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                     name: 'filePath',
                     xtype: 'fileuploadfield',
                     id:'searchByLotPath',
+                    anchor: '95%',
                     emptyText: OpenLayers.i18n('cadastrapp.parcelle.file.exemple'),
                     buttonText: OpenLayers.i18n('cadastrapp.parcelle.file.open'),
-                    height: 25,
-                    width: 300,
                     validator: function(value)
                     {
                         if(Ext.getCmp('searchByLot').getValue().length<2 && (!value || value.length<2)) {
@@ -428,7 +421,11 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
             listeners: {
                 beforetabchange: function(panel, newTab, currentTab){
                     GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].disable();
-                }
+                } ,
+                tabchange: function(panel, tab){
+                    panel.setActiveTab(tab);
+                    GEOR.Addons.Cadastre.rechercheParcelleWindow.doLayout();
+                }    
             }
         } ],
 
@@ -540,7 +537,6 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                 });
                             }
                             else{
-
                                 //TITRE de l'onglet resultat
                                 var resultTitle = "Recherche par lot";
 
