@@ -101,14 +101,14 @@ GEOR.Addons.Cadastre.showHabitationDetails = function(batiment, niveau, porte, a
             article40Details.dnblav &&  article40Details.dnblav!='00' ? details = details +   '<div>' + article40Details.dnblav.replace(/^0+/,'' ) + ' Lavabo(s)</div>'  : null; 
             article40Details.dnbdou &&  article40Details.dnbdou!='00' ? details = details +   '<div>' + article40Details.dnbdou.replace(/^0+/,'' ) + ' Douche(s)</div>'  : null; 
             article40Details.dnbwc &&  article40Details.dnbwc!='00' ? details = details +   '<div>' + article40Details.dnbwc.replace(/^0+/,'' ) + ' WC</div>' : null;                 
-            article40Details.geaulc &&  article40Details.geaulc=='0' ? details = details + '<div>Eau</div>' : null; 
-            article40Details.gelelc &&  article40Details.gelelc=='0'? details = details + '<div>Electricité</div>' : null; 
-            article40Details.ggazlc &&  article40Details.ggazlc=='0' ? details = details + '<div>Gaz</div>' : null;        
-            article40Details.gchclc &&  article40Details.gchclc=='0' ? details = details + '<div>Chauffage centrale</div>' : null; 
-            article40Details.gteglc &&  article40Details.gteglc=='0' ? details = details + '<div>Tout à l\'égout</div>' : null; 
-            article40Details.gesclc &&  article40Details.gesclc=='0' ? details = details + '<div>Escalier de service</div>' : null;
-            article40Details.gaslc &&  article40Details.gaslc=='0' ? details = details + '<div>Ascenseur</div>' : null; 
-            article40Details.gvorlc &&  article40Details.gvorlc=='0' ? details = details + '<div>Vide-ordure</div>' : null;
+            article40Details.geaulc &&  article40Details.geaulc=='O' ? details = details + '<div>Eau</div>' : null; 
+            article40Details.gelelc &&  article40Details.gelelc=='O'? details = details + '<div>Electricité</div>' : null; 
+            article40Details.ggazlc &&  article40Details.ggazlc=='O' ? details = details + '<div>Gaz</div>' : null;        
+            article40Details.gchclc &&  article40Details.gchclc=='O' ? details = details + '<div>Chauffage centrale</div>' : null; 
+            article40Details.gteglc &&  article40Details.gteglc=='O' ? details = details + '<div>Tout à l\'égout</div>' : null; 
+            article40Details.gesclc &&  article40Details.gesclc=='O' ? details = details + '<div>Escalier de service</div>' : null;
+            article40Details.gaslc &&  article40Details.gaslc=='O' ? details = details + '<div>Ascenseur</div>' : null; 
+            article40Details.gvorlc &&  article40Details.gvorlc=='O' ? details = details + '<div>Vide-ordure</div>' : null;
             
             return  new Ext.Panel({
                 title: 'Habitation    ' + article40Details.dnudes,
