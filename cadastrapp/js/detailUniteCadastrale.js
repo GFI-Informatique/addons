@@ -448,7 +448,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 autoLoad : false,
                 method : 'GET'
             }),
-            fields : [ 'comptecommunal', 'dniv', 'dpor', 'ccoaff_lib', 'annee', 'ddenom', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp', 'invar', 'dvltrt' ]
+            fields : [ 'comptecommunal', 'dniv', 'dpor', 'ccoaff_lib', 'jannat', 'annee', 'ddenom', 'dnomlp', 'dprnlp', 'epxnee', 'dnomcp', 'dprncp', 'invar', 'dvltrt' ]
         });
 
         // Récupère la liste des batiments de la parcelle
@@ -523,8 +523,8 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     dataIndex : 'ccoaff_lib',
                     width : 70
                 }, {
-                    header : OpenLayers.i18n('cadastrapp.duc.annee_construction'),
-                    dataIndex : 'annee',
+                    hidden : OpenLayers.i18n('cadastrapp.duc.annee_construction'),
+                    dataIndex : 'jannat',
                     width : 40
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.revenu'),
@@ -562,6 +562,9 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     header : OpenLayers.i18n('cadastrapp.duc.invar'),
                     dataIndex : 'invar',
                     width : 150
+                }, {
+                    dataIndex : 'annee',
+                    hidden : true
                 } ]
             }),
             // inline toolbars
