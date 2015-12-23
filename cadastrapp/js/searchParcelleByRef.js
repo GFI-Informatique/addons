@@ -256,7 +256,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                     value: '',
                     forceSelection: false,
                     editable: true,
-                    displayField: 'dvoilib',
+                    displayField: 'libellevoie',
                     valueField: 'dvoilib',
                     minLength: GEOR.Addons.Cadastre.minCharToSearch,
                     store: new Ext.data.JsonStore({
@@ -265,7 +265,11 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                             method: 'GET',
                             autoload: true
                         }),
-                        fields: ['dvoilib']
+                        fields: ['dvoilib', {
+                            name: 'libellevoie',
+                            convert: function(v, rec) {
+                                return rec.cconvo + ' ' + rec.dvoilib
+                            }}]
                     }),
                     listeners: {
                         beforequery: function(q) {
