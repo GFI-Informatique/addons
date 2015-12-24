@@ -48,8 +48,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                 });
         
                 GEOR.Addons.Cadastre.isWMSLayerAdded = false;
-                GEOR.Addons.Cadastre.addWMSLayer(WMSSetting);
-
+               
                 GEOR.Addons.Cadastre.selection=[];
                 GEOR.Addons.Cadastre.selection.state=[];
                 GEOR.Addons.Cadastre.selection.state.list = record.data.options.selectedStyle.colorState1;
@@ -88,9 +87,20 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                         items: GEOR.Addons.Cadastre.menu.items
                     } ],
                     listeners: {
+                    	"show": function() {
+                    		GEOR.Addons.Cadastre.addWMSLayer(WMSSetting);
+                    	},
                         "hide": function() {
                             initThis.item && initThis.item.setChecked(false);
                             initThis.components && initThis.components.toggle(false);
+                            
+                            // Remove WMS Layer
+                            if (GEOR.Addons.Cadastre.isWMSLayerAdded == true && GEOR.Addons.Cadastre.WMSLayer != null) {
+
+                                this.map.removeLayer(GEOR.Addons.Cadastre.WMSLayer);
+                                GEOR.Addons.Cadastre.WMSLayer.destroy();
+                                GEOR.Addons.Cadastre.WMSLayer = null;
+                            }
                             
                             // Remove all windows
                             if(GEOR.Addons.Cadastre.popup){
