@@ -239,6 +239,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
 				}, {
 					// Add auto completion on dvoilib using getVoie service
 					fieldLabel : OpenLayers.i18n('cadastrapp.parcelle.town'),
+					allowBlank : false,
 					hiddenName : 'dvoilib',
 					xtype : 'combo',
 					mode : 'local',
@@ -361,7 +362,8 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
 					name : 'parcelle',
 					anchor : '95%',
 					validator : function(value) {
-						if (Ext.getCmp('searchByLotPath').getValue().length < 2 && (!value || value.length < 14)) {
+						if (Ext.getCmp('searchByLotPath').getValue().length < 2 && value.length < 14) {
+							GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].disable();
 							return OpenLayers.i18n('cadastrapp.parcelle.lot.control');
 						} else {
 							return true;
@@ -390,24 +392,23 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
 					emptyText : OpenLayers.i18n('cadastrapp.parcelle.file.exemple'),
 					buttonText : OpenLayers.i18n('cadastrapp.parcelle.file.open'),
 					validator : function(value) {
-						if (Ext.getCmp('searchByLot').getValue().length < 2 && (!value || value.length < 2)) {
+						if (Ext.getCmp('searchByLot').getValue().length < 2 && value.length < 2) {
+							GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].disable();
 							return false;
 						} else {
+							GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
 							return true;
 						}
 					},
 					listeners : {
 						fileselected : function(element) {
 							Ext.getCmp('searchByLot').reset();
-						},
-						valid : function(element) {
-							GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].enable();
 						}
 					}
 				} ]
 			} ],
 			listeners : {
-				beforetabchange : function(panel, newTab, currentTab) {
+				tabchange : function(panel, newTab) {
 					GEOR.Addons.Cadastre.rechercheParcelleWindow.buttons[0].disable();
 				}
 			}
