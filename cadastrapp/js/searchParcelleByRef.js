@@ -219,7 +219,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
 				xtype : 'form',
 				defaultType : 'displayfield',
 				id : 'parcFirstForm',
-				height : 100,
+				height : 150,
 				items : [ parcCityCombo1, // combobox "villes"
 				{
 					value : OpenLayers.i18n('cadastrapp.parcelle.city.exemple'),

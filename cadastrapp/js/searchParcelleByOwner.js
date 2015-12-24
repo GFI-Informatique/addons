@@ -23,13 +23,13 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
         fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.city'),
         hiddenName : 'cgocommune',
         allowBlank : false,
-        width : 300,
         mode : 'local',
         value : '',
         forceSelection : true,
         editable : true,
         displayField : 'displayname',
         valueField : 'cgocommune',
+        anchor : '95%',
         store : GEOR.Addons.Cadastre.getPartialCityStore(),
         listeners : {
             beforequery : function(q) {
@@ -72,13 +72,13 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
         fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.city'),
         hiddenName : 'cgocommune',
         allowBlank : false,
-        width : 300,
         mode : 'local',
         value : '',
         forceSelection : true,
         editable : true,
         displayField : 'displayname',
         valueField : 'cgocommune',
+        anchor : '95%',
         store : GEOR.Addons.Cadastre.getPartialCityStore(),
         // Recherche de la ville demandée avec gestion de l'autocomplétion
         listeners : {
@@ -123,9 +123,11 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
         clicksToEdit : 1,
         ds : GEOR.Addons.Cadastre.getVoidProprietaireStore(),
         cm : GEOR.Addons.Cadastre.getProprietaireColModel(),
-        autoExpandColumn : 'proprietaire',
-        height : 100,
-        width : 300,
+        autoHeight:true ,
+        viewConfig : {
+			forceFit : true,
+		},
+        anchor : '95%',
         border : true,
         disabled : true,
         listeners : {
@@ -160,19 +162,17 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
     GEOR.Addons.Cadastre.proprietaireWindow = new Ext.Window({
         title : OpenLayers.i18n('cadastrapp.proprietaire.title'),
         frame : true,
-        autoScroll : true,
         minimizable : false,
         closable : true,
         resizable : true,
         draggable : true,
         constrainHeader : true,
         border : false,
+		layout : 'fit',
         labelWidth : 100,
         width : 450,
         defaults : {
-            autoHeight : true,
             bodyStyle : 'padding:10px',
-            flex : 1
         },
         listeners : {
             close : function(window) {
@@ -182,13 +182,17 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
         items : [ {
             xtype : 'tabpanel',
             activeTab : 0,
+            defaults : {
+				anchor : '95%',
+				layoutOnTabChange : true,
+				autoScroll : true
+			},
             items : [ {
                 // ONGLET "Nom Usage ou Naissance"
                 id : 'propFirstForm',
                 xtype : 'form',
                 title : OpenLayers.i18n('cadastrapp.proprietaire.title.tab1'),
                 defaultType : 'displayfield',
-                height : 150,
                 items : [ propCityCombo1, {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
                     fieldClass : 'displayfieldGray'
@@ -198,10 +202,10 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.name'),
                     xtype : 'combo',
                     allowBlank : false,
-                    width : 300,
                     mode : 'local',
                     value : '',
                     forceSelection : false,
+                    anchor : '95%',
                     editable : true,
                     displayField : 'displayname',
                     valueField : 'ddenom',
@@ -255,8 +259,6 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                 xtype : 'form',
                 title : OpenLayers.i18n('cadastrapp.proprietaire.title.tab2'),
                 defaultType : 'displayfield',
-                height : 150,
-
                 items : [ propCityCombo2, {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
                     fieldClass : 'displayfieldGray'
@@ -269,27 +271,29 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                 title : OpenLayers.i18n('cadastrapp.proprietaire.title.tab3'),
                 defaultType : 'displayfield',
                 fileUpload : true,
-                height : 150,
                 items : [ {
                     fieldLabel : OpenLayers.i18n('cadastrapp.proprietaire.file.path'),
                     name : 'filePath',
                     xtype : 'fileuploadfield',
+                    anchor : '95%',
                     emptyText : OpenLayers.i18n('cadastrapp.proprietaire.file.exemple'),
                     buttonText : OpenLayers.i18n('cadastrapp.proprietaire.file.open'),
-                    height : 25,
-                    width : 300
+                    validator : function(value) {
+						if (value.length < 2) {
+							GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].disable();
+							return false;
+						} else {
+							GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
+							return true;
+						}
+					},
                 }, {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.file.explanation'),
                     fieldClass : 'displayfieldGray'
-                } ],
-                listeners : {
-                    afterrender : function(element) {
-                        GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
-                    }
-                }
+                } ]
             } ],
             listeners : {
-                beforetabchange : function(panel, newTab, currentTab) {
+                tabchange : function(panel, newTab) {
                     if (GEOR.Addons.Cadastre.proprietaireWindow) {
                         GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].disable();
                     }

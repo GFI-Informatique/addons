@@ -267,7 +267,14 @@ GEOR.Addons.Cadastre.getProprietaireColModel = function() {
 				header: OpenLayers.i18n('cadastrapp.proprietaire.proprietaires.col1'),
 				width: 100,
 				sortable: false,
-				editor: new Ext.form.TextField({ allowBlank: false })
+				editor: new Ext.form.TextField({ 
+					allowBlank: false, 
+					 listeners : {
+				            valid : function(e) {
+				            	GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable()
+				            }
+				            }
+					})
 			}
 		]);		
 	}
