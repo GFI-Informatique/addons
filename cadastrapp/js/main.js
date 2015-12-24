@@ -80,6 +80,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                     resizable: true,
                     border: false,
                     constrainHeader: true,
+                    boxMaxWidth: 650,
                     cls: 'cadastrapp',
                     items: [ {
                         xtype: 'toolbar',
