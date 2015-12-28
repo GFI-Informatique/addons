@@ -239,7 +239,6 @@ GEOR.Addons.Cadastre.getResultParcelleColModel = function() {
 			dataIndex: 'adresse',
 			header: OpenLayers.i18n('cadastrapp.parcelle.result.adresse'),
 			sortable: true,
-            width: 250
 		},
 		{
 			id:'dcntpa',
