@@ -6,12 +6,14 @@ Ext.namespace("GEOR.Addons.Cadastre");
 GEOR.Addons.Cadastre.initResultProprietaireWindow = function() {
 
     var ownerGrid = new Ext.grid.GridPanel({
+    	anchor: '100%',
         store : new Ext.data.JsonStore({
             autoDestroy : true,
             storeId : "resultOwnerStore",
             fields : [ 'comptecommunal', 'ddenom' ],
             autoload : false
         }),
+        autoExpandColumn: 'ddenom',
         colModel : new Ext.grid.ColumnModel({
             defaults : {
                 sortable : true
@@ -19,16 +21,14 @@ GEOR.Addons.Cadastre.initResultProprietaireWindow = function() {
             columns : [ {
                 id : 'comptecommunal',
                 header : OpenLayers.i18n('cadastrapp.result.owner.comptecommunal'),
-                width : 35,
+                width : 110,
                 dataIndex : 'comptecommunal'
             }, {
+            	id : 'ddenom',
                 header : OpenLayers.i18n('cadastrapp.result.owner.ddenom'),
                 dataIndex : 'ddenom'
             } ]
         }),
-        viewConfig : {
-            forceFit : true,
-        },
         sm : new Ext.grid.RowSelectionModel({
             multiSelect : true,
         }),
@@ -39,6 +39,7 @@ GEOR.Addons.Cadastre.initResultProprietaireWindow = function() {
     GEOR.Addons.Cadastre.result.owner.window = new Ext.Window({
         title : OpenLayers.i18n('cadastrapp.result.owner.title'),
         frame : true,
+        layout:'anchor',
         autoScroll : true,
         minimizable : false,
         closable : true,
@@ -46,7 +47,7 @@ GEOR.Addons.Cadastre.initResultProprietaireWindow = function() {
         draggable : true,
         constrainHeader : true,
         border : false,
-        width : 580,
+        width : 500,
         height : 200,
         listeners : {
             close : function(window) {
