@@ -287,8 +287,10 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
 
     var currentTabGrid = new Ext.grid.GridPanel({
         title : title,
+        autoExpandColumn: 'adresse',
         id : 'resultParcelleWindowTab' + GEOR.Addons.Cadastre.result.tabs.items.length,
         border : true,
+        anchor : '100%',
         closable : true,
         store : (result != null) ? result : new Ext.data.Store(),
         colModel : GEOR.Addons.Cadastre.getResultParcelleColModel(),
