@@ -1,42 +1,5 @@
 Ext.namespace("GEOR.Addons.Cadastre");
 
-// structure de l'enregistrement pour ajouter des lignes dans un tableau de
-// résultats
-GEOR.Addons.Cadastre.resultParcelleRecord = Ext.data.Record.create([ {
-    name : 'adresse',
-    mapping : 'adresse'
-}, {
-    name : 'cgocommune',
-    mapping : 'cgocommune'
-}, {
-    name : 'cconvo',
-    mapping : 'cconvo'
-}, {
-    name : 'ccopre',
-    mapping : 'ccopre'
-}, {
-    name : 'ccosec',
-    mapping : 'ccosec'
-}, {
-    name : 'dindic',
-    mapping : 'dindic'
-}, {
-    name : 'dnupla',
-    mapping : 'dnupla'
-}, {
-    name : 'dnvoiri',
-    mapping : 'dnvoiri'
-}, {
-    name : 'dvoilib',
-    mapping : 'dvoilib'
-}, {
-    name : 'parcelle',
-    mapping : 'parcelle'
-}, {
-    name : 'surface',
-    mapping : 'surface'
-} ]);
-
 /**
  * Init Global windows containing all tabs
  */
@@ -426,9 +389,6 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds) {
                 params : params,
                 success : function(response) {
 
-                    var result = Ext.decode(response.responseText);
-                    var rowIndex;
-
                     // si la fenetre de recherche n'est pas ouverte
                     if (!GEOR.Addons.Cadastre.result.plot.window || !GEOR.Addons.Cadastre.result.tabs || !GEOR.Addons.Cadastre.result.tabs.getActiveTab()) {
 
@@ -436,7 +396,7 @@ GEOR.Addons.Cadastre.showTabSelection = function(parcelsIds) {
 
                     // si la fenêtre est ouverte on ajoute les lignes
                     } else {
-                        GEOR.Addons.Cadastre.addResultToTab(result);
+                        GEOR.Addons.Cadastre.addResultToTab(response.responseText);
                     }
                 },
                 failure : function(result) {
@@ -672,23 +632,17 @@ GEOR.Addons.Cadastre.printSelectedBordereauParcellaire = function() {
 GEOR.Addons.Cadastre.addResultToTab = function(result) {
 
     if (result && GEOR.Addons.Cadastre.result.tabs.getActiveTab() && GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore()) {
-        Ext.each(result, function(element, currentIndex) {
+    	
+    	var jsonStore = GEOR.Addons.Cadastre.getResultParcelleStore(result, false);
+    	
+    	var parcelleList = Ext.decode(result);
+    	Ext.each(parcelleList, function(element, currentIndex) {
             
             // Add parcelle only if not already in
             if (GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle) == -1) {
 
-                // création de l'enregistrement
-                var newRecord = new GEOR.Addons.Cadastre.resultParcelleRecord({
-                    parcelle : element.parcelle,
-                    adresse : (element.adresse) ? element.adresse : element.dnvoiri + element.dindic + ' ' + element.cconvo + ' ' + element.dvoilib,
-                    cgocommune : element.cgocommune,
-                    ccopre : element.ccopre,
-                    ccosec : element.ccosec,
-                    dnupla : element.dnupla,
-                    dcntpa : element.dcntpa,
-                });
                 // ajout de la ligne
-                GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore().add(newRecord);
+                GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore().add(jsonStore.getAt(currentIndex));
                 // Ajout à la selection
                 GEOR.Addons.Cadastre.getFeaturesWFSAttribute(element.parcelle);
             }
