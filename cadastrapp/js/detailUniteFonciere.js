@@ -103,6 +103,7 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
         store: fiufGlobalInfosStore,
         name: 'FIUF_globalInformations',
         xtype: 'editorgrid',
+        autoExpandColumn: 'surface',
         colModel: new Ext.grid.ColumnModel({
             defaults: {
                 sortable: false,
@@ -115,12 +116,13 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
                 header: OpenLayers.i18n('cadastrapp.surface'),
                 width: 100,
                 renderer: Ext.util.Format.numberRenderer('0,000.00 m²'),
-                dataIndex: 'surface'
+                dataIndex: 'surface',
+                id: 'surface'
             }, ],
         }),
-        height: 110,
-        width: 210,
+        columnWidth: .4,
         border: true,
+        autoHeight : true,
     });
 
     // Declaration et construction du tableau des coproprietaires
@@ -129,21 +131,22 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
         store: fiufProprietaireStore,
         name: 'Fiuf_Proprietaire',
         xtype: 'editorgrid ',
+        autoExpandColumn: 'ddenom',
         colModel: new Ext.grid.ColumnModel({
             columns: [ {
                 header: 'Id propriétaire',
-                width: 120,
+                width: 110,
                 dataIndex: 'comptecommunal'
             }, 
             {
+            	id : 'ddenom',
                 header: 'Nom',
-                width: 170,
                 dataIndex: 'ddenom'
             },],
         }),
-        height: 110,
-        width: 300,
+        columnWidth: .6,
         border: true,
+        autoHeight : true,
     });
 
     // Declaration et construction du tableau de liste de parcelles
@@ -153,10 +156,11 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
         store: fiufParcelleListStore,
         name: 'Fiuf_ParcelleList',
         xtype: 'editorgrid',
+        autoExpandColumn: 'adresse',
+        anchor : '100%',
         colModel: new Ext.grid.ColumnModel({
             defaults: {
-                width: 100,
-                sortable: false,
+                sortable: true,
             },
             columns: [ {
                 // colonne parcelle
@@ -177,22 +181,19 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
                 renderer: Ext.util.Format.numberRenderer('0,000.00 m²'),
             }, {
                 // colonne adresse postale
+            	id : 'adresse',
                 header: OpenLayers.i18n('cadastrapp.parcelle.adresse.postale'),
-                width: 200,
                 dataIndex: 'adresse'
             } ],
         }),
-        height: 100,
-        border: true,
+        autoHeight : true,
     });
     
     
-    var upCompositeField = new Ext.form.CompositeField({
+    var upCompositeField = new Ext.Container({
         id:"cadastrappUfComposite",
-        margins: {
-            right: 10,
-            left: 10
-        },
+        layout:"column",
+        anchor : '100%',
         items: [fiufGlobalInfosGrid, fiufProprietaireGrid]
     })
     
@@ -203,13 +204,13 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
         title: parcelleId,
         frame: true,
         bodyPadding: 10,
-        autoScroll: true,
-        width: 600,
+        width: 500,
+        layout:'anchor',
         closable: true,
         resizable: true,
         draggable: true,
+        autoScroll: true,
         constrainHeader: true,
-
         items: [ upCompositeField, fiufParcelleListGrid ],
         listeners: {
             close: function(window) {
