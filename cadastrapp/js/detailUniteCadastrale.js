@@ -195,7 +195,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             name : 'Fiuc_Proprietaire',
             xtype : 'editorgrid',
             bbar : bbar,
-            autoExpandMax : 825,
+            autoExpandColumn : 'adresse',
             height : 300,
             sm : fiucProprietairesSM,
             colModel : new Ext.grid.ColumnModel({
@@ -210,12 +210,13 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.compte'),
                     dataIndex : 'comptecommunal',
-                    width : 100
+                    width : 110
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.nom'),
                     dataIndex : 'ddenom',
                     width : 200
                 }, {
+                	id : 'adresse',
                     header : OpenLayers.i18n('cadastrapp.duc.adresse'),
                     dataIndex : 'adress',
                     width : 250
@@ -332,7 +333,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             name : 'Fiuc_Co_Proprietaire',
             xtype : 'editorgrid',
             bbar : bbar,
-            autoExpandMax : 825,
+            autoExpandColumn : 'adresse',
             height : 300,
             sm : fiucCoProprietairesSM,
             colModel : new Ext.grid.ColumnModel({
@@ -347,12 +348,13 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.compte'),
                     dataIndex : 'comptecommunal',
-                    width : 100
+                    width : 110
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.nom'),
                     dataIndex : 'ddenom',
                     width : 200
                 }, {
+                	id : 'adresse',
                     header : OpenLayers.i18n('cadastrapp.duc.adresse'),
                     dataIndex : 'adress',
                     width : 250
@@ -500,7 +502,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
             stateful : true,
             name : 'Fiuc_Batiments',
             xtype : 'gridview',
-            autoExpandMax : 825,
+            autoExpandColumn : 'ddenom',
             height : 280,
             autoScroll : true,
             sm : new Ext.grid.RowSelectionModel({
@@ -533,8 +535,9 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 }, {
                     header : OpenLayers.i18n('cadastrapp.duc.compte'),
                     dataIndex : 'comptecommunal',
-                    width : 100
+                    width : 110
                 }, {
+                	id : 'ddenom',
                     header : OpenLayers.i18n('cadastrapp.duc.denomination'),
                     dataIndex : 'ddenom',
                     width : 200
