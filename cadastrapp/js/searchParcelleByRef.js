@@ -448,8 +448,8 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
 										method : 'GET',
 										url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getParcelle',
 										params : params,
-										success : function(response) {
-											GEOR.Addons.Cadastre.addResultToTab(result);
+										success : function(result) {
+											GEOR.Addons.Cadastre.addResultToTab(result.responseText);
 										},
 										failure : function(result) {
 											alert('ERROR');
