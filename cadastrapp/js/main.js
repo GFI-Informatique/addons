@@ -91,8 +91,11 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                     		GEOR.Addons.Cadastre.addWMSLayer(WMSSetting);
                     	},
                         "hide": function() {
-                            initThis.item && initThis.item.setChecked(false);
-                            initThis.components && initThis.components.toggle(false);
+                          
+                        	// deactivate all controls
+                        	 Ext.each(GEOR.Addons.Cadastre.menu.cadastrappControls, function(control, index) {
+                                 control.deactivate();
+                             });
                             
                             // Remove WMS Layer
                             if (GEOR.Addons.Cadastre.isWMSLayerAdded == true && GEOR.Addons.Cadastre.WMSLayer != null) {
