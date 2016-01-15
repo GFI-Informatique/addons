@@ -186,12 +186,12 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
      * Method: _onCheckchange Callback on checkbox state changed
      */
     _onCheckchange: function(item, checked) {
-        if (checked) {
-            this.window.show();
-            this.window.alignTo(Ext.get(this.map.div), "t-t", [ 0, 5 ], true);
-        } else {
-            this.window.hide();
-        }
+    	if (checked && !this.window.isVisible()) {
+    		this.window.show();
+    		this.window.alignTo(Ext.get(this.map.div), "t-t", [ 0, 5 ], true);
+    	} else {
+    		this.window.hide();
+    	}
     },
 
     /**
