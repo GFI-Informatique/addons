@@ -137,10 +137,28 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                     id : 'requestType',
                     width : 280,
                     listeners : {
-                        valid : function(element) {
-                            if (OpenLayers.i18n('cadastrapp.demandeinformation.type.P3') == element.value
-                                    || 'P3' == element.value) {
+                    	select : function(element, rec, idx) {
+                            
+                    		var selectedValue = element.value;
+                    		//on vides les champs remplis
+                    		GEOR.Addons.Cadastre.request.informationsWindow.items.items[0].getForm().reset();
+                    		
+                    		Ext.getCmp('requestType').setValue(selectedValue);
+                    		
+                            //on supprime les objets de demande déjà faites
+                            Ext.getCmp('requestObjectDemande').removeAll();
+                        	
+                            if (OpenLayers.i18n('cadastrapp.demandeinformation.type.P3') == selectedValue
+                                    || 'P3' == selectedValue) {
                                 Ext.getCmp('requestCNI').enable();
+                                Ext.getCmp('requestCodePostal').disable();
+                                Ext.getCmp('requestLastName').disable();
+                                Ext.getCmp('requestFirstName').disable();
+                                Ext.getCmp('requestAdress').disable();
+                                Ext.getCmp('requestCommune').disable();
+                                Ext.getCmp('requestMail').disable();
+                                Ext.getCmp('radioGroupDemandeRealisee').disable();
+                                Ext.getCmp('radioGroupDemandeTransmission').disable();
                             } else {
                                 Ext.getCmp('requestCNI').enable();
                                 Ext.getCmp('requestLastName').enable();
@@ -209,8 +227,13 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                                         }
 
                                         // Add object Request
-                                        Ext.getCmp('requestObjectDemande').add(GEOR.Addons.Cadastre.request.createObjectRequest());
-                                        Ext.getCmp('requestObjectDemande').doLayout();
+                                        var typeDemandeur = Ext.getCmp('requestType').getValue();
+                                        if (OpenLayers.i18n('cadastrapp.demandeinformation.type.P3') ==  typeDemandeur
+                                                || 'P3' ==  typeDemandeur){
+                                        	Ext.getCmp('requestObjectDemande').add(GEOR.Addons.Cadastre.request.createObjectRequest());
+                                            Ext.getCmp('requestObjectDemande').doLayout();
+                                        }
+                                        
 
                                     }
                                 },
@@ -226,7 +249,19 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                     id : 'requestLastName',
                     width : 280,
                     allowBlank : false,
-                    disabled : true
+                    disabled : true,
+                    listeners : {
+                        change : function(textfield, newValue, oldValue) {
+                        	
+                        	var typeDemandeur = Ext.getCmp('requestType').getValue();
+                        	 // Add object Request
+                            if (OpenLayers.i18n('cadastrapp.demandeinformation.type.P3') !=  typeDemandeur
+                                    && 'P3' !=  typeDemandeur){
+                            	Ext.getCmp('requestObjectDemande').add(GEOR.Addons.Cadastre.request.createObjectRequest());
+                                Ext.getCmp('requestObjectDemande').doLayout();
+                            }
+                        }
+                    }
                 }, {
                     fieldLabel : OpenLayers.i18n('cadastrapp.demandeinformation.prenom'),
                     id : 'requestFirstName',
