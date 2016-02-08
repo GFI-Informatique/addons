@@ -356,7 +356,8 @@
 			"cadastrapp.ObjectRequest.parcelle.commune" : "commune...",
 			"cadastrapp.ObjectRequest.parcelle.section" : "section...",
 			"cadastrapp.ObjectRequest.parcelle.numero" : "numero...",
-			"cadastrapp.ObjectRequest.parcelle.proprietaire" : "proprietaire..."
+			"cadastrapp.ObjectRequest.parcelle.proprietaire" : "proprietaire...",
+			"cadastrapp.demandeinformation.alert.mandatory.field" : "Some fields are mandatory."
         },
         "fr": {
        		"cadastrapp.no": "non",
@@ -691,9 +692,9 @@
 			"cadastrapp.ObjectRequest.parcelle.commune" : "commune...",
 			"cadastrapp.ObjectRequest.parcelle.section" : "section...",
 			"cadastrapp.ObjectRequest.parcelle.numero" : "numero...",
-			"cadastrapp.ObjectRequest.parcelle.proprietaire" : "proprietaire..."
+			"cadastrapp.ObjectRequest.parcelle.proprietaire" : "proprietaire...",
 			
-			cadastrapp.demandeinformation.alert.mandatory.field : "Des champs obligatoires ne sont pas renseignés."
+			"cadastrapp.demandeinformation.alert.mandatory.field" : "Des champs obligatoires ne sont pas renseignés."
         }
     }
 }
