@@ -261,6 +261,7 @@
              "cadastrapp.demandeinformation.comptecommunal": "Owner Id",
              "cadastrapp.demandeinformation.annuler": "Cancel request",
              "cadastrapp.demandeinformation.imprimer": "Print request",
+             "cadastrapp.demandeinformation.generate.document": "Generate documents",
              "cadastrapp.demandeinformation.object.type.1":"Owner id",
              "cadastrapp.demandeinformation.object.type.2":"Plot",
              "cadastrapp.demandeinformation.object.type.3":"co-owners",
@@ -347,7 +348,15 @@
 			"cadastrapp.bordereauparcellaire.title" : "Plot information",
 			"cadastrapp.bordereauparcellaire.data" : "Owners information",
 			"cadastrapp.bordereauparcellaire.data.without" : "Without owner information",
-			"cadastrapp.bordereauparcellaire.data.with" : "With owner information"
+			"cadastrapp.bordereauparcellaire.data.with" : "With owner information",
+			
+			"cadastrapp.ObjectRequest.idParcelle" : "id...",
+			"cadastrapp.ObjectRequest.comptecommunal" : "id...",
+			"cadastrapp.ObjectRequest.coPro" : "id...",
+			"cadastrapp.ObjectRequest.parcelle.commune" : "commune...",
+			"cadastrapp.ObjectRequest.parcelle.section" : "section...",
+			"cadastrapp.ObjectRequest.parcelle.numero" : "numero...",
+			"cadastrapp.ObjectRequest.parcelle.proprietaire" : "proprietaire..."
         },
         "fr": {
        		"cadastrapp.no": "non",
@@ -590,6 +599,7 @@
            	 "cadastrapp.demandeinformation.comptecommunal": "Compte communal",
              "cadastrapp.demandeinformation.annuler": "Annuler la demande",
              "cadastrapp.demandeinformation.imprimer": "Imprimer la demande",
+             "cadastrapp.demandeinformation.generate.document": "Generer les documents",
              
              "cadastrapp.demandeinformation.alert.title":"Demande d'information impossible",
           	 "cadastrapp.demandeinformation.alert.demande":" Erreur lors de la vérification de la demande, aucune demande ne peut être réalisée pour l'instant",
@@ -673,7 +683,17 @@
 			"cadastrapp.bordereauparcellaire.title" : "Bordereau Parcellaire",
 			"cadastrapp.bordereauparcellaire.data" : "Données propriétaires",
 			"cadastrapp.bordereauparcellaire.data.without" : "Sans données nominatives",
-			"cadastrapp.bordereauparcellaire.data.with" : "Avec données nominatives"
+			"cadastrapp.bordereauparcellaire.data.with" : "Avec données nominatives",
+			
+			"cadastrapp.ObjectRequest.idParcelle" : "id...",
+			"cadastrapp.ObjectRequest.comptecommunal" : "id...",
+			"cadastrapp.ObjectRequest.coPro" : "id...",
+			"cadastrapp.ObjectRequest.parcelle.commune" : "commune...",
+			"cadastrapp.ObjectRequest.parcelle.section" : "section...",
+			"cadastrapp.ObjectRequest.parcelle.numero" : "numero...",
+			"cadastrapp.ObjectRequest.parcelle.proprietaire" : "proprietaire..."
+			
+			cadastrapp.demandeinformation.alert.mandatory.field : "Des champs obligatoires ne sont pas renseignés."
         }
     }
 }

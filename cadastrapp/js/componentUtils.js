@@ -11,7 +11,7 @@ GEOR.Addons.Cadastre.Component.getComboCommune = function(id) {
 			allowBlank : false,
 			mode : 'local',
 			value : '',
-			emptyText:'Commune...',
+			emptyText:OpenLayers.i18n('cadastrapp.ObjectRequest.parcelle.commune'),
 			anchor : '95%',
 			editable : true,
 			tabIndex : 0,
@@ -61,7 +61,7 @@ GEOR.Addons.Cadastre.Component.getComboProprioByCommune = function(id, communeLi
 		    allowBlank : false,
 		    mode : 'local',
 		    value : '',
-		    emptyText:'Propriétaire...',
+		    emptyText:OpenLayers.i18n('cadastrapp.ObjectRequest.parcelle.proprietaire'),
 		    forceSelection : false,
 		    anchor : '95%',
 		    editable : true,
@@ -123,7 +123,7 @@ GEOR.Addons.Cadastre.Component.getComboSectionByCommune = function(id, communeLi
 		    allowBlank : false,
 		    mode : 'local',
 		    value : '',
-		    emptyText:'Section...',
+		    emptyText:OpenLayers.i18n('cadastrapp.ObjectRequest.parcelle.section'),
 		    forceSelection : false,
 		    anchor : '95%',
 		    editable : true,
@@ -146,7 +146,7 @@ GEOR.Addons.Cadastre.Component.getComboParcelleBySection = function(id) {
 		    allowBlank : false,
 		    mode : 'local',
 		    value : '',
-		    emptyText:'Parcelle...',
+		    emptyText:OpenLayers.i18n('cadastrapp.ObjectRequest.parcelle.numero'),
 		    forceSelection : false,
 		    anchor : '95%',
 		    editable : true,
@@ -166,3 +166,26 @@ GEOR.Addons.Cadastre.Component.getComboParcelleBySection = function(id) {
 		});
 	}
 
+/**
+ * checkBox
+ */
+GEOR.Addons.Cadastre.Component.getCheckBoxGroup = function(bp,rb, id) {
+	
+	return new Ext.form.CheckboxGroup({
+	    allowBlank: false,
+        itemId: 'typePrint' + id,
+        items: [
+        {
+            xtype: 'checkbox',
+            boxLabel: 'Relevé de propriété',
+            checked: rb,
+            inputValue: 'RP'
+        },
+        {
+         xtype: 'checkbox',
+            boxLabel: 'Bordereau parcellaire',
+            checked: bp,
+            inputValue: 'BP'
+        }] 
+	})
+}
