@@ -52,29 +52,105 @@ GEOR.Addons.Cadastre.request.removeAllObjectRequest = function() {
  * création du conteneur pour les propriétaire
  */
 GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio = function(name,id) {
-	var comboCom = GEOR.Addons.Cadastre.Component.getComboCommune(id);
-	var comboProprio = GEOR.Addons.Cadastre.Component.getComboProprioByCommune(id, 'communeList');
-	var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(false,true,id);
+    var comboCom = GEOR.Addons.Cadastre.Component.getComboCommune(id);
+    var comboProprio = GEOR.Addons.Cadastre.Component.getComboProprioByCommune(id, 'communeList');
+    var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(false,true,id);
 
-	comboCom.on('beforeselect',function(combo, record, index){
-		//on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cache)
-		Ext.getCmp('proprioList'+id).reset();
-		comboProprio.getStore().removeAll( true );; 
-	});
-	comboCom.on('valid',function(combo){
-		Ext.getCmp('proprioList'+id).enable();
-	});
-	return new Ext.Container({
+    comboCom.on('beforeselect',function(combo, record, index){
+        //on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cache)
+        Ext.getCmp('proprioList'+id).reset();
+        comboProprio.getStore().removeAll( true );; 
+    });
+    comboCom.on('valid',function(combo){
+        Ext.getCmp('proprioList'+id).enable();
+    });
+    return new Ext.Container({
 
-		layout : 'column',
-		renderTo   : Ext.get(name + id),
-		id :  'ObjectRequestDynField' + id,
-		width : Ext.getCmp('objectRequestField'+id).getWidth(),
-		anchor: '50%',
-		items : [ comboCom,
-		          comboProprio,
-		          checkBox]
-	});
+        layout : 'column',
+        renderTo   : Ext.get(name + id),
+        id :  'ObjectRequestDynField' + id,
+        width : Ext.getCmp('objectRequestField'+id).getWidth(),
+        anchor: '50%',
+        items : [ comboCom,
+                  comboProprio,
+                  checkBox]
+    });
+}
+
+/**
+ * création du conteneur pour le lot de coproriété
+ */
+GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(name, id) {
+    var comboCom = GEOR.Addons.Cadastre.Component.getComboCommune(id);
+    var comboSection = GEOR.Addons.Cadastre.Component.getComboSectionByCommune(id, 'communeList');
+    var comboParcelle = GEOR.Addons.Cadastre.Component.getComboParcelleBySection(id, 'sectionList');
+    var comboProprio = GEOR.Addons.Cadastre.Component.getComboProprioByCommune(id, 'proprioList');
+    var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(false,true,id);
+
+
+    //on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cache)
+    comboCom.on('beforeselect', function(combo, record, index) {
+        comboSection.reset();
+        comboSection.getStore().removeAll(true);
+        Ext.getCmp('proprioList' + id).reset();
+        comboProprio.getStore().removeAll(true);;
+    });
+
+    comboCom.on('select', function(element, rec, idx) {
+        comboSection.enable();
+        var cgocommune = Ext.getCmp('communeList' + id).value;
+        var myStore = GEOR.Addons.Cadastre.getSectionStore(cgocommune);
+        comboSection.bindStore(myStore);
+    });
+
+    //on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cache)
+    comboSection.on('beforeselect', function(combo, record, index) {
+        comboParcelle.reset();
+        comboParcelle.getStore().removeAll(true);
+        Ext.getCmp('proprioList' + id).reset();
+        comboProprio.getStore().removeAll(true);;
+    });
+
+    comboSection.on('select', function(element, rec, idx) {
+        var comboSection = Ext.getCmp('sectionList' + id).value;
+        var parcelleStrore = Ext.getCmp('parcelleList' + id).getStore();
+        var cgocommune = Ext.getCmp('communeList' + id).value
+        GEOR.Addons.Cadastre.loadParcelleStore(parcelleStrore, cgocommune, comboSection);
+        //comboParcelle.bindStore(myStore);
+        comboParcelle.enable();
+
+    });
+
+    //on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cache)
+    comboParcelle.on('beforeselect', function(combo, record, index) {
+        Ext.getCmp('proprioList' + id).reset();
+        comboProprio.getStore().removeAll(true);
+        ;
+    });
+
+    comboParcelle.on('select', function(element, rec, idx) {
+        var cgocommune = Ext.getCmp('communeList' + id).value
+        var cgoSection = Ext.getCmp('sectionList' + id).value;
+        var cgoParcelle = Ext.getCmp('parcelleList' + id).value;
+        if (GEOR.Addons.Cadastre.isCNIL2 || GEOR.Addons.Cadastre.isCNIL1) {
+            //comboProprio.enable();
+            Ext.getCmp('proprioList' + id).enable();
+        }
+
+        // recherche et chargement proprio
+        //Ext.getCmp('proprioList'+id).enable();     
+    });
+
+    return new Ext.Container({
+
+        layout : 'column',
+        renderTo : Ext.get(name + id),
+        id : 'ObjectRequestDynField' + id,
+        width : Ext.getCmp('objectRequestField' + id).getWidth(),
+        anchor : '50%',
+        items : [ comboCom, comboSection, comboParcelle, comboProprio, checkBox ]
+    });
+
 }
 
 /**
@@ -137,7 +213,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle = function(name,id
 }
 
 /**
- * création du conteneur pour les id parcelle + compte communal + co(propriété
+ * création du conteneur pour les id parcelle + compte communal
  */
 GEOR.Addons.Cadastre.request.createObjectRequestField = function(name,id) {
 
@@ -155,12 +231,41 @@ GEOR.Addons.Cadastre.request.createObjectRequestField = function(name,id) {
 	});
 }
 
+/**
+ * création du conteneur pour la copropriété
+ */
+GEOR.Addons.Cadastre.request.createObjectRequestFieldCopropriete = function(name, id) {
+
+    var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(true,false,id);
+
+    return new Ext.Container({
+        autoEl : 'div',
+        renderTo : Ext.get(name + id),
+        id : 'ObjectRequestDynField' + id,
+        items : [ {
+            xtype : 'textfield',
+            allowBlank : false,
+            emptyText : 'id compte communal'
+        }, {
+            xtype : 'textfield',
+            allowBlank : false,
+            emptyText : 'id parcelle'
+        }, checkBox],
+    });
+}
 
 /**
  * création du conteneur principale dans le conteneur objet de demande
  */
 GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 
+    const COMPTECOM = '1';
+    const PARCELLE = '2';
+    const COPRO = '3';
+    const PROPRIO = '4';
+    const IDPARCELLE = '5';
+    const LOTCOPRO = '6';
+    
 	return new Ext.Container({
 
 		autoEl : 'div', // This is the default
@@ -182,53 +287,57 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 			store : new Ext.data.JsonStore({
 				fields : [ 'id', 'value' ],
 				data : [ {
-					id : '1',
+					id : COMPTECOM,
 					value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.1')
 				}, {
-					id : '2',
+					id : PARCELLE,
 					value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.2')
 				}, {
-					id : '3',
+					id : COPRO,
 					value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.3')
 				}, {
-					id : '4',
+					id : PROPRIO,
 					value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.4')
 				}, {
-					id : '5',
+					id : IDPARCELLE,
 					value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.5')
 				}, {
-					id : '6',
+					id : LOTCOPRO,
 					value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.6')
 				} ]
 			}),
 
 			listeners : {
-				select : function(element, rec, idx) {
-					var idCurrentElement = this.getId().split('objectRequestType')[1];
-					var typeObjectRequest = Ext.getCmp('objectRequestType'+idCurrentElement).getValue();
+                select : function(element, rec, idx) {
+                    var idCurrentElement = this.getId().split('objectRequestType')[1];
+                    var typeObjectRequest = Ext.getCmp('objectRequestType' + idCurrentElement).getValue();
+                    //on supprime les champs dynamique crée avant s'il y en a 
+                    if (Ext.getCmp('ObjectRequestDynField' + idCurrentElement)) {
+                        Ext.getCmp('ObjectRequestDynField' + idCurrentElement).removeAll();
+                    }
 
-					//on supprime les champs dynamique crée avant s'il y en a 
-					if(Ext.getCmp('ObjectRequestDynField' + idCurrentElement)){
-						Ext.getCmp('ObjectRequestDynField' + idCurrentElement).removeAll();
-					}
+                    if (typeObjectRequest == PROPRIO) {
+                        //on crée les nouveaux champs
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio('objectRequestField', idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
+                    } else if (typeObjectRequest == PARCELLE) {
+                        //on crée les nouveaux champs
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle('objectRequestField', idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
+                    } else if (typeObjectRequest == COPRO) {
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldCopropriete('objectRequestField', idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
+                    } else if (typeObjectRequest == IDPARCELLE || typeObjectRequest == COMPTECOM) {
+                        //on crée les nouveaux champs
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestField('objectRequestField', idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
+                    } else if (typeObjectRequest == LOTCOPRO) {
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop('objectRequestField', idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
+                    }
 
-					if(typeObjectRequest == '4'){
-						//on crée les nouveaux champs
-						Ext.getCmp('objectRequestField'+idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio('objectRequestField', idCurrentElement));
-						Ext.getCmp('objectRequestField'+idCurrentElement).doLayout();
-					}else if(typeObjectRequest == '2' ){
-						//on crée les nouveaux champs
-						Ext.getCmp('objectRequestField'+idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle('objectRequestField', idCurrentElement));
-						Ext.getCmp('objectRequestField'+idCurrentElement).doLayout();
-					}
-					else if(typeObjectRequest == '5' || typeObjectRequest == '3' || typeObjectRequest == '1' ){
-						//on crée les nouveaux champs
-						Ext.getCmp('objectRequestField'+idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestField('objectRequestField', idCurrentElement));
-						Ext.getCmp('objectRequestField'+idCurrentElement).doLayout();
-					}
-
-				}
-			}
+                }
+            }
 
 		}, {
 			xtype : 'container',
@@ -237,8 +346,9 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 			id : 'objectRequestField' + _idContainer,
 		}, {
 			xtype : 'button',
-			width : 20,
+			//width : 20,
 			iconCls : 'add-button',
+            cls : 'addButton',
 			id : 'objectRequestButtoAdd' + _idContainer,
 			handler : function() {
 				Ext.getCmp('requestObjectDemande').add(GEOR.Addons.Cadastre.request.createObjectRequest());
@@ -247,7 +357,8 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 		}, {
 			xtype : 'button',
 			width : 20,
-			//iconCls : 'del-button',
+			iconCls : 'del-button',
+            cls : 'delButton',
 			id : 'objectRequestButtoDel' + _idContainer,
 			handler : function(element) {
 				//on récupère l'id du bouton del pour supprimer les éléments du même id
@@ -601,7 +712,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 
 						params.parcelles = [];
 						params.proprietaires = [];
-						params.ProprietaireLots = [];
+						params.proprietaireLots = [];
 
 						Ext.each(Ext.getCmp('requestObjectDemande').items.items, function(element) {
 
@@ -609,17 +720,17 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 							var idObjectRequest = element.items.items[0].getId().split('objectRequestType')[1];
 
 							if (requestType == 5) {
-								params.parcelleIds.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue());
+                                params.parcelleIds.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue());
 							} else if (requestType == 1) {
-								params.comptecommunaux.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue());
+                                params.comptecommunaux.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue());
 							} else if (requestType == 3) {
-								params.coproprietes.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue());
+                                params.coproprietes.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue() + '|' + Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[1].getValue());
 							} else if (requestType == 4) {
-								params.proprietaires.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|'+ Ext.getCmp('proprioList' + idObjectRequest).getValue());
+                                params.proprietaires.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + Ext.getCmp('proprioList' + idObjectRequest).getValue());
 							} else if (requestType == 2) {
-								params.parcelles.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|'+ Ext.getCmp('sectionList' + idObjectRequest).getValue()+ '|'+ Ext.getCmp('parcelleList' + idObjectRequest).getValue());
+                                params.parcelles.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + Ext.getCmp('parcelleList' + idObjectRequest).getValue());
 							} else if (requestType == 6) {
-								params.ProprietaireLots.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).getValue());
+							    params.ProprietaireLots.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + Ext.getCmp('parcelleList' + idObjectRequest).getValue() + '|' + Ext.getCmp('proprioList' + idObjectRequest).getValue());							
 							} else {
 								console.log(" Object Type of request not defined");
 							}

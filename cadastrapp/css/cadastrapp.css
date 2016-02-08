@@ -77,9 +77,16 @@
 
 .add-button {
     background-image: url(../img/famfamfam/add.png) !important;
-    width:48px!important; height:15px!important;
+    width:16!important; height:15px!important;
 }
 .del-button {
-    background-image: url(../img/famfamfam/add.png) !important;
-    width:48px!important; height:15px!important;
+    background-image: url(../img/famfamfam/delete.png) !important;
+    width:16!important; height:15px!important; 
+}
+.addButton{
+	padding-left:4px; padding-right:2px;
+}
+
+.delButton{
+	padding-left:2px;
 }
