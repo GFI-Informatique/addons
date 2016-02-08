@@ -51,10 +51,10 @@ GEOR.Addons.Cadastre.request.removeAllObjectRequest = function() {
 /**
  * création du conteneur pour les propriétaire
  */
-GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio = function(name,id) {
+GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio = function(id,BPCheked) {
     var comboCom = GEOR.Addons.Cadastre.Component.getComboCommune(id);
     var comboProprio = GEOR.Addons.Cadastre.Component.getComboProprioByCommune(id, 'communeList');
-    var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(false,true,id);
+    var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(BPCheked,!BPCheked,id);
 
     comboCom.on('beforeselect',function(combo, record, index){
         //on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cache)
@@ -67,7 +67,6 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio = function(name,id)
     return new Ext.Container({
 
         layout : 'column',
-        renderTo   : Ext.get(name + id),
         id :  'ObjectRequestDynField' + id,
         width : Ext.getCmp('objectRequestField'+id).getWidth(),
         anchor: '50%',
@@ -80,12 +79,12 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio = function(name,id)
 /**
  * création du conteneur pour le lot de coproriété
  */
-GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(name, id) {
+GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id,BPCheked) {
     var comboCom = GEOR.Addons.Cadastre.Component.getComboCommune(id);
     var comboSection = GEOR.Addons.Cadastre.Component.getComboSectionByCommune(id, 'communeList');
     var comboParcelle = GEOR.Addons.Cadastre.Component.getComboParcelleBySection(id, 'sectionList');
     var comboProprio = GEOR.Addons.Cadastre.Component.getComboProprioByCommune(id, 'proprioList');
-    var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(false,true,id);
+    var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(BPCheked,!BPCheked,id);
 
 
     //on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cache)
@@ -144,7 +143,6 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(name, id)
     return new Ext.Container({
 
         layout : 'column',
-        renderTo : Ext.get(name + id),
         id : 'ObjectRequestDynField' + id,
         width : Ext.getCmp('objectRequestField' + id).getWidth(),
         anchor : '50%',
@@ -156,11 +154,11 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(name, id)
 /**
  * création du conteneur pour les parcelles
  */
-GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle = function(name,id) {
+GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle = function(id,BPCheked) {
 	var comboCom = GEOR.Addons.Cadastre.Component.getComboCommune(id);
 	var comboSection = GEOR.Addons.Cadastre.Component.getComboSectionByCommune(id, 'communeList');
 	var comboParcelle = GEOR.Addons.Cadastre.Component.getComboParcelleBySection(id, 'sectionList');
-	var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(true,false,id);
+	var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(BPCheked,!BPCheked,id);
 
 	//on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cach)
 	comboCom.on('beforeselect',function(combo, record, index){
@@ -199,7 +197,6 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle = function(name,id
 	return new Ext.Container({
 
 		layout : 'column',
-		renderTo   : Ext.get(name + id),
 		id :  'ObjectRequestDynField' + id,
 		width : Ext.getCmp('objectRequestField'+id).getWidth(),
 		anchor: '50%',
@@ -215,13 +212,12 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle = function(name,id
 /**
  * création du conteneur pour les id parcelle + compte communal
  */
-GEOR.Addons.Cadastre.request.createObjectRequestField = function(name,id) {
+GEOR.Addons.Cadastre.request.createObjectRequestField = function(id,BPCheked) {
 
-	var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(true,false,id);
+	var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(BPCheked,!BPCheked,id);
 
 	return new Ext.Container({
 		autoEl : 'div',
-		renderTo   : Ext.get(name + id),
 		id :  'ObjectRequestDynField' + id,
 		items : [ {
 			xtype : 'textfield',
@@ -234,13 +230,12 @@ GEOR.Addons.Cadastre.request.createObjectRequestField = function(name,id) {
 /**
  * création du conteneur pour la copropriété
  */
-GEOR.Addons.Cadastre.request.createObjectRequestFieldCopropriete = function(name, id) {
+GEOR.Addons.Cadastre.request.createObjectRequestFieldCopropriete = function(id,BPCheked) {
 
-    var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(true,false,id);
+    var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(BPCheked,!BPCheked,id);
 
     return new Ext.Container({
         autoEl : 'div',
-        renderTo : Ext.get(name + id),
         id : 'ObjectRequestDynField' + id,
         items : [ {
             xtype : 'textfield',
@@ -326,21 +321,25 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 
                     if (typeObjectRequest == PROPRIO) {
                         //on crée les nouveaux champs
-                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio('objectRequestField', idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio(idCurrentElement,false));
                         Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
                     } else if (typeObjectRequest == PARCELLE) {
                         //on crée les nouveaux champs
-                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle('objectRequestField', idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle(idCurrentElement,true));
                         Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
                     } else if (typeObjectRequest == COPRO) {
-                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldCopropriete('objectRequestField', idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldCopropriete( idCurrentElement,false));
                         Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
-                    } else if (typeObjectRequest == IDPARCELLE || typeObjectRequest == COMPTECOM) {
+                    } else if (typeObjectRequest == IDPARCELLE ) {
                         //on crée les nouveaux champs
-                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestField('objectRequestField', idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestField(idCurrentElement,true));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
+                    }else if (typeObjectRequest == COMPTECOM) {
+                        //on crée les nouveaux champs
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestField( idCurrentElement,false));
                         Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
                     } else if (typeObjectRequest == LOTCOPRO) {
-                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop('objectRequestField', idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop(idCurrentElement,false));
                         Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
                     }
 
