@@ -286,25 +286,39 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 			id : 'objectRequestType' + _idContainer,
 			store : new Ext.data.JsonStore({
 				fields : [ 'id', 'value' ],
-				data : [ {
-					id : COMPTECOM,
-					value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.1')
-				}, {
-					id : PARCELLE,
-					value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.2')
-				}, {
-					id : COPRO,
-					value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.3')
-				}, {
-					id : PROPRIO,
-					value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.4')
-				}, {
-					id : IDPARCELLE,
-					value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.5')
-				}, {
-					id : LOTCOPRO,
-					value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.6')
-				} ]
+				data : (GEOR.Addons.Cadastre.isCNIL1() == true || GEOR.Addons.Cadastre.isCNIL2() == true) ? [ {
+                    id : COMPTECOM,
+                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.1')
+                }, {
+                    id : PARCELLE,
+                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.2')
+                }, {
+                    id : COPRO,
+                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.3')
+                }, {
+                    id : PROPRIO,
+                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.4')
+                }, {
+                    id : IDPARCELLE,
+                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.5')
+                }, {
+                    id : LOTCOPRO,
+                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.6')
+                } ]
+                // sinon on ne peut y accéder
+                : [ {
+                    id : COMPTECOM,
+                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.1')
+                }, {
+                    id : PARCELLE,
+                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.2')
+                }, {
+                    id : COPRO,
+                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.3')
+                }, {
+                    id : IDPARCELLE,
+                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.5')
+                } ]
 			}),
 
 			listeners : {
