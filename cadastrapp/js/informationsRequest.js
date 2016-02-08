@@ -265,6 +265,32 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
     const PROPRIO = '4';
     const IDPARCELLE = '5';
     const LOTCOPRO = '6';
+   
+    var availableObject = [ {
+        id : COMPTECOM,
+        value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.1')
+    }, {
+        id : PARCELLE,
+        value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.2')
+    }, {
+        id : COPRO,
+        value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.3')
+    }, {
+        id : IDPARCELLE,
+        value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.5')
+    } ]
+    
+    if (GEOR.Addons.Cadastre.isCNIL1() == true || GEOR.Addons.Cadastre.isCNIL2() == true){
+        availableObject.push({
+            id : PROPRIO,
+            value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.4')
+        },{
+            id : LOTCOPRO,
+            value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.6')
+        });
+        console.log(JSON.stringify(availableObject));
+        console.log(GEOR.Addons.Cadastre.isCNIL1() + ' '+ GEOR.Addons.Cadastre.isCNIL2());
+    }
     
 	return new Ext.Container({
 
@@ -286,39 +312,7 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 			id : 'objectRequestType' + _idContainer,
 			store : new Ext.data.JsonStore({
 				fields : [ 'id', 'value' ],
-				data : (GEOR.Addons.Cadastre.isCNIL1() == true || GEOR.Addons.Cadastre.isCNIL2() == true) ? [ {
-                    id : COMPTECOM,
-                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.1')
-                }, {
-                    id : PARCELLE,
-                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.2')
-                }, {
-                    id : COPRO,
-                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.3')
-                }, {
-                    id : PROPRIO,
-                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.4')
-                }, {
-                    id : IDPARCELLE,
-                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.5')
-                }, {
-                    id : LOTCOPRO,
-                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.6')
-                } ]
-                // sinon on ne peut y accéder
-                : [ {
-                    id : COMPTECOM,
-                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.1')
-                }, {
-                    id : PARCELLE,
-                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.2')
-                }, {
-                    id : COPRO,
-                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.3')
-                }, {
-                    id : IDPARCELLE,
-                    value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.5')
-                } ]
+				data : availableObject
 			}),
 
 			listeners : {
@@ -840,5 +834,6 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 		}
 	});
 	GEOR.Addons.Cadastre.request.informationsWindow.show();
-	console.log("onClick")
+	console.log("onClick");
 };
+
