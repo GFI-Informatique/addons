@@ -244,7 +244,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldCopropriete = function(id,B
             allowBlank : false,
             emptyText : 'id parcelle'
         }, checkBox],
-    });
+    });  
 }
 
 /**
@@ -721,19 +721,46 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 
 							var requestType = element.items.items[0].getValue();
 							var idObjectRequest = element.items.items[0].getId().split('objectRequestType')[1];
+							//return the state of the box - 1 for check or 0 for no check						
+							var stateRpBox = (Ext.getCmp('rpBox'+idObjectRequest).checked) ? 1 : 0;
+							var stateBpBox = (Ext.getCmp('bpBox'+idObjectRequest).checked) ? 1 : 0; 							    
 
 							if (requestType == 5) {
                                 params.parcelleIds.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue());
 							} else if (requestType == 1) {
                                 params.comptecommunaux.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue());
 							} else if (requestType == 3) {
-                                params.coproprietes.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue() + '|' + Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[1].getValue());
+                                params.coproprietes.push(
+                                        Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue() + '|' +
+                                        Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[1].getValue() + '|' +
+                                        // send state information in the requestURL according to checkBox state
+                                        stateBpBox + '|' + 
+                                        stateRpBox);
 							} else if (requestType == 4) {
-                                params.proprietaires.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + Ext.getCmp('proprioList' + idObjectRequest).getValue());
+                                params.proprietaires.push(
+                                        Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + 
+                                        Ext.getCmp('proprioList' + idObjectRequest).getValue() + '|' +
+                                        //send state information in the requestURL according to checkBox state
+                                        stateBpBox + '|' + 
+                                        stateRpBox );
 							} else if (requestType == 2) {
-                                params.parcelles.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + Ext.getCmp('parcelleList' + idObjectRequest).getValue());
+                                params.parcelles.push(
+                                        Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + 
+                                        Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + 
+                                        Ext.getCmp('parcelleList' + idObjectRequest).getValue() + '|' + 
+                                        // send state information in the requestURL according to checkBox state
+                                        stateBpBox + '|' + 
+                                        stateRpBox);
 							} else if (requestType == 6) {
-							    params.proprietaireLots.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + Ext.getCmp('parcelleList' + idObjectRequest).getValue() + '|' + Ext.getCmp('proprioList' + idObjectRequest).getValue());							
+							    params.proprietaireLots.push(
+							            Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + 
+							            Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + 
+							            Ext.getCmp('parcelleList' + idObjectRequest).getValue() + '|' + 
+							            Ext.getCmp('proprioList' + idObjectRequest).getValue() + '|' +
+							            // send state information in the requestURL according to checkBox state
+							            stateBpBox + '|' + 
+                                        stateRpBox);
+		                        
 							} else {
 								console.log(" Object Type of request not defined");
 							}
@@ -830,6 +857,6 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 	});
 	GEOR.Addons.Cadastre.request.informationsWindow.show();
 	console.log("onClick");	
-	console.log(Ext.Cmp('RpBox'+id).getValue());
+	
 };
 
