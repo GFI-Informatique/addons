@@ -16,6 +16,7 @@ GEOR.Addons.Cadastre.Component.getComboCommune = function(id) {
 			editable : true,
 			tabIndex : 0,
 			displayField : 'displayname',
+			forceSelection :true,
 			valueField : 'cgocommune',
 			minLength : GEOR.Addons.Cadastre.minCharToSearch,
 			store : GEOR.Addons.Cadastre.getPartialCityStore(),
@@ -62,7 +63,7 @@ GEOR.Addons.Cadastre.Component.getComboProprioByCommune = function(id, communeLi
 		    mode : 'local',
 		    value : '',
 		    emptyText:OpenLayers.i18n('cadastrapp.ObjectRequest.parcelle.proprietaire'),
-		    forceSelection : false,
+		    forceSelection : true,
 		    anchor : '95%',
 		    editable : true,
 		    displayField : 'displayname',
@@ -127,6 +128,7 @@ GEOR.Addons.Cadastre.Component.getComboSectionByCommune = function(id, communeLi
 		    forceSelection : false,
 		    anchor : '95%',
 		    editable : true,
+		    forceSelection : true,
 		    displayField : 'fullccosec',
 		    valueField : 'fullccosec',
 		    disabled : true,
@@ -147,7 +149,7 @@ GEOR.Addons.Cadastre.Component.getComboParcelleBySection = function(id) {
 		    mode : 'local',
 		    value : '',
 		    emptyText:OpenLayers.i18n('cadastrapp.ObjectRequest.parcelle.numero'),
-		    forceSelection : false,
+		    forceSelection : true,
 		    anchor : '95%',
 		    editable : true,
 		    displayField : 'dnupla',
@@ -178,14 +180,74 @@ GEOR.Addons.Cadastre.Component.getCheckBoxGroup = function(bp,rb, id) {
         {
             xtype: 'checkbox',
             boxLabel: 'Relevé de propriété',
+            id : 'rpBox',
             checked: rb,
             inputValue: 'RP'
         },
         {
          xtype: 'checkbox',
             boxLabel: 'Bordereau parcellaire',
+            id : 'bpBox',
             checked: bp,
             inputValue: 'BP'
         }] 
 	})
 }
+
+/**
+ * liste des propriétaire de la communes en paramètre
+ */
+GEOR.Addons.Cadastre.Component.getComboProprioByInfoParcelle = function(id, communeListId, sectionId, numeroId) {
+		return new Ext.form.ComboBox({
+		    id : 'proprioList' + id,
+		    hiddenName : 'ddenom',
+		    xtype : 'combo',
+		    allowBlank : false,
+		    mode : 'local',
+		    value : '',
+		    emptyText:OpenLayers.i18n('cadastrapp.ObjectRequest.parcelle.proprietaire'),
+		    forceSelection : true,
+		    anchor : '95%',
+		    editable : true,
+		    displayField : 'displayname',
+		    valueField : 'ddenom',
+		    disabled : true,
+		    store : new Ext.data.JsonStore({
+		        proxy : new Ext.data.HttpProxy({
+		            url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietairesByInfoParcelles',
+		            method : 'GET',
+		            autoload : true
+		        }),
+		        fields : [ 'ddenom', {
+		            name : 'displayname',
+		            convert : function(v, rec) {
+		                return rec.ddenom.replace('/', ' ');
+		            }
+		        } ]
+		    }),
+		    listeners : {
+		        beforequery : function(q) {
+		            if (q.query) {
+		                var length = q.query.length;
+		                if (length >= GEOR.Addons.Cadastre.minCharToSearch) {
+		                    q.combo.getStore().load({
+		                        params : {
+		                            commune : Ext.getCmp(communeListId+id).value,
+		                            section : Ext.getCmp(sectionId+id).value,
+		                            numero : Ext.getCmp(numeroId+id).value,
+		                            ddenom : q.query,
+		                        }
+		                    });
+		                }
+		            } else if (length < GEOR.Addons.Cadastre.minCharToSearch) {
+		                q.combo.getStore().loadData([], false);
+		            }
+		            q.query = new RegExp(Ext.escapeRe(q.query), 'i');
+		            q.query.length = length;
+		        },
+		        valid : function(element) {
+		            //GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
+		        }
+		    }
+		});
+	}
