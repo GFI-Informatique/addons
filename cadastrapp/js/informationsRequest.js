@@ -112,7 +112,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id,BPChek
         comboParcelle.reset();
         comboParcelle.getStore().removeAll(true);
         Ext.getCmp('proprioList' + id).reset();
-        comboProprio.getStore().removeAll(true);;
+        comboProprio.getStore().removeAll(true);
     });
 
     comboSection.on('select', function(element, rec, idx) {
@@ -691,6 +691,8 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 			disabled : true,
 			listeners : {
 				click : function(b, e) {
+					
+					var box = Ext.MessageBox.wait(OpenLayers.i18n('cadastrapp.demandeinformation.downloadProgress.message'),OpenLayers.i18n('cadastrapp.demandeinformation.downloadProgress.title'));					
 
 					//check if is valid
 					var form = Ext.getCmp('requestInformationForm').getForm();
@@ -779,7 +781,6 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 							url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'saveInformationRequest',
 							params : params,
 							success : function(response) {
-
 								var result = Ext.decode(response.responseText);
 
 								var paramsPrint = {};
@@ -791,7 +792,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 								// Directly download file, without and call service
 								// without
 								// ogcproxy
-								Ext.DomHelper.append(document.body, {
+								var download = Ext.DomHelper.append(document.body, {
 									tag : 'iframe',
 									id : 'downloadIframe',
 									frameBorder : 0,
@@ -800,12 +801,17 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 									css : 'display:none;visibility:hidden;height:0px;',
 									src : url
 								});
+							  
+								Ext.get(download).on('load', function(e, t, o) {
+									box.hide();
+								});
 
 								Ext.getCmp('requestGenerateButton').enable();
 
 							},
 							failure : function(result) {
 								Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.alert.demande'));
+								box.hide();
 							}
 						});
 
@@ -822,9 +828,11 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 			text : OpenLayers.i18n('cadastrapp.demandeinformation.generate.document'),
 			id : 'requestGenerateButton',
 			disabled : true,
+			waitMsgTarget: true,
 			listeners : {
 				click : function(b, e) {
-
+					
+					var box = Ext.MessageBox.wait(OpenLayers.i18n('cadastrapp.demandeinformation.downloadProgress.message'),OpenLayers.i18n('cadastrapp.demandeinformation.downloadProgress.title'));					
 					var paramsGen = {};
 					paramsGen.requestid = _currentRequestId
 
@@ -833,7 +841,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 					// Directly download file, without and call service
 					// without
 					// ogcproxy
-					Ext.DomHelper.append(document.body, {
+					var download = Ext.DomHelper.append(document.body, {
 						tag : 'iframe',
 						id : 'downloadIframe',
 						frameBorder : 0,
@@ -842,6 +850,11 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 						css : 'display:none;visibility:hidden;height:0px;',
 						src : url
 					});
+					
+					Ext.get(download).on('load', function(e, t, o) {
+						box.hide();
+					});
+					
 				}
 			}
 		} ],
