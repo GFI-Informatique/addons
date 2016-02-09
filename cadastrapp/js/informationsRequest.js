@@ -83,7 +83,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id,BPChek
     var comboCom = GEOR.Addons.Cadastre.Component.getComboCommune(id);
     var comboSection = GEOR.Addons.Cadastre.Component.getComboSectionByCommune(id, 'communeList');
     var comboParcelle = GEOR.Addons.Cadastre.Component.getComboParcelleBySection(id, 'sectionList');
-    var comboProprio = GEOR.Addons.Cadastre.Component.getComboProprioByCommune(id, 'proprioList');
+    var comboProprio = GEOR.Addons.Cadastre.Component.getComboProprioByInfoParcelle(id, 'communeList','sectionList','parcelleList');
     var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(BPCheked,!BPCheked,id);
 
 
@@ -92,7 +92,9 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id,BPChek
         comboSection.reset();
         comboSection.getStore().removeAll(true);
         Ext.getCmp('proprioList' + id).reset();
-        comboProprio.getStore().removeAll(true);;
+        comboProprio.getStore().removeAll(true);
+        comboParcelle.reset();
+        comboParcelle.getStore().removeAll(true);
     });
 
     comboCom.on('select', function(element, rec, idx) {
@@ -737,7 +739,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 							} else if (requestType == 2) {
                                 params.parcelles.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + Ext.getCmp('parcelleList' + idObjectRequest).getValue());
 							} else if (requestType == 6) {
-							    params.ProprietaireLots.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + Ext.getCmp('parcelleList' + idObjectRequest).getValue() + '|' + Ext.getCmp('proprioList' + idObjectRequest).getValue());							
+							    params.proprietaireLots.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + Ext.getCmp('parcelleList' + idObjectRequest).getValue() + '|' + Ext.getCmp('proprioList' + idObjectRequest).getValue());							
 							} else {
 								console.log(" Object Type of request not defined");
 							}
