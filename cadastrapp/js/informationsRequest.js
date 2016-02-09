@@ -76,6 +76,9 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio = function(id,BPChe
     });
 }
 
+
+
+
 /**
  * création du conteneur pour le lot de coproriété
  */
@@ -109,7 +112,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id,BPChek
         comboParcelle.reset();
         comboParcelle.getStore().removeAll(true);
         Ext.getCmp('proprioList' + id).reset();
-        comboProprio.getStore().removeAll(true);;
+        comboProprio.getStore().removeAll(true);
     });
 
     comboSection.on('select', function(element, rec, idx) {
@@ -126,20 +129,13 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id,BPChek
     comboParcelle.on('beforeselect', function(combo, record, index) {
         Ext.getCmp('proprioList' + id).reset();
         comboProprio.getStore().removeAll(true);
-        ;
     });
 
     comboParcelle.on('select', function(element, rec, idx) {
         var cgocommune = Ext.getCmp('communeList' + id).value
         var cgoSection = Ext.getCmp('sectionList' + id).value;
         var cgoParcelle = Ext.getCmp('parcelleList' + id).value;
-        if (GEOR.Addons.Cadastre.isCNIL2 || GEOR.Addons.Cadastre.isCNIL1) {
-            //comboProprio.enable();
-            Ext.getCmp('proprioList' + id).enable();
-        }
-
-        // recherche et chargement proprio
-        //Ext.getCmp('proprioList'+id).enable();     
+        Ext.getCmp('proprioList' + id).enable(); 
     });
 
     return new Ext.Container({
@@ -248,7 +244,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldCopropriete = function(id,B
             allowBlank : false,
             emptyText : 'id parcelle'
         }, checkBox],
-    });
+    });  
 }
 
 /**
@@ -285,8 +281,6 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
             id : LOTCOPRO,
             value : OpenLayers.i18n('cadastrapp.demandeinformation.object.type.6')
         });
-        console.log(JSON.stringify(availableObject));
-        console.log(GEOR.Addons.Cadastre.isCNIL1() + ' '+ GEOR.Addons.Cadastre.isCNIL2());
     }
     
 	return new Ext.Container({
@@ -348,7 +342,7 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
                 }
             }
 
-		}, {
+		}, { // modify columns field
 			xtype : 'container',
 			layout : 'column',
 			columnWidth : .7,
@@ -697,6 +691,8 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 			disabled : true,
 			listeners : {
 				click : function(b, e) {
+					
+					var box = Ext.MessageBox.wait(OpenLayers.i18n('cadastrapp.demandeinformation.downloadProgress.message'),OpenLayers.i18n('cadastrapp.demandeinformation.downloadProgress.title'));					
 
 					//check if is valid
 					var form = Ext.getCmp('requestInformationForm').getForm();
@@ -727,19 +723,46 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 
 							var requestType = element.items.items[0].getValue();
 							var idObjectRequest = element.items.items[0].getId().split('objectRequestType')[1];
+							//return the state of the box - 1 for check or 0 for no check						
+							var stateRpBox = (Ext.getCmp('rpBox'+idObjectRequest).checked) ? 1 : 0;
+							var stateBpBox = (Ext.getCmp('bpBox'+idObjectRequest).checked) ? 1 : 0; 							    
 
 							if (requestType == 5) {
                                 params.parcelleIds.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue());
 							} else if (requestType == 1) {
                                 params.comptecommunaux.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue());
 							} else if (requestType == 3) {
-                                params.coproprietes.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue() + '|' + Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[1].getValue());
+                                params.coproprietes.push(
+                                        Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue() + '|' +
+                                        Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[1].getValue() + '|' +
+                                        // send state information in the requestURL according to checkBox state
+                                        stateBpBox + '|' + 
+                                        stateRpBox);
 							} else if (requestType == 4) {
-                                params.proprietaires.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + Ext.getCmp('proprioList' + idObjectRequest).getValue());
+                                params.proprietaires.push(
+                                        Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + 
+                                        Ext.getCmp('proprioList' + idObjectRequest).getValue() + '|' +
+                                        //send state information in the requestURL according to checkBox state
+                                        stateBpBox + '|' + 
+                                        stateRpBox );
 							} else if (requestType == 2) {
-                                params.parcelles.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + Ext.getCmp('parcelleList' + idObjectRequest).getValue());
+                                params.parcelles.push(
+                                        Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + 
+                                        Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + 
+                                        Ext.getCmp('parcelleList' + idObjectRequest).getValue() + '|' + 
+                                        // send state information in the requestURL according to checkBox state
+                                        stateBpBox + '|' + 
+                                        stateRpBox);
 							} else if (requestType == 6) {
-							    params.proprietaireLots.push(Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + Ext.getCmp('parcelleList' + idObjectRequest).getValue() + '|' + Ext.getCmp('proprioList' + idObjectRequest).getValue());							
+							    params.proprietaireLots.push(
+							            Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + 
+							            Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + 
+							            Ext.getCmp('parcelleList' + idObjectRequest).getValue() + '|' + 
+							            Ext.getCmp('proprioList' + idObjectRequest).getValue() + '|' +
+							            // send state information in the requestURL according to checkBox state
+							            stateBpBox + '|' + 
+                                        stateRpBox);
+		                        
 							} else {
 								console.log(" Object Type of request not defined");
 							}
@@ -758,7 +781,6 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 							url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'saveInformationRequest',
 							params : params,
 							success : function(response) {
-
 								var result = Ext.decode(response.responseText);
 
 								var paramsPrint = {};
@@ -770,7 +792,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 								// Directly download file, without and call service
 								// without
 								// ogcproxy
-								Ext.DomHelper.append(document.body, {
+								var download = Ext.DomHelper.append(document.body, {
 									tag : 'iframe',
 									id : 'downloadIframe',
 									frameBorder : 0,
@@ -779,12 +801,17 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 									css : 'display:none;visibility:hidden;height:0px;',
 									src : url
 								});
+							  
+								Ext.get(download).on('load', function(e, t, o) {
+									box.hide();
+								});
 
 								Ext.getCmp('requestGenerateButton').enable();
 
 							},
 							failure : function(result) {
 								Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.alert.demande'));
+								box.hide();
 							}
 						});
 
@@ -801,9 +828,11 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 			text : OpenLayers.i18n('cadastrapp.demandeinformation.generate.document'),
 			id : 'requestGenerateButton',
 			disabled : true,
+			waitMsgTarget: true,
 			listeners : {
 				click : function(b, e) {
-
+					
+					var box = Ext.MessageBox.wait(OpenLayers.i18n('cadastrapp.demandeinformation.downloadProgress.message'),OpenLayers.i18n('cadastrapp.demandeinformation.downloadProgress.title'));					
 					var paramsGen = {};
 					paramsGen.requestid = _currentRequestId
 
@@ -812,7 +841,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 					// Directly download file, without and call service
 					// without
 					// ogcproxy
-					Ext.DomHelper.append(document.body, {
+					var download = Ext.DomHelper.append(document.body, {
 						tag : 'iframe',
 						id : 'downloadIframe',
 						frameBorder : 0,
@@ -821,6 +850,11 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 						css : 'display:none;visibility:hidden;height:0px;',
 						src : url
 					});
+					
+					Ext.get(download).on('load', function(e, t, o) {
+						box.hide();
+					});
+					
 				}
 			}
 		} ],

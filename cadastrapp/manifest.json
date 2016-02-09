@@ -357,7 +357,9 @@
 			"cadastrapp.ObjectRequest.parcelle.section" : "section...",
 			"cadastrapp.ObjectRequest.parcelle.numero" : "numero...",
 			"cadastrapp.ObjectRequest.parcelle.proprietaire" : "proprietaire...",
-			"cadastrapp.demandeinformation.alert.mandatory.field" : "Some fields are mandatory."
+			"cadastrapp.demandeinformation.alert.mandatory.field" : "Some fields are mandatory.",
+			"cadastrapp.demandeinformation.downloadProgress.title" : "Progress",
+			"cadastrapp.demandeinformation.downloadProgress.message" : "Generating of pdf document."
         },
         "fr": {
        		"cadastrapp.no": "non",
@@ -694,7 +696,9 @@
 			"cadastrapp.ObjectRequest.parcelle.numero" : "numero...",
 			"cadastrapp.ObjectRequest.parcelle.proprietaire" : "proprietaire...",
 			
-			"cadastrapp.demandeinformation.alert.mandatory.field" : "Des champs obligatoires ne sont pas renseignés."
+			"cadastrapp.demandeinformation.alert.mandatory.field" : "Des champs obligatoires ne sont pas renseignés.",
+			"cadastrapp.demandeinformation.downloadProgress.title" : "Progression",
+			"cadastrapp.demandeinformation.downloadProgress.message" : "Génération du document pdf."
         }
     }
 }
