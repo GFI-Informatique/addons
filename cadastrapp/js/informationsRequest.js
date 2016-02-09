@@ -869,6 +869,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 		}
 	});
 	GEOR.Addons.Cadastre.request.informationsWindow.show();
-	console.log("onClick");
+	console.log("onClick");	
+	
 };
 

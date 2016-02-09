@@ -176,16 +176,20 @@ GEOR.Addons.Cadastre.Component.getCheckBoxGroup = function(bp,rb, id) {
 	return new Ext.form.CheckboxGroup({
 	    allowBlank: false,
         itemId: 'typePrint' + id,
+        id : "checkBoxGroup",
         items: [
         {
             xtype: 'checkbox',
             boxLabel: 'Relevé de propriété',
+            labelStyle: 'font-size : 50%;',
+            id : 'rpBox' + id,
             checked: rb,
             inputValue: 'RP'
         },
         {
          xtype: 'checkbox',
             boxLabel: 'Bordereau parcellaire',
+            id : 'bpBox' + id,
             checked: bp,
             inputValue: 'BP'
         }] 
