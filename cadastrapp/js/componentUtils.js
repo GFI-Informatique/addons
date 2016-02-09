@@ -177,11 +177,12 @@ GEOR.Addons.Cadastre.Component.getCheckBoxGroup = function(bp,rb, id) {
 	    allowBlank: false,
         itemId: 'typePrint' + id,
         id : "checkBoxGroup",
+        cls:'radio',
         items: [
         {
             xtype: 'checkbox',
             boxLabel: 'Relevé de propriété',
-            labelStyle: 'font-size : 50%;',
+            
             id : 'rpBox' + id,
             checked: rb,
             inputValue: 'RP'
