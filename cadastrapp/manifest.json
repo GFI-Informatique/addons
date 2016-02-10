@@ -359,7 +359,9 @@
 			"cadastrapp.ObjectRequest.parcelle.proprietaire" : "proprietaire...",
 			"cadastrapp.demandeinformation.alert.mandatory.field" : "Some fields are mandatory.",
 			"cadastrapp.demandeinformation.downloadProgress.title" : "Progress",
-			"cadastrapp.demandeinformation.downloadProgress.message" : "Generating of pdf document."
+			"cadastrapp.demandeinformation.downloadProgress.message" : "Generating of pdf document.",
+			"idCompteCom" : "municipal account id...",
+			"idParcelle": "plot id..."
         },
         "fr": {
        		"cadastrapp.no": "non",
@@ -374,7 +376,7 @@
             "cadastrapp.export_as_kml": "Exporter",
             "cadastrapp.export_as_kml_tip": "Exporter en KML",
             "cadastrapp.linestring": "Ligne",
-            "cadastrapp.multilinestring": "MultiLigne",
+            "cadastrapp.multilinestring": "MultidCompteComiLigne",
 			"cadastrapp.zoom": "Zoom",
 			"cadastrapp.cadastre": "Cadastre",
 			"cadastrapp.foncier": "Unit. Fonc.",
@@ -472,7 +474,7 @@
 			"cadastrapp.proprietaire.proprietaires": "Propriétaire(s)",
 			"cadastrapp.proprietaire.proprietaires.col1": "Propriétaire",
 			
-			"cadastrapp.proprietaire.result.title": "Sélection de propriétaires",
+			"cadastrapp.proprietaire.result.titidCompteComle": "Sélection de propriétaires",
 			"cadastrapp.proprietaire.result.nodata": "Aucune données",
 			"cadastrapp.proprietaire.result.dnomlp": "Nom",
 			"cadastrapp.proprietaire.result.dprnlp": "Prénom",
@@ -501,7 +503,7 @@
             "cadastrapp.multipoint": "MultiPoint",
             "cadastrapp.polygon": "Polygone",
             "cadastrapp.multipolygon": "MultiPolygone",
-            "cadastrapp.create_point": "Sélectionne / Active / Désélectionne une parcelle par un simple clic",
+            "cadastrapp.create_point": "SélectiidCompteComonne / Active / Désélectionne une parcelle par un simple clic",
             "cadastrapp.create_line": "Sélectionne / Active / Désélectionne une ou plusieurs parcelles par une ligne brisée",
             "cadastrapp.create_polygon": "Sélectionne / Active / Désélectionne une ou plusieurs parcelles à l’intérieur d’un polygone",
             "cadastrapp.delete_all_features": "Supprimer tous les objets",
@@ -698,7 +700,9 @@
 			
 			"cadastrapp.demandeinformation.alert.mandatory.field" : "Des champs obligatoires ne sont pas renseignés.",
 			"cadastrapp.demandeinformation.downloadProgress.title" : "Progression",
-			"cadastrapp.demandeinformation.downloadProgress.message" : "Génération du document pdf."
+			"cadastrapp.demandeinformation.downloadProgress.message" : "Génération du document pdf.",
+			"idCompteCom" : "id compte communal...",
+			"idParcelle": "id parcelle..."
         }
     }
 }

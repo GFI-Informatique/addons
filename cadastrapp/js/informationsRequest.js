@@ -221,7 +221,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestField = function(id,BPCheked) {
 		items : [ {
 			xtype : 'textfield',
 			allowBlank : false,
-			emptyText:'id...'
+			emptyText : OpenLayers.i18n('idCompteCom')
 		},checkBox],
 	});
 }
@@ -239,11 +239,11 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldCopropriete = function(id,B
         items : [ {
             xtype : 'textfield',
             allowBlank : false,
-            emptyText : 'id compte communal'
+            emptyText : OpenLayers.i18n('idCompteCom')
         }, {
             xtype : 'textfield',
             allowBlank : false,
-            emptyText : 'id parcelle'
+            emptyText : OpenLayers.i18n('idParcelle')
         }, checkBox],
     });  
 }
