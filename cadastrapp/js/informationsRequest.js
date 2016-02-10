@@ -41,6 +41,7 @@ GEOR.Addons.Cadastre.request.removeAllObjectRequest = function() {
 	_numberRequestMax = GEOR.Addons.Cadastre.maxRequest;
 	//on desactive le bouton print
 	Ext.getCmp('requestPrintButton').disable();
+	Ext.getCmp('requestGenerateButton').disable();
 
 	_idContainer = 0;
 
@@ -314,6 +315,7 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
                     //on supprime les champs dynamique crée avant s'il y en a 
                     if (Ext.getCmp('ObjectRequestDynField' + idCurrentElement)) {
                         Ext.getCmp('ObjectRequestDynField' + idCurrentElement).removeAll();
+                        Ext.getCmp('requestGenerateButton').disable();
                     }
 
                     if (typeObjectRequest == PROPRIO) {
