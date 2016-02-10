@@ -356,7 +356,7 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
             cls : 'addButton',
 			id : 'objectRequestButtoAdd' + _idContainer,
 			handler : function() {
-				Ext.getCmp('requestObjectDemande').add(GEOR.Addons.Cadastre.request.createObjectRequest());
+			    Ext.getCmp('requestObjectDemande').add(GEOR.Addons.Cadastre.request.createObjectRequest());
 				Ext.getCmp('requestObjectDemande').doLayout();
 			}
 		}, {
@@ -374,6 +374,7 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 				//possibilité d'ajouter un autre conteneur
 				_numberRequestMax++;
 				_numberRequestAvailable++;
+				
 
 
 
@@ -831,6 +832,8 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 			text : OpenLayers.i18n('cadastrapp.demandeinformation.generate.document'),
 			id : 'requestGenerateButton',
 			disabled : true,
+			// hide if wrong user right
+			hidden : (GEOR.Addons.Cadastre.isCNIL1() == true || GEOR.Addons.Cadastre.isCNIL2() == true)  ? false : true,  
 			waitMsgTarget: true,
 			listeners : {
 				click : function(b, e) {
@@ -856,6 +859,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 					
 					Ext.get(download).on('load', function(e, t, o) {
 						box.hide();
+						Ext.getCmp('requestGenerateButton').disable();
 					});
 					
 				}

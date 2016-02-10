@@ -175,7 +175,7 @@ GEOR.Addons.Cadastre.Component.getCheckBoxGroup = function(bp,rb, id) {
 	
 	return new Ext.form.CheckboxGroup({
 	    allowBlank: false,
-        id : "checkBoxGroup"+id,
+        id : 'checkBoxGroup'+id,
         cls:'radio',
         items: [
         {
