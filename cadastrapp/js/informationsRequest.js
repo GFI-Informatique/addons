@@ -732,9 +732,15 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 							var stateBpBox = (Ext.getCmp('bpBox'+idObjectRequest).checked) ? 1 : 0; 							    
 
 							if (requestType == 5) {
-                                params.parcelleIds.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue());
+                                params.parcelleIds.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue()+ '|' +
+                                // send state information in the requestURL according to checkBox state
+                                stateBpBox + '|' + 
+                                stateRpBox);
 							} else if (requestType == 1) {
-                                params.comptecommunaux.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue());
+                                params.comptecommunaux.push(Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue()+ '|' +
+                                // send state information in the requestURL according to checkBox state
+                                stateBpBox + '|' + 
+                                stateRpBox);
 							} else if (requestType == 3) {
                                 params.coproprietes.push(
                                         Ext.getCmp('ObjectRequestDynField' + idObjectRequest).items.items[0].getValue() + '|' +
@@ -832,8 +838,6 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 			text : OpenLayers.i18n('cadastrapp.demandeinformation.generate.document'),
 			id : 'requestGenerateButton',
 			disabled : true,
-			// hide if wrong user right
-			hidden : (GEOR.Addons.Cadastre.isCNIL1() == true || GEOR.Addons.Cadastre.isCNIL2() == true)  ? false : true,  
 			waitMsgTarget: true,
 			listeners : {
 				click : function(b, e) {
