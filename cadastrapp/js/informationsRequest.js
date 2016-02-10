@@ -144,7 +144,8 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id,BPChek
         id : 'ObjectRequestDynField' + id,
         width : Ext.getCmp('objectRequestField' + id).getWidth(),
         anchor : '50%',
-        items : [ comboCom, comboSection, comboParcelle, comboProprio, checkBox ]
+        items : 
+            [comboCom,comboSection,comboParcelle,comboProprio,checkBox] 
     });
 
 }
@@ -347,6 +348,7 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 			layout : 'column',
 			columnWidth : .7,
 			id : 'objectRequestField' + _idContainer,
+			
 		}, {
 			xtype : 'button',
 			//width : 20,
@@ -391,7 +393,8 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 		frame : true,
 		bodyPadding : 10,
 		autoScroll : true,
-		width : 600,
+		width : 750,
+		minWidth: 680,
 		closable : true,
 		resizable : true,
 		draggable : true,
