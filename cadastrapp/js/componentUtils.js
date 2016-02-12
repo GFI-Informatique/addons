@@ -12,7 +12,7 @@ GEOR.Addons.Cadastre.Component.getComboCommune = function(id) {
 			mode : 'local',
 			value : '',
 			emptyText:OpenLayers.i18n('cadastrapp.ObjectRequest.parcelle.commune'),
-			anchor : '95%',
+			//anchor : '95%',
 			editable : true,
 			tabIndex : 0,
 			displayField : 'displayname',
@@ -121,6 +121,7 @@ GEOR.Addons.Cadastre.Component.getComboSectionByCommune = function(id, communeLi
 		    id : 'sectionList' + id,
 		    hiddenName : 'section',
 		    xtype : 'combo',
+		    cls: 'comboStyle',
 		    allowBlank : false,
 		    mode : 'local',
 		    value : '',
@@ -144,6 +145,7 @@ GEOR.Addons.Cadastre.Component.getComboParcelleBySection = function(id) {
 		return new Ext.form.ComboBox({
 		    id : 'parcelleList' + id,
 		    hiddenName : 'parcelle',
+		    cls:'comboStyle',
 		    xtype : 'combo',
 		    allowBlank : false,
 		    mode : 'local',
@@ -168,9 +170,7 @@ GEOR.Addons.Cadastre.Component.getComboParcelleBySection = function(id) {
 		});
 	}
 
-/**
- * checkBox
- */
+
 GEOR.Addons.Cadastre.Component.getCheckBoxGroup = function(bp,rb, id) {
 	
 	return new Ext.form.CheckboxGroup({
