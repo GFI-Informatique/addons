@@ -52,10 +52,9 @@ GEOR.Addons.Cadastre.request.removeAllObjectRequest = function() {
 /**
  * création du conteneur pour les propriétaire
  */
-GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio = function(id,BPCheked) {
+GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio = function(id) {
     var comboCom = GEOR.Addons.Cadastre.Component.getComboCommune(id);
     var comboProprio = GEOR.Addons.Cadastre.Component.getComboProprioByCommune(id, 'communeList');
-    var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(BPCheked,!BPCheked,id);
 
     comboCom.on('beforeselect',function(combo, record, index){
         //on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cache)
@@ -65,15 +64,16 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio = function(id,BPChe
     comboCom.on('valid',function(combo){
         Ext.getCmp('proprioList'+id).enable();
     });
+    
+    comboCom.columnWidth=0.5;
+    comboProprio.columnWidth=0.5;
+    
     return new Ext.Container({
 
         layout : 'column',
         id :  'ObjectRequestDynField' + id,
-        width : Ext.getCmp('objectRequestField'+id).getWidth(),
-        anchor: '50%',
         items : [ comboCom,
-                  comboProprio,
-                  checkBox]
+                  comboProprio]
     });
 }
 
@@ -83,12 +83,11 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio = function(id,BPChe
 /**
  * création du conteneur pour le lot de coproriété
  */
-GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id,BPCheked) {
+GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id) {
     var comboCom = GEOR.Addons.Cadastre.Component.getComboCommune(id);
     var comboSection = GEOR.Addons.Cadastre.Component.getComboSectionByCommune(id, 'communeList');
     var comboParcelle = GEOR.Addons.Cadastre.Component.getComboParcelleBySection(id, 'sectionList');
     var comboProprio = GEOR.Addons.Cadastre.Component.getComboProprioByInfoParcelle(id, 'communeList','sectionList','parcelleList');
-    var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(BPCheked,!BPCheked,id);
 
 
     //on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cache)
@@ -139,14 +138,26 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id,BPChek
         Ext.getCmp('proprioList' + id).enable(); 
     });
 
+    
+    comboCom.columnWidth=.3;
+    comboSection.columnWidth=0.1;
+    comboParcelle.columnWidth=0.1;
+    comboProprio.columnWidth=0.3;
+        
     return new Ext.Container({
 
         layout : 'column',
         id : 'ObjectRequestDynField' + id,
-        width : Ext.getCmp('objectRequestField' + id).getWidth(),
-        anchor : '50%',
-        items : 
-            [comboCom,comboSection,comboParcelle,comboProprio,checkBox] 
+        items : [comboCom,comboSection,comboParcelle, comboProprio]
+            /*[{
+                //layout : 'column',
+                //layoutConfig:{align:'stretch'},
+                items:[comboCom, comboSection]
+            },{
+                //layout : 'column',
+                //layoutConfig:{align:'stretch'},
+                items:[comboParcelle, comboProprio]
+            }]*/               
     });
 
 }
@@ -154,11 +165,10 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id,BPChek
 /**
  * création du conteneur pour les parcelles
  */
-GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle = function(id,BPCheked) {
+GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle = function(id) {
 	var comboCom = GEOR.Addons.Cadastre.Component.getComboCommune(id);
 	var comboSection = GEOR.Addons.Cadastre.Component.getComboSectionByCommune(id, 'communeList');
 	var comboParcelle = GEOR.Addons.Cadastre.Component.getComboParcelleBySection(id, 'sectionList');
-	var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(BPCheked,!BPCheked,id);
 
 	//on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cach)
 	comboCom.on('beforeselect',function(combo, record, index){
@@ -193,7 +203,9 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle = function(id,BPCh
 
 	});
 
-
+	comboCom.columnWidth= 0.6;
+	comboSection.columnWidth=0.2;
+	comboParcelle.columnWidth=0.2;
 	return new Ext.Container({
 
 		layout : 'column',
@@ -203,7 +215,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle = function(id,BPCh
 		items : [ comboCom,
 		          comboSection,
 		          comboParcelle,
-		          checkBox]
+		          ]
 	});
 
 
@@ -212,9 +224,8 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle = function(id,BPCh
 /**
  * création du conteneur pour les id parcelle + compte communal
  */
-GEOR.Addons.Cadastre.request.createObjectRequestField = function(id,BPCheked) {
+GEOR.Addons.Cadastre.request.createObjectRequestField = function(id) {
 
-	var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(BPCheked,!BPCheked,id);
 
 	return new Ext.Container({
 		autoEl : 'div',
@@ -223,16 +234,15 @@ GEOR.Addons.Cadastre.request.createObjectRequestField = function(id,BPCheked) {
 			xtype : 'textfield',
 			allowBlank : false,
 			emptyText : OpenLayers.i18n('idCompteCom')
-		},checkBox],
+		}],
 	});
 }
 
 /**
  * création du conteneur pour la copropriété
  */
-GEOR.Addons.Cadastre.request.createObjectRequestFieldCopropriete = function(id,BPCheked) {
+GEOR.Addons.Cadastre.request.createObjectRequestFieldCopropriete = function(id) {
 
-    var checkBox = GEOR.Addons.Cadastre.Component.getCheckBoxGroup(BPCheked,!BPCheked,id);
 
     return new Ext.Container({
         autoEl : 'div',
@@ -245,7 +255,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldCopropriete = function(id,B
             xtype : 'textfield',
             allowBlank : false,
             emptyText : OpenLayers.i18n('idParcelle')
-        }, checkBox],
+        }],
     });  
 }
 
@@ -314,6 +324,7 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
                     var typeObjectRequest = Ext.getCmp('objectRequestType' + idCurrentElement).getValue();
                     //on supprime les champs dynamique crée avant s'il y en a 
                     if (Ext.getCmp('ObjectRequestDynField' + idCurrentElement)) {
+                        Ext.getCmp('checkBoxGroup' + idCurrentElement).remove();
                         Ext.getCmp('ObjectRequestDynField' + idCurrentElement).removeAll();
                         Ext.getCmp('requestGenerateButton').disable();
                     }
@@ -322,23 +333,36 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
                         //on crée les nouveaux champs
                         Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio(idCurrentElement,false));
                         Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.Component.getCheckBoxGroup(false,true,idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
                     } else if (typeObjectRequest == PARCELLE) {
                         //on crée les nouveaux champs
                         Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle(idCurrentElement,true));
                         Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.Component.getCheckBoxGroup(true,false,idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
+                        
                     } else if (typeObjectRequest == COPRO) {
                         Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldCopropriete( idCurrentElement,false));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.Component.getCheckBoxGroup(false,true,idCurrentElement));
                         Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
                     } else if (typeObjectRequest == IDPARCELLE ) {
                         //on crée les nouveaux champs
                         Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestField(idCurrentElement,true));
                         Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.Component.getCheckBoxGroup(false,true,idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
                     }else if (typeObjectRequest == COMPTECOM) {
                         //on crée les nouveaux champs
                         Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestField( idCurrentElement,false));
                         Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.Component.getCheckBoxGroup(false,true,idCurrentElement));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
                     } else if (typeObjectRequest == LOTCOPRO) {
                         Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop(idCurrentElement,false));
+                        Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
+                        Ext.getCmp('objectRequestField' + idCurrentElement).add(GEOR.Addons.Cadastre.Component.getCheckBoxGroup(false,true,idCurrentElement));
                         Ext.getCmp('objectRequestField' + idCurrentElement).doLayout();
                     }
 
@@ -347,7 +371,7 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 
 		}, { // modify columns field
 			xtype : 'container',
-			layout : 'column',
+			//layout : 'column',
 			columnWidth : .7,
 			id : 'objectRequestField' + _idContainer,
 			
@@ -363,7 +387,7 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 			}
 		}, {
 			xtype : 'button',
-			width : 20,
+			//width : 20,
 			iconCls : 'del-button',
             cls : 'delButton',
 			id : 'objectRequestButtoDel' + _idContainer,
@@ -396,8 +420,8 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 		frame : true,
 		bodyPadding : 10,
 		autoScroll : true,
-		width : 750,
-		minWidth: 680,
+		width : 550,
+		height : 450,
 		closable : true,
 		resizable : true,
 		draggable : true,
