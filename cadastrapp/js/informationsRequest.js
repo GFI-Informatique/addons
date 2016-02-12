@@ -140,8 +140,8 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id) {
 
     
     comboCom.columnWidth=.3;
-    comboSection.columnWidth=0.1;
-    comboParcelle.columnWidth=0.1;
+    comboSection.columnWidth=0.2;
+    comboParcelle.columnWidth=0.2;
     comboProprio.columnWidth=0.3;
         
     return new Ext.Container({
@@ -324,7 +324,7 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
                     var typeObjectRequest = Ext.getCmp('objectRequestType' + idCurrentElement).getValue();
                     //on supprime les champs dynamique crée avant s'il y en a 
                     if (Ext.getCmp('ObjectRequestDynField' + idCurrentElement)) {
-                        Ext.getCmp('checkBoxGroup' + idCurrentElement).remove();
+                        Ext.getCmp('checkBoxGroup' + idCurrentElement).destroy();
                         Ext.getCmp('ObjectRequestDynField' + idCurrentElement).removeAll();
                         Ext.getCmp('requestGenerateButton').disable();
                     }
@@ -420,7 +420,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 		frame : true,
 		bodyPadding : 10,
 		autoScroll : true,
-		width : 550,
+		width : 570,
 		height : 450,
 		closable : true,
 		resizable : true,
