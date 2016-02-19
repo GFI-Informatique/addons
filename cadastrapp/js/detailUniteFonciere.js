@@ -227,7 +227,7 @@ GEOR.Addons.Cadastre.onClickDisplayFIUF = function(parcelleId) {
 		},
 		buttons : [ {
 			id : "selectParcelleButton",
-			text : "Seletionner toutes les parcelles",
+			text : OpenLayers.i18n('cadastrapp.uniteFonciere.select.all'),
 			disabled : true,
 			listeners : {
 				click : function(b, e) {
