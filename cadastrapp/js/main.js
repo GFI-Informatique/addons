@@ -16,9 +16,8 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
         
         // Get information for addons options
         GEOR.Addons.Cadastre.cadastrappWebappUrl = record.data.options.webapp.url+"services/";
-        
-        GEOR.Addons.Cadastre.WFSLayerSetting = record.data.options.WFSLayerSetting;
-        
+       
+        GEOR.Addons.Cadastre.WFSLayerSetting = record.data.options.WFSLayerSetting; 
         var WMSSetting = record.data.options.WMSLayer;
         
         // Call the webapp configuration services
@@ -100,8 +99,15 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                             
                             // Remove WMS Layer
                             if (GEOR.Addons.Cadastre.isWMSLayerAdded == true && GEOR.Addons.Cadastre.WMSLayer != null) {
+                            	
+                            	 var layersWMS = [];
+                                 layersWMS.push(GEOR.Addons.Cadastre.WMSLayer);
+                                 var reader = new GeoExt.data.LayerReader();
+                                 var layerData = reader.readRecords(layersWMS);
 
-                                this.map.removeLayer(GEOR.Addons.Cadastre.WMSLayer);
+                                 GeoExt.MapPanel.guess().layers.remove(layerData.records[0]);
+
+                               // this.map.removeLayer(GEOR.Addons.Cadastre.WMSLayer);
                                 GEOR.Addons.Cadastre.WMSLayer.destroy();
                                 GEOR.Addons.Cadastre.WMSLayer = null;
                             }

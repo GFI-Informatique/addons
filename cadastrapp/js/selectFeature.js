@@ -599,9 +599,15 @@ GEOR.Addons.Cadastre.addWMSLayer = function(wmsSetting) {
                 isBaseLayer : false
             }
          );
+        
+        // Create LayerStore from OpenLayer 
+       var layersWMS = [];
+       layersWMS.push(GEOR.Addons.Cadastre.WMSLayer);
+       var reader = new GeoExt.data.LayerReader();
+       var layerData = reader.readRecords(layersWMS);
 
-        // ajout de la couche à la carte   
-        layer.map.addLayer(GEOR.Addons.Cadastre.WMSLayer);
+       GeoExt.MapPanel.guess().layers.add(layerData.records[0]);
+
     }
 
 }
