@@ -94,3 +94,8 @@
 .radio label{
 	font-size: 11px; 
 }
+
+.infobulle-label {
+	font-weight: bold;
+	text-align: right;
+}

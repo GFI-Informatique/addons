@@ -364,7 +364,19 @@
 			"cadastrapp.demandeinformation.downloadProgress.title" : "Progress",
 			"cadastrapp.demandeinformation.downloadProgress.message" : "Generating of pdf document.",
 			"idCompteCom" : "municipal account id...",
-			"idParcelle": "plot id..."
+			"idParcelle": "plot id...",
+			
+			"cadastrapp.infobulle.commune" : "Town",
+			"cadastrapp.infobulle.annee" : "Year",
+			"cadastrapp.infobulle.departement" : "County",
+			"cadastrapp.infobulle.direction" : "Direction",
+			"cadastrapp.infobulle.inseecom" : "Town's INSEE",
+			"cadastrapp.infobulle.prefixe" : "Prefix",
+			"cadastrapp.infobulle.section" : "Section",
+			"cadastrapp.infobulle.nplan" : "Plot",
+			"cadastrapp.infobulle.adresse" : "Adress",
+			"cadastrapp.infobulle.proprietaire" : "Owner",
+			"cadastrapp.infobulle.ccomunal" : "Municipal account"
         },
         "fr": {
        		"cadastrapp.no": "non",
@@ -707,7 +719,19 @@
 			"cadastrapp.demandeinformation.downloadProgress.title" : "Progression",
 			"cadastrapp.demandeinformation.downloadProgress.message" : "Génération du document pdf.",
 			"idCompteCom" : "id compte communal...",
-			"idParcelle": "id parcelle..."
+			"idParcelle": "id parcelle...",
+			
+			"cadastrapp.infobulle.commune" : "Commune",
+			"cadastrapp.infobulle.annee" : "Année",
+			"cadastrapp.infobulle.departement" : "Departement",
+			"cadastrapp.infobulle.direction" : "Direction",
+			"cadastrapp.infobulle.inseecom" : "INSEE commune",
+			"cadastrapp.infobulle.prefixe" : "Prefixe",
+			"cadastrapp.infobulle.section" : "Section",
+			"cadastrapp.infobulle.nplan" : "N° de plan",
+			"cadastrapp.infobulle.adresse" : "Adresse",
+			"cadastrapp.infobulle.proprietaire" : "Proprietaire",
+			"cadastrapp.infobulle.ccomunal" : "Compte communal"
         }
     }
 }
