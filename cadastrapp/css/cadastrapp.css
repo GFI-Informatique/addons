@@ -90,10 +90,16 @@
 .delButton{
 	padding-left:2px;
 }
-l
+
 .radio label{
 	font-size: 11px; 
 }
+
+.infobulle-label {
+	font-weight: bold;
+	text-align: right;
+}
+
 .fieldSet{
 	padding-left:4px;
 }
@@ -102,3 +108,4 @@ l
 	width : 60px;
 	overflow: auto;
 }
+

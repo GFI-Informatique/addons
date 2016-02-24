@@ -38,31 +38,58 @@ GEOR.Addons.Cadastre.displayInfoBulle = function(map, idParcelle, lonlat) {
             if (typeof(result) != "undefined"){
             
                 if (GEOR.Addons.Cadastre.isCadastre()){
-                    html = "<div class=\"cadastrapp-infobulle-parcelle\"><div>"+result.libcom+"</div>" +
-                    "<div>"+idParcelle+"</div>" +
-                    "<div>"+result.dnvoiri+" "+result.dindic+" "+result.cconvo+" "+result.dvoilib+"</div>" +
-                    "<div>"+OpenLayers.i18n('cadastrapp.contenancedgfip') +" : "+result.dcntpa.toLocaleString()+" m²</div>" +
-                    "<div>"+OpenLayers.i18n('cadastrapp.sig') +" : "+result.surfc.toLocaleString()+" m²</div>";
+                    html = "<div class=\"cadastrapp-infobulle-parcelle\">";
+                    
+                    html += "<table style=\"width:100%;\">";
+                    html += "<thead><tr><th colspan=\"2\" style=\"text-align:center; font-weight: bold; text-transform: uppercase;\">Parcelle</th></tr></thead>";
+                    html += "<tbody>";
+					html += "<tr><td colspan=\"2\" style=\"text-align:center; font-style: italic;\">" + idParcelle + "</td></tr>";
+                    html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.infobulle.commune') + " : </td><td>" + result.libcom + "</td></tr>";
+                    html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.infobulle.annee') + " : </td><td>" + idParcelle.substr(0,4) + "</td></tr>";
+                    html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.infobulle.departement') + " : </td><td>" + idParcelle.substr(4,2) + "</td></tr>";
+                    if( idParcelle.substr(6,1) != "0" )
+                        html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.infobulle.direction') + " : </td><td>" + idParcelle.substr(6,1) + "</td></tr>";
+                    html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.infobulle.inseecom') + " : </td><td>" + idParcelle.substr(7,3) + "</td></tr>";
+                    if( idParcelle.substr(10,3) != "000" )
+                        html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.infobulle.prefix') + " : </td><td>" + idParcelle.substr(10,3) + "</td></tr>";
+                    html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.infobulle.section') + " : </td><td>" + idParcelle.substr(13,2) + "</td></tr>";
+                    html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.infobulle.nplan') + " : </td><td>" + idParcelle.substr(15,4) + "</td></tr>";
+                    html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.infobulle.adresse') + " : </td><td>" + result.dnvoiri + " " + result.dindic + " " + result.cconvo + " " + result.dvoilib + "</td></tr>";
+                    html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.contenancedgfip') + " : </td><td>" + result.dcntpa.toLocaleString() + " m²</td></tr>";
+                    html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.sig') + " : </td><td>" + result.surfc.toLocaleString() + " m²</td></tr>";
                     
                     if(GEOR.Addons.Cadastre.isCNIL1() || GEOR.Addons.Cadastre.isCNIL2()){
                         if (typeof(result.proprietaires) != "undefined"){
                             Ext.each(result.proprietaires, function(proprietaire, currentIndex){
                                 if(currentIndex==8){
-                                    html = html + "<div>...  </div>";
+                                    html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.infobulle.proprietaire') + " : </td><td>...</td></tr>";
                                 }else{
-                                    html = html + "<div>"+ proprietaire.ddenom +"</div>";
+                                    html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.infobulle.proprietaire') + " : </td><td>" + proprietaire.ddenom + "</td></tr>";
                                 }                   
                             });
                         }
                     }
-                    html += "</div>"
+                    html += "</tbody>";
+                    html += "</table>";
+                    
+                    html += "</div>";
                 }
+				
+				if (GEOR.Addons.Cadastre.isCadastre() && GEOR.Addons.Cadastre.isFoncier())
+					html += "<br/>";
+				
                 if (GEOR.Addons.Cadastre.isFoncier()){
-                    html += "<div class=\"cadastrapp-infobulle-unite-fonciere\">" +
-                            "<div>"+result.comptecommunal +"</div>" +
-                            "<div>"+ OpenLayers.i18n('cadastrapp.contenancedgfip') +" UF : "+result.dcntpa_sum.toLocaleString()+" m²</div>" +
-                            "<div>"+ OpenLayers.i18n('cadastrapp.sig') +" UF :"+result.sigcal_sum.toLocaleString()+" m²</div>";
-                    //TODO add when available in webapp batical = result[0].batical;
+                    html += "<div class=\"cadastrapp-infobulle-unite-fonciere\">";
+					
+					html += "<table style=\"width:100%;\">";
+                    html += "<thead><tr><th colspan=\"2\" style=\"text-align:center; font-weight: bold; text-transform: uppercase;\">Unité Foncière</th></tr></thead>";
+					html += "<tbody>";
+					html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.infobulle.ccomunal') + " : </td><td>" + result.comptecommunal + "</td></tr>";
+					html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.contenancedgfip') + " UF : </td><td>" + result.dcntpa_sum.toLocaleString() + " m²</td></tr>";
+					html += "<tr><td class=\"infobulle-label\">" + OpenLayers.i18n('cadastrapp.sig') + " UF : </td><td>" + result.sigcal_sum.toLocaleString() + " m²</td></tr>";
+					html += "</tbody>";
+                    html += "</table>";
+					
                     html += "</div>";
                 }
     
