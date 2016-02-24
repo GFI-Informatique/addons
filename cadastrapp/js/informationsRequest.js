@@ -394,16 +394,25 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 			handler : function(element) {
 				//on récupère l'id du bouton del pour supprimer les éléments du même id
 				activeRemoveButtonId = this.getId().split('objectRequestButtoDel')[1];
-				//on supprime les élements du conteneur
-				Ext.getCmp('container'+activeRemoveButtonId).removeAll();
-				Ext.getCmp('requestObjectDemande').doLayout();
-				//possibilité d'ajouter un autre conteneur
-				_numberRequestMax++;
-				_numberRequestAvailable++;
 				
-
-
-
+				// On récupère le nombre de demande
+				lengthContainer = Ext.getCmp('requestObjectDemande').items.items.length;
+				
+				// Si il ne reste qu'une demande, on ne détruit pas tout le container
+				const MaxLengthContainer = 1;
+				if (lengthContainer > MaxLengthContainer){
+				  //on supprime les élements du conteneur
+	                Ext.getCmp('container'+activeRemoveButtonId).destroy();
+	                Ext.getCmp('requestObjectDemande').doLayout();
+	                //possibilité d'ajouter un autre conteneur
+	                _numberRequestMax++;
+	                _numberRequestAvailable++;
+				} else {
+				    Ext.getCmp('objectRequestField'+ activeRemoveButtonId).removeAll();
+				    Ext.getCmp('objectRequestType' + activeRemoveButtonId).setValue('');
+				    
+				}
+				
 			}
 		} ],
 	});
