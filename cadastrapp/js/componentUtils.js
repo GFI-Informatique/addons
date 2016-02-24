@@ -6,7 +6,7 @@ Ext.namespace("GEOR.Addons.Cadastre.Component");
  */
 GEOR.Addons.Cadastre.Component.getComboCommune = function(id) {
 		return new Ext.form.ComboBox({
-			id : 'communeList' +id,
+			id : 'comList' +id,
 			hiddenName : 'cgocommune',
 			allowBlank : false,
 			mode : 'local',
