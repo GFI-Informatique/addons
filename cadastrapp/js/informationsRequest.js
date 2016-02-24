@@ -148,16 +148,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id) {
 
         layout : 'column',
         id : 'ObjectRequestDynField' + id,
-        items : [comboCom,comboSection,comboParcelle, comboProprio]
-            /*[{
-                //layout : 'column',
-                //layoutConfig:{align:'stretch'},
-                items:[comboCom, comboSection]
-            },{
-                //layout : 'column',
-                //layoutConfig:{align:'stretch'},
-                items:[comboParcelle, comboProprio]
-            }]*/               
+        items : [comboCom,comboSection,comboParcelle, comboProprio]                
     });
 
 }
@@ -371,13 +362,11 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 
 		}, { // modify columns field
 			xtype : 'container',
-			//layout : 'column',
 			columnWidth : .7,
 			id : 'objectRequestField' + _idContainer,
 			
 		}, {
 			xtype : 'button',
-			//width : 20,
 			iconCls : 'add-button',
             cls : 'addButton',
 			id : 'objectRequestButtoAdd' + _idContainer,
@@ -387,7 +376,6 @@ GEOR.Addons.Cadastre.request.createObjectRequest = function() {
 			}
 		}, {
 			xtype : 'button',
-			//width : 20,
 			iconCls : 'del-button',
             cls : 'delButton',
 			id : 'objectRequestButtoDel' + _idContainer,
