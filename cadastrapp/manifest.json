@@ -181,7 +181,10 @@
             "cadastrapp.outlinecolor": "Outline color",
             "cadastrapp.name": "Name",
             "cadastrapp.no_title": "no title", 
-            "cadastrapp.uniteFonciere": "Property unit",     
+            
+            "cadastrapp.uniteFonciere": "Property unit",   
+            "cadastrapp.uniteFonciere.select.all": "Select all plots",  
+            
             "cadastrapp.parcelle.libcom": "Town in uppercase",
             "cadastrapp.parcelle.ccodep": "Department code",
             "cadastrapp.parcelle.ccodir": "Direction code",
@@ -620,6 +623,8 @@
              "cadastrapp.demandeinformation.object.type.6":"Lot de copropriété",
              
             "cadastrapp.uniteFonciere": "Unite foncière",
+            "cadastrapp.uniteFonciere.select.all": "Sélectionner toutes les parcelles",  
+            
             "cadastrapp.surface" : "Surface",
             "cadastrapp.CoProprietaire" : "Co-propriétaire",
 			
