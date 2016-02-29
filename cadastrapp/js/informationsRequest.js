@@ -54,7 +54,7 @@ GEOR.Addons.Cadastre.request.removeAllObjectRequest = function() {
  */
 GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio = function(id) {
     var comboCom = GEOR.Addons.Cadastre.Component.getComboCommune(id);
-    var comboProprio = GEOR.Addons.Cadastre.Component.getComboProprioByCommune(id, 'communeList');
+    var comboProprio = GEOR.Addons.Cadastre.Component.getComboProprioByCommune(id, 'comList');
 
     comboCom.on('beforeselect',function(combo, record, index){
         //on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cache)
@@ -85,9 +85,9 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldProprio = function(id) {
  */
 GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id) {
     var comboCom = GEOR.Addons.Cadastre.Component.getComboCommune(id);
-    var comboSection = GEOR.Addons.Cadastre.Component.getComboSectionByCommune(id, 'communeList');
+    var comboSection = GEOR.Addons.Cadastre.Component.getComboSectionByCommune(id, 'comList');
     var comboParcelle = GEOR.Addons.Cadastre.Component.getComboParcelleBySection(id, 'sectionList');
-    var comboProprio = GEOR.Addons.Cadastre.Component.getComboProprioByInfoParcelle(id, 'communeList','sectionList','parcelleList');
+    var comboProprio = GEOR.Addons.Cadastre.Component.getComboProprioByInfoParcelle(id, 'comList','sectionList','parcelleList');
 
 
     //on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cache)
@@ -102,7 +102,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id) {
 
     comboCom.on('select', function(element, rec, idx) {
         comboSection.enable();
-        var cgocommune = Ext.getCmp('communeList' + id).value;
+        var cgocommune = Ext.getCmp('comList' + id).value;
         var myStore = GEOR.Addons.Cadastre.getSectionStore(cgocommune);
         comboSection.bindStore(myStore);
     });
@@ -118,7 +118,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id) {
     comboSection.on('select', function(element, rec, idx) {
         var comboSection = Ext.getCmp('sectionList' + id).value;
         var parcelleStrore = Ext.getCmp('parcelleList' + id).getStore();
-        var cgocommune = Ext.getCmp('communeList' + id).value
+        var cgocommune = Ext.getCmp('comList' + id).value
         GEOR.Addons.Cadastre.loadParcelleStore(parcelleStrore, cgocommune, comboSection);
         //comboParcelle.bindStore(myStore);
         comboParcelle.enable();
@@ -132,7 +132,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id) {
     });
 
     comboParcelle.on('select', function(element, rec, idx) {
-        var cgocommune = Ext.getCmp('communeList' + id).value
+        var cgocommune = Ext.getCmp('comList' + id).value
         var cgoSection = Ext.getCmp('sectionList' + id).value;
         var cgoParcelle = Ext.getCmp('parcelleList' + id).value;
         Ext.getCmp('proprioList' + id).enable(); 
@@ -158,7 +158,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldLotCop = function(id) {
  */
 GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle = function(id) {
 	var comboCom = GEOR.Addons.Cadastre.Component.getComboCommune(id);
-	var comboSection = GEOR.Addons.Cadastre.Component.getComboSectionByCommune(id, 'communeList');
+	var comboSection = GEOR.Addons.Cadastre.Component.getComboSectionByCommune(id, 'comList');
 	var comboParcelle = GEOR.Addons.Cadastre.Component.getComboParcelleBySection(id, 'sectionList');
 
 	//on supprime tous le store pour eviter de la combo remonte d'ancienne valeur (cach)
@@ -171,7 +171,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle = function(id) {
 
 	comboCom.on('select',function(element, rec, idx){
 		comboSection.enable();
-		var cgocommune = Ext.getCmp('communeList'+id).value;
+		var cgocommune = Ext.getCmp('comList'+id).value;
 		var myStore = GEOR.Addons.Cadastre.getSectionStore(cgocommune);
 		comboSection.bindStore(myStore);
 	});
@@ -187,7 +187,7 @@ GEOR.Addons.Cadastre.request.createObjectRequestFieldParcelle = function(id) {
 	comboSection.on('select',function(element, rec, idx){
 		var comboSection = Ext.getCmp('sectionList'+id).value;
 		var parcelleStrore = Ext.getCmp('parcelleList'+id).getStore();
-		var cgocommune = Ext.getCmp('communeList'+id).value
+		var cgocommune = Ext.getCmp('comList'+id).value
 		GEOR.Addons.Cadastre.loadParcelleStore(parcelleStrore,cgocommune,comboSection);
 		//comboParcelle.bindStore(myStore);
 		comboParcelle.enable();
@@ -474,6 +474,8 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 							_numberRequestAvailable = GEOR.Addons.Cadastre.maxRequest + GEOR.Addons.Cadastre.maxRequest;
 							//on réinitialise le conteneur objet de demande
 							GEOR.Addons.Cadastre.request.removeAllObjectRequest();
+							
+							
 
 							if (OpenLayers.i18n('cadastrapp.demandeinformation.type.P3') == selectedValue
 									|| 'P3' == selectedValue) {
@@ -593,9 +595,19 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 							// Add object Request
 							if (OpenLayers.i18n('cadastrapp.demandeinformation.type.P3') !=  typeDemandeur
 									&& 'P3' !=  typeDemandeur && _numberRequestMax > 0){
-								Ext.getCmp('requestObjectDemande').add(GEOR.Addons.Cadastre.request.createObjectRequest());
-								Ext.getCmp('requestObjectDemande').doLayout();
-								Ext.getCmp('requestPrintButton').enable();
+							    // Add object if no objectRequest
+							    // Get number of ObjectRequest and add one more if no objectRequest
+							    lengthContainer = Ext.getCmp('requestObjectDemande').items.items.length;
+				                // add one objectRequest or not
+				                const MaxLengthObject = 0;
+				                if (lengthContainer === MaxLengthObject){
+							        Ext.getCmp('requestObjectDemande').add(GEOR.Addons.Cadastre.request.createObjectRequest());
+							        Ext.getCmp('requestObjectDemande').doLayout();
+	                                Ext.getCmp('requestPrintButton').enable();
+							    } else {
+							        Ext.getCmp('requestPrintButton').enable();
+							    }
+								
 							}
 						}
 					}
@@ -611,7 +623,8 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 					width : 280,
 					allowBlank : true,
 					disabled : true
-				},// Le code postal et la commune ne sont pas en combox ici,
+				},
+				// Le code postal et la commune ne sont pas en combox ici,
 				// car l'utilisateur qui fait la demande ne fait peut être
 				// pas parti des communes chargées en base
 				{
@@ -773,14 +786,14 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                                         stateRpBox);
 							} else if (requestType == 4) {
                                 params.proprietaires.push(
-                                        Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + 
+                                        Ext.getCmp('comList' + idObjectRequest).getValue() + '|' + 
                                         Ext.getCmp('proprioList' + idObjectRequest).getValue() + '|' +
                                         //send state information in the requestURL according to checkBox state
                                         stateBpBox + '|' + 
                                         stateRpBox );
 							} else if (requestType == 2) {
                                 params.parcelles.push(
-                                        Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + 
+                                        Ext.getCmp('comList' + idObjectRequest).getValue() + '|' + 
                                         Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + 
                                         Ext.getCmp('parcelleList' + idObjectRequest).getValue() + '|' + 
                                         // send state information in the requestURL according to checkBox state
@@ -788,7 +801,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
                                         stateRpBox);
 							} else if (requestType == 6) {
 							    params.proprietaireLots.push(
-							            Ext.getCmp('communeList' + idObjectRequest).getValue() + '|' + 
+							            Ext.getCmp('comList' + idObjectRequest).getValue() + '|' + 
 							            Ext.getCmp('sectionList' + idObjectRequest).getValue() + '|' + 
 							            Ext.getCmp('parcelleList' + idObjectRequest).getValue() + '|' + 
 							            Ext.getCmp('proprioList' + idObjectRequest).getValue() + '|' +
@@ -811,11 +824,12 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 						// Save request and get id
 						Ext.Ajax.request({
 							method : 'GET',
+							// call url
 							url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'saveInformationRequest',
 							params : params,
 							success : function(response) {
 								var result = Ext.decode(response.responseText);
-
+								
 								var paramsPrint = {};
 								paramsPrint.requestid = result.id
 								_currentRequestId = result.id
@@ -825,7 +839,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 								// Directly download file, without and call service
 								// without
 								// ogcproxy
-								var download = Ext.DomHelper.append(document.body, {
+								/*var download = Ext.DomHelper.append(document.body, {
 									tag : 'iframe',
 									id : 'downloadIframe',
 									frameBorder : 0,
@@ -833,13 +847,34 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 									height : 0,
 									css : 'display:none;visibility:hidden;height:0px;',
 									src : url
+								})*/
+								
+								//window.open(url);
+								
+								/**/
+								Ext.Ajax.request({
+								    method: 'GET',
+								    url : url,
+								    defaultHeaders : {
+								        'Accept' : 'application/pdf' },
+								    params : '',
+								    success : function(response){
+								        //window.open(response.responseText);
+								        box.hide();
+								        Ext.getCmp('requestGenerateButton').enable();
+								    },
+								    failure : function(result) {
+								        box.hide();
+								        Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.alert.demande'));
+								    }
 								});
+								/*//
 							  
-								Ext.get(download).on('load', function(e, t, o) {
+								/*Ext.get(download).on('load', function(e, t, o) {
 									box.hide();
 								});
 
-								Ext.getCmp('requestGenerateButton').enable();
+								Ext.getCmp('requestGenerateButton').enable();*/
 
 							},
 							failure : function(result) {
@@ -883,6 +918,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 						css : 'display:none;visibility:hidden;height:0px;',
 						src : url
 					});
+					
 					
 					Ext.get(download).on('load', function(e, t, o) {
 						box.hide();
