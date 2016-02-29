@@ -364,7 +364,19 @@
 			"cadastrapp.demandeinformation.downloadProgress.title" : "Progress",
 			"cadastrapp.demandeinformation.downloadProgress.message" : "Generating of pdf document.",
 			"idCompteCom" : "municipal account id...",
-			"idParcelle": "plot id..."
+			"idParcelle": "plot id...",
+			
+			"cadastrapp.infobulle.commune" : "Town",
+			"cadastrapp.infobulle.annee" : "Year",
+			"cadastrapp.infobulle.departement" : "County",
+			"cadastrapp.infobulle.direction" : "Direction",
+			"cadastrapp.infobulle.inseecom" : "Town's INSEE",
+			"cadastrapp.infobulle.prefixe" : "Prefix",
+			"cadastrapp.infobulle.section" : "Section",
+			"cadastrapp.infobulle.nplan" : "Plot",
+			"cadastrapp.infobulle.adresse" : "Adress",
+			"cadastrapp.infobulle.proprietaire" : "Owner",
+			"cadastrapp.infobulle.ccomunal" : "Municipal account"
         },
         "fr": {
        		"cadastrapp.no": "non",

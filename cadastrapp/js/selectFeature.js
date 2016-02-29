@@ -570,7 +570,7 @@ GEOR.Addons.Cadastre.zoomOnFeatures = function(features) {
 GEOR.Addons.Cadastre.addWMSLayer = function(wmsSetting) {
 
     // Search layer with same wms URL
-    var layers = layer.map.getLayersBy("url", wmsSetting.url);
+	var layers = GeoExt.MapPanel.guess().map.getLayersBy("url", wmsSetting.url);
    
     // if layer not already present add cadastrapp addons layer
     if(layers == null || layers.length == 0){
