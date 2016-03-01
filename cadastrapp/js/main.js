@@ -19,6 +19,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
        
         GEOR.Addons.Cadastre.WFSLayerSetting = record.data.options.WFSLayerSetting; 
         var WMSSetting = record.data.options.WMSLayer;
+        var popupSetting = record.data.options.popup;
         
         // Call the webapp configuration services
         Ext.Ajax.request({
@@ -70,8 +71,7 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                 GEOR.Addons.Cadastre.result.owner.window;
                 
                 GEOR.Addons.Cadastre.createSelectionControl(record.data.options.defautStyleParcelle , record.data.options.selectedStyle);
-                GEOR.Addons.Cadastre.addPopupOnhover(record.data.options.popup);
-        
+                                
                 initThis.window = new Ext.Window({
                     title: OpenLayers.i18n('cadastrapp.cadastre_tools'),
                     closable: true,
@@ -89,14 +89,21 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                     listeners: {
                     	"show": function() {
                     		GEOR.Addons.Cadastre.addWMSLayer(WMSSetting);
+                    		GEOR.Addons.Cadastre.addPopupOnhover(popupSetting);                    		
                     	},
                         "hide": function() {
                           
                         	// deactivate all controls
                         	 Ext.each(GEOR.Addons.Cadastre.menu.cadastrappControls, function(control, index) {
-                                 control.deactivate();
+                                 control.deactivate();    
                              });
+                        	  
+                        	 // deactivate popup hover control
+                             var mapControls = layer.map.controls[21];
+                        	 mapControls.destroy();
                             
+                        	 
+                        	 
                             // Remove WMS Layer
                             if (GEOR.Addons.Cadastre.isWMSLayerAdded == true && GEOR.Addons.Cadastre.WMSLayer != null) {
                             	
@@ -110,8 +117,9 @@ GEOR.Addons.Cadastrapp = Ext.extend(GEOR.Addons.Base, {
                                // this.map.removeLayer(GEOR.Addons.Cadastre.WMSLayer);
                                 GEOR.Addons.Cadastre.WMSLayer.destroy();
                                 GEOR.Addons.Cadastre.WMSLayer = null;
+                                GEOR.Addons.Cadastre.addPopupOnhover = null ; //
                             }
-                            
+                                                     
                             // Remove all windows
                             if(GEOR.Addons.Cadastre.popup){
                                 GEOR.Addons.Cadastre.popup.close();

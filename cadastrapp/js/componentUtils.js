@@ -170,7 +170,9 @@ GEOR.Addons.Cadastre.Component.getComboParcelleBySection = function(id) {
 		});
 	}
 
-
+/**
+ * CheckBox
+ */
 GEOR.Addons.Cadastre.Component.getCheckBoxGroup = function(bp,rb, id) {
 	
 	return new Ext.form.CheckboxGroup({
@@ -181,7 +183,7 @@ GEOR.Addons.Cadastre.Component.getCheckBoxGroup = function(bp,rb, id) {
         {
             xtype: 'checkbox',
             boxLabel: 'Relevé de propriété',
-            
+            disabled : (GEOR.Addons.Cadastre.isCNIL1() == true || GEOR.Addons.Cadastre.isCNIL2() == true) ? 'false' : 'true',
             id : 'rpBox' + id,
             checked: rb,
             inputValue: 'RP'
