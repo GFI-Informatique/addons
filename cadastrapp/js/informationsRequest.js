@@ -836,10 +836,8 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 
 								var url = GEOR.Addons.Cadastre.cadastrappWebappUrl + 'printPDFRequest?' + Ext.urlEncode(paramsPrint);
 
-								// Directly download file, without and call service
-								// without
-								// ogcproxy
-								/*var download = Ext.DomHelper.append(document.body, {
+								// Directly download file, need to be in an iframe for extjs to manage download page
+								var download = Ext.DomHelper.append(document.body, {
 									tag : 'iframe',
 									id : 'downloadIframe',
 									frameBorder : 0,
@@ -847,34 +845,18 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 									height : 0,
 									css : 'display:none;visibility:hidden;height:0px;',
 									src : url
-								})*/
-								
-								//window.open(url);
-								
-								/**/
-								Ext.Ajax.request({
-								    method: 'GET',
-								    url : url,
-								    defaultHeaders : {
-								        'Accept' : 'application/pdf' },
-								    params : '',
-								    success : function(response){
-								        //window.open(response.responseText);
-								        box.hide();
-								        Ext.getCmp('requestGenerateButton').enable();
-								    },
-								    failure : function(result) {
-								        box.hide();
-								        Ext.Msg.alert(OpenLayers.i18n('cadastrapp.demandeinformation.alert.title'), OpenLayers.i18n('cadastrapp.demandeinformation.alert.demande'));
-								    }
-								});
-								/*//
-							  
-								/*Ext.get(download).on('load', function(e, t, o) {
+								})
+										
+								// Detection of iframe end of load only available for Firefox
+								if (Ext.isGecko || Ext.isGecko2 || Ext.isGecko3){
+									Ext.get(download).on('load', function(e, t, o) {
+										box.hide();
+									});
+								}else{
 									box.hide();
-								});
+								}
 
-								Ext.getCmp('requestGenerateButton').enable();*/
+								Ext.getCmp('requestGenerateButton').enable();
 
 							},
 							failure : function(result) {
@@ -906,9 +888,7 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 
 					var url = GEOR.Addons.Cadastre.cadastrappWebappUrl + 'createDemandeFromObj?' + Ext.urlEncode(paramsGen);
 
-					// Directly download file, without and call service
-					// without
-					// ogcproxy
+					// Directly download file, need to be in an iframe for extjs to manage download page
 					var download = Ext.DomHelper.append(document.body, {
 						tag : 'iframe',
 						id : 'downloadIframe',
@@ -920,11 +900,17 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 					});
 					
 					
-					Ext.get(download).on('load', function(e, t, o) {
+					// Detection of iframe end of load only available for Firefox
+					if (Ext.isGecko || Ext.isGecko2 || Ext.isGecko3){
+						Ext.get(download).on('load', function(e, t, o) {
+							box.hide();
+							Ext.getCmp('requestGenerateButton').disable();
+						});
+					}else{
 						box.hide();
 						Ext.getCmp('requestGenerateButton').disable();
-					});
-					
+					}
+				
 				}
 			}
 		} ],

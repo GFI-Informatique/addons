@@ -719,7 +719,19 @@
 			"cadastrapp.demandeinformation.downloadProgress.title" : "Progression",
 			"cadastrapp.demandeinformation.downloadProgress.message" : "Génération du document pdf.",
 			"idCompteCom" : "id compte communal...",
-			"idParcelle": "id parcelle..."
+			"idParcelle": "id parcelle...",
+			
+			"cadastrapp.infobulle.commune" : "Ville",
+			"cadastrapp.infobulle.annee" : "Année",
+			"cadastrapp.infobulle.departement" : "Département",
+			"cadastrapp.infobulle.direction" : "Direction",
+			"cadastrapp.infobulle.inseecom" : "Code INSEE",
+			"cadastrapp.infobulle.prefixe" : "Prefixe",
+			"cadastrapp.infobulle.section" : "Section",
+			"cadastrapp.infobulle.nplan" : "N° de plan",
+			"cadastrapp.infobulle.adresse" : "Adresse",
+			"cadastrapp.infobulle.proprietaire" : "Propriétaire",
+			"cadastrapp.infobulle.ccomunal" : "Compte communal"
         }
     }
 }
