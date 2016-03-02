@@ -175,10 +175,10 @@ GEOR.Addons.Cadastre.Component.getComboParcelleBySection = function(id) {
  */
 GEOR.Addons.Cadastre.Component.getCheckBoxGroup = function(bp,rb, id) {
     
-    // Create items with BP
+    // Create array
     var checkBoxItems = [];
 	
-    // if CNIL1 or CNIL2 add RP checkBox 
+    // if CNIL1 or CNIL2 add enable RP checkBox to array
     if (GEOR.Addons.Cadastre.isCNIL1() == true || GEOR.Addons.Cadastre.isCNIL2() == true){
         checkBoxItems.push ({
             xtype: 'checkbox',
@@ -188,17 +188,17 @@ GEOR.Addons.Cadastre.Component.getCheckBoxGroup = function(bp,rb, id) {
                 inputValue: 'RP'
         })
     } else {
-        // Else disabled checkBox
+        // Else add disabled checkBox to array and checked is false
         checkBoxItems.push ({
             xtype: 'checkbox',
                 boxLabel: 'Relevé de propriété',
                 disabled : 'true',
-                id : 'rpBox' + id,
-                checked: rb,
+                checked: false, // forced to not print document
                 inputValue: 'RP'
         })
     }
     
+    // add RP within items
 	return new Ext.form.CheckboxGroup({
 	    allowBlank: false,
         id : 'checkBoxGroup'+id,
