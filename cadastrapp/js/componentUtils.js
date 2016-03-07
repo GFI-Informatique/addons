@@ -175,42 +175,24 @@ GEOR.Addons.Cadastre.Component.getComboParcelleBySection = function(id) {
  */
 GEOR.Addons.Cadastre.Component.getCheckBoxGroup = function(bp,rb, id) {
     
-    // Create array
-    var checkBoxItems = [];
-	
-    // if CNIL1 or CNIL2 add enable RP checkBox to array
-    if (GEOR.Addons.Cadastre.isCNIL1() == true || GEOR.Addons.Cadastre.isCNIL2() == true){
-        checkBoxItems.push ({
-            xtype: 'checkbox',
-                boxLabel: 'Relevé de propriété',
-                id : 'rpBox' + id,
-                checked: rb,
-                inputValue: 'RP'
-        })
-    } else {
-        // Else add disabled checkBox to array and checked is false
-        checkBoxItems.push ({
-            xtype: 'checkbox',
-                boxLabel: 'Relevé de propriété',
-                disabled : 'true',
-                checked: false, // forced to not print document
-                inputValue: 'RP'
-        })
-    }
-    
-    // add RP within items
 	return new Ext.form.CheckboxGroup({
 	    allowBlank: false,
         id : 'checkBoxGroup'+id,
         cls:'radio',
-        items: [checkBoxItems,
-            {
-                xtype: 'checkbox',
-                    boxLabel: 'Bordereau parcellaire',
-                    id : 'bpBox' + id,
-                    checked: bp,
-                    inputValue: 'BP'
-            }]
+        items: [{
+            xtype: 'checkbox',
+            boxLabel: 'Relevé de propriété',
+            id : 'rpBox' + id,
+            checked: rb,
+            inputValue: 'RP'
+    
+        },{
+            xtype: 'checkbox',
+                boxLabel: 'Bordereau parcellaire',
+                id : 'bpBox' + id,
+                checked: bp,
+                inputValue: 'BP'
+        }]
 	});
 }
 

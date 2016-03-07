@@ -855,8 +855,12 @@ GEOR.Addons.Cadastre.initInformationRequestWindow = function() {
 								}else{
 									box.hide();
 								}
+								
+								if (GEOR.Addons.Cadastre.isCNIL1() == true || GEOR.Addons.Cadastre.isCNIL2() == true){
+								    Ext.getCmp('requestGenerateButton').enable();
+								}
 
-								Ext.getCmp('requestGenerateButton').enable();
+								
 
 							},
 							failure : function(result) {
