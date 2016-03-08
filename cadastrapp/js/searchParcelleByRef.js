@@ -559,7 +559,7 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 }
             }
         }, {
-            text: 'Effacer',
+            text: OpenLayers.i18n('cadastrapp.clear'),
             listeners: {
                 click: function(b, e) {
                     var currentForm = GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].getActiveTab();

@@ -454,7 +454,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                 }
             }
         }, {
-            text: 'Effacer',
+            text: OpenLayers.i18n('cadastrapp.clear'),
             listeners: {
                 click: function(b, e) {
                     var currentForm = GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].getActiveTab();
