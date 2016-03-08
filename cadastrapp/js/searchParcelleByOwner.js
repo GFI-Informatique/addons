@@ -61,8 +61,19 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     q.query.length = length;
                 }
             },
-            valid : function(element) {
+            valid : function(combo) {
                 Ext.getCmp('comboDnomlpSearchByOwners').enable();
+                GEOR.ls.set("default_cadastrapp_city",combo.getValue());
+            },
+            afterrender: function(combo) {
+                if( GEOR.ls.get("default_cadastrapp_city") != " " && GEOR.ls.get("default_cadastrapp_city") != null ) {
+                    combo.store.on('load', function() {
+                        combo.setValue(GEOR.ls.get("default_cadastrapp_city"));
+                        GEOR.ls.set("default_cadastrapp_city",combo.getValue());
+                        combo.fireEvent('change',combo,GEOR.ls.get("default_cadastrapp_city"),'');
+                    }, combo.store, {single: true});
+                    combo.doQuery(GEOR.ls.get("default_cadastrapp_city"));
+                }
             }
         }
     });
@@ -108,8 +119,19 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     q.query.length = length;
                 }
             },
-            valid : function(element) {
+            valid : function(combo) {
                 Ext.getCmp('gripOwnerSearchByOwners').enable();
+                GEOR.ls.set("default_cadastrapp_city",combo.getValue());
+            },
+            afterrender: function(combo) {
+                if( GEOR.ls.get("default_cadastrapp_city") != " " && GEOR.ls.get("default_cadastrapp_city") != null ) {
+                    combo.store.on('load', function() {
+                        combo.setValue(GEOR.ls.get("default_cadastrapp_city"));
+                        GEOR.ls.set("default_cadastrapp_city",combo.getValue());
+                        combo.fireEvent('change',combo,GEOR.ls.get("default_cadastrapp_city"),'');
+                    }, combo.store, {single: true});
+                    combo.doQuery(GEOR.ls.get("default_cadastrapp_city"));
+                }
             }
         }
     });
@@ -125,8 +147,8 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
         cm : GEOR.Addons.Cadastre.getProprietaireColModel(),
         autoHeight:true ,
         viewConfig : {
-			forceFit : true,
-		},
+            forceFit : true,
+        },
         anchor : '95%',
         border : true,
         disabled : true,
@@ -168,7 +190,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
         draggable : true,
         constrainHeader : true,
         border : false,
-		layout : 'fit',
+        layout : 'fit',
         labelWidth : 100,
         width : 450,
         defaults : {
@@ -183,10 +205,10 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
             xtype : 'tabpanel',
             activeTab : 0,
             defaults : {
-				anchor : '95%',
-				layoutOnTabChange : true,
-				autoScroll : true
-			},
+                anchor : '95%',
+                layoutOnTabChange : true,
+                autoScroll : true
+            },
             items : [ {
                 // ONGLET "Nom Usage ou Naissance"
                 id : 'propFirstForm',
@@ -279,14 +301,14 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     emptyText : OpenLayers.i18n('cadastrapp.proprietaire.file.exemple'),
                     buttonText : OpenLayers.i18n('cadastrapp.proprietaire.file.open'),
                     validator : function(value) {
-						if (value.length < 2) {
-							GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].disable();
-							return false;
-						} else {
-							GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
-							return true;
-						}
-					},
+                        if (value.length < 2) {
+                            GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].disable();
+                            return false;
+                        } else {
+                            GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
+                            return true;
+                        }
+                    },
                 }, {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.file.explanation'),
                     fieldClass : 'displayfieldGray'
@@ -429,6 +451,19 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                             }
                         }
                     }
+                }
+            }
+        }, {
+            text: 'Effacer',
+            listeners: {
+                click: function(b, e) {
+                    var currentForm = GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].getActiveTab();
+                    GEOR.ls.set("default_cadastrapp_city"," ");
+                    if (currentForm.id == 'propSecondForm') {
+                        proprietaireGrid.getStore().removeAll();
+                    }
+                    currentForm.form.reset();
+                    GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].disable();
                 }
             }
         }, {
