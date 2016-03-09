@@ -216,7 +216,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     dataIndex : 'ddenom',
                     width : 200
                 }, {
-                	id : 'adresse',
+                    id : 'adresse',
                     header : OpenLayers.i18n('cadastrapp.duc.adresse'),
                     dataIndex : 'adress',
                     width : 250
@@ -354,7 +354,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     dataIndex : 'ddenom',
                     width : 200
                 }, {
-                	id : 'adresse',
+                    id : 'adresse',
                     header : OpenLayers.i18n('cadastrapp.duc.adresse'),
                     dataIndex : 'adress',
                     width : 250
@@ -537,7 +537,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     dataIndex : 'comptecommunal',
                     width : 110
                 }, {
-                	id : 'ddenom',
+                    id : 'ddenom',
                     header : OpenLayers.i18n('cadastrapp.duc.denomination'),
                     dataIndex : 'ddenom',
                     width : 200
@@ -615,7 +615,13 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                         Ext.Msg.alert('Vous devez d\'abord sélectionner un batiment');
                     }
                 }
-            } ]
+            } ],
+            listeners: {
+                rowdblclick: function ( grid, rowIndex, e ) {
+                    var row = grid.store.getAt(rowIndex);
+                    GEOR.Addons.Cadastre.showHabitationDetails('A', row.data.dniv, row.data.dpor, row.data.annee, row.data.invar);
+                }
+            }
         });
 
         cadastreTabPanel.add({
