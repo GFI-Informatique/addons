@@ -14,7 +14,6 @@ GEOR.Addons.Cadastre.showHabitationDetails = function(batiment, niveau, porte, a
     
     // Creation de la fenetre de details d'habitation
     var habitationDetailsWindows = new Ext.Window({
-        id:"cadHabDetailsWindows",
         title:" Batiment " + batiment + " - niveau "+ niveau+ " - porte " + porte,
         frame : true,
         autoScroll : true,
