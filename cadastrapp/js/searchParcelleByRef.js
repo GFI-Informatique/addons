@@ -77,23 +77,26 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
             },
             change : function(combo, newValue, oldValue) {
                 console.log("Update section information");
-                // refaire le section store pour cette ville
-                parcelleGrid.reconfigure(GEOR.Addons.Cadastre.getVoidRefStore(), GEOR.Addons.Cadastre.getRefColModel(newValue));
-                // permettre l'édition automatique du premier champ de section
-                parcelleGrid.startEditing(0, 0);
+                if( newValue.match(/([0-9]{6})/g).length == 1 ) {
+                    var insee = newValue.match(/([0-9]{6})/g)[0];
+                    // refaire le section store pour cette ville
+                    parcelleGrid.reconfigure(GEOR.Addons.Cadastre.getVoidRefStore(), GEOR.Addons.Cadastre.getRefColModel(insee));
+                    // permettre l'édition automatique du premier champ de section
+                    parcelleGrid.startEditing(0, 0);
+                }
             },
             valid : function(combo) {
                 parcelleGrid.enable();
                 GEOR.ls.set("default_cadastrapp_city",combo.getValue());
             },
             afterrender: function(combo) {
-                if( GEOR.ls.get("default_cadastrapp_city") != " " && GEOR.ls.get("default_cadastrapp_city") != null ) {
+                if( GEOR.ls.get("default_cadastrapp_city").match(/([0-9]{6})/g).length == 1 ) {
+                    var insee = GEOR.ls.get("default_cadastrapp_city").match(/([0-9]{6})/g)[0];
                     combo.store.on('load', function() {
-                        combo.setValue(GEOR.ls.get("default_cadastrapp_city"));
-                        GEOR.ls.set("default_cadastrapp_city",combo.getValue());
-                        combo.fireEvent('change',combo,GEOR.ls.get("default_cadastrapp_city"),'');
-                    }, combo.store, {single: true});
-                    combo.doQuery(GEOR.ls.get("default_cadastrapp_city"));
+                        combo.setValue(insee);
+                        combo.fireEvent('change',combo,insee,'');
+                    }, this, {single: true});
+                    combo.doQuery(insee);
                 }
             }
         }
@@ -145,13 +148,13 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                 GEOR.ls.set("default_cadastrapp_city",combo.getValue());
             },
             afterrender: function(combo) {
-                if( GEOR.ls.get("default_cadastrapp_city") != " " && GEOR.ls.get("default_cadastrapp_city") != null ) {
+                if( GEOR.ls.get("default_cadastrapp_city").match(/([0-9]{6})/g).length == 1 ) {
+                    var insee = GEOR.ls.get("default_cadastrapp_city").match(/([0-9]{6})/g)[0];
                     combo.store.on('load', function() {
-                        combo.setValue(GEOR.ls.get("default_cadastrapp_city"));
-                        GEOR.ls.set("default_cadastrapp_city",combo.getValue());
-                        combo.fireEvent('change',combo,GEOR.ls.get("default_cadastrapp_city"),'');
-                    }, combo.store, {single: true});
-                    combo.doQuery(GEOR.ls.get("default_cadastrapp_city"));
+                        combo.setValue(insee);
+                        combo.fireEvent('change',combo,insee,'');
+                    }, this, {single: true});
+                    combo.doQuery(insee);
                 }
             }
         }
@@ -289,10 +292,12 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                         beforequery : function(q) {
                             if (q.query) {
                                 var length = q.query.length;
-                                if (length >= GEOR.Addons.Cadastre.minCharToSearch) {
+                                var cgocommune = GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].getActiveTab().getForm().findField('cgocommune').value;
+                                if (length >= GEOR.Addons.Cadastre.minCharToSearch && cgocommune.match(/([0-9]{6})/g).length == 1) {
+                                    var insee = cgocommune.match(/([0-9]{6})/g)[0];
                                     q.combo.getStore().load({
                                         params : {
-                                            cgocommune : GEOR.Addons.Cadastre.rechercheParcelleWindow.items.items[0].getActiveTab().getForm().findField('cgocommune').value,
+                                            cgocommune : insee,
                                             dvoilib : q.query
                                         }
                                     });
@@ -481,7 +486,6 @@ GEOR.Addons.Cadastre.initRechercheParcelle = function() {
                                     console.log("Not enough data to call the webservice ");
                                 }
                             });
-
                         } else if (currentForm.id == 'parcSecondForm') {
                             //TITRE de l'onglet resultat
                             var resultTitle = currentForm.getForm().findField('cgocommune').lastSelectionText;

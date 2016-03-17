@@ -66,13 +66,13 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                 GEOR.ls.set("default_cadastrapp_city",combo.getValue());
             },
             afterrender: function(combo) {
-                if( GEOR.ls.get("default_cadastrapp_city") != " " && GEOR.ls.get("default_cadastrapp_city") != null ) {
+                if( GEOR.ls.get("default_cadastrapp_city").match(/([0-9]{6})/g).length == 1 ) {
+                    var insee = GEOR.ls.get("default_cadastrapp_city").match(/([0-9]{6})/g)[0];
                     combo.store.on('load', function() {
-                        combo.setValue(GEOR.ls.get("default_cadastrapp_city"));
-                        GEOR.ls.set("default_cadastrapp_city",combo.getValue());
-                        combo.fireEvent('change',combo,GEOR.ls.get("default_cadastrapp_city"),'');
-                    }, combo.store, {single: true});
-                    combo.doQuery(GEOR.ls.get("default_cadastrapp_city"));
+                        combo.setValue(insee);
+                        combo.fireEvent('change',combo,insee,'');
+                    }, this, {single: true});
+                    combo.doQuery(insee);
                 }
             }
         }
@@ -124,13 +124,13 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                 GEOR.ls.set("default_cadastrapp_city",combo.getValue());
             },
             afterrender: function(combo) {
-                if( GEOR.ls.get("default_cadastrapp_city") != " " && GEOR.ls.get("default_cadastrapp_city") != null ) {
+                if( GEOR.ls.get("default_cadastrapp_city").match(/([0-9]{6})/g).length == 1 ) {
+                    var insee = GEOR.ls.get("default_cadastrapp_city").match(/([0-9]{6})/g)[0];
                     combo.store.on('load', function() {
-                        combo.setValue(GEOR.ls.get("default_cadastrapp_city"));
-                        GEOR.ls.set("default_cadastrapp_city",combo.getValue());
-                        combo.fireEvent('change',combo,GEOR.ls.get("default_cadastrapp_city"),'');
-                    }, combo.store, {single: true});
-                    combo.doQuery(GEOR.ls.get("default_cadastrapp_city"));
+                        combo.setValue(insee);
+                        combo.fireEvent('change',combo,insee,'');
+                    }, this, {single: true});
+                    combo.doQuery(insee);
                 }
             }
         }
