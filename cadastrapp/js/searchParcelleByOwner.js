@@ -123,10 +123,10 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
         clicksToEdit : 1,
         ds : GEOR.Addons.Cadastre.getVoidProprietaireStore(),
         cm : GEOR.Addons.Cadastre.getProprietaireColModel(),
-        autoHeight:true ,
+        autoHeight : true,
         viewConfig : {
-			forceFit : true,
-		},
+            forceFit : true,
+        },
         anchor : '95%',
         border : true,
         disabled : true,
@@ -168,7 +168,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
         draggable : true,
         constrainHeader : true,
         border : false,
-		layout : 'fit',
+        layout : 'fit',
         labelWidth : 100,
         width : 450,
         defaults : {
@@ -183,16 +183,17 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
             xtype : 'tabpanel',
             activeTab : 0,
             defaults : {
-				anchor : '95%',
-				layoutOnTabChange : true,
-				autoScroll : true
-			},
+                anchor : '95%',
+                layoutOnTabChange : true,
+                autoScroll : true
+            },
             items : [ {
                 // ONGLET "Nom Usage ou Naissance"
                 id : 'propFirstForm',
                 xtype : 'form',
                 title : OpenLayers.i18n('cadastrapp.proprietaire.title.tab1'),
                 defaultType : 'displayfield',
+                labelWidth : 110,
                 items : [ propCityCombo1, {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.city.exemple'),
                     fieldClass : 'displayfieldGray'
@@ -219,7 +220,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                         fields : [ 'ddenom', {
                             name : 'displayname',
                             convert : function(v, rec) {
-                                return rec.ddenom.replace('/', ' ');
+                                return rec.dnomlp + ' | ' + rec.ddenom.replace('/', ' ');                        
                             }
                         } ]
                     }),
@@ -228,10 +229,18 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                             if (q.query) {
                                 var length = q.query.length;
                                 if (length >= GEOR.Addons.Cadastre.minCharToSearch) {
+
+                                    var maritalsearch = false;
+                                    // If check, change JSON store attribut to search in additional marital names
+                                    if(Ext.getCmp('checkBoxSearchByMaritalNames').getValue()){
+                                        maritalsearch = true
+                                    }
+                                
                                     q.combo.getStore().load({
                                         params : {
                                             cgocommune : GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].getActiveTab().getForm().findField('cgocommune').value,
                                             ddenom : q.query,
+                                            maritalsearch : maritalsearch
                                         }
                                     });
                                 }
@@ -246,13 +255,20 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                         }
                     }
                 }, {
+                    id : 'checkBoxSearchByMaritalNames',
+                    xtype : 'checkbox',
+                    hiddenName : 'maritalName',
+                    labelSeparator: '',
+                    fieldLabel : '',
+                    boxLabel: OpenLayers.i18n('cadastrapp.proprietaire.search.marital'),               
+                },
+                {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.name.exemple'),
                     fieldClass : 'displayfieldGray'
-                } 
-                , {
+                }, {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.name.tooltip'),
-                    fieldClass : 'displayfieldGray'} 
-                ]
+                    fieldClass : 'displayfieldGray'
+                } ]
             }, {
                 // ONGLET "Compte proprietaire"
                 id : 'propSecondForm',
@@ -279,14 +295,14 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     emptyText : OpenLayers.i18n('cadastrapp.proprietaire.file.exemple'),
                     buttonText : OpenLayers.i18n('cadastrapp.proprietaire.file.open'),
                     validator : function(value) {
-						if (value.length < 2) {
-							GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].disable();
-							return false;
-						} else {
-							GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
-							return true;
-						}
-					},
+                        if (value.length < 2) {
+                            GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].disable();
+                            return false;
+                        } else {
+                            GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].enable();
+                            return true;
+                        }
+                    },
                 }, {
                     value : OpenLayers.i18n('cadastrapp.proprietaire.file.explanation'),
                     fieldClass : 'displayfieldGray'
@@ -397,7 +413,7 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                                     url : GEOR.Addons.Cadastre.cadastrappWebappUrl + 'getProprietaire',
                                     params : params,
                                     success : function(response) {
-                                        
+
                                         var comptecommunalArray = [];
                                         var result = Ext.decode(response.responseText);
                                         for (var i = 0; i < result.length; i++) {
