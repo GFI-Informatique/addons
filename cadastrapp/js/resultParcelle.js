@@ -314,6 +314,26 @@ GEOR.Addons.Cadastre.addNewResult = function(title, result, message) {
                     // *************
                     GEOR.Addons.Cadastre.result.tabs.setActiveTab((index == 0) ? 1 : (index - 1));
                 }
+            },
+            rowdblclick: function ( grid, rowIndex, e ) {
+                var row = grid.store.getAt(rowIndex);
+                var parcelleId = row.data.parcelle;
+                var feature = GEOR.Addons.Cadastre.getFeatureById(parcelleId);
+                var state = GEOR.Addons.Cadastre.selection.state.list;
+
+                // Si la fenêtre details cadastre ou foncier est déjà
+                // ouverte
+                if (GEOR.Addons.Cadastre.result.tabs.getActiveTab().idParcellesCOuvertes.indexOf(parcelleId) != -1 || GEOR.Addons.Cadastre.result.tabs.getActiveTab().idParcellesFOuvertes.indexOf(parcelleId) != -1) {
+                    GEOR.Addons.Cadastre.closeFoncierAndCadastre(parcelleId, grid);
+                } else {
+                    GEOR.Addons.Cadastre.openFoncierOrCadastre(parcelleId, GEOR.Addons.Cadastre.result.tabs.getActiveTab());
+                    state = GEOR.Addons.Cadastre.selection.state.details;
+                }
+
+                // change selection color on map depending on state
+                if (feature) {
+                    GEOR.Addons.Cadastre.changeStateFeature(feature, 0, state);
+                }
             }
         }
     });
@@ -632,11 +652,11 @@ GEOR.Addons.Cadastre.printSelectedBordereauParcellaire = function() {
 GEOR.Addons.Cadastre.addResultToTab = function(result) {
 
     if (result && GEOR.Addons.Cadastre.result.tabs.getActiveTab() && GEOR.Addons.Cadastre.result.tabs.getActiveTab().getStore()) {
-    	
-    	var jsonStore = GEOR.Addons.Cadastre.getResultParcelleStore(result, false);
-    	
-    	var parcelleList = Ext.decode(result);
-    	Ext.each(parcelleList, function(element, currentIndex) {
+        
+        var jsonStore = GEOR.Addons.Cadastre.getResultParcelleStore(result, false);
+        
+        var parcelleList = Ext.decode(result);
+        Ext.each(parcelleList, function(element, currentIndex) {
             
             // Add parcelle only if not already in
             if (GEOR.Addons.Cadastre.indexRowParcelle(element.parcelle) == -1) {
