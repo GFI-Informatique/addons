@@ -1,13 +1,11 @@
 Cadastrapp ADDON
 ==============  
 
-Cet add-on est fait pour être intégré dans le visualiseur MapfishApp de geOrchestra. Il appelle des services de la webapp cadastrapp disponible ici : 
-
-https://github.com/GFI-Informatique/cadastrapp
+Cet add-on est fait pour être intégré dans le visualiseur Mapfishapp de [geOrchestra](https://github.com/georchestra/georchestra). Il appelle des services de la webapp cadastrapp disponible ici : [https://github.com/GFI-Informatique/cadastrapp](https://github.com/GFI-Informatique/cadastrapp).
 
 Les informations des services WMS et WFS sont à modifier en fonction du modèle utilisé (Qgis ou Arcopole).
 
-Pour activer l'add-on cadastrapp, il faut modifier le fichier javascript GEOR_custom.js et rajouter dans la partie ADDONS: 
+Pour activer l'add-on cadastrapp, il faut modifier le fichier javascript GEOR_custom.js et ajouter dans la partie ADDONS: 
 
 Attention pour la partie 
 ```
@@ -17,6 +15,7 @@ Attention pour la partie
 ```
 Il faut rajouter ```ROLE_``` devant le nom du groupe ldap. Par exemple si votre groupe ldap CNIL1 est EL_CAD_CNIL1 alors la valeur de cnil1RoleName sera ROLE_EL_CAD_CNIL1
 
+```js
 	[{
 	"id": "cadastrapp_0", 
 	"name": "Cadastrapp", 
@@ -70,3 +69,4 @@ Il faut rajouter ```ROLE_``` devant le nom du groupe ldap. Par exemple si votre 
 		},
 	"preloaded": "true"
 	}],
+```
