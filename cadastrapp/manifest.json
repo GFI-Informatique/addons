@@ -46,6 +46,7 @@
 			"cadastrapp.recherches": "Advanced searches",
 			"cadastrapp.search": "Search",
 			"cadastrapp.close": "Close",
+			"cadastrapp.clear": "Clear",
 			"cadastrapp.parcelle": "Plot",
 			
 			"cadastrapp.menu.parcelle.refer": "By reference",
@@ -399,6 +400,7 @@
 			"cadastrapp.recherches": "Recherches avancées",
 			"cadastrapp.search": "Rechercher",
 			"cadastrapp.close": "Fermer",
+			"cadastrapp.clear": "Effacer",
 			"cadastrapp.generate": "Générer",
 			"cadastrapp.parcelle": "Parcelle",
 			"cadastrapp.menu.parcelle.refer": "Par référence",

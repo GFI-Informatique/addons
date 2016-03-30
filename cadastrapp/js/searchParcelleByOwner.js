@@ -61,8 +61,19 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     q.query.length = length;
                 }
             },
-            valid : function(element) {
+            valid : function(combo) {
                 Ext.getCmp('comboDnomlpSearchByOwners').enable();
+                GEOR.ls.set("default_cadastrapp_city",combo.getValue());
+            },
+            afterrender: function(combo) {
+                if( GEOR.ls.get("default_cadastrapp_city").match(/([0-9]{6})/g).length == 1 ) {
+                    var insee = GEOR.ls.get("default_cadastrapp_city").match(/([0-9]{6})/g)[0];
+                    combo.store.on('load', function() {
+                        combo.setValue(insee);
+                        combo.fireEvent('change',combo,insee,'');
+                    }, this, {single: true});
+                    combo.doQuery(insee);
+                }
             }
         }
     });
@@ -108,8 +119,19 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                     q.query.length = length;
                 }
             },
-            valid : function(element) {
+            valid : function(combo) {
                 Ext.getCmp('gripOwnerSearchByOwners').enable();
+                GEOR.ls.set("default_cadastrapp_city",combo.getValue());
+            },
+            afterrender: function(combo) {
+                if( GEOR.ls.get("default_cadastrapp_city").match(/([0-9]{6})/g).length == 1 ) {
+                    var insee = GEOR.ls.get("default_cadastrapp_city").match(/([0-9]{6})/g)[0];
+                    combo.store.on('load', function() {
+                        combo.setValue(insee);
+                        combo.fireEvent('change',combo,insee,'');
+                    }, this, {single: true});
+                    combo.doQuery(insee);
+                }
             }
         }
     });
@@ -445,6 +467,19 @@ GEOR.Addons.Cadastre.initRechercheProprietaire = function() {
                             }
                         }
                     }
+                }
+            }
+        }, {
+            text: OpenLayers.i18n('cadastrapp.clear'),
+            listeners: {
+                click: function(b, e) {
+                    var currentForm = GEOR.Addons.Cadastre.proprietaireWindow.items.items[0].getActiveTab();
+                    GEOR.ls.set("default_cadastrapp_city"," ");
+                    if (currentForm.id == 'propSecondForm') {
+                        proprietaireGrid.getStore().removeAll();
+                    }
+                    currentForm.form.reset();
+                    GEOR.Addons.Cadastre.proprietaireWindow.buttons[0].disable();
                 }
             }
         }, {
