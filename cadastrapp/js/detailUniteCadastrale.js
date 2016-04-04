@@ -646,7 +646,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                 convert : function(v, rec) {
                     return rec.dcntsf
                 }
-            }, 'cgrnum_lib', 'drcsub' ],
+            }, 'cgrnum', 'drcsub' ],
         });
 
         // Déclaration du tableau pour l'onglet subdivision fiscale
@@ -670,7 +670,7 @@ GEOR.Addons.Cadastre.displayFIUC = function(parcelleId) {
                     dataIndex : 'contenance'
                 }, {
                     header : "Nature de culture",
-                    dataIndex : 'cgrnum_lib'
+                    dataIndex : 'cgrnum'
                 }, {
                     header : "Revenu au 01/01",
                     dataIndex : 'drcsub'
