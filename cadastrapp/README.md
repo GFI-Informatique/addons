@@ -73,14 +73,27 @@ Il faut rajouter ```ROLE_``` devant le nom du groupe ldap. Par exemple si votre 
 
 This project has been funded by : 
 
-Union Européenne en Auvergne
-![alt tag](https://cloud.githubusercontent.com/assets/3421760/14113246/5e8bdf2c-f5d2-11e5-86a1-638b191194d3.png)
-
-Rennes Métropole
-![alt tag](https://cloud.githubusercontent.com/assets/6370443/13951133/407ee162-f02f-11e5-8c70-a7b6cff7ba43.jpg)
-
-Aménagement du territoire et gestion des risques
-![alt tag](https://cloud.githubusercontent.com/assets/11499415/14116676/41fbce6c-f5e1-11e5-8863-2b1f4cd19034.jpg)
-
-Conseil Départemental du Bas-Rhin
-![alt tag](https://cloud.githubusercontent.com/assets/5012040/13945329/ac9a6786-f00c-11e5-8acc-b21705db585b.png)
+<table>
+    <tbody>
+        <tr>
+            <td>Aménagement du territoire et gestion des risques</td>
+            <td align="center"><img src="https://cloud.githubusercontent.com/assets/11499415/14116676/41fbce6c-f5e1-11e5-8863-2b1f4cd19034.jpg" width="200" alt = "Aménagement du territoire et gestion des risques"></td>
+        </tr>
+        <tr>
+            <td>Conseil Départemental du Bas-Rhin</td>
+            <td align="center"><img src="https://cloud.githubusercontent.com/assets/5012040/13945329/ac9a6786-f00c-11e5-8acc-b21705db585b.png" width="200" alt = "Conseil Départemental du Bas-Rhin"></td>
+        </tr>
+        <tr>
+             <td>CRAIG : Centre Réginal Auvergnat de l'Information Géographique</td>
+            <td align="center"><img src="https://cloud.githubusercontent.com/assets/3421760/14113316/bf38b2e6-f5d2-11e5-87c5-754f776a5962.jpg" width="200" alt = "Centre Réginal Auvergnat de l'Information Géographique"></td>
+        </tr>
+         <tr>
+             <td>Rennes Métropole</td>
+            <td align="center"><img src="https://cloud.githubusercontent.com/assets/6370443/13951133/407ee162-f02f-11e5-8c70-a7b6cff7ba43.jpg" width="200" alt = "Rennes Métropole"></td>
+        </tr>
+        <tr>
+             <td>Union Européenne en Auvergne</td>
+            <td align="center"><img src="https://cloud.githubusercontent.com/assets/3421760/14113246/5e8bdf2c-f5d2-11e5-86a1-638b191194d3.png" width="200" alt = "Union Européenne en Auvergne"></td>
+        </tr>
+    </tbody>
+</table>
