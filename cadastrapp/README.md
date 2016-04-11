@@ -33,8 +33,8 @@ Il faut rajouter ```ROLE_``` devant le nom du groupe ldap. Par exemple si votre 
 	"options": { 
 		"target": "tbar_12",
 		"webapp":{
-			"url" : "http://hostname/cadastrapp"
-		}
+			"url" : "/cadastrapp/"
+		},
 		"WMSLayer":{
 			"layerNameInPanel":"",
 			"transparent":true,
